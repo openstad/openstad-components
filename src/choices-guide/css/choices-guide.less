@@ -1,0 +1,88 @@
+.osc-choices-guide {
+
+  @phone: ~'only screen and (max-width: 940px)';
+
+  @import 'choices';
+  @import 'questions';
+  @import 'question-group';
+  @import 'result';
+  @import 'form';
+
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  font-size: 16px;
+  line-height: 24px;
+  z-index: 10;
+
+  .osc-intro {
+    position: relative;
+    width: 700px;
+    padding: 20px;
+    font-size: 16px;
+    background-color: white;
+
+    @media @phone {
+      width: 100%;
+    }
+
+  }
+
+  .osc-image {
+    width: 100%;
+    height: 250px;
+    margin-bottom: -60px;
+    object-fit: cover;
+
+    @media @phone {
+      margin-bottom: 0;
+    }
+    
+
+  }
+
+  .osc-choices-guide-content {
+    position: relative;
+    width: 940px;
+    margin: 0 auto 40px auto;
+
+    @media @phone {
+      width: 100%;
+    }
+
+  }
+
+  .osc-nav-bar {
+
+    width: 700px;
+    height: 74px;
+    padding: 15px;
+    background-color: #f5f5f5;
+    overflow: hidden;
+
+    @media @phone {
+      width: 100%;
+    }
+
+    .osc-previous-button {
+      float: left;
+    }
+    .osc-next-button {
+      float: right;
+      margin-right: 17px;
+    }
+    
+  }
+
+  .osc-choices-guide-editbutton {
+    float: right;
+    width: 220px;
+    margin-top: 0;
+
+    @media @phone {
+      display: none;
+    }
+
+  }
+  
+}

@@ -1,0 +1,61 @@
+// TODO: de accordeon moet naar generieke elementen
+
+.osc-accordeon {
+
+	margin-top: 20px;
+  
+  .osc-accordeon-button {
+    .osc-arrow-down-black-background();
+    display: block;
+    width: 100%;
+		padding: 12px 18px;
+    color: black;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    text-decoration:none;
+		background-color: #e6e6e6;
+    cursor: pointer;
+		outline: 0;
+
+    &:hover {
+      background-color: #b4b4b4;
+    }
+
+  }
+  
+  .osc-accordeon-content {
+		padding: 15px;
+    border: 3px solid #e6e6e6;
+		border-top: none;
+
+		h4 {
+			margin: 15px 0 0 0;
+			padding: 0;
+			font-size: 18px;
+			font-weight: 800;
+		}
+		
+  }
+
+  &.osc-open {
+		.osc-accordeon-button {
+      .osc-arrow-up-black-background();
+      background-color: #b4b4b4;
+		}
+		.osc-accordeon-content {
+      display: block;
+      border-color: #b4b4b4;
+		}
+	}
+
+  &.osc-closed {
+		.osc-accordeon-button {
+			background-color: #e6e6e6;
+		}
+		.osc-accordeon-content {
+      display: none;
+		}
+	}
+
+}

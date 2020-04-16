@@ -1,0 +1,150 @@
+.osc-choices-container {
+
+  position: absolute;
+  z-index: 50;
+  width: 220px;
+  top: 100px;
+  left: 720px;
+  background-color: #f3f3f3;
+
+  &.sticky {
+    position: fixed;
+    top: 10px;
+
+    @media @phone {
+      top: 0px;
+    }
+
+  }
+
+  @media @phone {
+    position: relative;
+    top: 0;
+    left: 0px;
+    width: 100%;
+  }
+
+  h4 {
+    margin: 0 0 20px 0;
+    padding: 0;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  ul.osc-choices {
+
+    @import 'choice-plane';
+
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      margin: 0;
+      padding: 0;
+    }
+
+    .osc-choice {
+    }
+
+    .osc-choice-default {
+
+      .osc-choice-bar {
+
+        position: relative;
+        height: 14px;
+        width: 100%;
+        margin-top: 10px;
+        background-color: white;
+        border-radius: 7px;
+        overflow: hidden;
+
+        .osc-choice-bar-progress {
+          position: relative;
+          top: 0;
+          left: 0;
+          height: 14px;
+          background-color: #bed200;
+          border-radius-top-left: 7px;
+        }
+
+      }
+    }
+
+  }
+  
+  &.osc-accordeon {
+
+    margin-top: 0;
+		background-color: #f3f3f3;
+    border: none;
+
+		.osc-accordeon-button {
+      font-weight: normal;
+      padding: 20px;
+      background: none;
+      cursor: default;
+
+      @media @phone {
+        padding-right: 35px;
+        cursor: pointer;
+      }
+      
+    }
+
+		.osc-accordeon-content {
+      padding: 20px;
+
+      .osc-choice-plane-plane{
+        margin: 0 auto;
+      }
+    }
+
+    &.osc-open {
+		  .osc-accordeon-button {
+			  background-color: #f3f3f3;
+        border: none;
+		  }
+		  .osc-accordeon-content {
+        display: block;
+        border: none;
+		  }
+    }
+
+	  &.osc-closed {
+		  .osc-accordeon-button {
+			  background-color: #f3f3f3;
+        border: none;
+		  }
+		  .osc-accordeon-content {
+        display: block;
+        border: none;
+		  }
+	  }
+
+    @media @phone {
+
+      &.osc-open {
+		    .osc-accordeon-button {
+          .osc-arrow-up-black-background();
+		    }
+		    .osc-accordeon-content {
+          display: block;
+		    }
+      }
+
+	    &.osc-closed {
+		    .osc-accordeon-button {
+          .osc-arrow-down-black-background();
+		    }
+		    .osc-accordeon-content {
+          display: none;
+		    }
+	    }
+    }
+
+    
+  }
+
+}
