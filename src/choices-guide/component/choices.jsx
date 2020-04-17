@@ -80,7 +80,7 @@ export default class OpenStadComponentChoices extends OpenStadComponent {
     switch (self.config.type) {
       case 'plane':
         // dan zou er maar 1 choice moeten zijn
-        return self.choiceElements[0].planeElement.getPreferedChoice(scores[`choice-${self.choiceElements[0].props.data.id}`]); // auw, dit moet dus anders
+        return self.choiceElements[0];
         break;
 
       default:

@@ -73,7 +73,7 @@ export default class OpenStadComponentChoicePlane extends OpenStadComponent {
     let prefered = this.getPreferedChoice(score);
     let title = prefered ? 'Je gaat nu richting ' + ( prefered && prefered.title ) : 'Je staat precies tussen meerdere scenario\'s in';
 
-    this.setState({title});
+    // this.setState({title});
     return title;
 
     
