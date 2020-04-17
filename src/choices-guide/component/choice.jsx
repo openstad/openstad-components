@@ -66,7 +66,7 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
     Object.keys(myAnswers).forEach((id) => {
 
       let myAnswer = myAnswers[id] || {};
-      let givenAnswer = givenAnswers[id] || {};
+      let givenAnswer = givenAnswers[id] || ( this.config.startWithAllQuestionsAnswered ? { x: 50, y: 50, z: 50 } : {} );
 
       let result = results[id] = {};
 

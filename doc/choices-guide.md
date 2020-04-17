@@ -104,6 +104,12 @@ noOfQuestionsToShow: 1
 Aantal vragen per pagina; na dit aantal vragen komt er (zonodig) een 'Volgende' knop.
 
 ```
+startWithAllQuestionsAnswered: false
+```
+
+Als true dan worden alle vragen die nog niet benatwoord zijn berekend alsof iemand er 50% op heeft geantwoord. Daarmee is er dus direct een voorkeur zichtbaar.
+
+```
 beforeUrl: '/openstad/choices-guide/example.html?before',
 afterUrl: '/openstad/choices-guide/example.html?after'
 ```
