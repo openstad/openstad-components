@@ -47,10 +47,10 @@ export default class OpenStadComponentResult extends OpenStadComponent {
           ),
           image: { "src":"https://image-server.staging.openstadsdeel.nl/image/85ef5669d9a5db2f0ec2adb6310620be" },
         },
-        'buurtenstad': {
+        'dorpenstad': {
           html: (
             <div id="accordeon-1" className="osc-accordeon osc-closed">
-              <div onClick={ () =>  { var element = document.getElementById('accordeon-1'); console.log('==', element); if( element.className.match(' osc-closed') ){ element.className = element.className.replace(' osc-closed', ' osc-open');  } else { element.className = element.className.replace(' osc-open', ' osc-closed'); } } } className="osc-accordeon-button">Lees meer over scenario buurtenstad</div>
+              <div onClick={ () =>  { var element = document.getElementById('accordeon-1'); console.log('==', element); if( element.className.match(' osc-closed') ){ element.className = element.className.replace(' osc-closed', ' osc-open');  } else { element.className = element.className.replace(' osc-open', ' osc-closed'); } } } className="osc-accordeon-button">Lees meer over scenario dorpenstad</div>
               <div className="osc-accordeon-content">
                 Deze tekst is er nog niet.
               </div>
@@ -79,8 +79,6 @@ export default class OpenStadComponentResult extends OpenStadComponent {
 
     let self = this;
     let data = this.props.data;
-
-    console.log(document.location.hash);
 
     let selectedTab = self.state.selectedTab || ( self.props.data.preferedChoice && self.props.data.preferedChoice.title ) || document.location.hash.replace(/^#/, ''); // zucht...
     let useTab = selectedTab || Object.keys(self.config.tabs)[0];

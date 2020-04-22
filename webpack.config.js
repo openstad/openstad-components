@@ -1,3 +1,4 @@
+const webpack = require("webpack");
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
@@ -11,6 +12,7 @@ module.exports = {
 	entry: {
     "all": './src/index.jsx',
     "choices-guide": './src/choices-guide/index.jsx',
+    "previous-next-button-block": './src/previous-next-button-block/index.jsx',
   },
 
 	output: {
@@ -29,6 +31,9 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'css/[name].css',
       ignoreOrder: false,
+    }),
+    new webpack.ProvidePlugin({
+      Promise: 'es6-promise-promise', // works as expected
     }),
   ],
 

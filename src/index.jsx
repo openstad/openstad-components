@@ -1,6 +1,7 @@
 // polyfills
 //import 'core-js/es/map';
 //import 'core-js/es/set';
+import 'core-js/es/array/find';
 import 'whatwg-fetch';
 
 // react
@@ -14,12 +15,15 @@ import './index.less';
 import OpenStadComponent from './component/index.jsx';
 import OpenStadComponentLibs from './libs/index.jsx';
 import OpenStadComponentForms from './forms/index.jsx';
-import OpenStadComponentChoicesGuide from './choices-guide/index.jsx';
+import { ChoicesGuide, ChoicesGuideResult } from './choices-guide/index.jsx';
+import OpenStadComponentPreviousNextButtonBlock from './previous-next-button-block/index.jsx';
 export {
   OpenStadComponent as Component,
   OpenStadComponentLibs as Libs,
   OpenStadComponentForms as Forms,
-  OpenStadComponentChoicesGuide as ChoicesGuide,
+  ChoicesGuide,
+  ChoicesGuideResult,
+  OpenStadComponentPreviousNextButtonBlock as PreviousNextButtonBlock,
 }
 
 

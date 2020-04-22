@@ -17,7 +17,7 @@ export default class OpenStadComponentUser extends OpenStadComponent {
 		// config
 		self.defaultConfig = {
 		};
-		self.config = Object.assign(self.defaultConfig, props.config, self.config || {})
+		self.config = merge.recursive(self.defaultConfig, props.config, self.config || {})
 
     console.log('xx', self.config);
 

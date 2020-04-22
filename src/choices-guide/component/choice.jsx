@@ -47,9 +47,9 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
     return score;
   }
 
-  getTitle(score) {
+  getTitle(score, nameOnly) {
     return this.planeElement ?
-      this.planeElement.getTitle(score) :
+      this.planeElement.getTitle(score,nameOnly) :
       this.props.data && this.props.data.title;
   }
   
@@ -121,7 +121,7 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
 
       case 'plane':
         scoreHTML = (
-          <OpenStadComponentChoicePlane config={{ ...self.config }} score={score}  ref={function(el) { self.planeElement = el;}}/>
+          <OpenStadComponentChoicePlane config={{ ...self.config }} data={{ ...self.props.data }} score={score}  ref={function(el) { self.planeElement = el;}}/>
         );
         break;
 

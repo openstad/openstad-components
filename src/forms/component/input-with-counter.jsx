@@ -1,3 +1,4 @@
+import merge from 'merge';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -19,7 +20,7 @@ export default class FormfieldInputWithCounter extends React.Component {
       placeholder: '',
 		};
 
-		self.config = Object.assign(self.defaultConfig, self.config, props.config || {})
+		self.config = merge.recursive(self.defaultConfig, self.config, props.config || {})
 
     self.state = {
 			focused: false,

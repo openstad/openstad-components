@@ -1,3 +1,4 @@
+import merge from 'merge';
 import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentQuestion from './question.jsx';
 
@@ -15,7 +16,7 @@ export default class OpenStadComponentQuestionGroup extends OpenStadComponent {
 
     this.state = {
       currentQuestion: 0,
-      values: ( this.props.data && this.props.data.values ) || {},
+      values: {},
     };
 
     this.liveUpdates = this.liveUpdates.bind(this);
@@ -49,7 +50,7 @@ export default class OpenStadComponentQuestionGroup extends OpenStadComponent {
 
   getAnswers() {
     let self = this;
-    let values = Object.assign({}, self.state.values);
+    let values = merge({}, this.props.data && this.props.data.values, self.state.values);
     self.props.data && self.props.data.questions.forEach( ( question, i ) => {
       let element = self.questionElements.find( elem => elem && elem.questionId == question.id );
       if (element) {
@@ -106,10 +107,12 @@ export default class OpenStadComponentQuestionGroup extends OpenStadComponent {
 
     let shownQuestions = data.questions.slice( self.state.currentQuestion, self.state.currentQuestion + self.noOfQuestionsToShow );
 
+    let values = merge({}, this.props.data && this.props.data.values, self.state.values);
+    console.log(values);
     questionsHTML =
       <div className="osc-questions">
         { shownQuestions.map((question, i) => {
-          return <OpenStadComponentQuestion config={ { liveUpdatesFunction: self.liveUpdates, divId: `osc-question-${question.id}` } } data={{ ...question, value: self.state.values[question.id] }} answerDimensions={data.answerDimensions} key={`question-${question.id}`} ref={function(el) { self.questionElements[i] = el; }}/>;
+          return <OpenStadComponentQuestion config={ { liveUpdatesFunction: self.liveUpdates, divId: `osc-question-${question.id}` } } data={{ ...question, value: values[question.id] }} answerDimensions={data.answerDimensions} key={`question-${question.id}`} ref={function(el) { self.questionElements[i] = el; }}/>;
         })}
       </div>;
 

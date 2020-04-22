@@ -160,7 +160,7 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
       case 'enum-radio':
         selectorHTML = (
           <div className="osc-question-selector">
-            { data.values.map((entry, i) => {
+            { data.values && data.values.map((entry, i) => {
               let key = parseInt(1000000 * Math.random());
               let checked = false;
               if (typeof data.value == 'object') {
@@ -188,7 +188,7 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
       case 'enum-buttons':
         selectorHTML =
           <div className="osc-question-selector">
-            { data.values.map((entry, i) => {
+            { data.values && data.values.map((entry, i) => {
               return <button onClick={() => self.onChangeHandler(entry.value)} key={`button-value-${entry.value}`}>{entry.text}</button>;
             })}
           </div>;

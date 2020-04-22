@@ -256,6 +256,52 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
     });
   }
 
+  deleteElement({what, questionGroupId, choiceId, questionId, title}) {
+
+    let self = this;
+    console.log(self);
+
+    if (!confirm("Je gaat " + what + " " + title + " verwijderen. Weet je het zeker?")) return;
+
+    let url;
+    switch (what) {
+
+      case 'question-group':
+        url = `${self.config.api && self.config.api.url   }/api/site/${  self.config.siteId  }/choicesguide/${  self.state.choicesGuideId  }/questiongroup/${  questionGroupId  }`;
+        break;
+
+      case 'choice':
+        url = `${self.config.api && self.config.api.url   }/api/site/${  self.config.siteId  }/choicesguide/${  self.state.choicesGuideId  }/questiongroup/${  questionGroupId  }/choice/${ choiceId }`;
+        break;
+
+      case 'question':
+        url = `${self.config.api && self.config.api.url   }/api/site/${  self.config.siteId  }/choicesguide/${  self.state.choicesGuideId  }/questiongroup/${  questionGroupId  }/question/${ questionId }`;
+        break;
+
+      default:
+    }
+    
+    let headers = OpenStadComponentLibs.api.getHeaders(self.config);
+    fetch(url, {
+      method: 'DELETE',
+      headers,
+    })
+      .then( function(response) {
+        if (response.ok) {
+          return response.json();
+        }
+        throw response.text();
+      })
+      .then(function(json) {
+        self.fetchData();
+      })
+      .catch(function(error) {
+        error.then(function(messages) { return console.log(messages);} );
+        self.setState({ busy: false });
+      });
+    
+  }
+  
   render() {
 
     let self = this;
@@ -292,12 +338,13 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
                       let question = questionGroup.questions[key];
                       return (
                         <li>
-                          ({question.id}) - {question.title} - {question.seqnr} -
+                          ({question.id}) - {question.title} - {question.seqnr}
+                          -
                           <a href="#" onClick={event => self.setCurrentForm({ what: 'question', questionGroupId: questionGroup.id, questionId: question.id })}>
                             Bewerk
                           </a>
                           -
-                          <a href="#" onClick={event => self.deleteQuestion({questionId: question.id})}>
+                          <a href="#" onClick={event => self.deleteElement({ what: 'question', questionGroupId: questionGroup.id, questionId: question.id, title: question.title})}>
                             Verwijder
                           </a>
                         </li>
@@ -316,16 +363,26 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
                     { Object.keys(questionGroup.choices).map((key, i) => {
                       let choice = questionGroup.choices[key];
                       return (
-                        <li>{choice.title} - {choice.seqnr} - <a href="#" onClick={event => self.setCurrentForm({ what: 'choice', questionGroupId: questionGroup.id, choiceId: choice.id })}>Bewerk</a></li>
+                        <li>{choice.title} - {choice.seqnr}
+                          - <a href="#" onClick={event => self.setCurrentForm({ what: 'choice', questionGroupId: questionGroup.id, choiceId: choice.id })}>Bewerk</a>
+                          - <a href="#" onClick={event => self.deleteElement({ what: 'choice', questionGroupId: questionGroup.id, choiceId: choice.id, title: choice.title})}>Verwijder</a>
+                        </li>
                       );
                     })}
                     <li><a href="#" onClick={event => self.setCurrentForm({ what: 'choice', questionGroupId: questionGroup.id })}>Nieuwe keuze</a></li>
-                  </ul>
-                  ;
+                  </ul>;
+
+
+              let deleteButton;
+              if (Object.keys(questionGroup.choices).length == 0 && Object.keys(questionGroup.questions).length == 0) {
+                deleteButton = (<a href="#" onClick={event => self.deleteElement({ what: 'question-group', questionGroupId: questionGroup.id, title: questionGroup.title})}>Verwijder</a>);
+              }
 
               return (
                 <div>
-                  {questionGroup.title} - {questionGroup.seqnr} - <a href="#" onClick={event => self.setCurrentForm({ what: 'question-group', questionGroupId: questionGroup.id })}>Bewerk</a>
+                  {questionGroup.title} - {questionGroup.seqnr}
+                  - <a href="#" onClick={event => self.setCurrentForm({ what: 'question-group', questionGroupId: questionGroup.id })}>Bewerk</a>
+                  - {deleteButton}
                   {questionsHTML}
                   {choicesHTML}
                 </div>

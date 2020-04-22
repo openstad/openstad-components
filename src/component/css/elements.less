@@ -1,6 +1,7 @@
 @import 'images';
 
 // Onderstaand moet nog opgesplitst
+// Onderstaand moet helemaal omgebouwd naaar functions zoals nu previous/next, zodat je hem alleen als reference kunt inladen en niet alles mee wordt gecompileerd
 
 .osc-align-right-container {
   
@@ -75,7 +76,7 @@
   
 }
 
-.osc-previous-button {
+.osc-previous-button() {
 
   position: relative;
   padding-left: 18px;
@@ -97,9 +98,10 @@
   }
 }
 
-.osc-next-button {
+.osc-next-button() {
 
   position: relative;
+  margin-right: 17px;
   padding: 11px 8px 11px 15px;
   font-size: 16px;
   font-weight: 600;

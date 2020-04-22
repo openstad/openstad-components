@@ -6,7 +6,10 @@ import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentQuestionGroup from './question-group.jsx';
 import OpenStadComponentChoices from './choices.jsx';
 import OpenStadComponentChoicesGuideForm from './edit-form.jsx';
-import OpenStadComponentChoicesGuideResult from './result.jsx';
+import OpenStadComponentPreviousNextButtonBlock from '../../previous-next-button-block/index.jsx';
+// import OpenStadComponentChoicesGuideResult from './result.jsx';
+
+import fetchChoicesGuide from '../lib/fetch.js'
 
 'use strict';
 
@@ -36,12 +39,13 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
     self.state = {
       editMode: false,
       title: 'Loading....',
-      values: undefined,
+      values: OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.values'),
       questionGroups: [],
       choices: [],
       currentQuestionGroupIndex: undefined,
       currentQuestion: undefined,
       status: 'init',
+      scores: OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.scores'),
     };
 
     self.liveUpdates = self.liveUpdates.bind(this);
@@ -50,31 +54,47 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
   }
 
   componentDidMount(prevProps, prevState) {
-    this.fetchData();
+
+    let self = this;
+    
+    self.fetchData();
+
+    // it is using js, because plain css sticky only works when you scroll the direct container
+    setTimeout( function() { // TODO
+      let element = document.getElementById('osc-choices-container' + self.divId)
+      if ( element && self.config.choices.sticky ) {
+        let bodyRect = document.body.getBoundingClientRect();
+        let elemRect = element.getBoundingClientRect();
+        let absTop   = elemRect.top;
+        let absLeft  = elemRect.left;
+        let orgPos   = element.style.position;
+        let orgTop   = element.style.top;
+        let orgLeft  = element.style.left;
+        let threshold = absTop - self.config.choices.sticky.offsetTop;
+		    window.addEventListener('scroll', function(event) {
+          if (element) {
+            if (window.pageYOffset >= threshold) {
+              element.classList.add("sticky")
+              element.style.left = absLeft + 'px'
+            } else {
+              element.classList.remove("sticky")
+              element.style.position = orgPos;
+              element.style.top = orgTop;
+              element.style.left = orgLeft;
+            }
+          }
+        });
+      }
+    }, 1000);
+
   }
 
   fetchData() {
 
     let self = this;
-
-    let url = `${self.config.api && self.config.api.url   }/api/site/${  self.config.siteId  }/choicesguide/${  self.config.choicesGuideId}?includeChoices=1&includeQuestions=1`;
-    let headers = OpenStadComponentLibs.api.getHeaders();
-
-    fetch(url, { headers })
-      .then((response) => {
-        return response.json();
-      })
-      .then((json) => {
-
-        let state = {};
-        state.choicesGuideId = json.id;
-        state.images = json.images;
-        state.title = json.title;
-        state.description = json.description;
-        state.choices = json.choices || [];
-        state.questionGroups = json.questiongroups || [];
-        state.status = 'active';
-        self.setState(state, () => {
+    fetchChoicesGuide({ config: self.config })
+      .then((data) => {
+        self.setState(data, () => {
           self.startGuide();
         });
       })
@@ -88,11 +108,6 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
   startGuide() {
     let self = this;
     let state = {};
-
-    // tmp
-    // state.result = { "8": { "x": "77", "y": "77" }, "9": { "x": "23", "y": "23" }, "10": { "x": "81", "y": "81" }, "11": { "x": "83", "y": "83" }, "12": { "x": 0, "y": 0 } };
-    // state.status = 'result';
-    // return self.setState(state);
     
     state.currentQuestionGroupIndex = 0;
     self.setState(state, () => {
@@ -109,11 +124,12 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
     this.setState({
       editMode: false,
       title: 'Loading....',
-      values: {},
+      values: OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.values'),
       questionGroups: [],
       choices: [],
       currentQuestionGroupIndex: undefined,
       status: 'init',
+      scores: OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.scores'),
     }, function() {
       this.fetchData()
     });
@@ -124,7 +140,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
     let self = this;
 
     let state = {};
-    state.values = Object.assign(self.state.values || {}, self.questionGroupElement.getAnswers());
+    state.values = merge(self.state.values || {}, self.questionGroupElement.getAnswers());
     self.setState(state);
 
     self.choicesElement.calculateScores(state.values);
@@ -145,7 +161,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
     if (this.state.status == 'result') return this.gotoPreviousGroup();
 
     let state = {};
-    state.values = Object.assign(this.state.values || {}, this.questionGroupElement.getAnswers());
+    state.values = merge(this.state.values || {}, this.questionGroupElement.getAnswers());
     this.setState(state);
 
     this.choicesElement.calculateScores(state.values);
@@ -165,7 +181,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
 
     let state = { ...this.state };
     if (state.currentQuestionGroupIndex < state.questionGroups.length - 1) {
-      state.values = Object.assign(state.values || {}, this.questionGroupElement.getAnswers());
+      state.values = merge(state.values || {}, this.questionGroupElement.getAnswers());
       state.currentQuestionGroupIndex++;
       this.setState(state, () => {
         this.liveUpdates();
@@ -194,17 +210,21 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
 
   gotoResult() {
     let self = this;
-    let values = Object.assign(self.state.values || {}, self.questionGroupElement.getAnswers());
-    let preferedChoice = self.choicesElement.getPreferedChoice();
-    self.setState({
-      status: 'result',
-      values,
-      result: values,
-      preferedChoice,
-    }, () => {
-      self.submitResult()
-      window.scrollTo(0,0)
-    });
+
+    document.location.href = self.config.afterUrl;
+    
+    // let values = merge(self.state.values || {}, self.questionGroupElement.getAnswers());
+    // let preferedChoice = self.choicesElement.getPreferedChoice();
+    // self.setState({
+    //   status: 'result',
+    //   values,
+    //   result: values,
+    //   preferedChoice,
+    // }, () => {
+    //   self.submitResult()
+    //   window.scrollTo(0,0)
+    // });
+    
   }
 
   submitResult() {
@@ -242,9 +262,12 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
   }
 
   liveUpdates() {
-    let answers = Object.assign(this.state.values || {}, this.questionGroupElement.getAnswers());
+    let answers = merge(this.state.values || {}, this.questionGroupElement.getAnswers());
     let scores = this.choicesElement.calculateScores(answers);
-    this.setState({ scores, firstAnswerGiven: Object.keys(answers).length > 0 })
+    this.setState({ scores, firstAnswerGiven: Object.keys(answers).length > 0 }, () => {
+      OpenStadComponentLibs.sessionStorage.set('osc-choices-guide.values', answers);
+      OpenStadComponentLibs.sessionStorage.set('osc-choices-guide.scores', scores);
+    })
   }
 
   render() {
@@ -286,26 +309,28 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
 
     } else if (self.state.status == 'result') {
 
-      let previousButtonHTML = <div className="osc-previous-button" onClick={() => {self.gotoPreviousQuestion();}}>Terug</div>;
-      
-      let nextButtonHTML = null;
-      if (self.config.afterUrl) {
-        nextButtonHTML = <div className="osc-next-button" onClick={() => { document.location.href = `${self.config.afterUrl}` }}>Volgende</div>
-      }
+      alert('Hier had je niet moeten komen')
 
-      let choicesHTML = <OpenStadComponentChoices config={{ ...self.config.choices, sticky: false, size: 630, }} scores={{...self.state.scores}} choices={[...choices]} answerDimensions={answerDimensions} firstAnswerGiven={ self.state.firstAnswerGiven ? true : false } ref={function(el) { self.choicesElement = el; }} key='choices'/>;
-
-      contentHTML = (
-        <div className="osc-choices-guide-content">
-          <OpenStadComponentChoicesGuideResult config={{ ...self.config.result, type: self.config.choices.type }} data={{ choices: self.choices, result: self.state.result.values, preferedChoice: self.state.preferedChoice }} onFinished={self.hideEditForm} data={{ ...self.state }}>
-            {choicesHTML}
-          </OpenStadComponentChoicesGuideResult>
-          <div className="osc-nav-bar">
-            {previousButtonHTML}
-            {nextButtonHTML}
-          </div>
-        </div>
-      );
+      // let previousButtonHTML = <div className="osc-previous-button" onClick={() => {self.gotoPreviousQuestion();}}>Terug</div>;
+      //  
+      // let nextButtonHTML = null;
+      // if (self.config.afterUrl) {
+      //   nextButtonHTML = <div className="osc-next-button" onClick={() => { document.location.href = `${self.config.afterUrl}` }}>Volgende</div>
+      // }
+      //  
+      // let choicesHTML = <OpenStadComponentChoices config={{ ...self.config.choices, sticky: false, size: 630, }} scores={{...self.state.scores}} choices={[...choices]} answerDimensions={answerDimensions} firstAnswerGiven={ self.state.firstAnswerGiven ? true : false } ref={function(el) { self.choicesElement = el; }} key='choices'/>;
+      //  
+      // contentHTML = (
+      //   <div className="osc-choices-guide-content">
+      //     <OpenStadComponentChoicesGuideResult config={{ ...self.config.result, type: self.config.choices.type }} data={{ choices: self.choices, result: self.state.result.values, preferedChoice: self.state.preferedChoice }} onFinished={self.hideEditForm} data={{ ...self.state }}>
+      //       {choicesHTML}
+      //     </OpenStadComponentChoicesGuideResult>
+      //     <div className="osc-nav-bar">
+      //       {previousButtonHTML}
+      //       {nextButtonHTML}
+      //     </div>
+      //   </div>
+      // );
 
     } else {
 
@@ -319,7 +344,19 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
       } else {
 
         let choicesHTML = null;
-        choicesHTML = <OpenStadComponentChoices config={self.config.choices} choices={[...choices]} scores={{...self.state.scores}} answerDimensions={answerDimensions} firstAnswerGiven={ self.state.firstAnswerGiven ? true : false } ref={function(el) { self.choicesElement = el; }} key='choices'/>;
+        let choicesTitle = '<b>Je hebt nog geen keuze gemaakt</b>';
+        if ( self.state.firstAnswerGiven && self.choicesElement ) {
+          let choiceElement = self.choicesElement.getPreferedChoice();
+          choicesTitle = '<b>Jouw voorkeur: </b>' + choiceElement.getTitle(self.state.scores[choiceElement.config.divId]) || title;
+        }
+        choicesHTML = (
+          <div id={'osc-choices-container' + this.divId} className="osc-choices-container osc-accordeon osc-closed">
+            <div onClick={() => { var element = document.getElementById('osc-choices-container' + this.divId); if( element.className.match(' osc-closed') ) { element.className = element.className.replace(' osc-closed', ' osc-open'); } else { element.className = element.className.replace(' osc-open', ' osc-closed'); } }} className="osc-accordeon-button" dangerouslySetInnerHTML={{ __html: choicesTitle }}></div>
+            <div className="osc-accordeon-content">
+              <OpenStadComponentChoices config={self.config.choices} choices={[...choices]} scores={{...self.state.scores}} answerDimensions={answerDimensions} firstAnswerGiven={ self.state.firstAnswerGiven ? true : false } ref={function(el) { self.choicesElement = el; }} key='choices'/>
+            </div>
+          </div>
+        );
 
         let questionGroupHTML = (
           <div>
@@ -332,16 +369,27 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
           editButtonHTML = <button className="osc-choices-guide-editbutton osc-edit" onClick={event => self.showEditForm()}>Bewerk keuzewijzer</button>;
         }
 
-        let previousButtonHTML = null;
+        let previousUrl = null; let previousAction = null; let previousLabel = null;
         if ( self.state.status == 'result' || (  self.state.currentQuestionGroupIndex > 0 || self.state.currentQuestion > 0 ) ) {
-          previousButtonHTML = <div className="osc-previous-button" onClick={() => {self.gotoPreviousQuestion();}}>Terug</div>
+          previousAction = () => { self.gotoPreviousQuestion(); }
+          previousLabel = 'Terug'
         } else if (self.config.beforeUrl) {
-          previousButtonHTML = <div className="osc-previous-button" onClick={() => { document.location.href = `${self.config.beforeUrl}` }}>Introductie</div>
+          previousUrl = self.config.beforeUrl;
+          previousLabel = 'Introductie'
+        }
+
+        let nextUrl = null; let nextAction = null; let nextLabel = null;
+        if (self.state.status != 'init' && self.state.status != 'result') {
+          nextAction = () => { self.gotoNextQuestion(); }
+          nextLabel = 'Volgende'
+        } else if (self.config.beforeUrl) {
+          nextUrl = self.config.afterUrl;
+          nextLabel = 'Resultaat'
         }
         
-        let nextButtonHTML = null;
-        if (self.state.status != 'init' && self.state.status != 'result') {
-          nextButtonHTML = <div className="osc-next-button" onClick={() => {self.gotoNextQuestion();}}>Volgende</div>
+        let previousNextButtonsHTML = null;
+        if ( previousLabel || nextLabel ) {
+          previousNextButtonsHTML = <OpenStadComponentPreviousNextButtonBlock previousAction={previousAction} previousUrl={previousUrl} previousLabel={previousLabel} nextAction={nextAction} nextUrl={nextUrl} nextLabel={nextLabel}/>
         }
         
         contentHTML =  (
@@ -349,10 +397,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
             {editButtonHTML}
             {choicesHTML}
             {questionGroupHTML}
-            <div className="osc-nav-bar">
-              {previousButtonHTML}
-              {nextButtonHTML}
-            </div>
+            {previousNextButtonsHTML}
           </div>
         );
       }
