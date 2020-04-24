@@ -1,6 +1,4 @@
 // polyfills
-// import 'core-js/es/map';
-// import 'core-js/stable/object/assign';
 import 'whatwg-fetch';
 import 'core-js/es/array/find';
 

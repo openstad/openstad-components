@@ -16,13 +16,19 @@ import OpenStadComponent from './component/index.jsx';
 import OpenStadComponentLibs from './libs/index.jsx';
 import OpenStadComponentForms from './forms/index.jsx';
 import { ChoicesGuide, ChoicesGuideResult } from './choices-guide/index.jsx';
+import OpenStadComponentNLMap from './nlmap/index.jsx';
+import OpenStadComponentIdeasOnMap from './ideas-on-map/index.jsx';
 import OpenStadComponentPreviousNextButtonBlock from './previous-next-button-block/index.jsx';
+
+
 export {
   OpenStadComponent as Component,
   OpenStadComponentLibs as Libs,
   OpenStadComponentForms as Forms,
   ChoicesGuide,
   ChoicesGuideResult,
+  OpenStadComponentNLMap as NLMap,
+  OpenStadComponentIdeasOnMap as IdeasOnMap,
   OpenStadComponentPreviousNextButtonBlock as PreviousNextButtonBlock,
 }
 

@@ -1,0 +1,705 @@
+@import '../../component/css/default.less';
+@import 'openstad-formelements';
+@import 'openstad-reaction';
+
+.osc-ideas-on-map {
+
+  @phone: ~'only screen and (max-width: 880px)';
+  
+
+  // ----------------------------------------------------------------------------------------------------
+  // general
+
+  box-sizing: border-box;
+
+  h3, h4 {
+    font-weight: bold;
+    margin: 0;
+    paddin: 0;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+
+  h4 {
+    font-size: 16px;
+  }
+
+  // positioneren van de blokken
+  @import 'default-positioning';
+
+  // filterbar
+  @import 'default-filterbar';
+
+  // end general
+  // ----------------------------------------------------------------------------------------------------
+  // 
+
+  .osc-image {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .osc-ideas-on-map-info {
+
+    padding-top: 10px;
+    font-size: 16px;
+    line-height: 1.5em;
+    background-color: white;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    .osc-info-content {
+    }
+
+    @media @phone {
+
+      padding-top: 0;
+      overflow-x: visible;
+      overflow-y: visible;
+
+      .osc-sort {
+        margin: 15px 15px 15px 0;
+      }
+
+      .osc-info-content {
+        display: none;
+        overflow: none;
+      }
+
+    }
+
+    h3 {
+      margin-bottom: 10px;
+    }
+
+    .osc-mobile-switcher {
+      .osc-arrow-down-black-background();
+      display: none;
+      width: 100%;
+      padding: 12px 30px 12px 15px;
+      font-weight: 600;
+      line-height: 20px;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      cursor: pointer;
+    }
+
+    @media @phone {
+      .osc-mobile-switcher {
+        display: block;
+      }
+    }
+    
+    .osc-info-block-default-block,
+    .osc-info-block-new-idea,
+    .osc-info-block-selected-idea {
+
+      position: relative;
+      width: 100%;
+      padding: 20px 20px;
+      background-color: #f5f5f5;
+
+      .osc-info-block-selected-idea-idea {
+        position: relative;
+        width: calc(100% + 30px);
+        padding: 0 20px;
+        margin: 0 -20px -10px -20px;
+        cursor: pointer;
+
+        @media @phone {
+          left: -5px;
+          padding: 0 20px;
+          margin: 0 -20px -10px -20px;
+
+        }          
+
+        .osc-type {
+
+          @media @phone {
+            right: -20px !important;
+          }          
+
+        }
+
+        .osc-stats {
+          margin-left: 20px;
+          width: calc(100% - 225px);
+          bottom: 13px;
+
+          @media @phone {
+            margin-left: 0;
+            bottom: 0;
+            width: 100%;
+          }          
+
+        }
+
+      }
+
+        .osc-link {
+          .osc-arrow-right-blue-background();
+          padding-top: 2px;
+          padding-left: 17px;
+          font-weight: 600;
+          color: #004699;
+        }
+
+    }
+
+    .osc-info-block-selected-idea {
+      h3 {
+        @media @phone {
+          position: relative;
+          left: -5px;
+        }
+      }          
+    }          
+
+    .osc-info-block-default-block {
+
+      margin-bottom: 20px;
+
+      @media @phone {
+        display: none;
+      }
+
+      .osc-info-block-default-block-line {
+
+        height: 44px;
+        margin-bottom: 18px;
+        padding-left: 50px;
+        
+        &.osc-line-1 {
+          padding-top: 10px;
+          .osc-plus-black-background();
+        }
+        
+        &.osc-line-2 {
+          .osc-info-black-background();
+        }
+        
+        &.osc-line-3 {
+          .osc-list-black-background();
+          padding-top: 10px;
+          margin-bottom: 0px;
+        }
+
+      }
+
+    }
+    
+    .osc-info-block-new-idea {
+    }
+
+    .osc-info-block-selected-idea {
+			cursor: pointer;
+    }
+
+    .osc-info-block-ideas-list {
+
+      .osc-title {
+        padding: 0 20px;
+      }
+
+
+      .osc-info-block-ideas-list-idea {
+
+        position: relative;
+        width: 100%;
+        padding: 15px 20px 0 20px;
+        background-color: white;
+        cursor: pointer;
+        border-bottom: 1px solid #e6e6e6;
+
+        @media @phone {
+          padding: 0;
+        }
+
+        .osc-title {
+          padding: 0;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .osc-content {
+          position: relative;
+          height: 133px;
+
+          @media @phone {
+            height: auto;
+            margin-bottom: 15px;
+            padding: 15px 15px 0 15px;
+          }
+
+        }
+
+      }
+
+    }
+
+    .osc-info-block-new-idea,
+    .osc-info-block-selected-idea, 
+    .osc-info-block-ideas-list {
+
+      h4 {
+        margin-bottom: 5px;
+      }
+
+      .osc-image {
+        float: left;
+        width: 177px;
+        height: 133px;
+        margin-right: 20px;
+        margin-bottom: 15px;
+
+        @media @phone {
+          width: 88px;
+          height: 66px;
+
+          margin-right: 15px;
+        }
+        
+      }
+
+      .osc-summary {
+        height: 75px;
+        padding-right: 20px;
+        overflow: hidden;
+
+        @media @phone {
+          height: auto;
+          max-height: 4.7em;
+          margin-bottom: 15px;
+          padding-right: 0;
+        }
+
+      }
+
+      .osc-stats {
+        position: absolute;
+        width: calc(100% - 195px);
+        height: 20px;
+        left: 196px;
+        bottom: 0;
+
+        @media @phone {
+          position: relative;
+          left: 0;
+          width: 100%;
+          height: 34px;
+          padding: 0 15px 0 0;
+        }
+        
+        .osc-likes {
+          .osc-thumbs-up-black-background();
+          background-position: 0px -1px;
+          float: left;
+          width: 70px;
+          padding-left: 30px;
+          line-height: 25px;
+        }
+
+        .osc-reactions {
+          .osc-reactions-black-background();
+          float: left;
+          width: 70px;
+          padding-left: 30px;
+          padding-right: 0;
+          line-height: 25px;
+        }
+
+        .osc-type {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          width: 34px;
+          height: 34px;
+
+          .osc-type-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 34px;
+            height: 34px;
+          }
+
+        }
+
+        
+      }
+    }
+
+  }
+
+  .osc-ideas-on-map-map {
+
+    .osc-nlmap {
+      width: 100%;
+      height: 100%;
+
+      @media @phone {
+        .leaflet-control-container {
+          display: none;
+        }
+      }
+      
+    }
+
+    .osc-ideas-on-map-icon {
+
+      &.osc-ideas-on-map-icon-text {
+        font-size: 12px;
+        font-weight: bold;
+        text-align: center;
+      }
+
+    }
+
+  }
+
+
+  .osc-idea-details {
+
+    width: 700px;
+    margin: 0 auto;
+
+    @media @phone {
+      padding: 0 15px;
+      width: 100%;
+
+      h2 {
+        margin-top: 10px;
+      }
+      
+    }
+
+    .osc-details-image-and-stats {
+
+      position: relative;
+      
+      .osc-image {
+
+        width: 700px;
+        height: 375px;
+
+        @media @phone {
+          position: relative;
+          width: 100%;
+        }
+
+      }
+
+      .ocs-idea-label {
+        position: absolute;
+        top: 10px;
+        left: 0;
+        padding: 4px 15px;
+        font-weight: bold;
+      }
+
+      .osc-details-stats {
+
+        position: relative;
+        left: 0;
+        width: 200px;
+        height: auto;
+        margin-top: 10px;
+        margin-bottom: 20px;
+
+        @media @phone {
+          width: 100%;
+        }
+
+        // position: absolute;
+        // top: 0;
+        // left: 720px;
+        // width: 200px;
+        // height: 375px;
+
+        // @media @phone {
+        //   position: relative;
+        //   left: 0;
+        //   width: 100%;
+        //   height: auto;
+        //   margin-top: 10px;
+        //   margin-bottom: 20px;
+        // }
+
+        .osc-vote-button {
+	        box-sizing: border-box;
+	        text-decoration: none;
+	        display: block;
+	        margin-bottom: 20px;
+	        height: 43px;
+	        margin-bottom: 4px;
+
+	        .osc-number-button-text {
+            .osc-thumbs-up-white-background();
+            padding-left: 50px;
+
+            &.ocs-user-has-voted {
+              background-color: #BED200 !important;
+            } 
+
+            &.ocs-busy {
+              background-color: #9a9a9a !important;
+            } 
+
+	        }
+
+        }
+
+        .osc-no-of-reactions {
+          .osc-reactions-blue-background();
+          color: #004699;
+          padding-left: 30px;
+          line-height: 25px;
+        }
+        
+      }
+
+    }
+
+    .osc-details-sharebuttons {
+
+      width: 700px;
+      margin: -5px 0 20px 0;
+
+      @media @phone {
+        width: 100%;
+      }
+
+      ul {
+
+        display: inline-block;
+        padding: 0;
+        height: 30px;
+        list-style-type: none;
+
+        li {
+          display: inline-block;
+          width: 34px;
+          height: 30px;
+        }
+
+        a {
+          display: block;
+          font-size: 0;
+          line-height: 0;
+          width: 30px;
+          height: 30px;
+          margin: 0 4px 0 0;
+
+          &.osc-share-email {
+            .osc-share-email-background();
+          }
+
+          &.osc-share-facebook {
+            .osc-share-facebook-background();
+          }
+
+          &.osc-share-twitter {
+            .osc-share-twitter-background();
+          }
+
+          &.osc-share-whatsapp {
+            .osc-share-whatsapp-background();
+          }
+
+        }
+        
+      }
+
+    }
+
+    .osc-details-summary,
+    .osc-details-description {
+      width: 700px;
+
+      @media @phone {
+        width: 100%;
+      }
+
+    }
+
+    .osc-details-summary {
+      font-weight: 600;
+    }
+
+    .osc-modbreak {
+
+		  position: relative;
+      width: 700px;
+		  margin: 25px 0;
+		  padding: 20px;
+		  border: 3px solid #FFE115;
+
+      @media @phone {
+        width: 100%;
+      }
+
+		  &:after {
+			  border-top: 3px solid #FFE115;
+			  border-right: 3px solid #FFE115;
+			  border-bottom: 0;
+			  border-left: 0;
+			  position: absolute;
+			  width: 30px;
+			  height: 30px;
+			  right: 4px;
+			  top: -19px;
+        background-color: white;
+        transform: rotate(-45deg);
+			  content: '';
+		  }
+    
+    }
+    
+  }
+
+  &.osc-ideas-on-map-idea-form {
+
+    display: block;
+
+    .osc-form {
+      width: 700px;
+      margin: 0 auto;
+
+      h1 {
+        padding: 0;
+      }
+
+      @media @phone {
+        padding: 0 15px;
+        width: 100%;
+
+        h1 {
+          font-size: 24px;
+          margin: 10px 0 -20px 0;
+          padding: 0;
+        }
+
+        h2 {
+          font-size: 20px;
+          font-weight: 600;
+          padding-bottom: 5px;
+        }
+        
+      }
+
+    }
+
+  }
+
+  .osc-reactions-header {
+
+    width: 100%;
+    background-color: #f5f5f5;
+    margin: 20px 0;
+
+    h3 {
+      width: 700px;
+      margin: 0 auto;
+      line-height: 44px;
+
+      @media @phone {
+        margin: 0 15px;
+        width: 100%;
+      }
+
+    }
+
+  }
+
+  .osc-reactions {
+
+    width: 700px;
+    padding-right: 195px;
+    margin: 0 auto;
+
+    @media @phone {
+      width: 100%;
+      padding: 0 15px;
+    }
+
+
+  }
+
+  // nog wat mobile zooi
+  // ----------------------------------------------------------------------------------------------------
+  // nog wat mobile zooi
+
+  .ocs-mobile-popup {
+    display: none;
+  }
+  
+  @media @phone {
+
+    .ocs-mobile-popup {
+      display: block;
+      position: absolute;
+      bottom: 48px;
+      left: 5px;
+      width: calc(100% - 10px);
+      padding: 10px;
+      font-size: 14px;
+      line-height: 19px;
+      background-color: white;
+      z-index: 500;
+
+      &.ocs-clickable {
+        cursor: pointer;
+      }
+
+      a {
+        text-decoration: underline;
+      }
+
+      h4 {
+        padding: 5px 0;
+      }
+
+      .osc-button {
+        width: 100%;
+      }
+
+      .osc-image {
+        float: left;
+        margin-right: 10px;
+        width: 76px;
+        height: 57px;
+      }
+
+    }
+    
+    &.osc-mobile-opened {
+
+      .ocs-mobile-popup {
+        display: none;
+      }
+
+      
+      .osc-ideas-on-map-info {
+
+        overflow-x: hidden;
+       overflow-y: auto;
+
+        .osc-info-content {
+          display: block;
+          overflow-x: hidden;
+          overflow-y: visible;
+        }
+
+      }
+    }
+  }
+
+  
+}
+
