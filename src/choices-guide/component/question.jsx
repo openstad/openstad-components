@@ -1,3 +1,4 @@
+
 import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentForms from '../../forms/index.jsx';
 
@@ -70,6 +71,21 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
     if (this.onLiveUpdates) this.onLiveUpdates();
   }
 
+  showLightbox(startWith) {
+
+    let images = [
+      { src: this.questionImageA.src },
+      { src: this.questionImageB.src },
+    ]
+
+    let startIndex = images.findIndex( img => img.src == startWith.src );
+
+		// dispatch an event
+		var event = new CustomEvent('osc-show-light-box', { detail: { images, startIndex } });
+		document.dispatchEvent(event);
+    
+  }
+
   render() {
 
     let self = this;
@@ -137,11 +153,11 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
               <div className="osc-question-description-text" dangerouslySetInnerHTML={{ __html: data.description }}></div>
               <div className="osc-question-description-image-container osc-question-description-image-container-a">
                 <div className="osc-question-description-label osc-question-description-label-a">{labelA}</div>
-                <img className="osc-question-description-image" src={questionImageA.src}/>
+                <img className="osc-question-description-image" src={questionImageA.src} style={{ cursor: 'pointer' }} onClick={ () => self.showLightbox(self.questionImageA) }  ref={el => self.questionImageA = el}/>
               </div>
               <div className="osc-question-description-image-container osc-question-description-image-container-b">
                 <div className="osc-question-description-label osc-question-description-label-b">{labelB}</div>
-                <img className="osc-question-description-image" src={questionImageB.src}/>
+                <img className="osc-question-description-image" src={questionImageB.src} style={{ cursor: 'pointer' }} onClick={ () => self.showLightbox(self.questionImageB) }  ref={el => self.questionImageB = el}/>
               </div>
             </div>
           );

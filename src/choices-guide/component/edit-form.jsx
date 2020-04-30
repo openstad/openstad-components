@@ -259,8 +259,6 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
   deleteElement({what, questionGroupId, choiceId, questionId, title}) {
 
     let self = this;
-    console.log(self);
-
     if (!confirm("Je gaat " + what + " " + title + " verwijderen. Weet je het zeker?")) return;
 
     let url;

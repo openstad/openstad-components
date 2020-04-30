@@ -1,0 +1,40 @@
+.osc-lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10000000;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: none;
+}
+.osc-lightbox .osc-main-img {
+  display: block;
+  position: relative;
+  height: 82%;
+  width: 82%;
+  margin: 1.5% auto;
+}
+.osc-lightbox .osc-lightbox-navigation-container {
+  position: absolute;
+  width: 100%;
+  height: 15%;
+  bottom: 0;
+}
+.osc-lightbox .osc-lightbox-navigation-container .osc-lightbox-navigation {
+  position: relative;
+  width: 100%;
+  height: 80%;
+  margin-top: 1%;
+  text-align: center;
+  overflow: hidden;
+}
+.osc-lightbox .osc-lightbox-navigation-container .osc-lightbox-navigation .osc-thumb-img {
+  width: 100px;
+  height: 100%;
+  margin: 0 0.3%;
+  cursor: pointer;
+}
+
+
+/*# sourceMappingURL=lightbox.css.map*/

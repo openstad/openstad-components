@@ -20,6 +20,16 @@ class Slider extends React.Component {
     this.setState({value, touched: true})
   }
 
+  doTouch() {
+
+    if(typeof this.props.onChange === 'function'){
+      this.props.onChange(50)
+    }
+
+    this.setState({touched: true})
+
+  }
+
   calcProgress(min, max, value) {
     const range = max - min
     const progInRange = value - min
@@ -27,20 +37,21 @@ class Slider extends React.Component {
   }
 
   render(){
-    const { value, touched } = this.state
-    const { min, max, step } = this.props
+    let self = this;
+    const { value, touched } = self.state
+    const { min, max, step } = self.props
     return(
-      <div className={`${this.props.className} osc-slider-container`}>
+      <div className={`${self.props.className} osc-slider-container`}>
         <div className="osc-slider-track-container">
           <div className="osc-slider-track"></div>
           <div className="osc-slider-track-progress-container">
-            <div className="osc-slider-track-progress" style={{ transform: 'scaleX(' + this.calcProgress(min, max, value) + ')' }}></div>
+            <div className="osc-slider-track-progress" style={{ transform: 'scaleX(' + self.calcProgress(min, max, value) + ')' }}></div>
           </div>
           <div className="osc-slider-track-dot-end osc-slider-track-dot-left"></div>
           <div className="osc-slider-track-dot-start osc-slider-track-dot-center"></div>
           <div className="osc-slider-track-dot-end osc-slider-track-dot-right"></div>
         </div>
-        <input type='range' min={min} max={max} step={step} value={value} onChange={this.handleChange} className={touched ? 'osc-slider-input-range' : 'osc-slider-input-range osc-slider-untouched'}/>
+        <input type='range' min={min} max={max} step={step} value={value} onClick={() => { if (!touched) self.doTouch(); } } onChange={self.handleChange} className={touched ? 'osc-slider-input-range' : 'osc-slider-input-range osc-slider-untouched'} ref={el => (self.input = el)}/>
       </div>
     )
   }

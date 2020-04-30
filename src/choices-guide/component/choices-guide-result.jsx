@@ -1,4 +1,5 @@
 import merge from 'merge';
+import fingerprint from 'fingerprintjs2';
 
 import OpenStadComponentLibs from '../../libs/index.jsx';
 
@@ -22,10 +23,12 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
 
     this.config = merge.recursive(this.defaultConfig, this.config, props.config || {});
 
+    let allValues = OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.values') || {};
+    let allScores = OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.scores') || {};
     this.state = {
       title: '',
-      answers: OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.values'),
-      scores: OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.scores'),
+      answers: allValues[ this.config.choicesGuideId ],
+      scores: allScores[ this.config.choicesGuideId ],
     };
 
   }
@@ -54,7 +57,6 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
     let self = this;
     let scores = self.choicesElement.calculateScores(self.state.answers);
 
-    // title TODO: dit moet dus anders...
     let choicesTitle = '...';
     if ( self.choicesElement ) {
       let choiceElement = self.choicesElement.getPreferedChoice();
@@ -68,8 +70,43 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
         }
       }
       self.setState({ title: choicesTitle })
+      self.submitResult()
     }
     
+  }
+
+  submitResult() {
+
+    let self = this;
+
+    fingerprint.get(fingerprintComponents => {
+      
+      let url = `${self.config.api && self.config.api.url }/api/site/${  self.config.siteId  }/choicesguide/${  self.config.choicesGuideId  }/result`;
+      let headers = OpenStadComponentLibs.api.getHeaders(self.config);
+      let body = {
+        result: self.state.answers,
+        userFingerprint: btoa(fingerprintComponents),
+      };
+
+      fetch(url, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(body),
+      })
+        .then( function(response) {
+          if (response.ok) {
+            return response.json();
+          }
+          throw response.text();
+        })
+        .then(function(json) {
+        })
+        .catch(function(error) {
+          error.then(function(messages) { return console.log(messages);} );
+        });
+
+    })
+
   }
 
   render() {
@@ -99,11 +136,11 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
         case 'plane':
           let images = choices && choices[0] && choices[0].images;
           if ( images && images.length > 1 ) { choices[0].images = choices && choices[0] && choices[0].images[1]; }
-          choicesHTML = <OpenStadComponentChoices config={{ ...self.config.choices, sticky: false, size: 630, }} answerDimensions={answerDimensions} scores={{...self.state.scores}} choices={[...choices]} firstAnswerGiven={true} ref={function(el) { self.choicesElement = el; }} key='choices'/>;
+          choicesHTML = <OpenStadComponentChoices config={{ ...self.config.choices, sticky: false, size: 630, }} scores={self.state.scores} answerDimensions={answerDimensions} scores={{...self.state.scores}} choices={[...choices]} firstAnswerGiven={true} ref={function(el) { self.choicesElement = el; }} key='choices'/>;
           break;
 
         default:
-          choicesHTML = <OpenStadComponentChoices config={{ ...self.config.choices, sticky: false, size: 630, }} answerDimensions={answerDimensions} scores={{...self.state.scores}} choices={[...choices]} firstAnswerGiven={true} ref={function(el) { self.choicesElement = el; }} key='choices'/>;
+          choicesHTML = <OpenStadComponentChoices config={{ ...self.config.choices, sticky: false, size: 630, }} scores={self.state.scores} answerDimensions={answerDimensions} scores={{...self.state.scores}} choices={[...choices]} firstAnswerGiven={true} ref={function(el) { self.choicesElement = el; }} key='choices'/>;
 
       }
     }

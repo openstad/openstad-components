@@ -13,6 +13,7 @@ module.exports = {
     "all": './src/index.jsx',
     "choices-guide": './src/choices-guide/index.jsx',
     "ideas-on-map": './src/ideas-on-map/index.jsx',
+    "lightbox": './src/lightbox/index.jsx',
     "nlmap": './src/nlmap/index.jsx',
     "previous-next-button-block": './src/previous-next-button-block/index.jsx',
   },

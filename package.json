@@ -1,7 +1,7 @@
 {
   "name": "openstad-components",
   "version": "0.0.1",
-  "description": "Dit wordt de nieuwe gecombineerde repo voor openstad (react) componenten. Alle openstad-component-xxx repos worden hiermee depricated.",
+  "description": "Components for the OpenStad Ecosystem",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

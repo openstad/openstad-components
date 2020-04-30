@@ -1,5 +1,4 @@
 import merge from 'merge';
-import fingerprint from 'fingerprintjs2';
 
 import OpenStadComponentLibs from '../../libs/index.jsx';
 import OpenStadComponent from '../../component/index.jsx';
@@ -7,6 +6,7 @@ import OpenStadComponentQuestionGroup from './question-group.jsx';
 import OpenStadComponentChoices from './choices.jsx';
 import OpenStadComponentChoicesGuideForm from './edit-form.jsx';
 import OpenStadComponentPreviousNextButtonBlock from '../../previous-next-button-block/index.jsx';
+import OpenStadComponentLightbox from '../../lightbox/index.jsx';
 // import OpenStadComponentChoicesGuideResult from './result.jsx';
 
 import fetchChoicesGuide from '../lib/fetch.js'
@@ -31,21 +31,23 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
         url: null
       },
       sticky: null,
-      result: {},
+      // result: {},
     };
 
     self.config = merge.recursive(self.defaultConfig, self.config, props.config || {});
 
+    let allValues = OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.values') || {};
+    let allScores = OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.scores') || {};
     self.state = {
       editMode: false,
       title: 'Loading....',
-      values: OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.values'),
       questionGroups: [],
       choices: [],
       currentQuestionGroupIndex: undefined,
       currentQuestion: undefined,
       status: 'init',
-      scores: OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.scores'),
+      values: allValues[ this.config.choicesGuideId ],
+      scores: allScores[ this.config.choicesGuideId ],
     };
 
     self.liveUpdates = self.liveUpdates.bind(this);
@@ -112,7 +114,10 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
     state.currentQuestionGroupIndex = 0;
     self.setState(state, () => {
       self.liveUpdates();
+		  var event = new CustomEvent('osc-choices-guide-is-ready');
+		  document.dispatchEvent(event);
     });
+
 
   }
 
@@ -121,15 +126,17 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
   }
 
   hideEditForm() {
+    let allValues = OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.values') || {};
+    let allScores = OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.scores') || {};
     this.setState({
       editMode: false,
       title: 'Loading....',
-      values: OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.values'),
       questionGroups: [],
       choices: [],
       currentQuestionGroupIndex: undefined,
       status: 'init',
-      scores: OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.scores'),
+      values: allValues[ this.config.choicesGuideId ],
+      scores: allScores[ this.config.choicesGuideId ],
     }, function() {
       this.fetchData()
     });
@@ -227,46 +234,16 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
     
   }
 
-  submitResult() {
-
-    let self = this;
-
-    fingerprint.get(fingerprintComponents => {
-      
-      let url = `${self.config.api && self.config.api.url }/api/site/${  self.config.siteId  }/choicesguide/${  self.config.choicesGuideId  }/result`;
-      let headers = OpenStadComponentLibs.api.getHeaders(self.config);
-      let body = {
-        result: self.state.result,
-        userFingerprint: btoa(fingerprintComponents),
-      };
-
-      fetch(url, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify(body),
-      })
-        .then( function(response) {
-          if (response.ok) {
-            return response.json();
-          }
-          throw response.text();
-        })
-        .then(function(json) {
-        })
-        .catch(function(error) {
-          error.then(function(messages) { return console.log(messages);} );
-        });
-
-    })
-
-  }
-
   liveUpdates() {
     let answers = merge(this.state.values || {}, this.questionGroupElement.getAnswers());
     let scores = this.choicesElement.calculateScores(answers);
     this.setState({ scores, firstAnswerGiven: Object.keys(answers).length > 0 }, () => {
-      OpenStadComponentLibs.sessionStorage.set('osc-choices-guide.values', answers);
-      OpenStadComponentLibs.sessionStorage.set('osc-choices-guide.scores', scores);
+      let allValues = OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.values') || {};
+      allValues[this.config.choicesGuideId] = answers;
+      OpenStadComponentLibs.sessionStorage.set('osc-choices-guide.values', allValues);
+      let allScores = OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.scores') || {};
+      allScores[this.config.choicesGuideId] = scores;
+      OpenStadComponentLibs.sessionStorage.set('osc-choices-guide.scores', allScores);
     })
   }
 
@@ -405,12 +382,12 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
     }
 
     return (
-        <div id={this.divId} className="osc-choices-guide">
-          {imageHTML}
-          {contentHTML}
-        </div>
-      );
-
+      <div id={this.divId} className="osc-choices-guide">
+        <OpenStadComponentLightbox/>
+        {imageHTML}
+        {contentHTML}
+      </div>
+    );
 
   }
 

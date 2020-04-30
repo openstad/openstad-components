@@ -24,7 +24,7 @@ export default class OpenStadComponentChoices extends OpenStadComponent {
 
     this.state = {
       title: 'Je hebt nog geen keuze gemaakt',
-      scores: OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.scores'),
+      scores: props.scores,
     };
 
   }

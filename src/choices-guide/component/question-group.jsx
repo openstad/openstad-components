@@ -108,7 +108,7 @@ export default class OpenStadComponentQuestionGroup extends OpenStadComponent {
     let shownQuestions = data.questions.slice( self.state.currentQuestion, self.state.currentQuestion + self.noOfQuestionsToShow );
 
     let values = merge({}, this.props.data && this.props.data.values, self.state.values);
-    console.log(values);
+
     questionsHTML =
       <div className="osc-questions">
         { shownQuestions.map((question, i) => {
