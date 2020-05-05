@@ -28,7 +28,6 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 			disableDefaultUI : true,
 			polygon : null,
 			autoZoomAndCenter: false,
-			// onQueryResult: self.onQueryHandler
 		};
 		self.config = Object.assign(defaultConfig, self.config || {})
 
@@ -61,9 +60,9 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 			// loading script files is ready; create the map
 			self.createMap();
 			// dispatch an event
-			var event = new Event('mapIsReady');
 			self.mapIsReady = true;
-			self.instance.dispatchEvent(event);
+			var event = new CustomEvent('osc-map-is-ready', { detail: { id: self.divId } });
+			document.dispatchEvent(event);
     });
 	}
 
@@ -113,21 +112,13 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 			let iconCreateFunction = self.config.clustering.iconCreateFunction || ( self.config.variant == 'amaps' ? amapsCreateClusterIcon.bind(self) : self.createClusterIcon );
 			if (iconCreateFunction && typeof iconCreateFunction == 'string') iconCreateFunction = eval(iconCreateFunction);
 			self.markerClusterGroup = L.markerClusterGroup({iconCreateFunction, showCoverageOnHover: self.config.clustering.showCoverageOnHover, maxClusterRadius: self.config.clustering.maxClusterRadius || 80});
-		  let onClusterClick = self.config.clustering.onClusterClick || self.onClusterClick;
-			if (typeof onClusterClick == 'string') onClusterClick = eval(onClusterClick);
-			self.markerClusterGroup.on('clusterclick', onClusterClick);
-		  let onClusterAnimationEnd = self.config.clustering.onClusterAnimationEnd || self.onClusterAnimationEnd;
-			if (typeof onClusterAnimationEnd == 'string') onClusterAnimationEnd = eval(onClusterAnimationEnd);
-			self.markerClusterGroup.on('animationend', onClusterAnimationEnd);
+			self.markerClusterGroup.on('clusterclick', self.onClusterClick);
+			self.markerClusterGroup.on('animationend', self.onClusterAnimationEnd);
 			self.map.addLayer(self.markerClusterGroup);
 		}
 		
 		// on map click
-		if (self.config.onMapClick) {
-			if (typeof self.config.onMapClick == 'string') self.config.onMapClick = eval(self.config.onMapClick);
-		}
-		// self.map.on('singleclick', self.config.onMapClick || self.onMapClick);
-		self.map.on('click', self.config.onMapClick || self.onMapClick);
+		self.map.on('click', self.onMapClick);
 
 		// add polygon
 		if (self.config.polygon) {
@@ -194,7 +185,7 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 				document.location.href = markerData.href;
 			}
 		}
-		let onClick = (markerData.onClick != null && markerData.onClick) || self.config.onMarkerClick || self.onMarkerClick;
+		let onClick = self.onMarkerClick;
 		if (onClick) {
 			if (typeof onClick == 'string') onClick = eval(onClick);
 			// marker.on('singleclick', onClick);
@@ -300,7 +291,11 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
   setBoundsAndCenter( points ) {
 
 	  var self = this;
-	  points = points || [];
+
+    if (!Array.isArray(points)) {
+      self.map.panTo(new L.LatLng(self.config.center.latitude, self.config.center.longitude));
+      return;
+    }
 
 	  var poly = [];
 	  points.forEach(function(point) {
@@ -383,6 +378,9 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 
   isPointInPolygon(point, polygon) {
 
+    if (!point) return false;
+    if (!polygon) return true;
+
 	  // taken from http://pietschsoft.com/post/2008/07/02/Virtual-Earth-Polygon-Search-Is-Point-Within-Polygon
 
     var i;
@@ -447,20 +445,24 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 
   }
 
-	onMapClick() {
-    // placeholder
+	onMapClick(detail) {
+		var event = new CustomEvent('osc-map-click', { detail });
+		document.dispatchEvent(event);
   }
 
-	onMarkerClick() {
-    // placeholder
+	onMarkerClick(detail) {
+		var event = new CustomEvent('osc-map-marker-click', { detail });
+		document.dispatchEvent(event);
   }
 
-	onClusterClick() {
-    // placeholder
+	onClusterClick(detail) {
+		var event = new CustomEvent('osc-map-cluster-click', { detail });
+		document.dispatchEvent(event);
   }
 
-	onClusterAnimationEnd() {
-    // placeholder
+	onClusterAnimationEnd(detail) {
+		var event = new CustomEvent('osc-map-cluster-animation-end', { detail });
+		document.dispatchEvent(event);
   }
 
 	render() {

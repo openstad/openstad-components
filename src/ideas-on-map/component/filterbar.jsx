@@ -34,7 +34,7 @@ export default class Filterbar extends React.Component {
     this.hideMobileActiveSelector()
 
 		// dispatch an event
-		var event = new CustomEvent('typeFilterUpdate', { detail: { value: value } });
+		var event = new window.CustomEvent('typeFilterUpdate', { detail: { value: value } });
 		document.dispatchEvent(event);
 
   }
@@ -49,7 +49,7 @@ export default class Filterbar extends React.Component {
     this.hideMobileActiveSelector()
 
 		// dispatch an event
-		var event = new CustomEvent('areaFilterUpdate', { detail: { value: this.state.areas.find(area => value == area.value) } });
+		var event = new window.CustomEvent('areaFilterUpdate', { detail: { value: this.state.areas.find(area => value == area.value) } });
 		document.dispatchEvent(event);
 
   }

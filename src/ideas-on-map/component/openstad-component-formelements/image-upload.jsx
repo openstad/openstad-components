@@ -1,4 +1,3 @@
-import React from 'react';
 import OpenStadComponentFormelement from './formelement.jsx';
 
 'use strict';
@@ -10,8 +9,15 @@ export default class OpenStadComponentImageUpload extends OpenStadComponentForme
     super(props);
 
 		// config
-		let defaultConfig = {};
+		let defaultConfig = {
+			server: {
+				process: 'http://images.openstad.francesco.denes.nl/image/?access_token=314',
+				fetch: 'http://images.openstad.francesco.denes.nl/image'
+			},
+    };
 		this.config = Object.assign(defaultConfig, this.props.config, this.config || {});
+
+    /// TODO: error on geen server config?
 
     this.state = {
 			value: this.props.value,
@@ -32,19 +38,6 @@ export default class OpenStadComponentImageUpload extends OpenStadComponentForme
     ];
     this.loadNextFile();
 	}
-
-  validate() {
-    let isValid = true;
-		if ( this.imageuploader && this.imageuploader.getFiles ) {
-			var images = this.imageuploader.getFiles();
-			images.forEach(function(image) {
-				if (!image.serverId) {
-					isValid = false;
-				}
-			});
-		}
-    return isValid;
-  }
   
   loadNextFile() {
     var self = this;
@@ -67,6 +60,19 @@ export default class OpenStadComponentImageUpload extends OpenStadComponentForme
 		self._loadedFiles++;
   }
 
+  validate() {
+    let isValid = true;
+		if ( this.imageuploader && this.imageuploader.getFiles ) {
+			var images = this.imageuploader.getFiles();
+			images.forEach(function(image) {
+				if (!image.serverId) {
+					isValid = false;
+				}
+			});
+		}
+    return isValid;
+  }
+
   fileUploaderInit() {
 
     let self = this;
@@ -78,9 +84,9 @@ export default class OpenStadComponentImageUpload extends OpenStadComponentForme
 			FilePond.registerPlugin(FilePondPluginFileValidateType);
 			FilePond.registerPlugin(FilePondPluginFilePoster);
 
-			FilePond.setOptions({
-				server: '/image'
-			});
+			// FilePond.setOptions({
+			//   server: 'https://image-server2.openstadsdeel.nl/image/?access_token=MHhfb5U0m8vquAR81p',
+			// });
 
 			var filePondSettings = {
 				// set allowed file types with mime types
@@ -92,8 +98,8 @@ export default class OpenStadComponentImageUpload extends OpenStadComponentForme
 				allowBrowse: true,
 				files: [],
 				server: {
-					process: '/image',
-					fetch: '/fetch-image?img='
+					process: this.config.server.process,
+					fetch: this.config.server.fetch,
 				},
 				imageResizeTargetWidth: 80,
 				imageResizeTargetHeight: 80,
@@ -135,7 +141,7 @@ export default class OpenStadComponentImageUpload extends OpenStadComponentForme
       //self.props.handleFieldChange(self.props.name, self.state.value )
 
 			document.querySelector('.filepond--root').addEventListener('FilePond:processfile', e => {
-				if (e.detail) {
+				if (e.detail && e.detail.error) {
 					console.log('Error uploding file: ', e.detail);
 				}
 				self.fileUploaderUpdateCurrentInput()

@@ -46,7 +46,7 @@ export default class VoteButton extends React.Component {
 
     let self = this;
     let url = `${ self.config.api.url }/api/site/${ self.config.siteId }/vote`;
-		let headers = Object.assign(( self.config.api && self.config.api.headers || {} ), { "Content-type": "application/json" });
+      let headers = OpenStadComponentLibs.api.getHeaders(self.config);
 
     // if (!self.config.api.isUserLoggedIn) url += '?useOauth=anonymous'
     if (!( self.config.user && self.config.user.role )) {
@@ -77,7 +77,7 @@ export default class VoteButton extends React.Component {
 
         this.setState({ busy: false });
 
-		    var event = new CustomEvent('ideaLiked', { detail: { ideaId: self.props.idea.id, change } });
+		    var event = new window.CustomEvent('ideaLiked', { detail: { ideaId: self.props.idea.id, change } });
 		    document.dispatchEvent(event);
       })
       .catch((err) => {

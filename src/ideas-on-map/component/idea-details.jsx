@@ -65,13 +65,13 @@ export default class IdeasDetails extends React.Component {
 
   dispatchEditIdeaClick(e) {
     e.stopPropagation();
-		var event = new CustomEvent('editIdeaClick', { detail: this.state.idea });
+		var event = new window.CustomEvent('editIdeaClick', { detail: this.state.idea });
 		document.dispatchEvent(event);
   };
 
   dispatchDeleteIdeaClick(e) {
     e.stopPropagation();
-		var event = new CustomEvent('deleteIdeaClick', { detail: this.state.idea });
+		var event = new window.CustomEvent('deleteIdeaClick', { detail: this.state.idea });
 		document.dispatchEvent(event);
   };
   
@@ -91,7 +91,7 @@ export default class IdeasDetails extends React.Component {
 
     let self = this;
     let url = `${ self.config.api.url }/api/site/${  self.config.siteId  }/idea/${ this.state.idea.id }?includeVoteCount=1&includeArguments=1&includeUser=1&includeUserVote=1`;
-		let headers = Object.assign(( self.config.api && self.config.api.headers || {} ), { "Content-type": "application/json" });
+    let headers = OpenStadComponentLibs.api.getHeaders(self.config);
 		
     fetch(url, { headers })
       .then((response) => {
@@ -123,7 +123,7 @@ export default class IdeasDetails extends React.Component {
     if (!( this.state.idea || this.state.idea.id )) return;
 
     let url = `${ self.config.api.url }/api/site/${  self.config.siteId  }/idea/${ this.state.idea.id }`;
-		let headers = Object.assign(( self.config.api && self.config.api.headers || {} ), { "Content-type": "application/json" });
+    let headers = OpenStadComponentLibs.api.getHeaders(self.config);
 
     let ideaId = this.state.idea.id; // backup
 		
@@ -136,7 +136,7 @@ export default class IdeasDetails extends React.Component {
         return response.json();
       })
       .then( json => {
-		    var event = new CustomEvent('ideaDeleted', { detail: { ideaId } });
+		    var event = new window.CustomEvent('ideaDeleted', { detail: { ideaId } });
 		    document.dispatchEvent(event);
       })
       .catch((err) => {

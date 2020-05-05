@@ -1109,7 +1109,13 @@
   }
 }
 .osc-choices-guide .osc-previous-next-button-block {
-  width: 700px;
+  width: 660px;
+  margin: 0 20px;
+}
+@media only screen and (max-width: 940px) {
+  .osc-choices-guide .osc-previous-next-button-block {
+    width: 100%;
+  }
 }
 .osc-choices-guide .osc-choices-guide-editbutton {
   float: right;

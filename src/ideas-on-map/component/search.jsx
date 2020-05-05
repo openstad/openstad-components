@@ -35,7 +35,7 @@ export default class Search extends React.Component {
 		}
 
 		// dispatch an event
-		//var event = new CustomEvent('typeFilterUpdate', { detail: { value: value } });
+		//var event = new window.CustomEvent('typeFilterUpdate', { detail: { value: value } });
 		//this.instance.dispatchEvent(event);
 
   }

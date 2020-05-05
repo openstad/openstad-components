@@ -1,3 +1,4 @@
+import merge from 'merge';
 import React from 'react';
 import OpenStadComponentNLMap from '../../nlmap/index.jsx';
 
@@ -11,18 +12,28 @@ export default class Map extends OpenStadComponentNLMap {
 
 		// config
 		this.defaultConfig = {
+      clustering: {
+        maxClusterRadius: 100,
+        showCoverageOnHover: false,
+      },
     };
-		this.config = Object.assign(this.defaultConfig, this.config, props.config || {})
-
-    // defaults
-    this.config.clustering.showCoverageOnHover = typeof this.config.showCoverageOnHover != 'undefined' ? this.config.showCoverageOnHover : false;
-    this.config.clustering.onClusterAnimationEnd = this.config.clustering.onClusterAnimationEnd || this.onClusterAnimationEnd.bind(this);
-    this.config.clustering.maxClusterRadius = 30; // default is 80
+		this.config = merge.recursive(this.defaultConfig, this.config, props.config || {})
 
     this.ideas = [];
 
   }
 
+	componentDidMount(prevProps, prevState) {
+
+    super.componentDidMount(prevProps, prevState);
+
+    let self = this;
+		document.addEventListener('osc-map-cluster-animation-end', function(event) {
+      self.onMapClusterAnimationEnd(event.detail);
+    });
+
+  }
+  
   addIdea(idea) {
     let self = this;
     self.ideas.push(idea);
@@ -62,12 +73,16 @@ export default class Map extends OpenStadComponentNLMap {
     }
   }
 
+  setBoundsAndCenter(points) {
+    super.setBoundsAndCenter(points || ( this.config.autoZoomAndCenter == 'polygon' && this.config.polygon ) || this.map.markers);
+  }
+
   showMarkers() {
 	  var self = this;
     self.markers.forEach((marker) => {
       self.showMarker(marker)
     });
-    self.setBoundsAndCenter(self.config.polygon || self.map.markers);
+    self.setBoundsAndCenter(( self.config.autoZoomAndCenter == 'polygon' && self.config.polygon ) || self.markers);
   }
 
   hideMarkers({ exception }) {
@@ -120,7 +135,7 @@ export default class Map extends OpenStadComponentNLMap {
     });
   }
 
-  onClusterAnimationEnd() {
+  onMapClusterAnimationEnd() {
     this.updateFading();
   }
 

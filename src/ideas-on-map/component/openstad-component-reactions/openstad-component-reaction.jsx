@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import OpenStadComponentLibs from '../../../libs/index.jsx';
 import OpenStadComponentReactionForm from './openstad-component-reaction-form.jsx';
 
 'use strict';
@@ -61,7 +62,7 @@ export default class OpenStadComponentReaction extends React.Component {
 		let self = this;
 
 		let url = ( self.config.api && self.config.api.url ) + '/api/site/' + self.config.siteId + '/idea/' + self.config.ideaId + '/argument/' + self.state.id;
-		let headers = Object.assign(( self.config.api && self.config.api.headers || {} ), { 'Content-type': 'application/json' });
+    let headers = OpenStadComponentLibs.api.getHeaders(self.config);
 
 		let body = {};
 
@@ -79,7 +80,7 @@ export default class OpenStadComponentReaction extends React.Component {
 			.then(function (json){
         self.setState({ isDeleted: true });
 
-		    var event = new CustomEvent('reactionDeleted', { detail: { ideaId: self.config.ideaId } });
+		    var event = new window.CustomEvent('reactionDeleted', { detail: { ideaId: self.config.ideaId } });
 		    document.dispatchEvent(event);
 
 			})
@@ -97,7 +98,7 @@ export default class OpenStadComponentReaction extends React.Component {
 	  if (!self.config.api.isUserLoggedIn) return alert('Je bent niet ingelogd');
 
 		let url = ( self.config.api && self.config.api.url ) + '/api/site/' + self.config.siteId + '/idea/' + self.config.ideaId + '/argument/' + self.state.id + '/vote';
-		let headers = Object.assign(( self.config.api && self.config.api.headers || {} ), { 'Content-type': 'application/json' });
+    let headers = OpenStadComponentLibs.api.getHeaders(self.config);
 
 		let body = {};
 

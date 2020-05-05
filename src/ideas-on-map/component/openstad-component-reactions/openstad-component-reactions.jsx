@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import OpenStadComponentLibs from '../../../libs/index.jsx';
 import OpenStadComponentReactionForm from './openstad-component-reaction-form.jsx';
 import OpenStadComponentReaction from './openstad-component-reaction.jsx';
 
@@ -46,7 +47,7 @@ export default class OpenStadComponentReactions extends React.Component {
 		let self = this;
 
 		let url = ( self.config.api && self.config.api.url ) + '/api/site/' + self.config.siteId + '/idea/' + self.config.ideaId + '/argument?sentiment=' + self.config.sentiment + '&withUser=1&withUserVote=1&withVoteCount=1&includeReactionsOnReactions=1';
-		let headers = Object.assign(( self.config.api && self.config.api.headers || {} ), { "Content-type": "application/json" });
+    let headers = OpenStadComponentLibs.api.getHeaders(self.config);
 
 		fetch(url, { headers })
 			.then( function (response) {

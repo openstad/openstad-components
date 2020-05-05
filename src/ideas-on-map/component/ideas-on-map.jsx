@@ -25,7 +25,6 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 		// config
 		self.defaultConfig = {
 			title: this.config.appTitle || 'Inzendingen',
-      currentPolygon: undefined,
       types: [
         {"name":"Auto","color":"#EC0000","mapicon":{"html":"<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"34\" height=\"45\" viewBox=\"0 0 34 45\">  <g fill=\"none\" fill-rule=\"evenodd\">    <path fill=\"#EC0000\" fill-rule=\"nonzero\" d=\"M17,0 C26.3917,0 34,7.53433 34,16.8347 C34,29.5249 19.3587,42.4714 18.7259,42.9841 L17,44.4938 L15.2741,42.9841 C14.6413,42.4714 0,29.5249 0,16.8347 C0,7.53575 7.60829,0 17,0 Z\"/>    <path fill=\"#FFF\" d=\"M22,19.5 C23.0355,19.5 23.875,20.3395 23.875,21.375 C23.875,22.4105 23.0355,23.25 22,23.25 C20.9645,23.25 20.125,22.4105 20.125,21.375 C20.125,20.3395 20.9645,19.5 22,19.5 Z M11.375,19.5 C12.4105,19.5 13.25,20.3395 13.25,21.375 C13.25,22.4105 12.4105,23.25 11.375,23.25 C10.3395,23.25 9.5,22.4105 9.5,21.375 C9.5,20.3395 10.3395,19.5 11.375,19.5 Z M18.875,11.375 L23.25,15.75 L27,15.75 L27,21.375 L25.125,21.375 C25.125,19.6491 23.7259,18.25 22,18.25 C20.2741,18.25 18.875,19.6491 18.875,21.375 L14.5,21.375 C14.5,19.6491 13.1009,18.25 11.375,18.25 C9.64911,18.25 8.25,19.6491 8.25,21.375 L7,21.375 L7,15.75 L11.375,11.375 L18.875,11.375 Z M18.25,12.625 L15.125,12.625 L15.125,15.75 L21.3512,15.75 L18.25,12.625 Z M13.875,12.625 L12,12.625 L8.875,15.75 L13.875,15.75 L13.875,12.625 Z\"/>  </g></svg>","width":34,"height":45,"anchor":[17,45]},"listicon":{"html":"<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"34\" height=\"34\" viewBox=\"0 0 34 34\">  <g fill=\"none\" fill-rule=\"evenodd\">    <circle cx=\"17\" cy=\"17\" r=\"17\" fill=\"#EC0000\" fill-rule=\"nonzero\"/>    <path fill=\"#FFF\" d=\"M22,19.5 C23.0355,19.5 23.875,20.3395 23.875,21.375 C23.875,22.4105 23.0355,23.25 22,23.25 C20.9645,23.25 20.125,22.4105 20.125,21.375 C20.125,20.3395 20.9645,19.5 22,19.5 Z M11.375,19.5 C12.4105,19.5 13.25,20.3395 13.25,21.375 C13.25,22.4105 12.4105,23.25 11.375,23.25 C10.3395,23.25 9.5,22.4105 9.5,21.375 C9.5,20.3395 10.3395,19.5 11.375,19.5 Z M18.875,11.375 L23.25,15.75 L27,15.75 L27,21.375 L25.125,21.375 C25.125,19.6491 23.7259,18.25 22,18.25 C20.2741,18.25 18.875,19.6491 18.875,21.375 L14.5,21.375 C14.5,19.6491 13.1009,18.25 11.375,18.25 C9.64911,18.25 8.25,19.6491 8.25,21.375 L7,21.375 L7,15.75 L11.375,11.375 L18.875,11.375 Z M18.25,12.625 L15.125,12.625 L15.125,15.75 L21.3512,15.75 L18.25,12.625 Z M13.875,12.625 L12,12.625 L8.875,15.75 L13.875,15.75 L13.875,12.625 Z\"/>  </g></svg>","width":34,"height":34}},
         {"name":"Fiets","color":"#BED200","mapicon":{"html":"<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"34\" height=\"45\" viewBox=\"0 0 34 45\">  <g fill=\"none\" fill-rule=\"evenodd\">    <path fill=\"#BED200\" fill-rule=\"nonzero\" d=\"M17,0.493652 C26.3917,0.493652 34,8.02798 34,17.3284 C34,30.0185 19.3587,42.965 18.7259,43.4778 L17,44.9875 L15.2741,43.4778 C14.6413,42.965 0,30.0185 0,17.3284 C0,8.0294 7.60829,0.493652 17,0.493652 Z\"/>    <g fill=\"#000\" transform=\"translate(7 7)\">      <path fill-rule=\"nonzero\" d=\"M4.0625 12.3687C6.3062 12.3687 8.125 14.1875 8.125 16.4312 8.125 18.6748 6.3062 20.4937 4.0625 20.4937 1.81884 20.4937 0 18.6748 0 16.4312 0 14.1875 1.81884 12.3687 4.0625 12.3687zM4.0625 13.6187C2.5092 13.6187 1.25 14.8779 1.25 16.4312 1.25 17.9845 2.5092 19.2437 4.0625 19.2437 5.6158 19.2437 6.875 17.9845 6.875 16.4312 6.875 14.8779 5.6158 13.6187 4.0625 13.6187zM15.9375 12.3687C18.1812 12.3687 20 14.1875 20 16.4312 20 18.6748 18.1812 20.4937 15.9375 20.4937 13.6938 20.4937 11.875 18.6748 11.875 16.4312 11.875 14.1875 13.6938 12.3687 15.9375 12.3687zM15.9375 13.6187C14.3842 13.6187 13.125 14.8779 13.125 16.4312 13.125 17.9845 14.3842 19.2437 15.9375 19.2437 17.4908 19.2437 18.75 17.9845 18.75 16.4312 18.75 14.8779 17.4908 13.6187 15.9375 13.6187z\"/>      <path d=\"M13.75 5.4937L13.75 7.9937 16.875 7.9937 16.875 10.4937 12.5 10.4937 11.25 9.2437 11.25 7.3687 8.75 9.8687 11.252 12.3687 11.252 19.2437 8.75 19.2437 8.75 13.6187 5.625 10.4937 5.625 8.6187 10 4.2437C10.625 3.6187 11.875 3.6187 12.5 4.2437L13.75 5.4937zM15.7008 1.04262C16.4331 1.77492 16.4331 2.96198 15.7008 3.6943 14.9685 4.4266 13.7815 4.4266 13.0492 3.6943 12.3169 2.96198 12.3169 1.77492 13.0492 1.04262 13.7815.31032 14.9685.31032 15.7008 1.04262z\"/>    </g>  </g></svg>","width":34,"height":45,"anchor":[17,45]},"listicon":{"html":"<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"34\" height=\"34\" viewBox=\"0 0 34 34\">  <g fill=\"none\" fill-rule=\"evenodd\">    <circle cx=\"17\" cy=\"17\" r=\"17\" fill=\"#BED200\" fill-rule=\"nonzero\"/>    <g fill=\"#000\" transform=\"translate(7 5)\">      <path fill-rule=\"nonzero\" d=\"M4.0625 12.3687C6.3062 12.3687 8.125 14.1875 8.125 16.4312 8.125 18.6748 6.3062 20.4937 4.0625 20.4937 1.81884 20.4937 0 18.6748 0 16.4312 0 14.1875 1.81884 12.3687 4.0625 12.3687zM4.0625 13.6187C2.5092 13.6187 1.25 14.8779 1.25 16.4312 1.25 17.9845 2.5092 19.2437 4.0625 19.2437 5.6158 19.2437 6.875 17.9845 6.875 16.4312 6.875 14.8779 5.6158 13.6187 4.0625 13.6187zM15.9375 12.3687C18.1812 12.3687 20 14.1875 20 16.4312 20 18.6748 18.1812 20.4937 15.9375 20.4937 13.6938 20.4937 11.875 18.6748 11.875 16.4312 11.875 14.1875 13.6938 12.3687 15.9375 12.3687zM15.9375 13.6187C14.3842 13.6187 13.125 14.8779 13.125 16.4312 13.125 17.9845 14.3842 19.2437 15.9375 19.2437 17.4908 19.2437 18.75 17.9845 18.75 16.4312 18.75 14.8779 17.4908 13.6187 15.9375 13.6187z\"/>      <path d=\"M13.75 5.4937L13.75 7.9937 16.875 7.9937 16.875 10.4937 12.5 10.4937 11.25 9.2437 11.25 7.3687 8.75 9.8687 11.252 12.3687 11.252 19.2437 8.75 19.2437 8.75 13.6187 5.625 10.4937 5.625 8.6187 10 4.24365C10.625 3.61865 11.875 3.61865 12.5 4.24365L13.75 5.4937zM15.7008 1.04262C16.4331 1.77492 16.4331 2.96198 15.7008 3.69427 14.9685 4.42657 13.7815 4.42657 13.0492 3.69427 12.3169 2.96198 12.3169 1.77492 13.0492 1.04262 13.7815.31032 14.9685.31032 15.7008 1.04262z\"/>    </g>  </g></svg>","width":34,"height":34}},
@@ -36,21 +35,25 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         {"name":"Geluid","color":"#FF9100","mapicon":{"html":"<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"34\" height=\"45\" viewBox=\"0 0 34 45\">  <g fill=\"none\" fill-rule=\"evenodd\" transform=\"translate(0 -1)\">    <path fill=\"#FF9100\" fill-rule=\"nonzero\" d=\"M17,0.962891 C26.3917,0.962891 34,8.49722 34,17.7976 C34,30.4878 19.3587,43.4343 18.7259,43.947 L17,45.4567 L15.2741,43.947 C14.6413,43.4343 0,30.4878 0,17.7976 C0,8.49864 7.60829,0.962891 17,0.962891 Z\"/>    <path fill=\"#000\" d=\"M21.375,7.96289 L21.375,15.2191 C22.501,15.6081 23.2565,16.6684 23.2565,17.8598 C23.2565,19.0511 22.501,20.1114 21.375,20.5004 L21.375,27.7629 L14.8625,24.2691 L11.6375,27.4941 L9.86875,25.7254 L12.5563,23.0379 L11.6438,22.5504 L7,22.5504 L7,13.1754 L11.6438,13.1754 L21.375,7.96289 Z M18.875,12.1379 L13.25,15.1504 L13.25,20.5754 L18.875,23.5879 L18.875,12.1379 Z M24.3115,19.9105 L26.2229,21.746 L25.3571,22.6476 L23.4457,20.8121 L24.3115,19.9105 Z M12,15.6754 L9.5,15.6754 L9.5,20.0504 L12,20.0504 L12,15.6754 Z M27,17.2379 L27,18.4879 L24.5,18.4879 L24.5,17.2379 L27,17.2379 Z M25.3456,13.0055 L26.2295,13.8894 L24.3158,15.803 L23.432,14.9191 L25.3456,13.0055 Z\"/>  </g></svg>","width":34,"height":45,"anchor":[17,45]},"listicon":{"html":"<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"34\" height=\"34\" viewBox=\"0 0 34 34\">  <g fill=\"none\" fill-rule=\"evenodd\">    <circle cx=\"17\" cy=\"17\" r=\"17\" fill=\"#FF9100\" fill-rule=\"nonzero\"/>    <path fill=\"#000\" d=\"M21.375,6.96289 L21.375,14.2191 C22.501,14.6081 23.2565,15.6684 23.2565,16.8598 C23.2565,18.0511 22.501,19.1114 21.375,19.5004 L21.375,26.7629 L14.8625,23.2691 L11.6375,26.4941 L9.86875,24.7254 L12.5563,22.0379 L11.6438,21.5504 L7,21.5504 L7,12.1754 L11.6438,12.1754 L21.375,6.96289 Z M18.875,11.1379 L13.25,14.1504 L13.25,19.5754 L18.875,22.5879 L18.875,11.1379 Z M24.3115,18.9105 L26.2229,20.746 L25.3571,21.6476 L23.4457,19.8121 L24.3115,18.9105 Z M12,14.6754 L9.5,14.6754 L9.5,19.0504 L12,19.0504 L12,14.6754 Z M27,16.2379 L27,17.4879 L24.5,17.4879 L24.5,16.2379 L27,16.2379 Z M25.3456,12.0055 L26.2295,12.8894 L24.3158,14.803 L23.432,13.9191 L25.3456,12.0055 Z\"/>  </g></svg>","width":34,"height":34}},
         {"name":"Overig","color":"#A00078","mapicon":{"html":"<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"34\" height=\"45\" viewBox=\"0 0 34 45\">  <defs>    <path id=\"marker_overig-a\" d=\"M4.25,12.207 L4.25,15.957 L0.5,15.957 L0.5,12.207 L4.25,12.207 Z M9.875,12.207 L9.875,15.957 L6.125,15.957 L6.125,12.207 L9.875,12.207 Z M15.5,12.207 L15.5,15.957 L11.75,15.957 L11.75,12.207 L15.5,12.207 Z M4.25,6.582 L4.25,10.332 L0.5,10.332 L0.5,6.582 L4.25,6.582 Z M9.875,6.582 L9.875,10.332 L6.125,10.332 L6.125,6.582 L9.875,6.582 Z M15.5,6.582 L15.5,10.332 L11.75,10.332 L11.75,6.582 L15.5,6.582 Z M4.25,0.95703 L4.25,4.707 L0.5,4.707 L0.5,0.95703 L4.25,0.95703 Z M9.875,0.95703 L9.875,4.707 L6.125,4.707 L6.125,0.95703 L9.875,0.95703 Z M15.5,0.95703 L15.5,4.707 L11.75,4.707 L11.75,0.95703 L15.5,0.95703 Z\"/>  </defs>  <g fill=\"none\" fill-rule=\"evenodd\">    <path fill=\"#A00078\" fill-rule=\"nonzero\" d=\"M17,0.457031 C26.3917,0.457031 34,7.99136 34,17.2918 C34,29.9819 19.3587,42.9284 18.7259,43.4411 L17,44.9509 L15.2741,43.4411 C14.6413,42.9284 0,29.9819 0,17.2918 C0,7.99278 7.60829,0.457031 17,0.457031 Z\"/>    <g transform=\"translate(9 9)\">      <mask id=\"marker_overig-b\" fill=\"#fff\">        <use xlink:href=\"#marker_overig-a\"/>      </mask>      <polygon fill=\"#FFF\" points=\".438 15.982 15.512 15.982 15.512 .907 .438 .907\" mask=\"url(#marker_overig-b)\"/>    </g>  </g></svg>","width":34,"height":45,"anchor":[17,45]},"listicon":{"html":"<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"34\" height=\"34\" viewBox=\"0 0 34 34\">  <defs>    <path id=\"label_overig-a\" d=\"M4.25,12.207 L4.25,15.957 L0.5,15.957 L0.5,12.207 L4.25,12.207 Z M9.875,12.207 L9.875,15.957 L6.125,15.957 L6.125,12.207 L9.875,12.207 Z M15.5,12.207 L15.5,15.957 L11.75,15.957 L11.75,12.207 L15.5,12.207 Z M4.25,6.582 L4.25,10.332 L0.5,10.332 L0.5,6.582 L4.25,6.582 Z M9.875,6.582 L9.875,10.332 L6.125,10.332 L6.125,6.582 L9.875,6.582 Z M15.5,6.582 L15.5,10.332 L11.75,10.332 L11.75,6.582 L15.5,6.582 Z M4.25,0.95703 L4.25,4.707 L0.5,4.707 L0.5,0.95703 L4.25,0.95703 Z M9.875,0.95703 L9.875,4.707 L6.125,4.707 L6.125,0.95703 L9.875,0.95703 Z M15.5,0.95703 L15.5,4.707 L11.75,4.707 L11.75,0.95703 L15.5,0.95703 Z\"/>  </defs>  <g fill=\"none\" fill-rule=\"evenodd\">    <circle cx=\"17\" cy=\"17\" r=\"17\" fill=\"#A00078\" fill-rule=\"nonzero\"/>    <g transform=\"translate(9 9)\">      <mask id=\"label_overig-b\" fill=\"#fff\">        <use xlink:href=\"#label_overig-a\"/>      </mask>      <polygon fill=\"#FFF\" points=\".438 15.982 15.512 15.982 15.512 .907 .438 .907\" mask=\"url(#label_overig-b)\"/>    </g>  </g></svg>","width":34,"height":34}},
       ],
-      areas: [
-        //{ name: "Heel West",
-        //  value: "Heel West",
-        //  polygon: [{ "lng": 4.8353454, "lat": 52.3731265 }, { "lng": 4.8422025, "lat": 52.3721002 }, { "lng": 4.8421761, "lat": 52.3695836 }, { "lng": 4.8455807, "lat": 52.3696369 }, { "lng": 4.8476385, "lat": 52.369853 }, { "lng": 4.8477361, "lat": 52.3695885 }, { "lng": 4.8484176, "lat": 52.369697 }, { "lng": 4.8504835, "lat": 52.3653302 }, { "lng": 4.8504956, "lat": 52.3643692 }, { "lng": 4.8501587, "lat": 52.3638376 }, { "lng": 4.8494487, "lat": 52.3633001 }, { "lng": 4.8495059, "lat": 52.3610989 }, { "lng": 4.8489152, "lat": 52.3608149 }, { "lng": 4.8487824, "lat": 52.3578658 }, { "lng": 4.8504012, "lat": 52.3578553 }, { "lng": 4.8518982, "lat": 52.357844 }, { "lng": 4.8538275, "lat": 52.3581295 }, { "lng": 4.854723, "lat": 52.3578629 }, { "lng": 4.854635, "lat": 52.3577532 }, { "lng": 4.85436, "lat": 52.3572975 }, { "lng": 4.8540881, "lat": 52.3564026 }, { "lng": 4.8547969, "lat": 52.3562758 }, { "lng": 4.8698903, "lat": 52.3601067 }, { "lng": 4.8699397, "lat": 52.3600231 }, { "lng": 4.8714122, "lat": 52.3603737 }, { "lng": 4.8712647, "lat": 52.3605634 }, { "lng": 4.8715288, "lat": 52.3605997 }, { "lng": 4.8716826, "lat": 52.3604277 }, { "lng": 4.8738605, "lat": 52.3608533 }, { "lng": 4.8738525, "lat": 52.3610213 }, { "lng": 4.8740097, "lat": 52.3610407 }, { "lng": 4.8741351, "lat": 52.3608935 }, { "lng": 4.8750611, "lat": 52.3608041 }, { "lng": 4.8756501, "lat": 52.3606138 }, { "lng": 4.876429, "lat": 52.3607996 }, { "lng": 4.8765642, "lat": 52.3606177 }, { "lng": 4.876929, "lat": 52.3606957 }, { "lng": 4.8768495, "lat": 52.360911 }, { "lng": 4.8771709, "lat": 52.3609696 }, { "lng": 4.8774, "lat": 52.3607583 }, { "lng": 4.8819952, "lat": 52.3620427 }, { "lng": 4.8813956, "lat": 52.3630818 }, { "lng": 4.8808146, "lat": 52.3634904 }, { "lng": 4.8793708, "lat": 52.3643261 }, { "lng": 4.8792691, "lat": 52.3649574 }, { "lng": 4.8787082, "lat": 52.3658206 }, { "lng": 4.8775395, "lat": 52.3667815 }, { "lng": 4.8767523, "lat": 52.3685117 }, { "lng": 4.8754901, "lat": 52.3697867 }, { "lng": 4.8745065, "lat": 52.3718772 }, { "lng": 4.8745782, "lat": 52.3725454 }, { "lng": 4.8753796, "lat": 52.373407 }, { "lng": 4.8755899, "lat": 52.3743025 }, { "lng": 4.8799131, "lat": 52.3813052 }, { "lng": 4.8796339, "lat": 52.3819128 }, { "lng": 4.880478, "lat": 52.3822531 }, { "lng": 4.8818058, "lat": 52.3843528 }, { "lng": 4.882637, "lat": 52.3854107 }, { "lng": 4.8846503, "lat": 52.3883466 }, { "lng": 4.8857963, "lat": 52.3881476 }, { "lng": 4.8911796, "lat": 52.3884502 }, { "lng": 4.8937804, "lat": 52.3886712 }, { "lng": 4.8956658, "lat": 52.3888313 }, { "lng": 4.8927982, "lat": 52.3933453 }, { "lng": 4.8850924, "lat": 52.398824 }, { "lng": 4.8762366, "lat": 52.3945287 }, { "lng": 4.8726422, "lat": 52.3948206 }, { "lng": 4.8719896, "lat": 52.3947192 }, { "lng": 4.8719508, "lat": 52.3952766 }, { "lng": 4.8715979, "lat": 52.39538 }, { "lng": 4.8667403, "lat": 52.393136 }, { "lng": 4.8643092, "lat": 52.3927072 }, { "lng": 4.8627057, "lat": 52.3938521 }, { "lng": 4.8603441, "lat": 52.3949382 }, { "lng": 4.858593, "lat": 52.3952782 }, { "lng": 4.8569204, "lat": 52.3953667 }, { "lng": 4.8569896, "lat": 52.3938363 }, { "lng": 4.8573172, "lat": 52.3938424 }, { "lng": 4.8574043, "lat": 52.3920751 }, { "lng": 4.8589526, "lat": 52.3912226 }, { "lng": 4.8592744, "lat": 52.3905434 }, { "lng": 4.8592929, "lat": 52.3887899 }, { "lng": 4.8449045, "lat": 52.3887733 }, { "lng": 4.8451066, "lat": 52.3850658 }, { "lng": 4.8446526, "lat": 52.3850638 }, { "lng": 4.8390117, "lat": 52.3850241 }, { "lng": 4.8392807, "lat": 52.3829687 }, { "lng": 4.838548, "lat": 52.3808766 }, { "lng": 4.836707, "lat": 52.3763581 }, { "lng": 4.8353454, "lat": 52.3731265 }] },
-        //{ name: "De Baarsjes",
-        //  value: "De Baarsjes",
-        //  polygon: [{"lng":4.8558724,"lat":52.374202},{"lng":4.8577714,"lat":52.3681953},{"lng":4.8582878,"lat":52.3648623},{"lng":4.8592819,"lat":52.3648966},{"lng":4.8598228,"lat":52.364783},{"lng":4.8613989,"lat":52.3664539},{"lng":4.8661845,"lat":52.3717538},{"lng":4.8664001,"lat":52.3721596},{"lng":4.8663889,"lat":52.372566},{"lng":4.865846,"lat":52.3733281},{"lng":4.8646717,"lat":52.3734961},{"lng":4.8641583,"lat":52.3750737},{"lng":4.8640923,"lat":52.3752839},{"lng":4.8559599,"lat":52.3743342},{"lng":4.8558724,"lat":52.374202}] },
-        //{ name: "Oud West",
-        //  value: "Oud West",
-        //  polygon: [{"lng":4.8546816,"lat":52.3568634},{"lng":4.855041,"lat":52.3563261},{"lng":4.858839,"lat":52.3572696},{"lng":4.8625458,"lat":52.3582427},{"lng":4.8646701,"lat":52.3588487},{"lng":4.868731,"lat":52.3597955},{"lng":4.8703188,"lat":52.3601231},{"lng":4.8717136,"lat":52.3604376},{"lng":4.8738218,"lat":52.3609651},{"lng":4.8763055,"lat":52.3607226},{"lng":4.8776842,"lat":52.3608635},{"lng":4.878167,"lat":52.3610044},{"lng":4.8812676,"lat":52.3618856},{"lng":4.8807043,"lat":52.3623966},{"lng":4.8798675,"lat":52.3633663},{"lng":4.8795778,"lat":52.3639428},{"lng":4.8792613,"lat":52.3644931},{"lng":4.8791272,"lat":52.3650598},{"lng":4.8787785,"lat":52.3656691},{"lng":4.8779202,"lat":52.3663734},{"lng":4.8773838,"lat":52.366809},{"lng":4.8772336,"lat":52.3676312},{"lng":4.8769385,"lat":52.3681389},{"lng":4.8754311,"lat":52.3697536},{"lng":4.8746211,"lat":52.3714043},{"lng":4.8744494,"lat":52.3720594},{"lng":4.8744602,"lat":52.3723083},{"lng":4.8752166,"lat":52.3729895},{"lng":4.8745943,"lat":52.3731762},{"lng":4.870925,"lat":52.3724033},{"lng":4.8680175,"lat":52.3717974},{"lng":4.8665959,"lat":52.3715648},{"lng":4.8654211,"lat":52.3703825},{"lng":4.8641176,"lat":52.3689905},{"lng":4.8628623,"lat":52.3676443},{"lng":4.8616499,"lat":52.3662554},{"lng":4.8604268,"lat":52.3648862},{"lng":4.8602505,"lat":52.3647431},{"lng":4.8591448,"lat":52.3634056},{"lng":4.8580772,"lat":52.3621247},{"lng":4.8575783,"lat":52.3615515},{"lng":4.857117,"lat":52.3604245},{"lng":4.856248,"lat":52.3592681},{"lng":4.8555345,"lat":52.3580035},{"lng":4.855299,"lat":52.357674},{"lng":4.855269,"lat":52.3576447},{"lng":4.855115,"lat":52.3574166},{"lng":4.8549071,"lat":52.3571512},{"lng":4.85479,"lat":52.3570018},{"lng":4.8546816,"lat":52.3568634}] },
-      ],
+
+      // dit is opgezet maar wordt niet genbruikt en is daarom niet afgemaakt; latere wijzigingen maken dat dit niet meer werkt
+      // currentPolygon: undefined,
+      // areas: [
+      //  { name: "Heel West",
+      //    value: "Heel West",
+      //    polygon: [{ "lng": 4.8353454, "lat": 52.3731265 }, { "lng": 4.8422025, "lat": 52.3721002 }, { "lng": 4.8421761, "lat": 52.3695836 }, { "lng": 4.8455807, "lat": 52.3696369 }, { "lng": 4.8476385, "lat": 52.369853 }, { "lng": 4.8477361, "lat": 52.3695885 }, { "lng": 4.8484176, "lat": 52.369697 }, { "lng": 4.8504835, "lat": 52.3653302 }, { "lng": 4.8504956, "lat": 52.3643692 }, { "lng": 4.8501587, "lat": 52.3638376 }, { "lng": 4.8494487, "lat": 52.3633001 }, { "lng": 4.8495059, "lat": 52.3610989 }, { "lng": 4.8489152, "lat": 52.3608149 }, { "lng": 4.8487824, "lat": 52.3578658 }, { "lng": 4.8504012, "lat": 52.3578553 }, { "lng": 4.8518982, "lat": 52.357844 }, { "lng": 4.8538275, "lat": 52.3581295 }, { "lng": 4.854723, "lat": 52.3578629 }, { "lng": 4.854635, "lat": 52.3577532 }, { "lng": 4.85436, "lat": 52.3572975 }, { "lng": 4.8540881, "lat": 52.3564026 }, { "lng": 4.8547969, "lat": 52.3562758 }, { "lng": 4.8698903, "lat": 52.3601067 }, { "lng": 4.8699397, "lat": 52.3600231 }, { "lng": 4.8714122, "lat": 52.3603737 }, { "lng": 4.8712647, "lat": 52.3605634 }, { "lng": 4.8715288, "lat": 52.3605997 }, { "lng": 4.8716826, "lat": 52.3604277 }, { "lng": 4.8738605, "lat": 52.3608533 }, { "lng": 4.8738525, "lat": 52.3610213 }, { "lng": 4.8740097, "lat": 52.3610407 }, { "lng": 4.8741351, "lat": 52.3608935 }, { "lng": 4.8750611, "lat": 52.3608041 }, { "lng": 4.8756501, "lat": 52.3606138 }, { "lng": 4.876429, "lat": 52.3607996 }, { "lng": 4.8765642, "lat": 52.3606177 }, { "lng": 4.876929, "lat": 52.3606957 }, { "lng": 4.8768495, "lat": 52.360911 }, { "lng": 4.8771709, "lat": 52.3609696 }, { "lng": 4.8774, "lat": 52.3607583 }, { "lng": 4.8819952, "lat": 52.3620427 }, { "lng": 4.8813956, "lat": 52.3630818 }, { "lng": 4.8808146, "lat": 52.3634904 }, { "lng": 4.8793708, "lat": 52.3643261 }, { "lng": 4.8792691, "lat": 52.3649574 }, { "lng": 4.8787082, "lat": 52.3658206 }, { "lng": 4.8775395, "lat": 52.3667815 }, { "lng": 4.8767523, "lat": 52.3685117 }, { "lng": 4.8754901, "lat": 52.3697867 }, { "lng": 4.8745065, "lat": 52.3718772 }, { "lng": 4.8745782, "lat": 52.3725454 }, { "lng": 4.8753796, "lat": 52.373407 }, { "lng": 4.8755899, "lat": 52.3743025 }, { "lng": 4.8799131, "lat": 52.3813052 }, { "lng": 4.8796339, "lat": 52.3819128 }, { "lng": 4.880478, "lat": 52.3822531 }, { "lng": 4.8818058, "lat": 52.3843528 }, { "lng": 4.882637, "lat": 52.3854107 }, { "lng": 4.8846503, "lat": 52.3883466 }, { "lng": 4.8857963, "lat": 52.3881476 }, { "lng": 4.8911796, "lat": 52.3884502 }, { "lng": 4.8937804, "lat": 52.3886712 }, { "lng": 4.8956658, "lat": 52.3888313 }, { "lng": 4.8927982, "lat": 52.3933453 }, { "lng": 4.8850924, "lat": 52.398824 }, { "lng": 4.8762366, "lat": 52.3945287 }, { "lng": 4.8726422, "lat": 52.3948206 }, { "lng": 4.8719896, "lat": 52.3947192 }, { "lng": 4.8719508, "lat": 52.3952766 }, { "lng": 4.8715979, "lat": 52.39538 }, { "lng": 4.8667403, "lat": 52.393136 }, { "lng": 4.8643092, "lat": 52.3927072 }, { "lng": 4.8627057, "lat": 52.3938521 }, { "lng": 4.8603441, "lat": 52.3949382 }, { "lng": 4.858593, "lat": 52.3952782 }, { "lng": 4.8569204, "lat": 52.3953667 }, { "lng": 4.8569896, "lat": 52.3938363 }, { "lng": 4.8573172, "lat": 52.3938424 }, { "lng": 4.8574043, "lat": 52.3920751 }, { "lng": 4.8589526, "lat": 52.3912226 }, { "lng": 4.8592744, "lat": 52.3905434 }, { "lng": 4.8592929, "lat": 52.3887899 }, { "lng": 4.8449045, "lat": 52.3887733 }, { "lng": 4.8451066, "lat": 52.3850658 }, { "lng": 4.8446526, "lat": 52.3850638 }, { "lng": 4.8390117, "lat": 52.3850241 }, { "lng": 4.8392807, "lat": 52.3829687 }, { "lng": 4.838548, "lat": 52.3808766 }, { "lng": 4.836707, "lat": 52.3763581 }, { "lng": 4.8353454, "lat": 52.3731265 }] },
+      //  { name: "De Baarsjes",
+      //    value: "De Baarsjes",
+      //    polygon: [{"lng":4.8558724,"lat":52.374202},{"lng":4.8577714,"lat":52.3681953},{"lng":4.8582878,"lat":52.3648623},{"lng":4.8592819,"lat":52.3648966},{"lng":4.8598228,"lat":52.364783},{"lng":4.8613989,"lat":52.3664539},{"lng":4.8661845,"lat":52.3717538},{"lng":4.8664001,"lat":52.3721596},{"lng":4.8663889,"lat":52.372566},{"lng":4.865846,"lat":52.3733281},{"lng":4.8646717,"lat":52.3734961},{"lng":4.8641583,"lat":52.3750737},{"lng":4.8640923,"lat":52.3752839},{"lng":4.8559599,"lat":52.3743342},{"lng":4.8558724,"lat":52.374202}] },
+      //  { name: "Oud West",
+      //    value: "Oud West",
+      //    polygon: [{"lng":4.8546816,"lat":52.3568634},{"lng":4.855041,"lat":52.3563261},{"lng":4.858839,"lat":52.3572696},{"lng":4.8625458,"lat":52.3582427},{"lng":4.8646701,"lat":52.3588487},{"lng":4.868731,"lat":52.3597955},{"lng":4.8703188,"lat":52.3601231},{"lng":4.8717136,"lat":52.3604376},{"lng":4.8738218,"lat":52.3609651},{"lng":4.8763055,"lat":52.3607226},{"lng":4.8776842,"lat":52.3608635},{"lng":4.878167,"lat":52.3610044},{"lng":4.8812676,"lat":52.3618856},{"lng":4.8807043,"lat":52.3623966},{"lng":4.8798675,"lat":52.3633663},{"lng":4.8795778,"lat":52.3639428},{"lng":4.8792613,"lat":52.3644931},{"lng":4.8791272,"lat":52.3650598},{"lng":4.8787785,"lat":52.3656691},{"lng":4.8779202,"lat":52.3663734},{"lng":4.8773838,"lat":52.366809},{"lng":4.8772336,"lat":52.3676312},{"lng":4.8769385,"lat":52.3681389},{"lng":4.8754311,"lat":52.3697536},{"lng":4.8746211,"lat":52.3714043},{"lng":4.8744494,"lat":52.3720594},{"lng":4.8744602,"lat":52.3723083},{"lng":4.8752166,"lat":52.3729895},{"lng":4.8745943,"lat":52.3731762},{"lng":4.870925,"lat":52.3724033},{"lng":4.8680175,"lat":52.3717974},{"lng":4.8665959,"lat":52.3715648},{"lng":4.8654211,"lat":52.3703825},{"lng":4.8641176,"lat":52.3689905},{"lng":4.8628623,"lat":52.3676443},{"lng":4.8616499,"lat":52.3662554},{"lng":4.8604268,"lat":52.3648862},{"lng":4.8602505,"lat":52.3647431},{"lng":4.8591448,"lat":52.3634056},{"lng":4.8580772,"lat":52.3621247},{"lng":4.8575783,"lat":52.3615515},{"lng":4.857117,"lat":52.3604245},{"lng":4.856248,"lat":52.3592681},{"lng":4.8555345,"lat":52.3580035},{"lng":4.855299,"lat":52.357674},{"lng":4.855269,"lat":52.3576447},{"lng":4.855115,"lat":52.3574166},{"lng":4.8549071,"lat":52.3571512},{"lng":4.85479,"lat":52.3570018},{"lng":4.8546816,"lat":52.3568634}] },
+      // ],
+
       titleField: 'title',
       summaryField: 'summary',
       typeField: self.config.typeField || 'extraData.theme',
-      areaField: self.config.areaField || 'extraData.gebied',
+      // areaField: self.config.areaField || 'extraData.gebied',
       user: {},
       api: {
         url: null,
@@ -69,22 +72,12 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         descriptionMinLength: 30,
         descriptionMaxLength: 500,
       },
-		};
-		self.config = Object.assign(self.defaultConfig, props.config, self.config || {})
 
-    console.log(self.config);
-    
+		};
+		self.config = merge.recursive(self.defaultConfig, self.config, props.config || {})
 
     // defaults
     self.config.doSearchFunction = self.config.doSearchFunction || self.doSearch.bind(self);
-    self.config.map = self.config.map || {};
-    self.config.map.onMapClick = self.config.map.onMapClick || self.onMapClick.bind(self);
-    self.config.map.onMarkerClick = self.config.map.onMarkerClick || self.onMarkerClick.bind(self);
-    self.config.map.clustering = self.config.map.clustering || {};
-    self.config.map.clustering.onClusterClick = self.config.map.clustering.onClusterClick || self.onClusterClick.bind(self);
-    this.config.map.autoZoomAndCenter = 'polygon';
-    // Todo: configurabel
-    self.config.map.polygon = [ { lng: 4.8923325, lat: 52.3578818 }, { lng: 4.8922574, lat: 52.3574723 }, { lng: 4.8920697, lat: 52.3574854 }, { lng: 4.8919410, lat: 52.3567908 }, { lng: 4.8906860, lat: 52.3568661 }, { lng: 4.8904125, lat: 52.3552313 }, { lng: 4.8928991, lat: 52.3556621 }, { lng: 4.8928025, lat: 52.3558538 }, { lng: 4.8930225, lat: 52.3558964 }, { lng: 4.8931164, lat: 52.3557162 }, { lng: 4.8953144, lat: 52.3562174 }, { lng: 4.8971003, lat: 52.3566958 }, { lng: 4.8969823, lat: 52.3568498 }, { lng: 4.8971968, lat: 52.3569055 }, { lng: 4.8973095, lat: 52.3567646 }, { lng: 4.8985805, lat: 52.3571577 }, { lng: 4.8984679, lat: 52.3572757 }, { lng: 4.8986020, lat: 52.3573281 }, { lng: 4.8985215, lat: 52.3575247 }, { lng: 4.8983499, lat: 52.3574952 }, { lng: 4.8982480, lat: 52.3574985 }, { lng: 4.8982748, lat: 52.3574362 }, { lng: 4.8972826, lat: 52.3571512 }, { lng: 4.8931691, lat: 52.3574493 }, { lng: 4.8932067, lat: 52.3576099 }, { lng: 4.8931262, lat: 52.3576131 }, { lng: 4.8931584, lat: 52.3578228 }, { lng: 4.8923325, lat: 52.3578810 } ]
 
     self.state = {
       ideas: [],
@@ -106,7 +99,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     let self = this;
 
     // when the map is ready
-		self.map.instance.addEventListener('mapIsReady', function(e) {
+		document.addEventListener('osc-map-is-ready', function(e) {
 
       // fetch the data
       self.fetchData({});
@@ -121,13 +114,26 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
     });
 
+    // map events
+		document.addEventListener('osc-map-click', function(event) {
+      self.onMapClick(event.detail);
+    });
+		document.addEventListener('osc-map-marker-click', function(event) {
+      self.onMarkerClick(event.detail);
+    });
+		document.addEventListener('osc-map-cluster-click', function(event) {
+      self.onClusterClick(event.detail);
+    });
+    
+
     // handle filter changes
 		document.addEventListener('typeFilterUpdate', function(event) {
       self.onChangeTypeFilter(event.detail.value);
     });
-		document.addEventListener('areaFilterUpdate', function(event) {
-      self.onChangeAreaFilter(event.detail.value);
-    });
+
+    // document.addEventListener('areaFilterUpdate', function(event) {
+    //   self.onChangeAreaFilter(event.detail.value);
+    // });
 
     // handle infoblock changes
 		document.addEventListener('updateSelectedIdea', function(event) {
@@ -180,6 +186,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
     let self = this;
     let url = `${ self.config.api.url }/api/site/${  self.config.siteId  }/idea?includeVoteCount=1&includeArguments=1&includeUser=1`;
+    let headers = OpenStadComponentLibs.api.getHeaders(self.config);
 
     // remove existing
     while(self.map.markers.length > 0) {
@@ -189,9 +196,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     self.map.markers = [];
 
     fetch(url, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers,
     })
       .then((response) => {
         return response.json();
@@ -208,6 +213,8 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
           idea.image = (idea.posterImage && idea.posterImage.key) || (idea.extraData && idea.extraData.images && idea.extraData.images[0]) || "https://stemvanwest.amsterdam.nl/img/placeholders/idea.jpg";
           self.map.addIdea(idea);
 				});
+
+        self.map.setBoundsAndCenter();
 
         self.setState({ ideas }, function () {
           // self.setSelectedLocation({ lat: 52.37104644463586, lng: 4.900402911007405 })
@@ -365,18 +372,19 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 		
 	}
 
-  setCurrentPolygon(polygon) {
-    let state = { ...this.state };
-    state.currentPolygon = polygon ? this.map.createCutoutPolygon(polygon): undefined;
-    this.setState(state);
-  }
+  // dit is opgezet maar wordt niet genbruikt en is daarom niet afgemaakt; latere wijzigingen maken dat dit niet meer werkt
+  // setCurrentPolygon(polygon) {
+  //   let state = { ...this.state };
+  //   state.currentPolygon = polygon ? this.map.createCutoutPolygon(polygon): undefined;
+  //   this.setState(state);
+  // }
 
-  removeCurrentPolygon() {
-    this.map.removePolygon(this.state.currentPolygon)
-    let state = { ...this.state };
-    state.currentPolygon = undefined;
-    this.setState(state);
-  }
+  // removeCurrentPolygon() {
+  //   this.map.removePolygon(this.state.currentPolygon)
+  //   let state = { ...this.state };
+  //   state.currentPolygon = undefined;
+  //   this.setState(state);
+  // }
 
   getVisibleIdeas() {
 		if ( this.state.mobileState == 'opened' ) { // werkt omdat hij alleen op mobiel opend kan zijn
@@ -455,6 +463,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   
 	onMapClick(event, forceSelectLocation) {
 
+
 		if ( this.state.mobileState == 'opened' ) { // werkt omdat hij alleen op mobiel opend kan zijn
 			this.infoblock.setState({ mobileState: 'closed' })
 			this.setState({ mobileState: 'closed' }, function() {
@@ -485,7 +494,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
           let newIdea = { id: 'New Idea', location: { coordinates: [ event.latlng.lat, event.latlng.lng ] } };
           this.setNewIdea(newIdea);
           // setTimeout( function() {
-		      // var event = new CustomEvent('newIdeaClick', { detail: { newIdea } });
+		      // var event = new window.CustomEvent('newIdeaClick', { detail: { newIdea } });
 		      //   document.dispatchEvent(event);
           // }, 500 );
         }
@@ -624,7 +633,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     self.setSelectedLocation(null);
     self.setState({ status: 'default' }, function() {
       self.map.map.invalidateSize();
-      self.map.setBoundsAndCenter(self.config.map.polygon || self.map.markers);
+      self.map.setBoundsAndCenter();
       self.fetchData({});
     });
   };
@@ -689,18 +698,20 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 		  }
 	  })
     self.setState({ status: 'default' })
+    self.map.setBoundsAndCenter();
     self.onChangeMapBoundaries(); // todo: rename
   }
 
-  onChangeAreaFilter(area) {
-    let self = this;
-    self.setSelectedIdea(null);
-    self.setNewIdea(null);
-    self.removeCurrentPolygon();
-    self.setCurrentPolygon( area && area.polygon );
-    self.setState({ status: 'default' })
-    self.map.setBoundsAndCenter(area && area.polygon || self.config.map.polygon || self.map.markers);
-  }
+  // dit is opgezet maar wordt niet genbruikt en is daarom niet afgemaakt; latere wijzigingen maken dat dit niet meer werkt
+  // onChangeAreaFilter(area) {
+  //   let self = this;
+  //   self.setSelectedIdea(null);
+  //   self.setNewIdea(null);
+  //   self.removeCurrentPolygon();
+  //   self.setCurrentPolygon( area && area.polygon );
+  //   self.setState({ status: 'default' })
+  //   self.map.setBoundsAndCenter(area && area.polygon || self.config.map.polygon || self.map.markers);
+  // }
 
   onClickMobileSwitcher() {
     let self = this;
@@ -709,7 +720,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       self.map.map.invalidateSize();
       if (this.state.status == 'location-selected' || this.state.status == 'idea-selected') {
         let selectedIdea = self.state.currentIdea || self.selectedIdea || self.state.editIdea;
-        self.map.setBoundsAndCenter([{ lat: selectedIdea.location.coordinates[0], lng: selectedIdea.location.coordinates[1] }]);
+        self.map.setBoundsAndCenter();
       }
     })
   }
@@ -727,7 +738,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
           titleField: this.config.titleField,
           summaryField: this.config.summaryField,
           typeField: this.config.typeField,
-          areaField: this.config.areaField,
+          // areaField: this.config.areaField,
           siteId: this.config.siteId,
           user: this.config.user,
           api: this.config.api,

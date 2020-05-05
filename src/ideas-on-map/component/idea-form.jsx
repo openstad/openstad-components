@@ -1,4 +1,6 @@
 import React from 'react';
+
+import OpenStadComponentLibs from '../../libs/index.jsx';
 import OpenStadComponentImageUpload from './openstad-component-formelements/image-upload.jsx';
 import OpenStadComponentFormelementsInputWithCounter from './openstad-component-formelements/input-with-counter.jsx';
 
@@ -95,7 +97,7 @@ export default class IdeasForm extends React.Component {
 
   
   dispatchUpdateEditIdea(idea) {
-		var event = new CustomEvent('updateEditIdea', { detail: { idea } });
+		var event = new window.CustomEvent('updateEditIdea', { detail: { idea } });
 		document.dispatchEvent(event);
   }
 
@@ -188,7 +190,7 @@ export default class IdeasForm extends React.Component {
 	  if (!self.config.api.isUserLoggedIn) return alert('Je bent niet ingelogd');
 
 	  var url = self.config.api.url + '/api/site/' + self.config.siteId + '/idea';
-		let headers = Object.assign(( self.config.api && self.config.api.headers || {} ), { "Content-type": "application/json" });
+      let headers = OpenStadComponentLibs.api.getHeaders(self.config);
 
 	  var body = {
 			title: self.state.formfields['title'],
@@ -224,7 +226,7 @@ export default class IdeasForm extends React.Component {
         return response.json();
       })
       .then( json => {
-		    var event = new CustomEvent('newIdeaStored', { detail: { idea: json } });
+		    var event = new window.CustomEvent('newIdeaStored', { detail: { idea: json } });
 		    document.dispatchEvent(event);
       })
       .catch((err) => {

@@ -47,37 +47,37 @@ export default class InfoBlock extends React.Component {
 
   dispatchUpdateSelectedIdea(e, idea) {
     e.stopPropagation();
-		var event = new CustomEvent('updateSelectedIdea', { detail: { idea } });
+		var event = new window.CustomEvent('updateSelectedIdea', { detail: { idea } });
 		document.dispatchEvent(event);
   }
 
   dispatchCloseSelectedLocation(e, idea) {
     e.stopPropagation();
-		var event = new CustomEvent('closeSelectedLocation', { detail: { idea } });
+		var event = new window.CustomEvent('closeSelectedLocation', { detail: { idea } });
 		document.dispatchEvent(event);
   }
   
   dispatchSelectedIdeaClick(e, idea) {
     e.stopPropagation();
-		var event = new CustomEvent('selectedIdeaClick', { detail: { idea } });
+		var event = new window.CustomEvent('selectedIdeaClick', { detail: { idea } });
 		document.dispatchEvent(event);
   };
 
   dispatchOnIdeaClick(e, idea) {
     e.stopPropagation();
-		var event = new CustomEvent('ideaClick', { detail: { idea } });
+		var event = new window.CustomEvent('ideaClick', { detail: { idea } });
 		document.dispatchEvent(event);
   }
   
   dispatchNewIdeaClick(e) {
     e.stopPropagation();
-		var event = new CustomEvent('newIdeaClick', { detail: {} });
+		var event = new window.CustomEvent('newIdeaClick', { detail: {} });
 		document.dispatchEvent(event);
   };
   
   dispatchClickMobileSwitcher(e) {
     e.stopPropagation();
-		var event = new CustomEvent('clickMobileSwitcher', { detail: {} });
+		var event = new window.CustomEvent('clickMobileSwitcher', { detail: {} });
 		document.dispatchEvent(event);
   };
   

@@ -62,7 +62,7 @@ export default class OpenStadComponentReactions extends React.Component {
 	  if (!self.isUserLoggedIn()) return alert('Je bent niet ingelogd');
 
 		let url = ( self.config.api && self.config.api.url ) + "/api/site/" + self.config.siteId + "/idea/" + self.config.ideaId + "/argument" + ( self.config.argumentId ? '/' + self.config.argumentId : ''  );
-		let headers = Object.assign(( self.config.api && self.config.api.headers || {} ), { "Content-type": "application/json" });
+    let headers = OpenStadComponentLibs.api.getHeaders(self.config);
     let method = self.config.argumentId ? 'PUT' : 'POST';
 
 		let body = {
@@ -88,7 +88,7 @@ export default class OpenStadComponentReactions extends React.Component {
 				}
 
         self.setState({ description: '' }, () => {
-		      var event = new CustomEvent('reactionStored', { detail: json });
+		      var event = new window.CustomEvent('reactionStored', { detail: json });
 		      document.dispatchEvent(event);
         });
 
