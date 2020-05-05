@@ -61,34 +61,6 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
     
     self.fetchData();
 
-    // it is using js, because plain css sticky only works when you scroll the direct container
-    setTimeout( function() { // TODO
-      let element = document.getElementById('osc-choices-container' + self.divId)
-      if ( element && self.config.choices.sticky ) {
-        let bodyRect = document.body.getBoundingClientRect();
-        let elemRect = element.getBoundingClientRect();
-        let absTop   = elemRect.top;
-        let absLeft  = elemRect.left;
-        let orgPos   = element.style.position;
-        let orgTop   = element.style.top;
-        let orgLeft  = element.style.left;
-        let threshold = absTop - self.config.choices.sticky.offsetTop;
-		    window.addEventListener('scroll', function(event) {
-          if (element) {
-            if (window.pageYOffset >= threshold) {
-              element.classList.add("sticky")
-              element.style.left = absLeft + 'px'
-            } else {
-              element.classList.remove("sticky")
-              element.style.position = orgPos;
-              element.style.top = orgTop;
-              element.style.left = orgLeft;
-            }
-          }
-        });
-      }
-    }, 1000);
-
   }
 
   fetchData() {
@@ -114,7 +86,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
     state.currentQuestionGroupIndex = 0;
     self.setState(state, () => {
       self.liveUpdates();
-		  var event = new CustomEvent('osc-choices-guide-is-ready');
+		  var event = new window.CustomEvent('osc-choices-guide-is-ready');
 		  document.dispatchEvent(event);
     });
 
@@ -327,7 +299,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
           choicesTitle = '<b>Jouw voorkeur: </b>' + choiceElement.getTitle(self.state.scores[choiceElement.config.divId]) || title;
         }
         choicesHTML = (
-          <div id={'osc-choices-container' + this.divId} className="osc-choices-container osc-accordeon osc-closed">
+          <div id={'osc-choices-container-' + this.divId} className="osc-choices-container osc-accordeon osc-closed">
             <div onClick={() => { var element = document.getElementById('osc-choices-container' + this.divId); if( element.className.match(' osc-closed') ) { element.className = element.className.replace(' osc-closed', ' osc-open'); } else { element.className = element.className.replace(' osc-open', ' osc-closed'); } }} className="osc-accordeon-button" dangerouslySetInnerHTML={{ __html: choicesTitle }}></div>
             <div className="osc-accordeon-content">
               <OpenStadComponentChoices config={self.config.choices} choices={[...choices]} scores={{...self.state.scores}} answerDimensions={answerDimensions} firstAnswerGiven={ self.state.firstAnswerGiven ? true : false } ref={function(el) { self.choicesElement = el; }} key='choices'/>

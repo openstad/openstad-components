@@ -1,5 +1,6 @@
 // polyfills
 import 'whatwg-fetch';
+import 'core-js/es/array/find-index';
 
 // react
 import React from 'react';

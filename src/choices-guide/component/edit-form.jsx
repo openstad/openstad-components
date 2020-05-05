@@ -237,10 +237,10 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
           //
           // self.setState({ description: '' }, () => {
           //   if (self.config.argumentId) {
-          //     var event = new CustomEvent('reactionEdited', { detail: json });
+          //     var event = new window.CustomEvent('reactionEdited', { detail: json });
           //     document.dispatchEvent(event);
           //   } else {
-          //     var event = new CustomEvent('newReactionStored', { detail: json });
+          //     var event = new window.CustomEvent('newReactionStored', { detail: json });
           //     document.dispatchEvent(event);
           //   }
           // });

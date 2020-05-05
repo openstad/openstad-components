@@ -36,7 +36,7 @@ module.exports = {
       ignoreOrder: false,
     }),
     new webpack.ProvidePlugin({
-      Promise: 'es6-promise-promise', // works as expected
+      Promise: 'es6-promise-promise',
     }),
   ],
 

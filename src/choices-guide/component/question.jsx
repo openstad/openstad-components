@@ -81,7 +81,7 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
     let startIndex = images.findIndex( img => img.src == startWith.src );
 
 		// dispatch an event
-		var event = new CustomEvent('osc-show-light-box', { detail: { images, startIndex } });
+		var event = new window.CustomEvent('osc-show-light-box', { detail: { images, startIndex } });
 		document.dispatchEvent(event);
     
   }
