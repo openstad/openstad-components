@@ -11,11 +11,13 @@ import ReactDOM from 'react-dom';
 import './css/default.less';
 
 // the module
+import Form from './component/form.jsx';
 import InputWithCounter from './component/input-with-counter.jsx';
-import Text from './component/text.jsx';
+import Text from './component/textinput.jsx';
 import Textarea from './component/textarea.jsx';
 import Slider from './component/slider.jsx';
 export default {
+  Form,
   InputWithCounter,
   Text,
   Textarea,

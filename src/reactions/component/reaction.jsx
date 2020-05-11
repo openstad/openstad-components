@@ -1,0 +1,262 @@
+import merge from 'merge';
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import OpenStadComponent from '../../component/index.jsx';
+import OpenStadComponentLibs from '../../libs/index.jsx';
+
+import OpenStadComponentReactionForm from './reaction-form.jsx';
+
+'use strict';
+
+export default class OpenStadComponentReaction extends OpenStadComponent {
+
+  constructor(props) {
+    super(props);
+
+    let self = this;
+    self.id = props.id || `osc-reaction-${  parseInt( 1000000 * Math.random() )}`;
+
+    self.defaultConfig = {
+      siteId: null,
+      ideaId: null,
+      title: null,
+      descriptionMinLength: 30,
+      descriptionMaxLength: 500,
+      api: {
+        url: null,
+        headers: null,
+      },
+      requiredUserRole: 'member',
+    };
+
+    self.config = Object.assign(self.defaultConfig, props.config || {});
+
+    self.state = {
+      user: props.user,
+      isMenuActive: false,
+      isReplyFromActive: false,
+      editMode: false,
+    };
+
+  }
+
+  componentDidMount(prevProps, prevState) {
+
+    let self = this;
+
+    document.addEventListener('osc-new-reaction-stored', function(event) {
+      self.onNewReactionStored(event.detail);
+    });
+
+    document.addEventListener('osc-reaction-edited', function(event) {
+      self.onReactionEdited(event.detail);
+    });
+
+  }
+
+  showMenu() {
+    this.setState({ isMenuActive: true });
+  }
+
+  toggleReplyForm() {
+    this.setState({ isReplyFromActive: !this.state.isReplyFromActive });
+  }
+
+  toggleEditForm(what) {
+    this.setState({ editMode: !this.state.editMode });
+  }
+
+  canEdit() {
+    return this.props.data.can.edit;
+  }
+
+  canDelete() {
+    return this.props.data.can.delete;
+  }
+
+  canLike() {
+    let requiredUserRole = this.config.requiredUserRole;
+    let userRole = this.props.user && this.props.user.role;
+    return (( requiredUserRole == 'anonymous' && userRole ) ||
+            ( requiredUserRole == 'member' && ( userRole == 'member' || userRole == 'admin' ) ) ||
+            ( requiredUserRole == 'admin' && userRole == 'admin'));
+  }
+
+  canReply() {
+    return this.props.data.can.reply;
+  }
+
+  submitDelete() {
+
+    let self = this;
+
+    if (!self.canDelete()) return alert('Je kunt deze reactie niet verwijderen');
+
+    let url = `${self.config.api && self.config.api.url   }/api/site/${  self.config.siteId  }/idea/${  self.config.ideaId  }/argument/${  self.props.data.id}`;
+    let headers = OpenStadComponentLibs.api.getHeaders(self.config);
+
+    let body = {};
+
+    fetch(url, {
+      method: 'DELETE',
+      headers,
+      body: JSON.stringify(body),
+    })
+      .then( function(response) {
+        if (response.ok) {
+          return response.json();
+        }
+        throw response.text();
+      })
+      .then(function(json) {
+        self.setState({ isDeleted: true });
+
+		    let event = new CustomEvent('osc-reaction-deleted', { detail: { ideaId: self.config.ideaId } });
+		    document.dispatchEvent(event);
+
+      })
+      .catch(function(error) {
+        console.log(error);
+        error.then(function(messages) { return console.log(messages);} );
+      });
+
+  }
+
+  submitLike() {
+
+    let self = this;
+
+    if (!self.canLike()) return alert('Je kunt deze reactie niet liken');
+
+    let url = `${self.config.api && self.config.api.url   }/api/site/${  self.config.siteId  }/idea/${  self.config.ideaId  }/argument/${  self.props.data.id  }/vote`;
+    let headers = OpenStadComponentLibs.api.getHeaders(self.config);
+
+    let body = {};
+
+    fetch(url, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(body),
+    })
+      .then( function(response) {
+        if (response.ok) {
+          return response.json();
+        }
+        throw response.text();
+      })
+      .then(function(json) {
+        console.log({ yes: json.yes, hasUserVoted: json.hasUserVoted });
+        self.setState({ yes: json.yes, hasUserVoted: json.hasUserVoted });
+      })
+      .catch(function(error) {
+        console.log(error);
+        error.then(function(messages) { return console.log(messages);} );
+      });
+
+  }
+
+  onNewReactionStored(reaction) {
+    this.setState({ isMenuActive: false, isReplyFromActive: false });
+  }
+
+  onReactionEdited(reaction) {
+    if (reaction.id == this.props.data.id) {
+      this.setState({ editMode: false, isMenuActive: false });
+    }
+  }
+
+  render() {
+
+    let self = this;
+    let data = self.props.data || { can: {} };
+
+    if (data.isDeleted) return null;
+
+    let menuHTML = null;
+    if ( self.canEdit() && self.canDelete() ) {
+      menuHTML = (
+        <div className={ `osc-reaction-menu${   self.state.isMenuActive ? ' osc-reaction-hamburger-active' : ''}` } onClick={ () => { self.showMenu(); }}>
+          <a className="osc-reaction-delete" title="Argument verwijderen" onClick={ () => { if (confirm('Weet je het zeker?')) self.submitDelete(); } }/>
+          <a className="osc-reaction-edit" title="Argument bewerken" onClick={ () => self.toggleEditForm() }/>
+        </div>
+      );
+    }
+
+    let descriptionHTML = (<div className="osc-reaction-description">{data.description}</div>);
+    if (self.state.editMode) {
+      descriptionHTML = (
+        <div className="osc-reaction-description">
+          <OpenStadComponentReactionForm config={{ ...self.config, description: data.description, argumentId: data.id }} user={self.state.user} ref={el => (self.editForm = el)}/>
+        </div>
+      );
+    }
+
+    let likeButtonHTML = null;
+    if (!data.parentId) {
+      likeButtonHTML = (
+			  <a className={ `osc-reaction-like-button${ ( typeof self.state.hasUserVoted != 'undefined' ? self.state.hasUserVoted : data.hasUserVoted ) ? ' osc-reaction-like-button-hasvoted' : ''}` } onClick={ () => self.submitLike() }>
+				  Mee eens (<span>{( typeof self.state.yes != 'undefined' ? self.state.yes : data.yes ) | 0}</span>)
+        </a>
+      );
+    }
+
+    let replyButtonHTML = null;
+    let replyFormHTML = null;
+    if (self.canReply()) {
+      replyButtonHTML = (<a href="#" onClick={ () => self.toggleReplyForm() } className="osc-reply-button">Reageren</a>);
+      if (self.state.isReplyFromActive) {
+        let config = { ...self.config, parentId: data.id };
+        config.formIntro = '';
+        replyFormHTML = (
+			    <div id={`osc-reaction-${data.id}`} className="osc-reply">
+            <OpenStadComponentReactionForm config={config} user={self.state.user} ref={el => (self.editForm = el)}/>
+          </div>
+        );
+      }
+    }
+
+    let repliesHTML = null;
+    if (data.reactions && data.reactions.length) {
+      repliesHTML = (
+        <ul className="osc-reactions-list">
+          {data.reactions.map((reaction) => {
+
+            let key = `osc-reaction-key-${   reaction.id || parseInt( 1000000 * Math.random() )}`;
+            return (
+              <li key={key}>
+                <OpenStadComponentReaction config={self.config} className="osc-reply" user={self.state.user} data={reaction}/>
+              </li>
+            );
+
+          })}
+        </ul>
+      );
+    }
+
+    return (
+      <div>
+
+			  <div id={`osc-reaction-${data.id}`} className={ self.props.className || 'osc-reaction' }>
+
+          {menuHTML}
+
+          <div className="osc-reaction-user">{data.user.nickName || data.user.fullName || `${data.user.firstName } ${  data.user.lastName}`}</div>
+				  <div className="osc-reaction-date">{data.createDateHumanized}</div>
+          {descriptionHTML}
+
+          {likeButtonHTML}
+			    {replyButtonHTML}
+
+		    </div>
+
+			  {replyFormHTML}
+        {repliesHTML}
+
+		  </div>
+
+    );
+
+  }
+
+}

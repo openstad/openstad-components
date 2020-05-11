@@ -5,7 +5,7 @@ import React from 'react';
 import VoteButton from './vote-button.jsx';
 
 import OpenStadComponentLibs from '../../libs/index.jsx';
-import OpenStadComponentReactions from './openstad-component-reactions/openstad-component-reactions.jsx';
+import OpenStadComponentReactions from '../../reactions/index.jsx';
 
 'use strict';
 

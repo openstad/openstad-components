@@ -331,7 +331,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
         if (self.state.status != 'init' && self.state.status != 'result') {
           nextAction = () => { self.gotoNextQuestion(); }
           nextLabel = 'Volgende'
-        } else if (self.config.beforeUrl) {
+        } else if (self.config.afterUrl) {
           nextUrl = self.config.afterUrl;
           nextLabel = 'Resultaat'
         }

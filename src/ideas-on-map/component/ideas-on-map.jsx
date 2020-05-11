@@ -4,11 +4,11 @@ import ReactDOM from 'react-dom';
 import Filterbar from './filterbar.jsx';
 import InfoBlock from './info-block.jsx';
 import IdeaForm from './idea-form.jsx';
-import IdeaDetails from './idea-details.jsx';
 import Map from './map.jsx';
 
 import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
+import OpenStadComponentIdeaDetails from '../../idea-details/index.jsx';
 
 // TODO: clean up; ik gebruikte eerst setNewIdea en setSelected, maar nu onNewIdeaClick en onSelectedIdeaClick; trek dat gelijk
 
@@ -71,6 +71,9 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       argument: {
         descriptionMinLength: 30,
         descriptionMaxLength: 500,
+        formIntro: 'Mijn reactie op deze inzending is ...',
+        placeholder: '',
+        requiredUserRole: 'member',
       },
 
 		};
@@ -125,12 +128,10 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       self.onClusterClick(event.detail);
     });
     
-
     // handle filter changes
 		document.addEventListener('typeFilterUpdate', function(event) {
       self.onChangeTypeFilter(event.detail.value);
     });
-
     // document.addEventListener('areaFilterUpdate', function(event) {
     //   self.onChangeAreaFilter(event.detail.value);
     // });
@@ -159,19 +160,19 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     });
 
     // details changes
-		document.addEventListener('ideaLiked', function(event) {
+		document.addEventListener('osc-idea-liked', function(event) {
       self.onIdeaLiked(event.detail);
     });
-		document.addEventListener('reactionStored', function(event) {
+		document.addEventListener('osc-reaction-stored', function(event) {
       self.onReactionStored(event.detail);
     });
-		document.addEventListener('reactionDeleted', function(event) {
+		document.addEventListener('osc-reaction-deleted', function(event) {
       self.onReactionDeleted(event.detail);
     });
-		document.addEventListener('editIdeaClick', function(event) {
+		document.addEventListener('osc-edit-idea-click', function(event) {
       self.onEditIdeaClick(event.detail);
     });
-		document.addEventListener('ideaDeleted', function(event) {
+		document.addEventListener('osc-idea-deleted', function(event) {
       self.onIdeaDeleted(event.detail);
     });
 
@@ -749,7 +750,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
           }
         };
         infoHTML = (
-			    <IdeaDetails id={this.divId + '-infoblock'} config={config} idea={this.state.currentIdea} label={this.state.currentIdea.extraData.type} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.ideadetails = el)}/>
+			    <OpenStadComponentIdeaDetails id={this.divId + '-infoblock'} config={config} idea={this.state.currentIdea} label={this.state.currentIdea.extraData.type} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.ideadetails = el)}/>
         );
         filterHTML = (
 				  <div className="osc-ideas-on-map-filterbar"><div className="osc-backbutton" onClick={() => this.hideIdeaDetails()}>Terug naar overzicht</div></div>

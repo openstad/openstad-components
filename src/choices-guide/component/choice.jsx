@@ -58,7 +58,7 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
     let self = this;
 
     let myAnswers = self.answers;
-    let givenAnswers = answers;
+    let givenAnswers = answers || {};
 
     let noOfAnswers = Object.keys(myAnswers).length;
     let results = {};

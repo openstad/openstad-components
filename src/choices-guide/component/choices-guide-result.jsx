@@ -7,6 +7,9 @@ import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentChoices from './choices.jsx';
 import OpenStadComponentChoicePlane from './choice-plane.jsx';
 
+import OpenStadComponentForms from '../../forms/index.jsx';
+import OpenStadComponentPreviousNextButtonBlock from '../../previous-next-button-block/index.jsx';
+
 import fetchChoicesGuide from '../lib/fetch.js'
 
 'use strict';
@@ -19,9 +22,10 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
 
     this.defaultConfig = {
       type: 'default',
+      submission: {
+        type: 'none',
+      },
     };
-
-    this.config = merge.recursive(this.defaultConfig, this.config, props.config || {});
 
     let allValues = OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.values') || {};
     let allScores = OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.scores') || {};
@@ -55,12 +59,11 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
 
   startGuide() {
     let self = this;
-    let scores = self.choicesElement.calculateScores(self.state.answers);
+    let scores = self.choicesElement && self.choicesElement.calculateScores(self.state.answers);
 
     let choicesTitle = '...';
     if ( self.choicesElement ) {
       let choiceElement = self.choicesElement.getPreferedChoice();
-      console.log(self.state.scores[choiceElement.config.divId]);
       if (choiceElement) {
         let name = choiceElement.getTitle(self.state.scores[choiceElement.config.divId], true);
         if (name) {
@@ -70,7 +73,11 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
         }
       }
       self.setState({ title: choicesTitle })
-      self.submitResult()
+
+      if (self.config.submission.type == 'auto') {
+        self.submitResult()
+      }
+
     }
     
   }
@@ -79,12 +86,20 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
 
     let self = this;
 
+    let formValues;
+    if (self.config.submission.type == 'form') {
+      formValues = self.form.getValues();
+      let isValid = self.form.validate({ showErrors: true });
+      if (!isValid) return;
+    }
+
     fingerprint.get(fingerprintComponents => {
       
       let url = `${self.config.api && self.config.api.url }/api/site/${  self.config.siteId  }/choicesguide/${  self.config.choicesGuideId  }/result`;
       let headers = OpenStadComponentLibs.api.getHeaders(self.config);
       let body = {
         result: self.state.answers,
+        extraData: formValues,
         userFingerprint: btoa(fingerprintComponents),
       };
 
@@ -100,6 +115,9 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
           throw response.text();
         })
         .then(function(json) {
+          if (self.config.submission.type == 'form') {
+            document.location.href = self.config.afterUrl
+          }
         })
         .catch(function(error) {
           error.then(function(messages) { return console.log(messages);} );
@@ -145,17 +163,52 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
       }
     }
 
+    let moreInfoHTML = null;
+    if (self.config.moreInfoUrl && self.config.moreInfoLabel) {
+      moreInfoHTML =
+        <div className="osc-more-info-link">
+          <a href={self.config.moreInfoUrl}>{self.config.moreInfoLabel}</a>
+        </div>
+    } 
+
+    let formHTML = null;
+    let previousNextButtonsHTML = null;
+    if (self.config.submission.type == 'form') {
+      formHTML = (
+        <OpenStadComponentForms.Form config={ self.config.submission.form }  ref={function(el) { self.form = el; }}/>
+      );
+      
+
+      let previousUrl = null; let previousAction = null; let previousLabel = null;
+
+      if (self.config.beforeUrl) {
+        previousUrl = self.config.beforeUrl;
+        previousLabel = self.config.beforeLabel || 'Vorige'
+      }
+
+      let nextUrl = null;
+      let nextAction = () => { self.submitResult(); }
+      let nextLabel = self.config.afterLabel || 'Opslaan'
+      
+      if ( previousLabel || nextLabel ) {
+        previousNextButtonsHTML = <OpenStadComponentPreviousNextButtonBlock previousAction={previousAction} previousUrl={previousUrl} previousLabel={previousLabel} nextAction={nextAction} nextUrl={nextUrl} nextLabel={nextLabel}/>
+      }
+
+    }
+    
     return (
       <div className="osc-choices-guide">
         <div className="osc-result">
           <div className="osc-result-content">
-
-            <h4>{self.state.title}</h4>
+            <h2>{self.state.title}</h2>
             <div className="osc-choices-container">
               {choicesHTML}
             </div>
+            {moreInfoHTML}
+            {formHTML}
           </div>
         </div>
+       {previousNextButtonsHTML}
       </div>
     );
 

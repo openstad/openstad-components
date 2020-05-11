@@ -4,57 +4,24 @@ import ReactDOM from 'react-dom';
 
 'use strict';
 
-export default class FormfieldTextarea extends React.Component {
+import OpenStadComponentDefaultInput from './default-input.jsx';
 
-  constructor(props) {
-    super(props);
-
-		let self = this;
-		self.id = props.id || 'osc-formfield-textarea-' + parseInt( 1000000 * Math.random() )
-
-		self.defaultConfig = {
-			name: 'tekst',
-      placeholder: '',
-		};
-
-		self.config = merge.recursive(self.defaultConfig, self.config, props.config || {})
-
-    self.state = {
-      value: props.value || '',
-		};
-
-    self.key = props.useKey || ( self.id || 'osc-formfield-textarea-' ) + parseInt( 10000000 * Math.random );
-
-    this.onChange = props.onChange;
-
-  }
-
-	validate() {
-		let isValid = true;
-		this.setState({ isValid })
-		return isValid;
-	}
-
-	handleOnChange(data) {
-    data = data || {};
-		this.setState(data)
-		if (typeof this.onChange == 'function') {
-			this.onChange(data);
-		}
-	}
+export default class OpenStadComponentSelect extends OpenStadComponentDefaultInput {
 
 	render() {
 
 		let self = this;
 
-    let inputHTML = (
-			<textarea key={self.key} ref={el => (self.input = el)} value={this.state.value} disabled={this.props.disabled} placeholder={this.config.placeholder} onChange={e => self.handleOnChange({ value: self.input.value })} >{this.state.value}</textarea>
-    );
-
+    let errorHTML = null;
+    if (self.state.error) {
+      errorHTML = (<div className="osc-form-error">Je hebt nog geen niets ingevuld</div>)
+    }
+    
     return (
-			<div id={self.id} ref={el => (self.instance = el)} className="osc-formfield-textarea-container">
-				{inputHTML}
-			</div>
+			<div className="osc-textarea">
+			  <textarea type="text" value={this.state.value} disabled={this.props.disabled} placeholder={this.config.placeholder} onChange={e => self.handleOnChange({ value: self.input.value })} ref={el => (self.input = el)}>{this.state.value}</textarea>
+        {errorHTML}
+		  </div>
     );
 
   }

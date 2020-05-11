@@ -41,7 +41,7 @@ class Slider extends React.Component {
     const { value, touched } = self.state
     const { min, max, step } = self.props
     return(
-      <div className={`${self.props.className} osc-slider-container`}>
+      <div className={`${self.props.className} osc-slider`}>
         <div className="osc-slider-track-container">
           <div className="osc-slider-track"></div>
           <div className="osc-slider-track-progress-container">
