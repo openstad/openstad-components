@@ -19,6 +19,10 @@ export default class Map extends OpenStadComponentNLMap {
     };
 		this.config = merge.recursive(this.defaultConfig, this.config, props.config || {})
 
+    // tmp fallback
+    this.config.polygon = self.config.polygon || [ { lng: 4.8923325, lat: 52.3578818 }, { lng: 4.8922574, lat: 52.3574723 }, { lng: 4.8920697, lat: 52.3574854 }, { lng: 4.8919410, lat: 52.3567908 }, { lng: 4.8906860, lat: 52.3568661 }, { lng: 4.8904125, lat: 52.3552313 }, { lng: 4.8928991, lat: 52.3556621 }, { lng: 4.8928025, lat: 52.3558538 }, { lng: 4.8930225, lat: 52.3558964 }, { lng: 4.8931164, lat: 52.3557162 }, { lng: 4.8953144, lat: 52.3562174 }, { lng: 4.8971003, lat: 52.3566958 }, { lng: 4.8969823, lat: 52.3568498 }, { lng: 4.8971968, lat: 52.3569055 }, { lng: 4.8973095, lat: 52.3567646 }, { lng: 4.8985805, lat: 52.3571577 }, { lng: 4.8984679, lat: 52.3572757 }, { lng: 4.8986020, lat: 52.3573281 }, { lng: 4.8985215, lat: 52.3575247 }, { lng: 4.8983499, lat: 52.3574952 }, { lng: 4.8982480, lat: 52.3574985 }, { lng: 4.8982748, lat: 52.3574362 }, { lng: 4.8972826, lat: 52.3571512 }, { lng: 4.8931691, lat: 52.3574493 }, { lng: 4.8932067, lat: 52.3576099 }, { lng: 4.8931262, lat: 52.3576131 }, { lng: 4.8931584, lat: 52.3578228 }, { lng: 4.8923325, lat: 52.3578810 } ]
+    this.config.autoZoomAndCenter = this.config.autoZoomAndCenter || 'polygon'
+    
     this.ideas = [];
 
   }
