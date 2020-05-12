@@ -119,7 +119,7 @@ export default class OpenStadComponentQuestionGroup extends OpenStadComponent {
     return (
       <div id={this.id} className="osc-question-group">
         <h3 className="osc-question-group-title">{data.title}</h3>
-        <div className="osc-question-group-description">{data.description}</div>
+        <div className="osc-question-group-description" dangerouslySetInnerHTML={{ __html: data.description }}></div>
         {questionsHTML}
       </div>
     );
