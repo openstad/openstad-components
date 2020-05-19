@@ -72,16 +72,6 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
           self.startGuide();
         });
       })
-      .then(() => {
-        let images = [
-          { src: 'https://marnixnoord.cms.staging.openstadsdeel.nl/uploads/attachments/ck8rfknk400gctc3wg08gwhnn-osdorp-0002-b.full.jpg' },
-          { src: 'https://marnixnoord.cms.staging.openstadsdeel.nl/uploads/attachments/ck8rhqgr100p4tc3wtgqjtbqg-stp-noord-01b.full.jpg' },
-        ]
-
-		    // dispatch an event
-		    var event = new window.CustomEvent('osc-show-light-box', { detail: { images, startIndex: 0 } });
-		    document.dispatchEvent(event);
-      })
       .catch((err) => {
         console.log('Niet goed');
         console.log(err);

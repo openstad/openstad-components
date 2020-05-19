@@ -26,6 +26,9 @@
   background-repeat: no-repeat;
   background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjEzIiB2aWV3Qm94PSIwIDAgOCAxMyI+CiAgICA8cGF0aCBmaWxsPSIjMDA0Njk5IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik03LjQxIDEuOThMMi44MyA2Ljc2bDQuNTggNC43ODJMNiAxMy4wMSAwIDYuNzYgNiAuNTF6Ii8+Cjwvc3ZnPgo=);
 }
+.osc-previous-next-button-block .osc-previous-button:hover {
+  text-decoration: underline;
+}
 .osc-previous-next-button-block .osc-next-button {
   position: relative;
   margin-right: 17px;
@@ -49,6 +52,12 @@
   width: 0px;
   height: 0px;
   content: '';
+}
+.osc-previous-next-button-block .osc-next-button:hover {
+  background-color: #003066;
+}
+.osc-previous-next-button-block .osc-next-button:hover:before {
+  border-left: 17px solid #003066;
 }
 
 

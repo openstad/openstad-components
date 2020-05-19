@@ -106,7 +106,7 @@ export default class InfoBlock extends React.Component {
         }
         newIdeaHTML = (
 			    <div className="osc-info-block-new-idea">
-            <button className="osc-close-button" onClick={(event) => self.dispatchCloseSelectedLocation(event, null)} ref={el => (self.resetButton = el)}/>
+            <button className="osc-close-button-black" onClick={(event) => self.dispatchCloseSelectedLocation(event, null)} ref={el => (self.resetButton = el)}/>
             <p><strong>Geselecteerd:</strong> Een locatie vlakbij <strong>{self.state.newIdea.address}</strong></p>
               {/* <h4>{self.state.newIdea.location.coordinates[0]},{self.state.newIdea.location.coordinates[1]}</h4> */}
               <p>Op deze locatie is nog geen punt ingestuurd. Maar misschien heeft een medebewoner wel een vergelijkbare melding gedaan in de omgeving waaraan u kunt bijdragen. Bekijk daarom eerst de inzendingen in onderstaande lijst. Wilt u een nieuw punt toevoegen? Klik dan hier:</p>
@@ -116,7 +116,7 @@ export default class InfoBlock extends React.Component {
       } else {
         newIdeaHTML = (
 			    <div className="osc-info-block-new-idea">
-            <button className="osc-close-button" onClick={(event) => self.dispatchCloseSelectedLocation(event, null)} ref={el => (self.resetButton = el)}/>
+            <button className="osc-close-button-black" onClick={(event) => self.dispatchCloseSelectedLocation(event, null)} ref={el => (self.resetButton = el)}/>
             <h3>Geselecteerd</h3>
             <p>U heeft een locatie geselecteerd buiten het begrensde gebied. U kunt via deze website geen melding op deze locatie inzenden.</p>
             <p>Wilt u melden wat er goed is of wat er beter kan in de omliggende straten en pleinen? Dan horen we dit graag van u via e-mail. Klik daarvoor op de link hieronder of stuur direct een e-mail naar gerarddoubuurt@amsterdam.nl.</p>
@@ -135,7 +135,7 @@ export default class InfoBlock extends React.Component {
       if (!typeDef) { typeDef = { listicon: { html: '' } }; console.log(idea.extraData.theme + ' niet gevonden'); }
       selectedIdeaHTML = (
 			  <div className="osc-info-block-selected-idea" onClick={(event) => self.dispatchSelectedIdeaClick(event, self.state.selectedIdea)}>
-          <button className="osc-close-button" onClick={(event) => self.dispatchUpdateSelectedIdea(event, null)} ref={el => (self.resetButton = el)}/>
+          <button className="osc-close-button-black" onClick={(event) => self.dispatchUpdateSelectedIdea(event, null)} ref={el => (self.resetButton = el)}/>
           <h3>Geselecteerd</h3>
           <div className="osc-info-block-selected-idea-idea">
             <div className="osc-image" style={{ backgroundImage: `url(${idea.image})` }}></div>

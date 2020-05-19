@@ -26,7 +26,7 @@
   text-decoration: underline;
   background-color: #aaa;
 }
-.osc-close-button {
+.osc-close-button-black {
   background-size: cover;
   background-repeat: no-repeat;
   background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDIwIDIwIj48cGF0aCBmaWxsPSIjMDAwMDAwIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xNy45MTcgMEwxMCA3LjkxNyAyLjA4MyAwIDAgMi4wODMgNy45MTcgMTAgMCAxNy45MTYgMi4wODMgMjAgMTAgMTIuMDg0IDE3LjkxNyAyMCAyMCAxNy45MTYgMTIuMDgzIDEwIDIwIDIuMDgzeiIvPjwvc3ZnPgo=);
@@ -40,8 +40,8 @@
   cursor: pointer;
   z-index: 20;
 }
-.osc-close-button:active,
-.osc-close-button:focus {
+.osc-close-button-black:active,
+.osc-close-button-black:focus {
   outline: 0;
 }
 .ocs-gray-text {

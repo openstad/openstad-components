@@ -63,7 +63,7 @@ export default class OpenStadComponentLightbox extends React.Component {
 
   showImage(e, src) {
     e.stopPropagation();
-    this.mainImage.src = src;
+    this.mainImage.style.backgroundImage = `url(${src})`;
   }
 
   recalcSizes() {
@@ -105,17 +105,17 @@ export default class OpenStadComponentLightbox extends React.Component {
 
     return (
 			<div className="osc-lightbox" onClick={ () => { this.hideLightbox(); } } ref={el => (self.instance = el)}>
+        <div className="osc-close-button" onClick={ (e) => self.hideLightbox(e) } ></div>
         <div className="osc-lightbox-main-container" ref={el => (self.mainContainer = el)}>
-          <div className="osc-image-container" ref={el => (self.mainImage = el)}>
-            <img src={ image.src } onClick={ (e) => self.showImage(e, image.src) }/>
+          <div className="osc-image-container" style={{ backgroundImage: `url(${ self.state.images[self.state.startIndex] && self.state.images[self.state.startIndex].src })` }} ref={el => (self.mainImage = el)}>
           </div>
         </div>
         <div className="osc-lightbox-navigation-container">
         <div className="osc-lightbox-navigation" ref={el => (self.navigationContainer = el)}>
           { self.state.images.map( ( image, i ) => {
+            console.log({ backgroundImage: `url(${image.src})`});
             return (
-              <div className="osc-image-container" key={`lighbox-image-${i}`} ref={ el => self[`lighbox-image-${i}`] = el}>
-                <img src={ image.src } onClick={ (e) => self.showImage(e, image.src) }/>
+              <div className="osc-image-container" style={{ backgroundImage: `url(${image.src})`}} onClick={ (e) => self.showImage(e, image.src) } key={`lighbox-image-${i}`} ref={ el => self[`lighbox-image-${i}`] = el}>
               </div>
             )                                                   
           })
