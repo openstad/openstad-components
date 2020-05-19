@@ -60,7 +60,7 @@ export default class OpenStadComponentFormField extends OpenStadComponent {
 
     let descriptionHTML = null;
     if (self.config.description) {
-      descriptionHTML = <div className="osc-form-description">{self.config.description}</div>
+      descriptionHTML = <div className="osc-form-description" dangerouslySetInnerHTML={{ __html: self.config.description }}></div>
     }
 
     let fieldHTML = null;

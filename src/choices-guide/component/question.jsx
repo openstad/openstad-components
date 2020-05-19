@@ -21,6 +21,7 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
 
     this.onChangeHandler = this.onChangeHandler.bind(this);
 
+
   }
 
   onChangeHandler(value) {
@@ -109,7 +110,9 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
       if (!Array.isArray(images)) images = [images];
       let image = images[0];
       imageHTML = (
-        <img className="osc-question-image" src={image.src}/>
+        <div className="osc-question-image-container">
+          <img className="osc-question-image" src={image.src}/>
+        </div>
       );
     }
 
@@ -153,11 +156,15 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
               <div className="osc-question-description-text" dangerouslySetInnerHTML={{ __html: data.description }}></div>
               <div className="osc-question-description-image-container osc-question-description-image-container-a">
                 <div className="osc-question-description-label osc-question-description-label-a">{labelA}</div>
-                <img className="osc-question-description-image" src={questionImageA.src} style={{ cursor: 'pointer' }} onClick={ () => self.showLightbox(self.questionImageA) }  ref={el => self.questionImageA = el}/>
+                <div className="osc-question-image-container">
+                  <img className="osc-question-description-image" src={questionImageA.src} style={{ cursor: 'pointer' }} onClick={ () => self.showLightbox(self.questionImageA) }  ref={el => self.questionImageA = el}/>
+                </div>
               </div>
               <div className="osc-question-description-image-container osc-question-description-image-container-b">
                 <div className="osc-question-description-label osc-question-description-label-b">{labelB}</div>
-                <img className="osc-question-description-image" src={questionImageB.src} style={{ cursor: 'pointer' }} onClick={ () => self.showLightbox(self.questionImageB) }  ref={el => self.questionImageB = el}/>
+                <div className="osc-question-image-container">
+                  <img className="osc-question-description-image" src={questionImageB.src} style={{ cursor: 'pointer' }} onClick={ () => self.showLightbox(self.questionImageB) }  ref={el => self.questionImageB = el}/>
+                </div>
               </div>
             </div>
           );

@@ -72,6 +72,16 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
           self.startGuide();
         });
       })
+      .then(() => {
+        let images = [
+          { src: 'https://marnixnoord.cms.staging.openstadsdeel.nl/uploads/attachments/ck8rfknk400gctc3wg08gwhnn-osdorp-0002-b.full.jpg' },
+          { src: 'https://marnixnoord.cms.staging.openstadsdeel.nl/uploads/attachments/ck8rhqgr100p4tc3wtgqjtbqg-stp-noord-01b.full.jpg' },
+        ]
+
+		    // dispatch an event
+		    var event = new window.CustomEvent('osc-show-light-box', { detail: { images, startIndex: 0 } });
+		    document.dispatchEvent(event);
+      })
       .catch((err) => {
         console.log('Niet goed');
         console.log(err);
@@ -299,8 +309,8 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
           choicesTitle = '<b>Jouw voorkeur: </b>' + choiceElement.getTitle(self.state.scores[choiceElement.config.divId]) || title;
         }
         choicesHTML = (
-          <div id={'osc-choices-container-' + this.divId} className="osc-choices-container osc-accordeon osc-closed">
-            <div onClick={() => { var element = document.getElementById('osc-choices-container' + this.divId); if( element.className.match(' osc-closed') ) { element.className = element.className.replace(' osc-closed', ' osc-open'); } else { element.className = element.className.replace(' osc-open', ' osc-closed'); } }} className="osc-accordeon-button" dangerouslySetInnerHTML={{ __html: choicesTitle }}></div>
+          <div id={'osc-choices-container-' + this.divId} className="osc-choices-container osc-accordeon osc-closed" ref={el => { self.choicesAccordeon = el; }}>
+            <div onClick={() => { if( this.choicesAccordeon.className.match(' osc-closed') ) { this.choicesAccordeon.className = this.choicesAccordeon.className.replace(' osc-closed', ' osc-open'); } else { this.choicesAccordeon.className = this.choicesAccordeon.className.replace(' osc-open', ' osc-closed'); } }} className="osc-accordeon-button" dangerouslySetInnerHTML={{ __html: choicesTitle }}></div>
             <div className="osc-accordeon-content">
               <OpenStadComponentChoices config={self.config.choices} choices={[...choices]} scores={{...self.state.scores}} answerDimensions={answerDimensions} firstAnswerGiven={ self.state.firstAnswerGiven ? true : false } ref={function(el) { self.choicesElement = el; }} key='choices'/>
             </div>
@@ -308,9 +318,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
         );
 
         let questionGroupHTML = (
-          <div>
             <OpenStadComponentQuestionGroup config={ { noOfQuestionsToShow: this.config.noOfQuestionsToShow, liveUpdatesFunction: self.liveUpdates } } data={ questionGroup } ref={function(el) { self.questionGroupElement = el; }} key={`group${self.state.currentQuestionsGroupIndex}`}/>
-          </div>
         );
 
         let editButtonHTML = null;

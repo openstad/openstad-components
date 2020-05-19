@@ -5,7 +5,6 @@
   width: 220px;
   top: 100px;
   left: 720px;
-  background-color: #f3f3f3;
 
   &.sticky {
     position: fixed;
@@ -14,7 +13,7 @@
     
     @media @phone {
       top: 0px;
-      box-shadow: #000000 0 4px 4px 0;
+      box-shadow: 0 2px 8px 5px rgba(0, 0, 0, 0.1);
     }
 
   }
@@ -27,7 +26,7 @@
   }
 
   h4 {
-    margin: 0 0 20px 0;
+    margin: 0 0 8px 0;
     padding: 0;
     font-size: 16px;
     font-weight: 600;
@@ -44,7 +43,8 @@
 
     li {
       margin: 0;
-      padding: 0;
+      padding: 12px 10px 15px 10px;
+      border-bottom: 2px solid #e5e5e5;
     }
 
     .osc-choice {
@@ -58,8 +58,7 @@
         height: 14px;
         width: 100%;
         margin-top: 0px;
-        margin-bottom: 20px;
-        background-color: white;
+        background-color: #e5e5e5;
         border-radius: 7px;
         overflow: hidden;
 
@@ -80,12 +79,28 @@
   &.osc-accordeon {
 
     margin-top: 0;
-		background-color: #f3f3f3;
-    border: none;
+		background-color: white;
+    border-top: 2px solid black;
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+
+    &:after {
+      position: relative;
+      display: block;
+      margin-top: -2px;
+      width: 100%;
+      height: 2px;
+      background-color: black;
+      content: '';
+    }
+
+    @media @phone {
+      border: none;
+    }
 
 		.osc-accordeon-button {
       font-weight: normal;
-      padding: 20px;
+      padding: 10px;
       background: none;
       cursor: default;
 
@@ -97,7 +112,6 @@
     }
 
 		.osc-accordeon-content {
-      padding: 20px;
 
       .osc-choice-plane-plane{
         margin: 0 auto;
@@ -106,23 +120,19 @@
 
     &.osc-open {
 		  .osc-accordeon-button {
-			  background-color: #f3f3f3;
-        border: none;
+        border-bottom: 2px solid #e5e5e5;
 		  }
 		  .osc-accordeon-content {
         display: block;
-        border: none;
 		  }
     }
 
 	  &.osc-closed {
 		  .osc-accordeon-button {
-			  background-color: #f3f3f3;
-        border: none;
+        border-bottom: 2px solid #e5e5e5;
 		  }
 		  .osc-accordeon-content {
         display: block;
-        border: none;
 		  }
 	  }
 

@@ -1,11 +1,19 @@
 .osc-result {
 
+  @phone: ~'only screen and (max-width: 940px)';
+  
   position: relative;
   width: 100%;
   max-width: 700px;
-  padding: 20px;
+  padding: 20px 0;
   font-size: 16px;
   background-color: white;
+
+  @media @phone {
+    width: 100%;
+    max-width: 100%;
+    padding: 20px 15px;
+  }
 
   h2 {
     margin: 40px 0;
@@ -21,6 +29,7 @@
     margin: 20px 0;
     a {
       .osc-arrow-right-blue-background();
+      color: #004699;
       padding-left: 20px;
       font-weight: bold;
     }
@@ -31,15 +40,38 @@
     position: relative;
     top: 0;
     left: 0;
-
     width: 100%;
-    padding: 20px;
+    margin-bottom: 40px;
+    background-color: white;
+
+    h4 {
+      text-align: left;
+      margin-bottom: 10px;
+    }
 
     .osc-accordeon-button {
       display: none;
     }
 
     ul.osc-choices {
+
+      li {
+        padding: 15px 0;
+        border-bottom: none;
+      }
+
+      .osc-choice-default {
+
+        .osc-choice-bar {
+          height: 22px;
+          border-radius: 11px;
+          background-color: #e5e5e5;
+
+          .osc-choice-bar-progress {
+            height: 22px;
+          }
+        }
+      }
 
       .osc-choice-plane-plane {
       }

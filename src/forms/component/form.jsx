@@ -70,7 +70,7 @@ export default class OpenStadComponentForm extends OpenStadComponent {
 
     let introHTML = null;
     if (self.config.intro) {
-      introHTML = <div className="osc-form-intro">{self.config.intro}</div>
+      introHTML = <div className="osc-form-intro" dangerouslySetInnerHTML={{ __html: self.config.intro }}></div>
     }
 
     let fieldsHTML = null;

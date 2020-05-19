@@ -200,7 +200,6 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
       <div className="osc-choices-guide">
         <div className="osc-result">
           <div className="osc-result-content">
-            <h2>{self.state.title}</h2>
             <div className="osc-choices-container">
               {choicesHTML}
             </div>

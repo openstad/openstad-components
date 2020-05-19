@@ -19,6 +19,8 @@ export default class OpenStadComponentLightbox extends React.Component {
       startIndex: 0,
     };
 
+    this.recalcSizes = this.recalcSizes.bind(this);
+
   }
 
 	componentDidMount(prevProps, prevState) {
@@ -37,25 +39,64 @@ export default class OpenStadComponentLightbox extends React.Component {
   
   showLightbox(data) {
 
+    let self = this;
+    
     // console.log('-------------------- Lightbox.show()');
     // console.log(data);
 
-    this.setState({
+    self.setState({
       images: data.images,
       startIndex: data.startIndex,
+    }, () => {
+      self.instance.style.display = 'block'
+      self.recalcSizes();
     })
 
-    this.instance.style.display = 'block'
-    
+    window.addEventListener('resize', self.recalcSizes);
+
   }
 
   hideLightbox() {
     this.instance.style.display = 'none'
+    window.removeEventListener('resize', self.recalcSizes);
   }
 
   showImage(e, src) {
     e.stopPropagation();
     this.mainImage.src = src;
+  }
+
+  recalcSizes() {
+
+    let self = this;
+
+    if (!self.mainContainer) return;
+
+    let mainWidth = self.mainContainer.offsetWidth;
+    let mainHeight = self.mainContainer.offsetHeight;
+    if (mainWidth / mainHeight > 16/9) {
+      let height = .8 * mainHeight;
+      self.mainImage.style.height = height + 'px';
+      self.mainImage.style.width = ( 16/9 * height ) + 'px';
+      self.mainImage.style.top = ( ( mainHeight - height ) / 2 ) + 'px';
+      self.mainImage.style.left = ( ( mainWidth - ( 16/9 * height ) ) / 2 ) + 'px';
+    } else {
+      let width = mainWidth;
+      self.mainImage.style.width = width + 'px';
+      self.mainImage.style.height = ( 9/16 * width ) + 'px';
+      self.mainImage.style.top = ( ( mainHeight - ( 9/16 * width ) ) / 2 ) + 'px';
+      self.mainImage.style.left = 0;
+    }
+
+    console.log(mainWidth + '/' + mainHeight + ' - ' +self.mainImage.style.width + '/' + self.mainImage.style.height);
+
+    let navImgWidth = 16 / 9 * self.navigationContainer.offsetHeight;
+    self.navigationContainer.style.width = ( self.state.images.length * navImgWidth + self.state.images.length * 20 ) + 'px';
+
+    self.state.images.map( ( image, i ) => {
+      self[`lighbox-image-${i}`].style.width = parseInt( navImgWidth ) + 'px';
+    });
+
   }
 
 	render() {
@@ -64,18 +105,27 @@ export default class OpenStadComponentLightbox extends React.Component {
 
     return (
 			<div className="osc-lightbox" onClick={ () => { this.hideLightbox(); } } ref={el => (self.instance = el)}>
-        <img src={ self.state.images[self.state.startIndex] && self.state.images[self.state.startIndex].src } className="osc-main-img" ref={el => (self.mainImage = el)}/>
-        <div className="osc-lightbox-navigation-container">
-          <div className="osc-lightbox-navigation">
-            { self.state.images.map( ( image, i ) => {
-              return <img src={ image.src } className="osc-thumb-img" onClick={ (e) => self.showImage(e, image.src) } key={`lighbox-image-${i}`}/>
-            })
-            }
+        <div className="osc-lightbox-main-container" ref={el => (self.mainContainer = el)}>
+          <div className="osc-image-container" ref={el => (self.mainImage = el)}>
+            <img src={ image.src } onClick={ (e) => self.showImage(e, image.src) }/>
           </div>
         </div>
+        <div className="osc-lightbox-navigation-container">
+        <div className="osc-lightbox-navigation" ref={el => (self.navigationContainer = el)}>
+          { self.state.images.map( ( image, i ) => {
+            return (
+              <div className="osc-image-container" key={`lighbox-image-${i}`} ref={ el => self[`lighbox-image-${i}`] = el}>
+                <img src={ image.src } onClick={ (e) => self.showImage(e, image.src) }/>
+              </div>
+            )                                                   
+          })
+          }
+			  </div>
+			  </div>
 			</div>
     );
 
   }
 
 }
+

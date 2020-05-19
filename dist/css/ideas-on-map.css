@@ -1946,6 +1946,11 @@ form.osc-form {
   text-align: left;
   background-color: white;
 }
+@media only screen and (max-width: 700px) {
+  .osc-form .osc-select select {
+    width: 100%;
+  }
+}
 .osc-form .osc-slider {
   /* padding: 30px; */
   position: relative;
@@ -2187,6 +2192,11 @@ form.osc-form {
   line-height: 44px;
   text-align: left;
   background-color: white;
+}
+@media only screen and (max-width: 700px) {
+  .osc-form .osc-select select {
+    width: 100%;
+  }
 }
 .osc-form .osc-slider {
   /* padding: 30px; */
