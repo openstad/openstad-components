@@ -50,7 +50,6 @@ export default class Search extends React.Component {
   }
 
   updateSearchValue(value) {
-    console.log('++', value);
     this.setState({
 			searchValue: value,
 			showSuggestions: value.length >=3 ? true : false,

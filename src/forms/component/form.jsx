@@ -14,16 +14,13 @@ export default class OpenStadComponentForm extends OpenStadComponent {
 		let self = this;
 
 		self.defaultConfig = {
-      validateAction: null,
-      submitAction: null,
+      // validateAction: null,
+      // submitAction: null,
       title: null,
       intro: null,
       fields: [],
 		};
 		self.config = merge.recursive(self.defaultConfig, self.config, props.config || {})
-
-    console.log('xxxx');
-    console.log(self.config);
 
     self.state = {
       values: props.values|| {},
@@ -53,6 +50,7 @@ export default class OpenStadComponentForm extends OpenStadComponent {
 	}
 
 	handleOnChange(data) {
+    console.log("formchange", data);
     let self = this;
     let values = { ...this.state.values };
     values[data.name] = data.value;

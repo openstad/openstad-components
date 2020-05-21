@@ -128,3 +128,4 @@ config.user wordt gebruikt om te beslissen welke interface elementen al dan niet
 - het hele ding is maar zeer beperkt configureerbaar; het idee is om eerst ervaring op te doen met 1 implementatie en dan toe te werken naar een generiekere versie
 - lostrekken forms en reactions modules; ik denk ook idea-details en misschien zelfs de lists en zoekmodules
 - gebruik gelijk trekken met choices-guide
+- hernoem infoblock naar sidebas en maak dat veel generieker; ideas-on-map wordt dan een heel simpele schil, en vervangen door iets anders wordt heel eenvoudig.

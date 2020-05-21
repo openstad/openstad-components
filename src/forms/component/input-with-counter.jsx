@@ -19,7 +19,6 @@ export default class FormfieldInputWithCounter extends React.Component {
 			maxLength: 10,
       placeholder: '',
 		};
-
 		self.config = merge.recursive(self.defaultConfig, self.config, props.config || {})
 
     self.state = {
@@ -39,11 +38,11 @@ export default class FormfieldInputWithCounter extends React.Component {
 		state.isValid = true;
 		state.warning = null;
 		if (this.state.valueLength < this.config.minLength) {
-			state.warning = `Je ${this.config.name} is te kort`;
+			state.warning = `Je tekst is te kort`;
 			state.isValid = false;
 		}
 		if (this.state.valueLength > this.config.maxLength) {
-			state.warning = `Je ${this.config.name} is te lang`;
+			state.warning = `Je tekst is te lang`;
 			state.isValid = false;
 		}
 		this.setState(state)
@@ -54,12 +53,12 @@ export default class FormfieldInputWithCounter extends React.Component {
 		this.setState({ showWarning: true })
 		return this.isValid();
 	}
-
+  
 	handleOnChange(data) {
     data = data || {};
 		this.setState(data)
 		if (typeof this.onChange == 'function') {
-			this.onChange(data);
+			this.onChange({ name: this.config.name, value: data.value });
 		}
 	}
 
@@ -101,7 +100,7 @@ export default class FormfieldInputWithCounter extends React.Component {
 		}
 
 		if (self.state.showWarning && self.state.warning) {
-			warning = (<div className="osc-form-warning" ref={ el => this['form-warning-theme'] = el  }>{self.state.warning}</div>)
+			warning = (<div className="osc-form-warning" ref={ el => this['form-warning'] = el  }>{self.state.warning}</div>)
 		}
 
     let inputHTML = null;
@@ -109,14 +108,14 @@ export default class FormfieldInputWithCounter extends React.Component {
     switch(self.config.inputType) {
       case 'textarea':
         inputHTML = (
-				  <textarea key={self.key} ref={el => (self.input = el)} value={this.props.value} disabled={this.props.disabled} placeholder={this.config.placeholder} onChange={e => self.handleOnChange({ value: self.input.value })} onKeyUp={e => self.onInputKeyUp(e)} onFocus={e => self.onInputFocus(e)} onBlur={e => self.onInputBlur(e)}></textarea>
+				  <textarea key={self.key} ref={el => (self.input = el)} value={this.state.value} disabled={this.props.disabled} placeholder={this.config.placeholder} onChange={e => self.handleOnChange({ value: self.input.value })} onKeyUp={e => self.onInputKeyUp(e)} onFocus={e => self.onInputFocus(e)} onBlur={e => self.onInputBlur(e)}></textarea>
         );
         break;
 
       case 'input':
       default:
         inputHTML = (
-				  <input key={self.key} ref={el => (self.input = el)} value={this.props.value} disabled={this.props.disabled} placeholder={this.config.placeholder} onChange={e => self.handleOnChange({ value: self.input.value })} onKeyUp={e => self.onInputKeyUp(e)} onFocus={e => self.onInputFocus(e)} onBlur={e => self.onInputBlur(e)}></input>
+				  <input key={self.key} ref={el => (self.input = el)} value={this.state.value} disabled={this.props.disabled} placeholder={this.config.placeholder} onChange={e => self.handleOnChange({ value: self.input.value })} onKeyUp={e => self.onInputKeyUp(e)} onFocus={e => self.onInputFocus(e)} onBlur={e => self.onInputBlur(e)}></input>
         );
 
     }

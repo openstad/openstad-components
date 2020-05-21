@@ -132,7 +132,7 @@ export default class InfoBlock extends React.Component {
     if (self.state.selectedIdea) {
       let idea = self.state.selectedIdea;
       let typeDef = self.config.types.find(entry => idea.extraData && entry.name == idea.extraData.theme);
-      if (!typeDef) { typeDef = { listicon: { html: '' } }; console.log(idea.extraData.theme + ' niet gevonden'); }
+      if (!typeDef || !typeDef.listicon) { typeDef = { listicon: { html: '' } }; } // console.log(idea.extraData.theme + ' niet gevonden'); }
       selectedIdeaHTML = (
 			  <div className="osc-info-block-selected-idea" onClick={(event) => self.dispatchSelectedIdeaClick(event, self.state.selectedIdea)}>
           <button className="osc-close-button-black" onClick={(event) => self.dispatchUpdateSelectedIdea(event, null)} ref={el => (self.resetButton = el)}/>

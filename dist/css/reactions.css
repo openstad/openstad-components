@@ -1037,6 +1037,7 @@
   content: "";
 }
 .osc-form .osc-form-warning,
+.osc-form .osc-form-error,
 .osc-form .osc-form-counter {
   position: absolute;
   font-size: 14px;

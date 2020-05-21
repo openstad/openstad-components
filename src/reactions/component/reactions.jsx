@@ -95,7 +95,7 @@ export default class OpenStadComponentReactions extends OpenStadComponent {
         state.reactions.sort((a, b) => {
           return a.createdAt < b.createdAt;
         });
-        console.log(state.reactions);
+        // console.log(state.reactions);
         self.setState(state, function() {
           if (next) return next();
         });

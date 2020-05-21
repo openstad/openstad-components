@@ -11,8 +11,8 @@ export default class OpenStadComponentImageUpload extends OpenStadComponentForme
 		// config
 		let defaultConfig = {
 			server: {
-				process: 'http://images.openstad.francesco.denes.nl/image/?access_token=314',
-				fetch: 'http://images.openstad.francesco.denes.nl/image'
+				process: props.config.imageserver.postURL,
+				fetch: props.config.imageserver.getURL
 			},
     };
 		this.config = Object.assign(defaultConfig, this.props.config, this.config || {});
