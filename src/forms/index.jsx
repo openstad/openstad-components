@@ -13,12 +13,16 @@ import './css/default.less';
 // the module
 import Form from './component/form.jsx';
 import InputWithCounter from './component/input-with-counter.jsx';
+import Postcode from './component/postcode.jsx';
+import Select from './component/select.jsx';
 import Text from './component/textinput.jsx';
 import Textarea from './component/textarea.jsx';
 import Slider from './component/slider.jsx';
 export default {
   Form,
   InputWithCounter,
+  Postcode,
+  Select,
   Text,
   Textarea,
   Slider,

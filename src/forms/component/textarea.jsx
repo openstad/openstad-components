@@ -14,12 +14,12 @@ export default class OpenStadComponentSelect extends OpenStadComponentDefaultInp
 
     let errorHTML = null;
     if (self.state.error) {
-      errorHTML = (<div className="osc-form-error">Je hebt nog geen niets ingevuld</div>)
+      errorHTML = (<div className="osc-form-error">Je hebt nog niets ingevuld</div>)
     }
     
     return (
 			<div className="osc-textarea">
-			  <textarea type="text" value={this.state.value} disabled={this.props.disabled} placeholder={this.config.placeholder} onChange={e => self.handleOnChange({ value: self.input.value })} ref={el => (self.input = el)}>{this.state.value}</textarea>
+			  <textarea value={this.props.value} disabled={this.props.disabled} placeholder={this.config.placeholder} onChange={e => self.handleOnChange({ value: self.input.value })} ref={el => (self.input = el)}>{this.state.value}</textarea>
         {errorHTML}
 		  </div>
     );

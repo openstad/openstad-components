@@ -4,6 +4,7 @@ import merge from 'merge';
 
 import OpenStadComponent from '../../component/index.jsx';
 
+import OpenStadComponentPostcode from './postcode.jsx';
 import OpenStadComponentSelect from './select.jsx';
 import OpenStadComponentText from './textinput.jsx';
 import OpenStadComponentTextArea from './textarea.jsx';
@@ -65,6 +66,10 @@ export default class OpenStadComponentFormField extends OpenStadComponent {
 
     let fieldHTML = null;
     switch (self.config.inputType) {
+
+      case 'postcode':
+        fieldHTML = <OpenStadComponentPostcode config={self.config} onChange={self.handleOnChange} ref={el => (self.input = el)}/>
+        break;
 
       case 'select':
         fieldHTML = <OpenStadComponentSelect config={self.config} onChange={self.handleOnChange} ref={el => (self.input = el)}/>
