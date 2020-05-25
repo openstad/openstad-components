@@ -694,6 +694,7 @@
 }
 .osc-choices-guide .osc-questions .osc-question .osc-question-selector .osc-question-selector-maxlabel {
   display: inline-block;
+  text-align: right;
   float: right;
   font-weight: 600;
   max-width: 40%;
@@ -3062,6 +3063,7 @@
 }
 .osc-choices-guide .osc-questions .osc-question .osc-question-selector .osc-question-selector-maxlabel {
   display: inline-block;
+  text-align: right;
   float: right;
   font-weight: 600;
   max-width: 40%;
