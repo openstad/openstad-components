@@ -21,37 +21,75 @@ export default class IdeasForm extends React.Component {
 		self.defaultConfig = {
       user: {},
 			ideaId: null,
-      imageserver: {},
       titleMinLength: 10,
       titleMaxLength: 20,
       summaryMinLength: 20,
       summaryMaxLength: 140,
       descriptionMinLength: 140,
       descriptionMaxLength: 5000,
+      fields: [],
     };
-
 		self.config = merge.recursive(self.defaultConfig, self.config, props.config || {})
 
-    this.state = {
-      formfields: {
-        id: this.props.idea.id || '',
-        title: this.props.idea.title || '',
-        summary: this.props.idea.summary || '',
-        description: this.props.idea.description || '',
-        type: this.props.idea.extraData && this.props.idea.extraData.type || '',
-        theme: this.props.idea.extraData && this.props.idea.extraData.theme || '',
-  			userWhat: this.props.idea.extraData && this.props.idea.extraData['userWhat'],
-  			userAge: this.props.idea.extraData && this.props.idea.extraData['userAge'],
-        images: this.props.idea.extraData && this.props.idea.extraData.images || [],
-        modBreak: this.props.idea.modBreak || '',
-        user: this.props.idea.user || {},
-      },
-    };
+    let fields = self.config.fields;
 
+    if (!self.props.idea.extraData) self.props.idea.extraData = {};
+
+    if (fields) {
+
+      let state = { formfields: {
+        id: self.props.idea.id || '',
+        user: self.props.idea.user || {},
+      }};
+      fields.forEach((field) => {
+        if (field.name) {
+          state.formfields[field.name] = eval('self.props.idea.' + field.name);
+          field.value = eval('self.props.idea.' + field.name);
+        }
+      });
+      self.state = state;
+
+      let titleField = fields.find(field => field.name == 'title');
+      if (titleField) {
+		    titleField.minLength = self.config.titleMinLength;
+		    titleField.maxLength = self.config.titleMaxLength;
+      }
+
+      let summaryField = fields.find(field => field.name == 'summary');
+      if (summaryField) {
+		    summaryField.minLength = self.config.summaryMinLength;
+		    summaryField.maxLength = self.config.summaryMaxLength;
+      }
+
+      let descriptionField = fields.find(field => field.name == 'description');
+      if (descriptionField) {
+		    descriptionField.minLength = self.config.descriptionMinLength;
+		    descriptionField.maxLength = self.config.descriptionMaxLength;
+      }
+
+      let imageField = fields.find(field => field.inputType == 'image-upload'); // TODO: multiple images?
+      if (imageField) {
+		    imageField.imageserver = self.config.imageserver;
+      }
+
+      // dit moet anders want nu tekent hij er elke keer 1 bij
+      // if (self.config.user && self.config.user.role == 'admin') {
+      //   self.config.fields.push({
+      //     name: "modBreak",
+      //     title: "Moderator reactie",
+      //     value: state.formfields.modBreak,
+      //     inputType: "textarea-with-counter",
+			//     minLength: 0,
+			//     maxLength: 2000,
+      //   })
+      // }
+
+    }
+    
   }
 
 	componentDidMount(prevProps, prevState) {
-	}
+  }
 
   // todo: als hanlefieldchange met meerder waarden in een { key: value } formaat gaat werken dan kan deze weg
   handleLocationChange({location, address}) {
@@ -98,9 +136,8 @@ export default class IdeasForm extends React.Component {
     let self = this;
 
     let formValues = self.form.getValues();
+    // console.log(formValues);
 
-    console.log('+++');
-    console.log(formValues);
     let isValid = self.form.validate({ showErrors: true });
 
 	  if ( !isValid  || !self.validateIdea() ) { // validateIdea doet nog locatie en images
@@ -115,26 +152,26 @@ export default class IdeasForm extends React.Component {
 	  var url = self.config.api.url + '/api/site/' + self.config.siteId + '/idea';
       let headers = OpenStadComponentLibs.api.getHeaders(self.config);
 
-	  var body = {
-			title: formValues['title'],
-			summary: formValues['summary'],
-			description: formValues['description'],
+
+    let body = {
       location: JSON.stringify({ "type": "Point", ...self.state.formfields['location'] }),
-			extraData: {
-				type: formValues['type'],
-				theme: formValues['theme'],
-  			images: self.state.formfields['images'],
-  			userWhat: formValues['userWhat'],
-  			userAge: formValues['userAge'],
-			},
-	  }
+    };
+    Object.keys(formValues).forEach(key => {
+      let match = key.match(/^extraData\.(.+)/)
+      if (match) {
+        if (!body.extraData) body.extraData = {};
+        body.extraData[match[1]] = formValues[key];
+      } else {
+        body[key] = formValues[key];
+      }
+    });
 
-    console.log('====');
+    // if ( self.config.user && self.config.user.role == 'admin' ) {
+    //   body.modBreak = self.state.formfields['modBreak'];
+    // }
+
+    console.log('--------------------');
     console.log(body);
-
-    if ( self.config.user && self.config.user.role == 'admin' ) {
-      body.modBreak = self.state.formfields['modBreak'];
-    }
 
     let method = 'POST';
     if (typeof this.state.formfields.id == 'number') {
@@ -176,146 +213,8 @@ export default class IdeasForm extends React.Component {
     }
 
     let formHTML = null;
-    let formConfig = {
-      "fields": [
-        {
-          name: "title",
-          title: "Titel",
-          value: this.state.formfields.title,
-          description: "Geef uw inzending een duidelijke naam, zodat anderen deze gemakkelijk kunnen vinden en direct snappen waar het over gaat.",
-          inputType: "input-with-counter",
-			    minLength: self.config.titleMinLength,
-			    maxLength: self.config.titleMaxLength,
-          required: true,
-        },{
-          name: "type",
-          title: "Gaat dit goed of kan dit beter?",
-          value: this.state.formfields.type,
-          description: "Wilt u deze inzending bestempelen als iets dat goed gaat of iets dat beter kan in de buurt?",
-          inputType: "select",
-          choices: [{
-            "title": "Maak een keuze",
-            "value": ""
-          },{
-            "title": "Dit gaat goed",
-            "value": "Kans"
-          },{
-            "title": "Dit kan beter",
-            "value": "Knelpunt"
-          }],
-          required: true,
-        },{
-          name: "theme",
-          title: "Thema",
-          value: this.state.formfields.theme,
-          description: "Onder welk thema valt uw inzending?",
-          inputType: "select",
-          choices: [{
-            "title": "Maak een keuze",
-            "value": ""
-          },{
-            "title": "Dit gaat goed",
-            "value": "Kans"
-          },{
-            "title": "Dit kan beter",
-            "value": "Knelpunt"
-          }],
-          required: true,
-        },{
-          name: "summary",
-          title: "Samenvatting",
-          value: this.state.formfields.summary,
-          description: "Geef hier eerst een korte samenvatting. In de volgende stap heeft u ruimte om uw inzending uitgebreider toe te lichten.",
-          inputType: "textarea-with-counter",
-			    minLength: self.config.summaryMinLength,
-					maxLength: self.config.summaryMaxLength,
-          required: true,
-        },{
-          name: "description",
-          title: "Beschrijving",
-          value: this.state.formfields.description,
-          description: "Gebruik de ruimte hieronder om uw inzending uitgebreider te beschrijven.",
-          inputType: "textarea-with-counter",
-			    minLength: self.config.descriptionMinLength,
-					maxLength: self.config.descriptionMaxLength,
-          required: true,
-        },{
-          name: "image",
-          title: "Afbeelding",
-          value: this.state.formfields.image,
-          description: "Deze moet nog",
-          required: true,
-        },{
-          title: "Wilt u ons helpen",
-          description: "We willen graag weten of we alle doelgroepen in de buurt bereiken. Daarom vragen we u of u in de buurt woont of werkt, of de buurt regelmatig bezoekt, en in welke leeftijdscategorie u valt. Wilt u dit liever niet delen? Kies dan de optie 'Zeg ik liever niet'.",
-        },{
-          name: "userWhat",
-          title: "Woont of werkt u in de buurt?",
-          value: this.state.formfields.userWhat,
-          inputType: "select",
-          choices: [{
-            "title": "Maak een keuze",
-            "value": ""
-          },{
-            title: "Ik woon in de buurt",
-            value: "Ik woon in de buurt"
-          },{
-            title: "Ik werk in de buurt",
-            value: "Ik werk in de buurt"
-          },{
-            title: "Ik ben een bezoeker van de buurt",
-            value: "Ik ben een bezoeker van de buurt"
-          },{
-            title: "Anders",
-            value: "Anders"
-          },{
-            title: "Zeg ik liever niet",
-            value: "Zeg ik liever niet"
-          }],
-          required: true,
-        },{
-          name: "userAge",
-          title: "Wat is uw leeftijd?",
-          value: this.state.formfields.userAge,
-          inputType: "select",
-          choices: [{
-            "title": "Maak een keuze",
-            "value": ""
-          },{
-            title: "Jonger dan 18",
-            value: "Jonger dan 18"
-          },{
-            title: "18 - 24",
-            value: "18 - 24"
-          },{
-            title: "25 - 50",
-            value: "25 - 50"
-          },{
-            title: "51 - 65",
-            value: "51 - 65"
-          },{
-            title: "65+",
-            value: "65+"
-          },{
-            title: "Zeg ik liever niet",
-            value: "Zeg ik liever niet"
-          }],
-          required: true,
-        }
-      ],
-    }
-    if (self.config.user && self.config.user.role == 'admin') {
-      formConfig.fields.push({
-        name: "modBreak",
-        title: "Moderator reactie",
-        value: this.state.formfields.modBreak,
-        inputType: "textarea-with-counter",
-			  minLength: 0,
-				maxLength: 2000,
-      })
-    }
     formHTML = (
-      <OpenStadComponentForms.Form config={ formConfig }  ref={(el) => { self.form = el;}}/>
+      <OpenStadComponentForms.Form config={ self.config }  ref={(el) => { self.form = el;}}/>
     )
 
     return (

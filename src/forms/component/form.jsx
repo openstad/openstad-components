@@ -37,7 +37,7 @@ export default class OpenStadComponentForm extends OpenStadComponent {
 	}
 
 	validate({ showErrors }) {
-    console.log('Form validate');
+    // console.log('Form validate');
     let self= this;
     let isValid = true;
     self.fields.forEach((field) => {
@@ -45,12 +45,12 @@ export default class OpenStadComponentForm extends OpenStadComponent {
         isValid = false;
       }
     });
-    console.log(isValid);
+    // console.log(isValid);
     return isValid;    
 	}
 
 	handleOnChange(data) {
-    console.log("formchange", data);
+    // console.log("formchange", data);
     let self = this;
     let values = { ...this.state.values };
     values[data.name] = data.value;

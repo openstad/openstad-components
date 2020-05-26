@@ -4,6 +4,7 @@ import merge from 'merge';
 
 import OpenStadComponent from '../../component/index.jsx';
 
+import OpenStadComponentImageUpload from './image-upload.jsx';
 import OpenStadComponentInputWithCounter from './input-with-counter.jsx';
 import OpenStadComponentSelect from './select.jsx';
 import OpenStadComponentText from './textinput.jsx';
@@ -45,7 +46,7 @@ export default class OpenStadComponentFormField extends OpenStadComponent {
 	}
 
 	handleOnChange(data) {
-    console.log("form field change", data);
+    // console.log("form field change", data);
 		if (typeof this.onChange == 'function') {
 			this.onChange(data);
 		}
@@ -68,6 +69,15 @@ export default class OpenStadComponentFormField extends OpenStadComponent {
     let fieldHTML = null;
     switch (self.config.inputType) {
 
+      case 'image-upload':
+        fieldHTML = <OpenStadComponentImageUpload config={self.config} value={ this.props.value || this.config.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
+        break;
+
+      case 'input-with-counter':
+      case 'text-with-counter':
+        fieldHTML = <OpenStadComponentInputWithCounter config={{ inputType: 'input', ...self.config }} value={ this.props.value || this.config.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
+        break;
+
       case 'select':
         fieldHTML = <OpenStadComponentSelect config={self.config} value={ this.props.value || this.config.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
         break;
@@ -78,11 +88,6 @@ export default class OpenStadComponentFormField extends OpenStadComponent {
 
       case 'textarea':
         fieldHTML = <OpenStadComponentTextArea config={self.config} value={ this.props.value || this.config.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
-        break;
-
-      case 'input-with-counter':
-      case 'text-with-counter':
-        fieldHTML = <OpenStadComponentInputWithCounter config={{ inputType: 'input', ...self.config }} value={ this.props.value || this.config.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
         break;
 
       case 'textarea-with-counter':

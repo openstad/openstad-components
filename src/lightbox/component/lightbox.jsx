@@ -88,7 +88,7 @@ export default class OpenStadComponentLightbox extends React.Component {
       self.mainImage.style.left = 0;
     }
 
-    console.log(mainWidth + '/' + mainHeight + ' - ' +self.mainImage.style.width + '/' + self.mainImage.style.height);
+    // console.log(mainWidth + '/' + mainHeight + ' - ' +self.mainImage.style.width + '/' + self.mainImage.style.height);
 
     let navImgWidth = 16 / 9 * self.navigationContainer.offsetHeight;
     self.navigationContainer.style.width = ( self.state.images.length * navImgWidth + self.state.images.length * 20 ) + 'px';
@@ -113,7 +113,7 @@ export default class OpenStadComponentLightbox extends React.Component {
         <div className="osc-lightbox-navigation-container">
         <div className="osc-lightbox-navigation" ref={el => (self.navigationContainer = el)}>
           { self.state.images.map( ( image, i ) => {
-            console.log({ backgroundImage: `url(${image.src})`});
+            // console.log({ backgroundImage: `url(${image.src})`});
             return (
               <div className="osc-image-container" style={{ backgroundImage: `url(${image.src})`}} onClick={ (e) => self.showImage(e, image.src) } key={`lighbox-image-${i}`} ref={ el => self[`lighbox-image-${i}`] = el}>
               </div>
