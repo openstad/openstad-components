@@ -22,9 +22,6 @@ export default class OpenStadComponentForm extends OpenStadComponent {
 		};
 		self.config = merge.recursive(self.defaultConfig, self.config, props.config || {})
 
-    console.log('xxxx');
-    console.log(self.config);
-
     self.state = {
       values: props.values|| {},
 		};
@@ -40,16 +37,17 @@ export default class OpenStadComponentForm extends OpenStadComponent {
 	}
 
 	validate({ showErrors }) {
-    console.log('Form validate');
     let self= this;
     let isValid = true;
+    let firstInvalid = null
     self.fields.forEach((field) => {
       if (!field.validate({ showErrors })) {
         isValid = false;
+        if (!firstInvalid) firstInvalid = field;
       }
     });
-    console.log(isValid);
-    return isValid;    
+    if (firstInvalid && firstInvalid.instance && firstInvalid.instance.scrollIntoView) firstInvalid.instance.scrollIntoView({behavior: 'smooth'});
+    return isValid;
 	}
 
 	handleOnChange(data) {

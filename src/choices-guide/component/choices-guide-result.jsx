@@ -86,10 +86,14 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
 
     let self = this;
 
+    console.log('SUBMIT 1');
+
     let formValues;
     if (self.config.submission.type == 'form') {
+      console.log('SUBMIT 2');
       formValues = self.form.getValues();
       let isValid = self.form.validate({ showErrors: true });
+      console.log('xx', isValid);
       if (!isValid) return;
     }
 
