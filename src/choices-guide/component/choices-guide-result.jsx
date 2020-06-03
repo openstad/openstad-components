@@ -86,25 +86,29 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
 
     let self = this;
 
-    console.log('SUBMIT 1');
-
     let formValues;
     if (self.config.submission.type == 'form') {
-      console.log('SUBMIT 2');
       formValues = self.form.getValues();
       let isValid = self.form.validate({ showErrors: true });
-      console.log('xx', isValid);
       if (!isValid) return;
     }
 
     fingerprint.get(fingerprintComponents => {
+
+      let fingerprintData;
+      try {
+        fingerprintData = JSON.stringify(fingerprintComponents);
+      } catch (err) {}
       
       let url = `${self.config.api && self.config.api.url }/api/site/${  self.config.siteId  }/choicesguide/${  self.config.choicesGuideId  }/result`;
       let headers = OpenStadComponentLibs.api.getHeaders(self.config);
       let body = {
-        result: self.state.answers,
+        result: {
+          answers: self.state.answers,
+          scores: self.state.scores,
+        },
         extraData: formValues,
-        userFingerprint: btoa(fingerprintComponents),
+        userFingerprint: btoa(fingerprintData),
       };
 
       fetch(url, {
@@ -162,7 +166,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
           break;
 
         default:
-          choicesHTML = <OpenStadComponentChoices config={{ ...self.config.choices, sticky: false, size: 630, }} scores={self.state.scores} answerDimensions={answerDimensions} scores={{...self.state.scores}} choices={[...choices]} firstAnswerGiven={true} ref={function(el) { self.choicesElement = el; }} key='choices'/>;
+          choicesHTML = <OpenStadComponentChoices config={{ ...self.config.choices, sticky: false, size: 630, withPercentage: true, }} scores={self.state.scores} answerDimensions={answerDimensions} scores={{...self.state.scores}} choices={[...choices]} firstAnswerGiven={true} ref={function(el) { self.choicesElement = el; }} key='choices'/>;
 
       }
     }

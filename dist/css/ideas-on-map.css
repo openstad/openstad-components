@@ -2030,6 +2030,17 @@ form.osc-form {
   position: absolute;
   transform-origin: left;
 }
+.osc-form .osc-slider .osc-slider-input-range {
+  height: 48px;
+  padding: 0;
+  top: -3px;
+}
+.osc-form .osc-slider .osc-slider-input-range::-ms-fill-lower {
+  background: transparent;
+}
+.osc-form .osc-slider .osc-slider-input-range::-ms-fill-upper {
+  background: transparent;
+}
 .osc-form .osc-slider input[type=range] {
   -webkit-appearance: none;
   /* Hides the slider so that custom slider can be made */
@@ -2098,7 +2109,7 @@ form.osc-form {
   cursor: pointer;
   border-radius: 22px;
 }
-.osc-form .osc-slider input[type=range]::-ms-thumb {
+.osc-form .osc-slider input.osc-slider-untouched[type=range]::-ms-thumb {
   background-repeat: no-repeat;
   background-position: center;
   background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMzAiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAzMCAxNiI+CiAgICA8ZGVmcz4KICAgICAgICA8cGF0aCBpZD0iYSIgZD0iTTIxLjU0NC0uMDAzbDcuNjg4IDcuNjg4LTcuNjg4IDcuNjg4LTIuMjg4LTIuMjg4IDUuMzA5LTUuNC01LjMwOS01LjQgMi4yODgtMi4yODh6bS0xMy45MTEgMGwyLjI4OCAyLjI4OC01LjMwOCA1LjQgNS4zMDggNS40LTIuMjg4IDIuMjg4TDAgNy43NHYtLjExTDcuNjMzLS4wMDN6Ii8+CiAgICA8L2RlZnM+CiAgICA8ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC4wNikiPgogICAgICAgIDxtYXNrIGlkPSJiIiBmaWxsPSIjZmZmIj4KICAgICAgICAgICAgPHVzZSB4bGluazpocmVmPSIjYSIvPgogICAgICAgIDwvbWFzaz4KICAgICAgICA8cGF0aCBmaWxsPSIjMDA0Njk5IiBkPSJNMCAxNi4zOThoMjkuMzI0Vi0xLjA2NUgweiIgbWFzaz0idXJsKCNiKSIvPgogICAgPC9nPgo8L3N2Zz4K);
@@ -2277,6 +2288,17 @@ form.osc-form {
   position: absolute;
   transform-origin: left;
 }
+.osc-form .osc-slider .osc-slider-input-range {
+  height: 48px;
+  padding: 0;
+  top: -3px;
+}
+.osc-form .osc-slider .osc-slider-input-range::-ms-fill-lower {
+  background: transparent;
+}
+.osc-form .osc-slider .osc-slider-input-range::-ms-fill-upper {
+  background: transparent;
+}
 .osc-form .osc-slider input[type=range] {
   -webkit-appearance: none;
   /* Hides the slider so that custom slider can be made */
@@ -2345,7 +2367,7 @@ form.osc-form {
   cursor: pointer;
   border-radius: 22px;
 }
-.osc-form .osc-slider input[type=range]::-ms-thumb {
+.osc-form .osc-slider input.osc-slider-untouched[type=range]::-ms-thumb {
   background-repeat: no-repeat;
   background-position: center;
   background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMzAiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAzMCAxNiI+CiAgICA8ZGVmcz4KICAgICAgICA8cGF0aCBpZD0iYSIgZD0iTTIxLjU0NC0uMDAzbDcuNjg4IDcuNjg4LTcuNjg4IDcuNjg4LTIuMjg4LTIuMjg4IDUuMzA5LTUuNC01LjMwOS01LjQgMi4yODgtMi4yODh6bS0xMy45MTEgMGwyLjI4OCAyLjI4OC01LjMwOCA1LjQgNS4zMDggNS40LTIuMjg4IDIuMjg4TDAgNy43NHYtLjExTDcuNjMzLS4wMDN6Ii8+CiAgICA8L2RlZnM+CiAgICA8ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC4wNikiPgogICAgICAgIDxtYXNrIGlkPSJiIiBmaWxsPSIjZmZmIj4KICAgICAgICAgICAgPHVzZSB4bGluazpocmVmPSIjYSIvPgogICAgICAgIDwvbWFzaz4KICAgICAgICA8cGF0aCBmaWxsPSIjMDA0Njk5IiBkPSJNMCAxNi4zOThoMjkuMzI0Vi0xLjA2NUgweiIgbWFzaz0idXJsKCNiKSIvPgogICAgPC9nPgo8L3N2Zz4K);
