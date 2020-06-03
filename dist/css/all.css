@@ -1144,6 +1144,9 @@
   margin-bottom: 10px;
   padding-left: 30px;
 }
+.osc-form .osc-image-upload {
+  background-color: green;
+}
 .osc-form .osc-input-with-counter {
   position: relative;
   margin-bottom: 36px;
@@ -1670,6 +1673,7 @@
   content: "";
 }
 .osc-form .osc-form-warning,
+.osc-form .osc-form-error,
 .osc-form .osc-form-counter {
   position: absolute;
   font-size: 14px;
@@ -1832,6 +1836,9 @@
   margin-bottom: 10px;
   padding-left: 30px;
 }
+.osc-form .osc-image-upload {
+  background-color: green;
+}
 .osc-form .osc-input-with-counter {
   position: relative;
   margin-bottom: 36px;
@@ -2358,6 +2365,7 @@
   content: "";
 }
 .osc-form .osc-form-warning,
+.osc-form .osc-form-error,
 .osc-form .osc-form-counter {
   position: absolute;
   font-size: 14px;

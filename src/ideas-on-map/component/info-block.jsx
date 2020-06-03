@@ -15,6 +15,7 @@ export default class InfoBlock extends React.Component {
 
 		// config
 		let defaultConfig = {
+      content: {}
 		};
 		this.config = Object.assign(defaultConfig, this.props.config || {})
 
@@ -104,23 +105,23 @@ export default class InfoBlock extends React.Component {
             <button onClick={() => { document.location.href = '/oauth/login?returnTo=' + encodeURIComponent(document.location.href) }} className="osc-button-blue osc-not-logged-in-button">Inloggen</button>
           );
         }
+        let selectionActiveText = self.config.content.selectionActiveText;
+        if (self.state.newIdea.address) selectionActiveText = selectionActiveText.replace(/\{address\}/g, self.state.newIdea.address);
         newIdeaHTML = (
 			    <div className="osc-info-block-new-idea">
             <button className="osc-close-button-black" onClick={(event) => self.dispatchCloseSelectedLocation(event, null)} ref={el => (self.resetButton = el)}/>
-            <p><strong>Geselecteerd:</strong> Een locatie vlakbij <strong>{self.state.newIdea.address}</strong></p>
-              {/* <h4>{self.state.newIdea.location.coordinates[0]},{self.state.newIdea.location.coordinates[1]}</h4> */}
-              <p>Op deze locatie is nog geen punt ingestuurd. Maar misschien heeft een medebewoner wel een vergelijkbare melding gedaan in de omgeving waaraan u kunt bijdragen. Bekijk daarom eerst de inzendingen in onderstaande lijst. Wilt u een nieuw punt toevoegen? Klik dan hier:</p>
+            <p dangerouslySetInnerHTML={{ __html: selectionActiveText }}></p>
               {button}
           </div>
         );
       } else {
+        let selectionInactiveText = self.config.content.selectionInactiveText;
+        if (self.state.newIdea.address) selectionInactiveText = selectionInactiveText.replace(/\{address\}/g, self.state.newIdea.address);
         newIdeaHTML = (
 			    <div className="osc-info-block-new-idea">
             <button className="osc-close-button-black" onClick={(event) => self.dispatchCloseSelectedLocation(event, null)} ref={el => (self.resetButton = el)}/>
             <h3>Geselecteerd</h3>
-            <p>U heeft een locatie geselecteerd buiten het begrensde gebied. U kunt via deze website geen melding op deze locatie inzenden.</p>
-            <p>Wilt u melden wat er goed is of wat er beter kan in de omliggende straten en pleinen? Dan horen we dit graag van u via e-mail. Klik daarvoor op de link hieronder of stuur direct een e-mail naar gerarddoubuurt@amsterdam.nl.</p>
-            <a className="osc-link" href="mailto: gerarddoubuurt@amsterdam.nl">Stuur een e-mail</a>
+            <p dangerouslySetInnerHTML={{ __html: selectionInactiveText }}></p>
           </div>
         );
       }
@@ -132,7 +133,7 @@ export default class InfoBlock extends React.Component {
     if (self.state.selectedIdea) {
       let idea = self.state.selectedIdea;
       let typeDef = self.config.types.find(entry => idea.extraData && entry.name == idea.extraData.theme);
-      if (!typeDef) { typeDef = { listicon: { html: '' } }; console.log(idea.extraData.theme + ' niet gevonden'); }
+      if (!typeDef || !typeDef.listicon) { typeDef = { listicon: { html: '' } }; } // console.log(idea.extraData.theme + ' niet gevonden'); }
       selectedIdeaHTML = (
 			  <div className="osc-info-block-selected-idea" onClick={(event) => self.dispatchSelectedIdeaClick(event, self.state.selectedIdea)}>
           <button className="osc-close-button-black" onClick={(event) => self.dispatchUpdateSelectedIdea(event, null)} ref={el => (self.resetButton = el)}/>

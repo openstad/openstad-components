@@ -109,7 +109,7 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 
 		// clustering
 		if (self.config.clustering && self.config.clustering.isActive && L.markerClusterGroup) {
-			let iconCreateFunction = self.config.clustering.iconCreateFunction || ( self.config.variant == 'amaps' ? amapsCreateClusterIcon.bind(self) : self.createClusterIcon );
+			let iconCreateFunction = self.config.clustering.iconCreateFunction || amapsCreateClusterIcon.bind(self) // ( self.config.variant == 'amaps' ? amapsCreateClusterIcon.bind(self) : self.createClusterIcon );
 			if (iconCreateFunction && typeof iconCreateFunction == 'string') iconCreateFunction = eval(iconCreateFunction);
 			self.markerClusterGroup = L.markerClusterGroup({iconCreateFunction, showCoverageOnHover: self.config.clustering.showCoverageOnHover, maxClusterRadius: self.config.clustering.maxClusterRadius || 80});
 			self.markerClusterGroup.on('clusterclick', self.onClusterClick);
@@ -228,7 +228,6 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 
 	createCutoutPolygon(polygon) {
 
-    console.log(polygon.length);
 		var self = this;
 
 		// polygon must defined from the south west corner to work with the outer box

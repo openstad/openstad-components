@@ -156,7 +156,7 @@ export default class IdeasDetails extends React.Component {
 
     let labelHTML = null;
     if (self.config.labels && self.props.label) {
-      console.log(self.config.labels[ self.props.label ]);
+      // console.log(self.config.labels[ self.props.label ]);
       labelHTML = (
         <div className="ocs-idea-label" style={{ color: self.config.labels[ self.props.label ].color, backgroundColor: self.config.labels[ self.props.label ].backgroundColor }}>{self.config.labels[ self.props.label ].text}</div>
       );
@@ -184,7 +184,7 @@ export default class IdeasDetails extends React.Component {
       );
     }
 
-    console.log(idea);
+    // console.log(idea);
 
     return (
 			<div id={self.id} className={self.props.className || 'osc-info-block-idea-details'} ref={el => (self.instance = el)}>

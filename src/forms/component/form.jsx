@@ -14,8 +14,8 @@ export default class OpenStadComponentForm extends OpenStadComponent {
 		let self = this;
 
 		self.defaultConfig = {
-      validateAction: null,
-      submitAction: null,
+      // validateAction: null,
+      // submitAction: null,
       title: null,
       intro: null,
       fields: [],
@@ -46,11 +46,15 @@ export default class OpenStadComponentForm extends OpenStadComponent {
         if (!firstInvalid) firstInvalid = field;
       }
     });
+
     if (firstInvalid && firstInvalid.instance && firstInvalid.instance.scrollIntoView) firstInvalid.instance.scrollIntoView({behavior: 'smooth'});
-    return isValid;
+    // console.log(isValid);
+    return isValid;    
+
 	}
 
 	handleOnChange(data) {
+    // console.log("formchange", data);
     let self = this;
     let values = { ...this.state.values };
     values[data.name] = data.value;

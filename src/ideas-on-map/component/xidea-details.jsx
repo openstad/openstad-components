@@ -152,7 +152,6 @@ export default class IdeasDetails extends React.Component {
 
     let labelHTML = null;
     if (self.config.labels && self.props.label) {
-      console.log(self.config.labels[ self.props.label ]);
       labelHTML = (
         <div className="ocs-idea-label" style={{ color: self.config.labels[ self.props.label ].color, backgroundColor: self.config.labels[ self.props.label ].backgroundColor }}>{self.config.labels[ self.props.label ].text}</div>
       );
@@ -171,7 +170,6 @@ export default class IdeasDetails extends React.Component {
 
     let modBreakHTML = null;
     if (self.props.idea.modBreak) {
-      console.log(self.props.idea);
       modBreakHTML= (
         <div className="osc-modbreak">
           {self.props.idea.modBreakDateHumanized}<br/>

@@ -5,6 +5,8 @@ import merge from 'merge';
 import OpenStadComponent from '../../component/index.jsx';
 
 import OpenStadComponentPostcode from './postcode.jsx';
+import OpenStadComponentImageUpload from './image-upload.jsx';
+import OpenStadComponentInputWithCounter from './input-with-counter.jsx';
 import OpenStadComponentSelect from './select.jsx';
 import OpenStadComponentText from './textinput.jsx';
 import OpenStadComponentTextArea from './textarea.jsx';
@@ -45,6 +47,7 @@ export default class OpenStadComponentFormField extends OpenStadComponent {
 	}
 
 	handleOnChange(data) {
+    // console.log("form field change", data);
 		if (typeof this.onChange == 'function') {
 			this.onChange(data);
 		}
@@ -69,18 +72,30 @@ export default class OpenStadComponentFormField extends OpenStadComponent {
 
       case 'postcode':
         fieldHTML = <OpenStadComponentPostcode config={self.config} onChange={self.handleOnChange} ref={el => (self.input = el)}/>
+
+      case 'image-upload':
+        fieldHTML = <OpenStadComponentImageUpload config={self.config} value={ this.props.value || this.config.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
+        break;
+
+      case 'input-with-counter':
+      case 'text-with-counter':
+        fieldHTML = <OpenStadComponentInputWithCounter config={{ inputType: 'input', ...self.config }} value={ this.props.value || this.config.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
         break;
 
       case 'select':
-        fieldHTML = <OpenStadComponentSelect config={self.config} onChange={self.handleOnChange} ref={el => (self.input = el)}/>
+        fieldHTML = <OpenStadComponentSelect config={self.config} value={ this.props.value || this.config.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
         break;
 
       case 'text':
-        fieldHTML = <OpenStadComponentText config={self.config} onChange={self.handleOnChange} ref={el => (self.input = el)}/>
+        fieldHTML = <OpenStadComponentText config={self.config} value={ this.props.value || this.config.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
         break;
 
       case 'textarea':
-        fieldHTML = <OpenStadComponentTextArea config={self.config} onChange={self.handleOnChange} ref={el => (self.input = el)}/>
+        fieldHTML = <OpenStadComponentTextArea config={self.config} value={ this.props.value || this.config.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
+        break;
+
+      case 'textarea-with-counter':
+        fieldHTML = <OpenStadComponentInputWithCounter config={{ ...self.config, inputType: 'textarea' }} value={ this.props.value || this.config.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
         break;
 
       default:

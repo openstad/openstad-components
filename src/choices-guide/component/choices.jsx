@@ -52,11 +52,9 @@ export default class OpenStadComponentChoices extends OpenStadComponent {
     //let scores = this.calculateScores();
     let self = this;
     let scores = self.state.scores;
-    console.log('getPreferedChoice');
     switch (self.config.type) {
       case 'plane':
         // dan zou er maar 1 choice moeten zijn
-        console.log('xx');
         return self.choiceElements[0];
         break;
 

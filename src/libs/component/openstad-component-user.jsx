@@ -19,8 +19,6 @@ export default class OpenStadComponentUser extends OpenStadComponent {
 		};
 		self.config = merge.recursive(self.defaultConfig, props.config, self.config || {})
 
-    console.log('xx', self.config);
-
     self.state = {
     }
     

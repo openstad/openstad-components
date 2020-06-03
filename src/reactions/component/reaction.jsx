@@ -146,7 +146,7 @@ export default class OpenStadComponentReaction extends OpenStadComponent {
         throw response.text();
       })
       .then(function(json) {
-        console.log({ yes: json.yes, hasUserVoted: json.hasUserVoted });
+        // console.log({ yes: json.yes, hasUserVoted: json.hasUserVoted });
         self.setState({ yes: json.yes, hasUserVoted: json.hasUserVoted });
       })
       .catch(function(error) {

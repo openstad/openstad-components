@@ -12,6 +12,8 @@ import './css/default.less';
 
 // the module
 import Form from './component/form.jsx';
+import FormField from './component/form-field.jsx';
+import ImageUpload from './component/image-upload.jsx';
 import InputWithCounter from './component/input-with-counter.jsx';
 import Postcode from './component/postcode.jsx';
 import Select from './component/select.jsx';
@@ -20,6 +22,8 @@ import Textarea from './component/textarea.jsx';
 import Slider from './component/slider.jsx';
 export default {
   Form,
+  FormField,
+  ImageUpload,
   InputWithCounter,
   Postcode,
   Select,

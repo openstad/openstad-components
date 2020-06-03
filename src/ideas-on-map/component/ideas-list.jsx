@@ -10,6 +10,7 @@ export default class IdeasList extends React.Component {
 
 		// config
 		let defaultConfig = {
+      types: [],
       titleField: 'title',
       summaryField: 'summary',
       // sortOptions: [{ value: 'random', name: 'Random' }, { value: 'ranking', name: 'Ranking' }, { value: 'newest', name: 'Nieuwste eerst' }, { value: 'oldest', name: 'Oudste eerst' }, { value: 'distance', name: 'Afstand' }],
@@ -111,8 +112,8 @@ export default class IdeasList extends React.Component {
           if (!idea) {
             console.log('idea is undef', i, self.state.ideas);
           }
-          let typeDef = self.config.types.find(entry => idea.extraData && entry.name == idea.extraData.theme);
-          if (!typeDef) { typeDef = { listicon: { html: '' } }; console.log(idea.extraData.theme + ' niet gevonden'); }
+          let typeDef = self.config.types.find(entry => idea.extraData && entry.name == idea.extraData.theme); // TODO: use typefield
+          if (!typeDef || !typeDef.listicon) { typeDef = { listicon: { html: '' } }; } // console.log(idea.extraData.theme + ' niet gevonden'); }
           return (
             <div className="osc-info-block-ideas-list-idea" onClick={(event) => self.config.onIdeaClick(event, idea)} key={'info-block-' + i}>
               <div className="osc-content">
