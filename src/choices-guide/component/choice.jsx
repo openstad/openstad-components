@@ -126,13 +126,20 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
         break;
 
       default:
+        let percentageHTML = null;
+        if (self.config.withPercentage) {
+          let percentage = parseInt(self.state.score.x);
+          percentageHTML = <div className="osc-percentage">{percentage}%</div>
+        }
+        
         scoreHTML = (
           <div className="osc-choice-default">
             <h4>{self.props.data.title}</h4>
-            <div className="osc-choice-bar">
+            <div className={`osc-choice-bar${self.config.withPercentage ? ' osc-with-percentage' : ''}`}>
               <div className="osc-choice-bar-mask"></div>
               <div className="osc-choice-bar-progress" style={{ width: ( self.state.score.x || 0 ) + '%' }}></div>
             </div>
+            { percentageHTML }
           </div>
         );
 
