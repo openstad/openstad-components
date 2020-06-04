@@ -5,7 +5,6 @@
 .osc-ideas-on-map {
 
   @phone: ~'only screen and (max-width: 880px)';
-  
 
   // ----------------------------------------------------------------------------------------------------
   // general
@@ -31,6 +30,16 @@
 
   // filterbar
   @import 'default-filterbar';
+
+  .osc-button-blue {
+    .osc-button-blue();
+
+    &.osc-not-logged-in-button {
+      .osc-inloggen-background;
+      padding-left: 40px;
+    }
+
+  }
 
   // end general
   // ----------------------------------------------------------------------------------------------------

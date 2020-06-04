@@ -66,6 +66,10 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         placeholder: '',
         requiredUserRole: 'member',
       },
+      content: {
+        selectionActiveText: '',
+        selectionInactiveText: '',
+      }
 
 		};
 		self.config = merge.recursive(self.defaultConfig, self.config, props.config || {})

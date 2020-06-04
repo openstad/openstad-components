@@ -1,3 +1,4 @@
+import merge from 'merge';
 import React from 'react';
 import IdeasList from './ideas-list.jsx';
 
@@ -15,9 +16,13 @@ export default class InfoBlock extends React.Component {
 
 		// config
 		let defaultConfig = {
-      content: {}
+      content: {
+        selectionActiveText: '',
+        selectionInactiveText: '',
+      }
 		};
-		this.config = Object.assign(defaultConfig, this.props.config || {})
+		this.config = merge.recursive(this.defaultConfig, this.config, props.config || {})
+    console.log(this.config);
 
     this.state = {
       currentSortOrder: this.config.defaultSortOrder,

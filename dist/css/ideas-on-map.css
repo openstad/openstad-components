@@ -764,6 +764,36 @@ form.osc-form {
     padding: 5px 15px 5px 20px;
   }
 }
+.osc-ideas-on-map .osc-button-blue {
+  position: relative;
+  display: inline-block;
+  padding: 12px 15px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 20px;
+  border: 0 none;
+  cursor: pointer;
+  color: white;
+  background-color: #164995;
+}
+.osc-ideas-on-map .osc-button-blue:active,
+.osc-ideas-on-map .osc-button-blue:focus {
+  outline: 0;
+}
+.osc-ideas-on-map .osc-button-blue.osc-disabled {
+  opacity: 0.3;
+}
+.osc-ideas-on-map .osc-button-blue:hover {
+  text-decoration: underline;
+  background-color: #003066;
+}
+.osc-ideas-on-map .osc-button-blue.osc-not-logged-in-button {
+  background-position: center left 10px;
+  background-size: 20px 20px;
+  background-repeat: no-repeat;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0yMCAwVjIwSDExLjI1VjE3LjVIMTcuNVYyLjVIMTEuMjVWMEgyMFpNMTAuNTEyNSA0LjI1NjI1TDE2LjI2MjUgMTBMMTAuNTEyNSAxNS43NDM3TDguNzUgMTMuOTc1TDExLjQ3NSAxMS4yNUgwVjguNzVIMTEuNDc1TDguNzUgNi4wMjVMMTAuNTEyNSA0LjI1NjI1WiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+Cg==);
+  padding-left: 40px;
+}
 .osc-ideas-on-map .osc-image {
   background-position: center center;
   background-repeat: no-repeat;
