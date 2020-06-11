@@ -68,7 +68,7 @@ export default class OpenStadComponentLightbox extends React.Component {
 
   showImage(e, src) {
     e.stopPropagation();
-    this.mainImage.style.backgroundImage = `url(${src})`;
+    this.mainImage.src = src;
   }
 
   recalcSizes() {
@@ -81,17 +81,20 @@ export default class OpenStadComponentLightbox extends React.Component {
     let mainHeight = self.mainContainer.offsetHeight;
     if (mainWidth / mainHeight > self.state.aspectRatio) {
       let height = .8 * mainHeight;
-      self.mainImage.style.height = height + 'px';
-      self.mainImage.style.width = ( self.state.aspectRatio * height ) + 'px';
-      self.mainImage.style.top = ( ( mainHeight - height ) / 2 ) + 'px';
-      self.mainImage.style.left = ( ( mainWidth - ( self.state.aspectRatio * height ) ) / 2 ) + 'px';
+      self.mainImageContainer.style.height = height + 'px';
+      self.mainImageContainer.style.width = ( self.state.aspectRatio * height ) + 'px';
+      self.mainImageContainer.style.top = ( ( mainHeight - height ) / 2 ) + 'px';
+      self.mainImageContainer.style.left = ( ( mainWidth - ( self.state.aspectRatio * height ) ) / 2 ) + 'px';
     } else {
       let width = mainWidth;
-      self.mainImage.style.width = width + 'px';
-      self.mainImage.style.height = ( 1/self.state.aspectRatio * width ) + 'px';
-      self.mainImage.style.top = ( ( mainHeight - ( 1/self.state.aspectRatio * width ) ) / 2 ) + 'px';
-      self.mainImage.style.left = 0;
+      self.mainImageContainer.style.width = width + 'px';
+      self.mainImageContainer.style.height = ( 1/self.state.aspectRatio * width ) + 'px';
+      self.mainImageContainer.style.top = ( ( mainHeight - ( 1/self.state.aspectRatio * width ) ) / 2 ) + 'px';
+      self.mainImageContainer.style.left = 0;
     }
+
+    self.mainImage.style.width = self.mainImageContainer.style.width;
+    self.mainImage.style.height = self.mainImageContainer.style.height;
 
     let navImgWidth = self.state.aspectRatio * self.navigationContainer.offsetHeight;
     let width = self.state.images.length * navImgWidth + self.state.images.length * 20;
@@ -104,8 +107,12 @@ export default class OpenStadComponentLightbox extends React.Component {
 
     self.state.images.map( ( image, i ) => {
       let width = parseInt( navImgWidth );
-      self[`lighbox-image-${i}`].style.width = width + 'px';
-      self[`lighbox-image-${i}`].style.height = parseInt( 1/self.state.aspectRatio * width ) + 'px';
+      self[`lighbox-image-container-${i}`].style.width = width + 'px';
+      self[`lighbox-image-container-${i}`].style.height = parseInt( 1/self.state.aspectRatio * width ) + 'px';
+
+      self[`lighbox-image-${i}`].style.width = self[`lighbox-image-container-${i}`].style.width;
+      self[`lighbox-image-${i}`].style.height = self[`lighbox-image-container-${i}`].style.height;
+
     });
 
   }
@@ -118,14 +125,16 @@ export default class OpenStadComponentLightbox extends React.Component {
 			<div className="osc-lightbox" onClick={ () => { this.hideLightbox(); } } ref={el => (self.instance = el)}>
         <div className="osc-close-button" onClick={ (e) => self.hideLightbox(e) } ></div>
         <div className="osc-lightbox-main-container" ref={el => (self.mainContainer = el)}>
-          <div className="osc-image-container" style={{ backgroundImage: `url(${ self.state.images[self.state.startIndex] && self.state.images[self.state.startIndex].src })` }} ref={el => (self.mainImage = el)}>
+          <div className="osc-image-container" ref={el => (self.mainImageContainer = el)}>
+            <img src={ self.state.images[self.state.startIndex] && self.state.images[self.state.startIndex].src } ref={el => (self.mainImage = el)}/>
           </div>
         </div>
         <div className="osc-lightbox-navigation-container">
         <div className="osc-lightbox-navigation" ref={el => (self.navigationContainer = el)}>
           { self.state.images.map( ( image, i ) => {
             return (
-              <div className="osc-image-container" style={{ backgroundImage: `url(${image.src})`}} onClick={ (e) => self.showImage(e, image.src) } key={`lighbox-image-${i}`} ref={ el => self[`lighbox-image-${i}`] = el}>
+              <div className="osc-image-container" style={{ backgroundImage: `url(${image.src})`}} onClick={ (e) => self.showImage(e, image.src) } key={`lighbox-image-container-${i}`} ref={ el => self[`lighbox-image-container-${i}`] = el}>
+                <img src={ image.src } ref={ el => self[`lighbox-image-${i}`] = el}/>
               </div>
             )                                                   
           })
