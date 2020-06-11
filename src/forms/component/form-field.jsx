@@ -72,6 +72,7 @@ export default class OpenStadComponentFormField extends OpenStadComponent {
 
       case 'postcode':
         fieldHTML = <OpenStadComponentPostcode config={self.config} onChange={self.handleOnChange} ref={el => (self.input = el)}/>
+        break;
 
       case 'image-upload':
         fieldHTML = <OpenStadComponentImageUpload config={self.config} value={ this.props.value || this.config.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
