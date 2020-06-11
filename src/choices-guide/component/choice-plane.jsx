@@ -125,10 +125,6 @@ export default class OpenStadComponentChoicePlane extends OpenStadComponent {
     return (
       <div id={this.divId} className="osc-choice-plane-plane" ref={function(el) { self.planePlaneElement = el;}}>
         {imageHTML}
-        <div className="osc-choice-plane-background osc-bg-1">{topleftHTML}</div>
-        <div className="osc-choice-plane-background osc-bg-2">{toprightHTML}</div>
-        <div className="osc-choice-plane-background osc-bg-3">{bottomleftHTML}</div>
-        <div className="osc-choice-plane-background osc-bg-4">{bottomrightHTML}</div>
         <div className="osc-point" style={{ top, left }}></div>
         <div style={{ clear: 'both' }}></div>
       </div>
