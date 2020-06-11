@@ -36,6 +36,11 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
 
     self.config = merge.recursive(self.defaultConfig, self.config, props.config || {});
 
+    // tmp
+    if ( !self.config.aspectRatio && self.config.choices && self.config.choices.type && self.config.choices.type == 'plane' ) {
+      self.config.aspectRatio = '24x15'
+    }
+
     let allValues = OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.values') || {};
     let allScores = OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.scores') || {};
     self.state = {
@@ -293,12 +298,18 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
       } else {
 
         let choicesHTML = null;
+
         let choicesTitle = '<b>Je hebt nog geen keuze gemaakt</b>';
-        if ( self.state.firstAnswerGiven && self.choicesElement ) {
-          let choiceElement = self.choicesElement.getPreferedChoice();
-          choicesTitle = '<b>Jouw voorkeur: </b>' + choiceElement.getTitle(self.state.scores[choiceElement.config.divId]) || choicesTitle;
+
+        if (self.config.choiceTitleIncludesPreference) {
+          if ( self.state.firstAnswerGiven && self.choicesElement ) {
+            let choiceElement = self.choicesElement.getPreferedChoice();
+            choicesTitle = '<b>Jouw voorkeur: </b>' + choiceElement.getTitle(self.state.scores[choiceElement.config.divId]) || choicesTitle;
+          }
+        } else {
+          choicesTitle = '<b>Jouw voorkeur</b>';
         }
-        choicesTitle = '<b>Jouw voorkeur</b>';
+
         choicesHTML = (
           <div id={'osc-choices-container-' + this.divId} className="osc-choices-container osc-accordeon osc-closed" ref={el => { self.choicesAccordeon = el; }}>
             <div onClick={() => { if( this.choicesAccordeon.className.match(' osc-closed') ) { this.choicesAccordeon.className = this.choicesAccordeon.className.replace(' osc-closed', ' osc-open'); } else { this.choicesAccordeon.className = this.choicesAccordeon.className.replace(' osc-open', ' osc-closed'); } }} className="osc-accordeon-button" dangerouslySetInnerHTML={{ __html: choicesTitle }}></div>
@@ -309,7 +320,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
         );
 
         let questionGroupHTML = (
-            <OpenStadComponentQuestionGroup config={ { noOfQuestionsToShow: this.config.noOfQuestionsToShow, liveUpdatesFunction: self.liveUpdates } } data={ questionGroup } ref={function(el) { self.questionGroupElement = el; }} key={`group${self.state.currentQuestionsGroupIndex}`}/>
+          <OpenStadComponentQuestionGroup config={ { noOfQuestionsToShow: this.config.noOfQuestionsToShow, liveUpdatesFunction: self.liveUpdates, aspectRatio: self.config.aspectRatio } } data={ questionGroup } ref={function(el) { self.questionGroupElement = el; }} key={`group${self.state.currentQuestionsGroupIndex}`}/>
         );
 
         let editButtonHTML = null;

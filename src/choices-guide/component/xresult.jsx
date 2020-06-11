@@ -17,7 +17,7 @@ export default class OpenStadComponentResult extends OpenStadComponent {
         'metrostad': {
           html: (
             <div id="accordeon-1" className="osc-accordeon osc-closed">
-              <div onClick={ () =>  { var element = document.getElementById('accordeon-1'); console.log('==', element); if( element.className.match(' osc-closed') ){ element.className = element.className.replace(' osc-closed', ' osc-open');  } else { element.className = element.className.replace(' osc-open', ' osc-closed'); } } } className="osc-accordeon-button">Lees meer over scenario metrostad</div>
+              <div onClick={ () =>  { var element = document.getElementById('accordeon-1'); if( element.className.match(' osc-closed') ){ element.className = element.className.replace(' osc-closed', ' osc-open');  } else { element.className = element.className.replace(' osc-open', ' osc-closed'); } } } className="osc-accordeon-button">Lees meer over scenario metrostad</div>
               <div className="osc-accordeon-content">
                 Deze tekst is er nog niet.
               </div>
@@ -28,7 +28,7 @@ export default class OpenStadComponentResult extends OpenStadComponent {
         'moza&iuml;ekstad': {
           html: (
             <div id="accordeon-1" className="osc-accordeon osc-closed">
-              <div onClick={ () =>  { var element = document.getElementById('accordeon-1'); console.log('==', element); if( element.className.match(' osc-closed') ){ element.className = element.className.replace(' osc-closed', ' osc-open');  } else { element.className = element.className.replace(' osc-open', ' osc-closed'); } } } className="osc-accordeon-button">Lees meer over scenario moza&iuml;ekstad</div>
+              <div onClick={ () =>  { var element = document.getElementById('accordeon-1'); if( element.className.match(' osc-closed') ){ element.className = element.className.replace(' osc-closed', ' osc-open');  } else { element.className = element.className.replace(' osc-open', ' osc-closed'); } } } className="osc-accordeon-button">Lees meer over scenario moza&iuml;ekstad</div>
               <div className="osc-accordeon-content">
                 Deze tekst is er nog niet.
               </div>
@@ -39,7 +39,7 @@ export default class OpenStadComponentResult extends OpenStadComponent {
         'museumstad': {
           html: (
             <div id="accordeon-1" className="osc-accordeon osc-closed">
-              <div onClick={ () =>  { var element = document.getElementById('accordeon-1'); console.log('==', element); if( element.className.match(' osc-closed') ){ element.className = element.className.replace(' osc-closed', ' osc-open');  } else { element.className = element.className.replace(' osc-open', ' osc-closed'); } } } className="osc-accordeon-button">Lees meer over scenario museumstad</div>
+              <div onClick={ () =>  { var element = document.getElementById('accordeon-1'); if( element.className.match(' osc-closed') ){ element.className = element.className.replace(' osc-closed', ' osc-open');  } else { element.className = element.className.replace(' osc-open', ' osc-closed'); } } } className="osc-accordeon-button">Lees meer over scenario museumstad</div>
               <div className="osc-accordeon-content">
                 Deze tekst is er nog niet.
               </div>
@@ -50,7 +50,7 @@ export default class OpenStadComponentResult extends OpenStadComponent {
         'dorpenstad': {
           html: (
             <div id="accordeon-1" className="osc-accordeon osc-closed">
-              <div onClick={ () =>  { var element = document.getElementById('accordeon-1'); console.log('==', element); if( element.className.match(' osc-closed') ){ element.className = element.className.replace(' osc-closed', ' osc-open');  } else { element.className = element.className.replace(' osc-open', ' osc-closed'); } } } className="osc-accordeon-button">Lees meer over scenario dorpenstad</div>
+              <div onClick={ () =>  { var element = document.getElementById('accordeon-1'); if( element.className.match(' osc-closed') ){ element.className = element.className.replace(' osc-closed', ' osc-open');  } else { element.className = element.className.replace(' osc-open', ' osc-closed'); } } } className="osc-accordeon-button">Lees meer over scenario dorpenstad</div>
               <div className="osc-accordeon-content">
                 Deze tekst is er nog niet.
               </div>

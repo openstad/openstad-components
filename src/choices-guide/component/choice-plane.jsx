@@ -89,7 +89,7 @@ export default class OpenStadComponentChoicePlane extends OpenStadComponent {
 
     let score = this.props.score;
 
-    let baseSize = ( this.config.size / 2 ) || document.querySelector(`#${this.divId}`) && ( document.querySelector(`#${this.divId}`).offsetWidth / 2 ) || 90;
+    let baseSize = document.querySelector(`#${this.divId}`) && ( document.querySelector(`#${this.divId}`).offsetWidth / 2 ) || 90;
     let top = baseSize + ( typeof score.y == 'undefined' ? 0 : score.y ) * ( baseSize / 100 );
     let left = baseSize + ( typeof score.x == 'undefined' ? 0 : score.x ) * ( baseSize / 100 );
 
@@ -116,7 +116,7 @@ export default class OpenStadComponentChoicePlane extends OpenStadComponent {
       if (!Array.isArray(images)) images = [images];
       let image = images[0];
       imageHTML = (
-        <img className="osc-choice-plane-background-image" src={image.src}/>
+        <img className="osc-choice-plane-background-image" src={image.src} style={{ width: 2 * baseSize, height: 2 * baseSize }}/>
       );
     }
 

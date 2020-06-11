@@ -41,12 +41,17 @@ export default class OpenStadComponentLightbox extends React.Component {
 
     let self = this;
     
-    // console.log('-------------------- Lightbox.show()');
-    // console.log(data);
+    // eval aspect ratio
+    let aspectRatio;
+    try {
+      aspectRatio = eval( data.aspectRatio.replace && data.aspectRatio.replace('x', '/') );
+    } catch (err) {}
+    if (typeof aspectRatio != 'number') aspectRatio = 16/9;
 
     self.setState({
       images: data.images,
       startIndex: data.startIndex,
+      aspectRatio,
     }, () => {
       self.instance.style.display = 'block'
       self.recalcSizes();
@@ -74,27 +79,33 @@ export default class OpenStadComponentLightbox extends React.Component {
 
     let mainWidth = self.mainContainer.offsetWidth;
     let mainHeight = self.mainContainer.offsetHeight;
-    if (mainWidth / mainHeight > 16/9) {
+    if (mainWidth / mainHeight > self.state.aspectRatio) {
       let height = .8 * mainHeight;
       self.mainImage.style.height = height + 'px';
-      self.mainImage.style.width = ( 16/9 * height ) + 'px';
+      self.mainImage.style.width = ( self.state.aspectRatio * height ) + 'px';
       self.mainImage.style.top = ( ( mainHeight - height ) / 2 ) + 'px';
-      self.mainImage.style.left = ( ( mainWidth - ( 16/9 * height ) ) / 2 ) + 'px';
+      self.mainImage.style.left = ( ( mainWidth - ( self.state.aspectRatio * height ) ) / 2 ) + 'px';
     } else {
       let width = mainWidth;
       self.mainImage.style.width = width + 'px';
-      self.mainImage.style.height = ( 9/16 * width ) + 'px';
-      self.mainImage.style.top = ( ( mainHeight - ( 9/16 * width ) ) / 2 ) + 'px';
+      self.mainImage.style.height = ( 1/self.state.aspectRatio * width ) + 'px';
+      self.mainImage.style.top = ( ( mainHeight - ( 1/self.state.aspectRatio * width ) ) / 2 ) + 'px';
       self.mainImage.style.left = 0;
     }
 
-    // console.log(mainWidth + '/' + mainHeight + ' - ' +self.mainImage.style.width + '/' + self.mainImage.style.height);
-
-    let navImgWidth = 16 / 9 * self.navigationContainer.offsetHeight;
-    self.navigationContainer.style.width = ( self.state.images.length * navImgWidth + self.state.images.length * 20 ) + 'px';
+    let navImgWidth = self.state.aspectRatio * self.navigationContainer.offsetHeight;
+    let width = self.state.images.length * navImgWidth + self.state.images.length * 20;
+    if ( width > self.navigationContainer.offsetWidth ) {
+      width = self.navigationContainer.offsetWidth;
+      navImgWidth = width / self.state.images.length - 20;
+    }
+    
+    self.navigationContainer.style.width = width + 'px';
 
     self.state.images.map( ( image, i ) => {
-      self[`lighbox-image-${i}`].style.width = parseInt( navImgWidth ) + 'px';
+      let width = parseInt( navImgWidth );
+      self[`lighbox-image-${i}`].style.width = width + 'px';
+      self[`lighbox-image-${i}`].style.height = parseInt( 1/self.state.aspectRatio * width ) + 'px';
     });
 
   }
@@ -113,7 +124,6 @@ export default class OpenStadComponentLightbox extends React.Component {
         <div className="osc-lightbox-navigation-container">
         <div className="osc-lightbox-navigation" ref={el => (self.navigationContainer = el)}>
           { self.state.images.map( ( image, i ) => {
-            // console.log({ backgroundImage: `url(${image.src})`});
             return (
               <div className="osc-image-container" style={{ backgroundImage: `url(${image.src})`}} onClick={ (e) => self.showImage(e, image.src) } key={`lighbox-image-${i}`} ref={ el => self[`lighbox-image-${i}`] = el}>
               </div>

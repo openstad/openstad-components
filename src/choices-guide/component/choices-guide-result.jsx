@@ -62,17 +62,28 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
     let scores = self.choicesElement && self.choicesElement.calculateScores(self.state.answers);
 
     let choicesTitle = '...';
+    let name;
+    let preferredChoiceId = -1;
     if ( self.choicesElement ) {
       let choiceElement = self.choicesElement.getPreferedChoice();
       if (choiceElement) {
-        let name = choiceElement.getTitle(self.state.scores[choiceElement.config.divId], true);
+        name = choiceElement.getTitle(self.state.scores[choiceElement.config.divId], true);
         if (name) {
           choicesTitle = 'Jouw voorkeur is ' + name;
+          preferredChoiceId = choiceElement.divId
+          console.log(choiceElement);
         } else {
-          choicesTitle = 'Je staat precies tussen meerdere scenario\'s in'
+          choicesTitle = 'Je staat precies tussen meerdere scenario\'s in';
         }
       }
       self.setState({ title: choicesTitle })
+
+		  var event = new window.CustomEvent('osc-choices-guide-result-is-ready', { detail: { preferredChoice: {
+        name,
+        title: choicesTitle,
+        preferredChoiceId
+      }}});
+		  document.dispatchEvent(event);
 
       if (self.config.submission.type == 'auto') {
         self.submitResult()

@@ -112,7 +112,7 @@ export default class OpenStadComponentQuestionGroup extends OpenStadComponent {
     questionsHTML =
       <div className="osc-questions">
         { shownQuestions.map((question, i) => {
-          return <OpenStadComponentQuestion config={ { liveUpdatesFunction: self.liveUpdates, divId: `osc-question-${question.id}` } } data={{ ...question, value: values[question.id] }} answerDimensions={data.answerDimensions} key={`question-${question.id}`} ref={function(el) { self.questionElements[i] = el; }}/>;
+          return <OpenStadComponentQuestion config={ { liveUpdatesFunction: self.liveUpdates, divId: `osc-question-${question.id}`, aspectRatio: self.config.aspectRatio } } data={{ ...question, value: values[question.id] }} answerDimensions={data.answerDimensions} key={`question-${question.id}`} ref={function(el) { self.questionElements[i] = el; }}/>;
         })}
       </div>;
 
