@@ -430,9 +430,7 @@
   padding-top: 9px;
 }
 .osc-choices-guide .osc-choices-container ul.osc-choices .osc-choice-plane-plane .osc-choice-plane-background-image {
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: relative;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -739,8 +737,8 @@
 .osc-choices-guide .osc-questions .osc-question .osc-question-image-container.osc-question-image-aspect-16x9 {
   padding-top: 56.25%;
 }
-.osc-choices-guide .osc-questions .osc-question .osc-question-image-container.osc-question-image-aspect-24x15 {
-  padding-top: 62.5%;
+.osc-choices-guide .osc-questions .osc-question .osc-question-image-container.osc-question-image-aspect-10x7 {
+  padding-top: 70%;
 }
 .osc-choices-guide .osc-questions .osc-question .osc-question-image-container .osc-question-image-aspect-container {
   position: absolute;
@@ -1134,7 +1132,7 @@
 @media only screen and (max-width: 940px) {
   .osc-choices-guide .osc-result .osc-choices-container ul.osc-choices .osc-choice-plane-plane {
     width: 100%;
-    height: 100px;
+    height: auto;
   }
 }
 .osc-choices-guide .osc-result .osc-choices-container ul.osc-choices .osc-choice-plane-plane .osc-point {

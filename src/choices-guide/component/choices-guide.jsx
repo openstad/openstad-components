@@ -38,7 +38,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
 
     // tmp
     if ( !self.config.aspectRatio && self.config.choices && self.config.choices.type && self.config.choices.type == 'plane' ) {
-      self.config.aspectRatio = '24x15'
+      self.config.aspectRatio = '10x7'
     }
     if ( typeof self.config.choiceTitleIncludesPreference == 'undefined' && self.config.choices && self.config.choices.type && self.config.choices.type == 'plane' ) {
       self.config.choiceTitleIncludesPreference = true;
