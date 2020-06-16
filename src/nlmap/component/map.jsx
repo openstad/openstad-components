@@ -377,29 +377,28 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 
   isPointInPolygon(point, polygon) {
 
+    console.log('isPointInPolygon', point, polygon);
+
     if (!point) return false;
     if (!polygon) return true;
 
 	  // taken from http://pietschsoft.com/post/2008/07/02/Virtual-Earth-Polygon-Search-Is-Point-Within-Polygon
 
-    var i;
-    var j = polygon.length - 1;
-	  
-    var inPoly=false;
+    var x = point.lat, y = point.lng;
 
-	  var lat = point.lat;
-    var lng = point.lng;
+    var inside = false;
+    for (var i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+        var xi = polygon[i].lat, yi = polygon[i].lng;
+        var xj = polygon[j].lat, yj = polygon[j].lng;
 
-    for (i=0; i<polygon.length; i++) {
-
-      if ( polygon[i].lng < lng && polygon[j].lng >= lng || polygon[j].lng < lng && polygon[i].lng >= lng) {
-        if ( polygon[i].lat + ( lng - polygon[i].lng ) / ( polygon[j].lng - polygon[i].lng ) * ( polygon[j].lat -  polygon[i].lat ) < lat) {
-          inPoly=!inPoly; 
-        }
-      }
-      j=i; 
+        var intersect = ((yi > y) != (yj > y))
+            && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+        if (intersect) inside = !inside;
     }
-    return inPoly; 
+
+    console.log(inside);
+    
+    return inside; 
 
   }
 

@@ -74,6 +74,8 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 		};
 		self.config = merge.recursive(self.defaultConfig, self.config, props.config || {})
 
+    console.log(self.config.map.polygon);
+    
     // defaults
     self.config.doSearchFunction = self.config.doSearchFunction || self.doSearch.bind(self);
 
