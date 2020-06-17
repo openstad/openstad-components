@@ -79,6 +79,25 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     // defaults
     self.config.doSearchFunction = self.config.doSearchFunction || self.doSearch.bind(self);
 
+    // tmp
+    if (self.config.types && self.config.types.length) {
+      self.config.types.forEach((entry) => {
+        if (entry.value && !entry.name) {
+          entry.name = entry.value;
+        }
+        if (entry.mapicon && typeof entry.mapicon == 'string') {
+          try {
+            entry.mapicon = JSON.parse(entry.mapicon)
+          } catch (err) {console.log(err)}
+        }
+        if (entry.listicon && typeof entry.listicon == 'string') {
+          try {
+            entry.listicon = JSON.parse(entry.listicon)
+          } catch (err) {console.log(err)}
+        }
+      });
+    }
+
     self.state = {
       ideas: [],
       visibleIdeas: [],
