@@ -68,6 +68,7 @@ export default class OpenStadComponentFormField extends OpenStadComponent {
     }
 
     let fieldHTML = null;
+
     switch (self.config.inputType) {
 
       case 'postcode':
@@ -84,6 +85,7 @@ export default class OpenStadComponentFormField extends OpenStadComponent {
         break;
 
       case 'select':
+      case 'multiple-choice':
         fieldHTML = <OpenStadComponentSelect config={self.config} value={ this.props.value || this.config.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
         break;
 
