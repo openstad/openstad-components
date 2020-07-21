@@ -71,6 +71,7 @@ export default class OpenStadComponentFormField extends OpenStadComponent {
 
     switch (self.config.inputType) {
 
+      case 'html-with-counter':
       case 'htmlarea-with-counter':
         fieldHTML = <OpenStadComponentInputWithCounter config={{ ...self.config, inputType: 'htmlarea' }} value={ this.props.value || this.config.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
         break;
