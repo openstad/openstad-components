@@ -52,6 +52,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         isUserLoggedIn: false,
       },
       idea: {
+        canAddNewIdeas: true,
         titleMinLength: 10,
         titleMaxLength: 20,
         summaryMinLength: 20,
@@ -60,6 +61,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         descriptionMaxLength: 5000,
       },
       argument: {
+        isActive: true,
         descriptionMinLength: 30,
         descriptionMaxLength: 500,
         formIntro: 'Mijn reactie op deze inzending is ...',
@@ -74,8 +76,6 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 		};
 		self.config = merge.recursive(self.defaultConfig, self.config, props.config || {})
 
-    console.log(self.config.map.polygon);
-    
     // defaults
     self.config.doSearchFunction = self.config.doSearchFunction || self.doSearch.bind(self);
 
@@ -88,12 +88,12 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         if (entry.mapicon && typeof entry.mapicon == 'string') {
           try {
             entry.mapicon = JSON.parse(entry.mapicon)
-          } catch (err) {console.log(err)}
+          } catch (err) { console.log(entry); console.log(err) }
         }
         if (entry.listicon && typeof entry.listicon == 'string') {
           try {
             entry.listicon = JSON.parse(entry.listicon)
-          } catch (err) {console.log(err)}
+          } catch (err) { console.log(entry); console.log(err) }
         }
       });
     }
@@ -252,6 +252,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 					  self.showIdeaDetails(showIdeaDetails);
           }
           self.onChangeMapBoundaries();
+
           // dev form
           // if (!showIdeaSelected) {
 					//   self.setSelectedIdea(null);
@@ -754,12 +755,13 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
           siteId: this.config.siteId,
           user: this.config.user,
           api: this.config.api,
-          argument: this.config.argument,
+          argument: { ...this.config.argument },
           labels: {
             Kans: { text: 'Dit gaat goed', color: 'black', backgroundColor: '#bed200' },
             Knelpunt: { text: 'Dit kan beter', color: 'black', backgroundColor: '#ff9100' },
           }
         };
+        config.argument.isActive = this.config.argument.isActive && !this.config.content.ignoreReactionsForIdeaIds.match(new RegExp(`(?:^|\\D)${this.state.currentIdea.id}(?:\\D|$)`));
         infoHTML = (
 			    <OpenStadComponentIdeaDetails id={this.divId + '-infoblock'} config={config} idea={this.state.currentIdea} label={this.state.currentIdea.extraData.type} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.ideadetails = el)}/>
         );
@@ -801,7 +803,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
           );
         }
         infoHTML = (
-			    <InfoBlock id={this.divId + '-infoblock'} config={{ api: this.config.api, title: this.config.title, titleField: this.config.titleField, summaryField: this.config.summaryField, types: this.config.types, content: this.config.content  }} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.infoblock = el)}/>
+			    <InfoBlock id={this.divId + '-infoblock'} config={{ api: this.config.api, title: this.config.title, titleField: this.config.titleField, summaryField: this.config.summaryField, types: this.config.types, content: this.config.content, argument: this.config.argument, idea: this.config.idea  }} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.infoblock = el)}/>
         );
         filterHTML = (
 				  <Filterbar id={this.divId + '-filterbar'} config={{ types: this.config.types, areas: this.config.areas, doSearchFunction: this.config.doSearchFunction, title: this.config.title }} className="osc-ideas-on-map-filterbar" ref={el => (this.filterbar = el)}/>
@@ -810,7 +812,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
       default:
         infoHTML = (
-			    <InfoBlock id={this.divId + '-infoblock'} config={{ api: this.config.api, title: this.config.title, titleField: this.config.titleField, summaryField: this.config.summaryField, types: this.config.types, content: this.config.content  }} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.infoblock = el)}/>
+			    <InfoBlock id={this.divId + '-infoblock'} config={{ api: this.config.api, title: this.config.title, titleField: this.config.titleField, summaryField: this.config.summaryField, types: this.config.types, content: this.config.content, argument: this.config.argument, idea: this.config.idea  }} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.infoblock = el)}/>
         );
         filterHTML = (
 				  <Filterbar id={this.divId + '-filterbar'} config={{ types: this.config.types, areas: this.config.areas, doSearchFunction: this.config.doSearchFunction, title: this.config.title }} className="osc-ideas-on-map-filterbar" ref={el => (this.filterbar = el)}/>

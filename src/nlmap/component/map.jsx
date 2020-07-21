@@ -377,8 +377,6 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 
   isPointInPolygon(point, polygon) {
 
-    console.log('isPointInPolygon', point, polygon);
-
     if (!point) return false;
     if (!polygon) return true;
 
@@ -396,8 +394,6 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
         if (intersect) inside = !inside;
     }
 
-    console.log(inside);
-    
     return inside; 
 
   }

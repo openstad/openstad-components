@@ -8,6 +8,12 @@ import OpenStadComponentDefaultInput from './default-input.jsx';
 
 export default class OpenStadComponentSelect extends OpenStadComponentDefaultInput {
 
+  componentDidMount() {
+    // init value
+    let value = this.state.value || ( this.config.choices[0] && this.config.choices[0].value );
+    this.handleOnChange({ value })
+  }
+
 	render() {
 
 		let self = this;

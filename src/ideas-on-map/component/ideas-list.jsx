@@ -114,6 +114,13 @@ export default class IdeasList extends React.Component {
           }
           let typeDef = self.config.types.find(entry => idea.extraData && entry.name == idea.extraData.theme); // TODO: use typefield
           if (!typeDef || !typeDef.listicon) { typeDef = { listicon: { html: '' } }; } // console.log(idea.extraData.theme + ' niet gevonden'); }
+          let argcountHTML = null;
+          if (this.config.argument.isActive && !this.config.content.ignoreReactionsForIdeaIds.match(new RegExp(`(?:^|\\D)${idea.id}(?:\\D|$)`))) {
+            argcountHTML = (
+              <div className="osc-reactions">
+                {idea.argCount || 0}
+              </div>);
+          }
           return (
             <div className="osc-info-block-ideas-list-idea" onClick={(event) => self.config.onIdeaClick(event, idea)} key={'info-block-' + i}>
               <div className="osc-content">
@@ -123,15 +130,13 @@ export default class IdeasList extends React.Component {
                   { eval(`idea.${self.config.summaryField}`) }
                 </div>
                 <div className="osc-stats">
-                <div className="osc-likes">
-                  {idea.yes || 0}
-                </div>
-                <div className="osc-reactions">
-                  {idea.argCount || 0}
-                </div>
-                <div className="osc-type">
-                  <div className="osc-type-content" dangerouslySetInnerHTML={{ __html: typeDef.listicon.html }}></div>
-                </div>
+                  <div className="osc-likes">
+                    {idea.yes || 0}
+                  </div>
+                  {argcountHTML}
+                  <div className="osc-type">
+                    <div className="osc-type-content" dangerouslySetInnerHTML={{ __html: typeDef.listicon.html }}></div>
+                  </div>
                 </div>
               </div>
               <div className="osc-clear-both"></div>

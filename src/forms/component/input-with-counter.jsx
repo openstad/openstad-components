@@ -1,6 +1,9 @@
 import merge from 'merge';
 import React from 'react';
 import ReactDOM from 'react-dom';
+//import CKEditor from '@ckeditor/ckeditor5-react';
+//import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import HTMLArea from './htmlarea.jsx';
 
 'use strict';
 
@@ -30,6 +33,8 @@ export default class FormfieldInputWithCounter extends React.Component {
     self.key = props.useKey || ( self.id || 'osc-input-with-counter-' ) + parseInt( 10000000 * Math.random );
 
     this.onChange = props.onChange;
+
+    self.handleOnChange = self.handleOnChange.bind(this)
 
   }
 
@@ -75,10 +80,10 @@ export default class FormfieldInputWithCounter extends React.Component {
 		this.setState(state)
 	}
 
-	onInputKeyUp() {
+	onInputKeyUp(value) {
 		let state = {};
-		let valueLength = this.input.value.length;
-		state.value = this.input.value;
+		state.value = value || this.input.value;
+		let valueLength = state.value.length;
 		state.valueLength = valueLength;
 		state.isValid = valueLength >= this.config.minLength && valueLength <= this.config.maxLength;
 		this.setState(state)
@@ -106,6 +111,35 @@ export default class FormfieldInputWithCounter extends React.Component {
     let inputHTML = null;
 
     switch(self.config.inputType) {
+        
+      case 'htmlarea':
+        inputHTML = (
+          <HTMLArea
+            value={this.state.value}
+            onChange={self.handleOnChange}
+            onFocus={e => self.onInputFocus(e)}
+            onBlur={e => self.onInputBlur(e)}
+            onKeyUp={e => self.onInputKeyUp(e)}
+          />
+        );
+        // inputHTML = (
+        //   <CKEditor
+        //     editor={ ClassicEditor }
+        //     config={{ toolbar: [ 'h3', 'bold', 'italic', 'link' ] }}
+        //     data={this.props.value}
+        //     onInit={ editor => {
+        //       // TODO: betere selector
+        //       document.querySelector('.ck-content').addEventListener('keyup', function(e) {
+        //         self.onInputKeyUp(e, editor.getData())
+        //       })
+        //     }}
+        //     onChange={( event, editor ) => self.handleOnChange({ value: editor.getData() })}
+        //     onFocus={e => self.onInputFocus(e)}
+        //     onBlur={e => self.onInputBlur(e)}
+        //   />
+        // );
+        break;
+        
       case 'textarea':
         inputHTML = (
 				  <textarea key={self.key} ref={el => (self.input = el)} value={this.state.value} disabled={this.props.disabled} placeholder={this.config.placeholder} onChange={e => self.handleOnChange({ value: self.input.value })} onKeyUp={e => self.onInputKeyUp(e)} onFocus={e => self.onInputFocus(e)} onBlur={e => self.onInputBlur(e)}></textarea>

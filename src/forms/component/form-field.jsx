@@ -4,9 +4,9 @@ import merge from 'merge';
 
 import OpenStadComponent from '../../component/index.jsx';
 
-import OpenStadComponentPostcode from './postcode.jsx';
 import OpenStadComponentImageUpload from './image-upload.jsx';
 import OpenStadComponentInputWithCounter from './input-with-counter.jsx';
+import OpenStadComponentPostcode from './postcode.jsx';
 import OpenStadComponentSelect from './select.jsx';
 import OpenStadComponentText from './textinput.jsx';
 import OpenStadComponentTextArea from './textarea.jsx';
@@ -71,8 +71,8 @@ export default class OpenStadComponentFormField extends OpenStadComponent {
 
     switch (self.config.inputType) {
 
-      case 'postcode':
-        fieldHTML = <OpenStadComponentPostcode config={self.config} onChange={self.handleOnChange} ref={el => (self.input = el)}/>
+      case 'htmlarea-with-counter':
+        fieldHTML = <OpenStadComponentInputWithCounter config={{ ...self.config, inputType: 'htmlarea' }} value={ this.props.value || this.config.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
         break;
 
       case 'image-upload':
@@ -82,6 +82,10 @@ export default class OpenStadComponentFormField extends OpenStadComponent {
       case 'input-with-counter':
       case 'text-with-counter':
         fieldHTML = <OpenStadComponentInputWithCounter config={{ inputType: 'input', ...self.config }} value={ this.props.value || this.config.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
+        break;
+
+      case 'postcode':
+        fieldHTML = <OpenStadComponentPostcode config={self.config} onChange={self.handleOnChange} ref={el => (self.input = el)}/>
         break;
 
       case 'select':

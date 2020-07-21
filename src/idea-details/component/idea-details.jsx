@@ -24,7 +24,9 @@ export default class IdeasDetails extends React.Component {
         isUserLoggedIn: false,
       },
       argument: {
+        isActive: true,
       },
+      labels: {},
 		};
 		this.config = merge.recursive(defaultConfig, this.config, this.props.config || {})
 
@@ -155,10 +157,13 @@ export default class IdeasDetails extends React.Component {
     if (!idea) return null;
 
     let labelHTML = null;
-    if (self.config.labels && self.props.label) {
+    if (self.config.labels && self.props.label && self.config.labels[ self.props.label ]) {
       // console.log(self.config.labels[ self.props.label ]);
+      let color = self.config.labels[ self.props.label ].color || 'white';
+      let backgroundColor = self.config.labels[ self.props.label ].backgroundColor || '#164995';
+      let text = self.config.labels[ self.props.label ].text;
       labelHTML = (
-        <div className="ocs-idea-label" style={{ color: self.config.labels[ self.props.label ].color, backgroundColor: self.config.labels[ self.props.label ].backgroundColor }}>{self.config.labels[ self.props.label ].text}</div>
+        <div className="ocs-idea-label" style={{ color, backgroundColor }}>{text}</div>
       );
     }
 
@@ -185,6 +190,26 @@ export default class IdeasDetails extends React.Component {
     }
 
     // console.log(idea);
+
+    let reactionsCountHTML = null;
+    if ( self.config.argument.isActive ) {
+      reactionsCountHTML = (
+        <div>
+          <h3>Reacties</h3>
+          <a href="#reactions" className="osc-no-of-reactions">{idea.argCount || 0} reacties</a>
+        </div>
+      );
+    }
+
+    let reactionsHTML = null;
+    if ( self.config.argument.isActive ) {
+      reactionsHTML = (
+        <div>
+			    <div id="reactions" className="osc-reactions-header"><h3>{self.config.argument.title || 'Reacties'}</h3></div>
+          <OpenStadComponentReactions config={{ ...self.config.argument, title: undefined, api: self.config.api, user: self.config.user, siteId: self.config.siteId, ideaId: idea.id }}/>
+        </div>
+      );
+    }
 
     return (
 			<div id={self.id} className={self.props.className || 'osc-info-block-idea-details'} ref={el => (self.instance = el)}>
@@ -218,8 +243,7 @@ export default class IdeasDetails extends React.Component {
 
                 <br/>
 
-                <h3>Reacties</h3>
-                <a href="#reactions" className="osc-no-of-reactions">{idea.argCount || 0} reacties</a>
+                {reactionsCountHTML}
 
                 {editButtonsHTML}
 
@@ -238,11 +262,10 @@ export default class IdeasDetails extends React.Component {
 
             <p className="osc-details-summary">{idea.summary}</p>
 
-            <p className="osc-details-description">{idea.description}</p>
+            <p className="osc-details-description" dangerouslySetInnerHTML={{ __html: idea.description }}></p>
 
 			    </div>
-			    <div id="reactions" className="osc-reactions-header"><h3>Reacties</h3></div>
-          <OpenStadComponentReactions config={{ ...self.config.argument, api: self.config.api, user: self.config.user, siteId: self.config.siteId, ideaId: idea.id }}/>
+          {reactionsHTML}
 			  </div>
 			</div>
     );

@@ -19,7 +19,14 @@ export default class InfoBlock extends React.Component {
       content: {
         selectionActiveText: '',
         selectionInactiveText: '',
-      }
+        ignoreReactionsForIdeaIds: '',
+      },
+      idea: {
+        canAddNewIdeas: true,
+      },
+      argument: {
+        isActive: true,
+      },
 		};
 		this.config = merge.recursive(this.defaultConfig, this.config, props.config || {})
     console.log(this.config);
@@ -101,14 +108,16 @@ export default class InfoBlock extends React.Component {
     if (self.state.newIdea) {
       if (self.state.newIdea.isPointInPolygon) {
         let button = null;
-        if (self.config.api.isUserLoggedIn) {
-          button = (
-            <button className="osc-button osc-button-blue" onClick={(event) => self.dispatchNewIdeaClick(event)} ref={el => (self.newIdeaButton = el)}>Nieuw punt toevoegen</button>
-          );
-        } else {
-          button = (
-            <button onClick={() => { document.location.href = '/oauth/login?returnTo=' + encodeURIComponent(document.location.href) }} className="osc-button-blue osc-not-logged-in-button">Inloggen</button>
-          );
+        if (self.config.idea.canAddNewIdeas) {
+          if (self.config.api.isUserLoggedIn) {
+            button = (
+              <button className="osc-button osc-button-blue" onClick={(event) => self.dispatchNewIdeaClick(event)} ref={el => (self.newIdeaButton = el)}>Nieuw punt toevoegen</button>
+            );
+          } else {
+            button = (
+              <button onClick={() => { document.location.href = '/oauth/login?returnTo=' + encodeURIComponent(document.location.href) }} className="osc-button-blue osc-not-logged-in-button">Inloggen</button>
+            );
+          }
         }
         let selectionActiveText = self.config.content.selectionActiveText;
         if (self.state.newIdea.address) selectionActiveText = selectionActiveText.replace(/\{address\}/g, self.state.newIdea.address);
@@ -139,6 +148,13 @@ export default class InfoBlock extends React.Component {
       let idea = self.state.selectedIdea;
       let typeDef = self.config.types.find(entry => idea.extraData && entry.name == idea.extraData.theme);
       if (!typeDef || !typeDef.listicon) { typeDef = { listicon: { html: '' } }; } // console.log(idea.extraData.theme + ' niet gevonden'); }
+      let argcountHTML = null;
+      if (this.config.argument.isActive && !this.config.content.ignoreReactionsForIdeaIds.match(new RegExp(`(?:^|\\D)${idea.id}(?:\\D|$)`))) {
+        argcountHTML = (
+          <div className="osc-reactions">
+            {idea.argCount || 0}
+          </div>);
+      }
       selectedIdeaHTML = (
 			  <div className="osc-info-block-selected-idea" onClick={(event) => self.dispatchSelectedIdeaClick(event, self.state.selectedIdea)}>
           <button className="osc-close-button-black" onClick={(event) => self.dispatchUpdateSelectedIdea(event, null)} ref={el => (self.resetButton = el)}/>
@@ -154,9 +170,7 @@ export default class InfoBlock extends React.Component {
                 <div className="osc-likes">
                   {idea.yes || 0}
                 </div>
-                <div className="osc-reactions">
-                  {idea.argCount || 0}
-                </div>
+                {argcountHTML}
                 <div className="osc-type">
                   <div className="osc-type-content" dangerouslySetInnerHTML={{ __html: typeDef.listicon.html }}></div>
                 </div>
@@ -174,18 +188,9 @@ export default class InfoBlock extends React.Component {
 
     let defaultBlockHTML = null;
     if (!newIdeaHTML && !selectedIdeaHTML) {
+      let noSelectionText = self.config.content.noSelectionText;
       defaultBlockHTML = (
-			  <div className="osc-info-block-default-block">
-          <div className="osc-info-block-default-block-line osc-line-1">
-            Klik op een plek op de kaart om een nieuw punt toe te voegen.
-          </div>
-          <div className="osc-info-block-default-block-line osc-line-2">
-            Selecteer een inzending op de kaart om meer informatie over de inzending te bekijken.
-          </div>
-          <div className="osc-info-block-default-block-line osc-line-3">
-            Bekijk hieronder de inzendingen die nu zichtbaar zijn op de kaart.
-          </div>
-        </div>
+			  <div className="osc-info-block-default-block" dangerouslySetInnerHTML={{ __html: noSelectionText }}></div>
       );
       mobileTitle = `${self.config.title} in dit gebied (${self.state.ideas && self.state.ideas.length || 0})`;
     }
