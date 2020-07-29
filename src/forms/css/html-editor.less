@@ -11,7 +11,8 @@
 
     .osc-html-editor-button {
       display: inline-block;
-      width: 55px;
+      width: 40px;
+      height: 40px;
       margin-right: 5px;
       padding: 5px;
       border: solid 1px #434343;
@@ -19,8 +20,29 @@
       font-weight: bold;
       text-align: center;
       cursor: pointer;
-    }
 
+      &.osc-html-editor-button-bold {
+        .osc-button-bold-background();
+        background-position: 5px 5px;
+      }
+
+      &.osc-html-editor-button-italic {
+        .osc-button-italic-background();
+        background-position: 5px 5px;
+      }
+
+      &.osc-html-editor-button-insertunorderedlist {
+        .osc-button-insertunorderedlist-background();
+        background-position: 5px 5px;
+      }
+
+      &.osc-html-editor-button-createlink {
+        .osc-button-createlink-background();
+        background-position: 5px 5px;
+      }
+
+    }
+  
   }
   
 

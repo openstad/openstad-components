@@ -26,6 +26,7 @@ export default class IdeasDetails extends React.Component {
       argument: {
         isActive: true,
       },
+      showVoteButtons: true,
       labels: {},
 		};
 		this.config = merge.recursive(defaultConfig, this.config, this.props.config || {})
@@ -167,6 +168,16 @@ export default class IdeasDetails extends React.Component {
       );
     }
 
+    let voteButtonsHTML = null;
+    if (self.config.showVoteButtons) {
+      voteButtonsHTML = (
+        <div className="osc-details-vote-buttons-container">
+          <h3>Likes</h3>
+          <VoteButton config={{ text: 'eens', opinion: 'yes', api: this.config.api, user: this.config.user, siteId: this.config.siteId }} idea={this.state.idea} name="likebutton" value={idea.yes}/>
+        </div>
+      );
+    }
+
     let editButtonsHTML = null;
     if ( self.config.user && self.config.user.role && self.config.user.role == 'admin' ) {
       editButtonsHTML = (
@@ -188,8 +199,6 @@ export default class IdeasDetails extends React.Component {
         </div>
       );
     }
-
-    // console.log(idea);
 
     let reactionsCountHTML = null;
     if ( self.config.argument.isActive ) {
@@ -223,7 +232,9 @@ export default class IdeasDetails extends React.Component {
 
             <div className="osc-details-image-and-stats">
 
-              <div className="osc-image" style={{ backgroundImage: `url(${idea.image})` }}></div>
+              <div className="osc-image-container">
+                <div className="osc-image" style={{ backgroundImage: `url(${idea.image})` }}></div>
+              </div>
 
               {labelHTML}
 
@@ -238,10 +249,7 @@ export default class IdeasDetails extends React.Component {
 
               <div className="osc-details-stats">
 
-                <h3>Likes</h3>
-                <VoteButton config={{ text: 'eens', opinion: 'yes', api: this.config.api, user: this.config.user, siteId: this.config.siteId }} idea={this.state.idea} name="likebutton" value={idea.yes}/>
-
-                <br/>
+                {voteButtonsHTML}
 
                 {reactionsCountHTML}
 
@@ -266,7 +274,11 @@ export default class IdeasDetails extends React.Component {
 
 			    </div>
           {reactionsHTML}
-			  </div>
+
+			    <div className="osc-bottom-spacer"></div>
+
+        </div>
+
 			</div>
     );
 

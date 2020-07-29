@@ -16,6 +16,9 @@ export default class IdeasList extends React.Component {
       // sortOptions: [{ value: 'random', name: 'Random' }, { value: 'ranking', name: 'Ranking' }, { value: 'newest', name: 'Nieuwste eerst' }, { value: 'oldest', name: 'Oudste eerst' }, { value: 'distance', name: 'Afstand' }],
       sortOptions: [{ value: 'newest', name: 'Nieuwste eerst' }, { value: 'oldest', name: 'Oudste eerst' }],
       showSortButton: true,
+      idea: {
+        showVoteButtons: true,
+      },
       defaultSortOrder: 'newest',
 		};
 		this.config = Object.assign(defaultConfig, this.props.config || {})
@@ -114,6 +117,13 @@ export default class IdeasList extends React.Component {
           }
           let typeDef = self.config.types.find(entry => idea.extraData && entry.name == idea.extraData.theme); // TODO: use typefield
           if (!typeDef || !typeDef.listicon) { typeDef = { listicon: { html: '' } }; } // console.log(idea.extraData.theme + ' niet gevonden'); }
+          let voteCountHTML = null;
+          if (this.config.idea.showVoteButtons) {
+            voteCountHTML = (
+              <div className="osc-likes">
+                {idea.yes || 0}
+              </div>);
+          }
           let argcountHTML = null;
           if (this.config.argument.isActive && !this.config.content.ignoreReactionsForIdeaIds.match(new RegExp(`(?:^|\\D)${idea.id}(?:\\D|$)`))) {
             argcountHTML = (
@@ -130,9 +140,7 @@ export default class IdeasList extends React.Component {
                   { eval(`idea.${self.config.summaryField}`) }
                 </div>
                 <div className="osc-stats">
-                  <div className="osc-likes">
-                    {idea.yes || 0}
-                  </div>
+                  {voteCountHTML}
                   {argcountHTML}
                   <div className="osc-type">
                     <div className="osc-type-content" dangerouslySetInnerHTML={{ __html: typeDef.listicon.html }}></div>

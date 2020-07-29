@@ -19,17 +19,30 @@
   .osc-details-image-and-stats {
 
     position: relative;
-    
-    .osc-image {
 
+    .osc-image-container {
+      position: relative;
       width: 700px;
       height: 393px;
-      background-size: cover;
-      background-repeat: no-repeat;
+      overflow: hidden;
 
       @media @phone {
-        position: relative;
         width: 100%;
+        height: auto;
+        padding-top: 56.25%; /* 16:9 aspect ratio */
+      }
+
+      .osc-image {
+
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+
+        background-size: cover;
+        background-repeat: no-repeat;
+
       }
 
     }
@@ -157,6 +170,10 @@
 
   }
 
+  .osc-details-vote-buttons-container {
+    margin-bottom: 20px;
+  }
+  
   .osc-details-summary,
   .osc-details-description {
     width: 700px;

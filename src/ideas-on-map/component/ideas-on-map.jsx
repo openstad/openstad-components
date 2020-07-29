@@ -53,6 +53,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       },
       idea: {
         canAddNewIdeas: true,
+        showVoteButtons: true,
         titleMinLength: 10,
         titleMaxLength: 20,
         summaryMinLength: 20,
@@ -69,10 +70,9 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         requiredUserRole: 'member',
       },
       content: {
-        selectionActiveText: '',
-        selectionInactiveText: '',
-      }
-
+        mobilePreviewLoggedInHTML: 'Een locatie vlakbij <h4>{address}</h4>{addButton}',
+        mobilePreviewNotLoggedInHTML: 'Een locatie vlakbij <h4>{address}</h4><div>Wilt u een nieuw punt toevoegen? Dan moet u eerst <a href="{loginLink}">inloggen</a>.</div>',
+      },
 		};
 		self.config = merge.recursive(self.defaultConfig, self.config, props.config || {})
 
@@ -759,7 +759,8 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
           labels: {
             Kans: { text: 'Dit gaat goed', color: 'black', backgroundColor: '#bed200' },
             Knelpunt: { text: 'Dit kan beter', color: 'black', backgroundColor: '#ff9100' },
-          }
+          },
+          showVoteButtons: this.config.idea.showVoteButtons,
         };
         config.argument.isActive = this.config.argument.isActive && !this.config.content.ignoreReactionsForIdeaIds.match(new RegExp(`(?:^|\\D)${this.state.currentIdea.id}(?:\\D|$)`));
         infoHTML = (
@@ -783,16 +784,36 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       case 'idea-selected':
         if (this.state.status == 'location-selected') {
           if (this.state.editIdea && this.state.editIdea.isPointInPolygon) {
-            let buttonHTML = this.config.api.isUserLoggedIn
-                ? (<button className="osc-button osc-button-blue" onClick={(event) => { this.onClickMobileSwitcher(event); this.onNewIdeaClick(event)} } ref={el => (self.newIdeaButton = el)}>Nieuw punt toevoegen</button>)
-                : (<div>Wilt u een nieuw punt toevoegen? Dan moet u eerst <a href="javascript: document.location.href = '/oauth/login?returnTo=' + encodeURIComponent(document.location.href)">inloggen</a>.</div>);
+
+            let contentHTML = this.config.api.isUserLoggedIn ? this.config.content.mobilePreviewLoggedInHTML : this.config.content.mobilePreviewNotLoggedInHTML;
+
+            let addButton = null; let loginButton = null; let loginLink = null;
+            if (this.config.api.isUserLoggedIn) {
+              if (this.config.idea.canAddNewIdeas) {
+                addButton = (
+                  <button className="osc-button osc-button-blue" onClick={(event) => { this.onClickMobileSwitcher(event); this.onNewIdeaClick(event)} } ref={el => (self.newIdeaButton = el)}>Nieuw punt toevoegen</button>
+                );
+              }
+            } else {
+              if (this.config.idea.canAddNewIdeas) {
+                loginButton = (
+                  <button onClick={() => { document.location.href = '/oauth/login?returnTo=' + encodeURIComponent(document.location.href) }} className="osc-button-blue osc-not-logged-in-button">Inloggen</button>
+                );
+                loginLink = "javascript: document.location.href = '/oauth/login?returnTo=' + encodeURIComponent(document.location.href)";
+              }
+            }
+            
+            contentHTML = contentHTML.replace(/\{address\}/g, this.state.editIdea.address || '');
+            contentHTML = contentHTML.replace(/\{loginLink\}/g, loginLink);
+            
+            contentHTML = OpenStadComponentLibs.reactTemplate({ html: contentHTML, addButton, loginButton })
+            console.log(contentHTML);
+
             mobilePopupHTML = (
-              <div className="ocs-mobile-popup">
-                Een locatie vlakbij
-                <h4>{this.state.editIdea && this.state.editIdea.address}</h4>
-                {buttonHTML}
-              </div>
-            );
+							<div className="ocs-mobile-popup">
+								{contentHTML}
+							</div>
+						);
           }
         } else {
           mobilePopupHTML = (

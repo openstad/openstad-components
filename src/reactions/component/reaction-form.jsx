@@ -30,7 +30,8 @@ export default class OpenStadComponentReactionForm extends OpenStadComponent {
     };
 
     self.config = merge.recursive(self.defaultConfig, props.config || {});
-
+    self.config.loginUrl = self.config.loginUrl || '/oauth/login?returnTo=' + encodeURIComponent(document.location.href);
+    
     self.state = {
       description: self.config.description || '',
       isValid: false,
