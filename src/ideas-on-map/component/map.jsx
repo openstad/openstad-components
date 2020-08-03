@@ -81,12 +81,13 @@ export default class Map extends OpenStadComponentNLMap {
     super.setBoundsAndCenter(points || ( this.config.autoZoomAndCenter == 'polygon' && this.config.polygon ) || this.map.markers);
   }
 
-  showMarkers() {
+  showMarkers({ keepCenter=false }) {
+    console.log('keepCenter', keepCenter);
 	  var self = this;
     self.markers.forEach((marker) => {
       self.showMarker(marker)
     });
-    self.setBoundsAndCenter(( self.config.autoZoomAndCenter == 'polygon' && self.config.polygon ) || self.markers);
+    // if (!keepCenter) self.setBoundsAndCenter(( self.config.autoZoomAndCenter == 'polygon' && self.config.polygon ) || self.markers);
   }
 
   hideMarkers({ exception }) {
@@ -100,6 +101,7 @@ export default class Map extends OpenStadComponentNLMap {
   }
 
   fadeMarkers({ exception }) {
+    console.log(exception && exception.id);
     let self = this;
     self.markers.forEach((marker) => {
       if (exception && marker.data && marker.data.id && exception.id == marker.data.id) {

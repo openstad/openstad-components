@@ -4,6 +4,9 @@
 .osc-margin-right {
   margin-right: 15px;
 }
+.osc-opacity-25 {
+  opacity: 0.25;
+}
 .osc-button {
   position: relative;
   display: inline-block;

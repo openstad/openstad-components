@@ -72,6 +72,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       content: {
         mobilePreviewLoggedInHTML: 'Een locatie vlakbij <h4>{address}</h4>{addButton}',
         mobilePreviewNotLoggedInHTML: 'Een locatie vlakbij <h4>{address}</h4><div>Wilt u een nieuw punt toevoegen? Dan moet u eerst <a href="{loginLink}">inloggen</a>.</div>',
+        ignoreReactionsForIdeaIds: '',
       },
 		};
 		self.config = merge.recursive(self.defaultConfig, self.config, props.config || {})
@@ -109,6 +110,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       // new, maar nog niet overal gebruikt
       selectedIdea: null,
       selectedLocation: null,
+      currentMouseOverIdea: null,
     }
     
   }
@@ -173,6 +175,12 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     });
 		document.addEventListener('clickMobileSwitcher', function(event) {
       self.onClickMobileSwitcher();
+    });
+		document.addEventListener('mouseOverListItem', function(event) {
+      self.onMouseOverListItem(event.detail.idea);
+    });
+		document.addEventListener('mouseOutListItem', function(event) {
+      self.onMouseOutListItem();
     });
 
     // details changes
@@ -242,7 +250,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
             self.setState({ status: 'idea-selected', currentIdea: showIdeaSelected }, function() {
               // todo: dit zou hij zelf via state moeten doen
               self.map.map.invalidateSize();
-              self.map.showMarkers(self.map.markers)
+              self.map.showMarkers({})
               self.setSelectedIdea(self.state.currentIdea)
             });
           }
@@ -288,7 +296,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     self.setState({ status: 'idea-selected' }, function() {
       // todo: dit zou hij zelf via state moeten doen
       self.map.map.invalidateSize();
-      self.map.showMarkers(self.map.markers)
+      self.map.showMarkers({})
       self.setSelectedIdea(self.state.currentIdea)
     });
   }
@@ -311,7 +319,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       self.setState({ status: 'location-selected' }, function() {
         // todo: dit zou hij zelf via state moeten doen
         self.map.map.invalidateSize();
-        self.map.showMarkers(self.map.markers)
+        self.map.showMarkers({})
         self.setNewIdea(self.state.editIdea)
       });
     }
@@ -726,6 +734,24 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   //   self.map.setBoundsAndCenter(area && area.polygon || self.config.map.polygon || self.map.markers);
   // }
 
+  onMouseOverListItem(idea) {
+    this.setState({ currentMouseOverIdea: idea });
+    this.map.fadeMarkers({ exception: idea })
+    this.map.updateFading();
+  }
+
+  onMouseOutListItem(idea) {
+    this.setState({ currentMouseOverIdea: null });
+    this.map.unfadeAllMarkers()
+    if (this.selectedIdea) {
+      this.map.fadeMarkers({exception: this.selectedIdea});
+    }
+    if (this.map.selectedLocation) {
+      this.map.fadeMarkers({});
+    }
+    this.map.updateFading();
+  }
+  
   onClickMobileSwitcher() {
     let self = this;
     self.infoblock.setState({ mobileState: self.state.mobileState == 'closed' ? 'opened' : 'closed' })
@@ -762,7 +788,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
           },
           showVoteButtons: this.config.idea.showVoteButtons,
         };
-        config.argument.isActive = this.config.argument.isActive && !this.config.content.ignoreReactionsForIdeaIds.match(new RegExp(`(?:^|\\D)${this.state.currentIdea.id}(?:\\D|$)`));
+        config.argument.isActive = this.config.argument.isActive && !this.config.content.ignoreReactionsForIdeaIds && this.config.content.ignoreReactionsForIdeaIds.match(new RegExp(`(?:^|\\D)${this.state.currentIdea.id}(?:\\D|$)`));
         infoHTML = (
 			    <OpenStadComponentIdeaDetails id={this.divId + '-infoblock'} config={config} idea={this.state.currentIdea} label={this.state.currentIdea.extraData.type} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.ideadetails = el)}/>
         );
@@ -807,7 +833,6 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
             contentHTML = contentHTML.replace(/\{loginLink\}/g, loginLink);
             
             contentHTML = OpenStadComponentLibs.reactTemplate({ html: contentHTML, addButton, loginButton })
-            console.log(contentHTML);
 
             mobilePopupHTML = (
 							<div className="ocs-mobile-popup">

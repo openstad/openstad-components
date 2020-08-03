@@ -100,7 +100,7 @@ export default class InfoBlock extends React.Component {
 		document.dispatchEvent(event);
   };
   
-	render() {
+  render() {
 
     let self = this;
 
