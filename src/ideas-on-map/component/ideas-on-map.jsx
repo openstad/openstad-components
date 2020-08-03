@@ -788,7 +788,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
           },
           showVoteButtons: this.config.idea.showVoteButtons,
         };
-        config.argument.isActive = this.config.argument.isActive && !this.config.content.ignoreReactionsForIdeaIds && this.config.content.ignoreReactionsForIdeaIds.match(new RegExp(`(?:^|\\D)${this.state.currentIdea.id}(?:\\D|$)`));
+        config.argument.isActive = this.config.argument.isActive && !this.config.content.ignoreReactionsForIdeaIds.match(new RegExp(`(?:^|\\D)${this.state.currentIdea.id}(?:\\D|$)`));
         infoHTML = (
 			    <OpenStadComponentIdeaDetails id={this.divId + '-infoblock'} config={config} idea={this.state.currentIdea} label={this.state.currentIdea.extraData.type} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.ideadetails = el)}/>
         );
