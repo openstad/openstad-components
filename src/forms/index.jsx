@@ -16,6 +16,7 @@ import FormField from './component/form-field.jsx';
 import ImageUpload from './component/image-upload.jsx';
 import InputWithCounter from './component/input-with-counter.jsx';
 import Postcode from './component/postcode.jsx';
+import Radios from './component/radios.jsx';
 import Select from './component/select.jsx';
 import Text from './component/textinput.jsx';
 import Textarea from './component/textarea.jsx';
@@ -26,6 +27,7 @@ export default {
   ImageUpload,
   InputWithCounter,
   Postcode,
+  Radios,
   Select,
   Text,
   Textarea,

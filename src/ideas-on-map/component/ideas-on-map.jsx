@@ -761,6 +761,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
             Knelpunt: { text: 'Dit kan beter', color: 'black', backgroundColor: '#ff9100' },
           },
           showVoteButtons: this.config.idea.showVoteButtons,
+          poll: this.config.poll,
         };
         config.argument.isActive = this.config.argument.isActive && !this.config.content.ignoreReactionsForIdeaIds.match(new RegExp(`(?:^|\\D)${this.state.currentIdea.id}(?:\\D|$)`));
         infoHTML = (

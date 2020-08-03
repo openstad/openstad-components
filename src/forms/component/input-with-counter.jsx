@@ -35,6 +35,9 @@ export default class FormfieldInputWithCounter extends React.Component {
     this.onChange = props.onChange;
 
     self.handleOnChange = self.handleOnChange.bind(this)
+    self.onInputFocus = self.onInputFocus.bind(this)
+    self.onInputBlur = self.onInputBlur.bind(this)
+    self.onInputKeyUp = self.onInputKeyUp.bind(this)
 
   }
 
@@ -43,11 +46,11 @@ export default class FormfieldInputWithCounter extends React.Component {
 		state.isValid = true;
 		state.warning = null;
 		if (this.state.valueLength < this.config.minLength) {
-			state.warning = `Je tekst is te kort`;
+			state.warning = `De tekst is te kort`;
 			state.isValid = false;
 		}
 		if (this.state.valueLength > this.config.maxLength) {
-			state.warning = `Je tekst is te lang`;
+			state.warning = `De tekst is te lang`;
 			state.isValid = false;
 		}
 		this.setState(state)
@@ -117,9 +120,9 @@ export default class FormfieldInputWithCounter extends React.Component {
           <HTMLArea
             value={this.state.value}
             onChange={self.handleOnChange}
-            onFocus={e => self.onInputFocus(e)}
-            onBlur={e => self.onInputBlur(e)}
-            onKeyUp={e => self.onInputKeyUp(e)}
+            onFocus={self.onInputFocus}
+            onBlur={self.onInputBlur}
+            onKeyUp={self.onInputKeyUp}
           />
         );
         // inputHTML = (

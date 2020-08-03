@@ -1,0 +1,128 @@
+.osc-poll {
+
+  @import 'form';
+
+  width: 100%;
+
+  h4 {
+    margin: 0;
+    font-size: 1em;
+  }
+
+  .osc-button-blue {
+    .osc-button-blue();
+
+    &.osc-not-logged-in-button {
+      .osc-inloggen-background;
+      padding-left: 40px;
+    }
+
+  }
+
+  .osc-show-question-button,
+  .osc-show-result-button {
+    display: inline-block;
+    margin-left: 20px;
+    font-weight: 800;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .osc-show-question-button {
+    margin-left: 0px;
+  }
+
+  .osc-poll-question {
+
+    margin-top: 30px;
+    margin-bottom: 30px;
+
+    .osc-poll-question-buttons {
+      margin-top: 30px;
+    }
+
+  }
+
+  ul.osc-choices {
+
+    list-style-type: none;
+    margin: 10px 0 40px 0;
+    padding: 0;
+
+    li {
+      margin: 0;
+      padding: 15px 0;
+    }
+
+    h4 {
+      margin: 0;
+    }
+
+    .osc-choice {
+    }
+
+    .osc-choice-default {
+
+      .osc-choice-bar {
+
+        position: relative;
+        height: 22px;
+        width: 100%;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        border-radius: 11px;
+        background-color: #e5e5e5;
+        overflow: hidden;
+
+        .osc-choice-bar-progress {
+          position: relative;
+          top: 0;
+          left: 0;
+          height: 22px;
+          background-color: #bed200;
+          border-radius-top-left: 7px;
+        }
+
+      }
+
+      .osc-choice-bar.osc-with-percentage {
+        width: calc( 100% - 55px );
+        float: left;
+      }
+
+      .osc-percentage {
+        float: left;
+        width: 55px;
+        font-size: 16px;
+        font-weight: 600;
+        text-align: right;
+        color: black;
+        margin-top: 10px;
+        margin-bottom: 30px;
+      }
+
+    }
+
+  }
+
+  .osc-editbuttons {
+    float: right;
+    width: 220px;
+
+    .osc-editbutton {
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+
+    @media @phone {
+      display: none;
+    }
+
+  }
+
+  .osc-vote-succeeded {
+    color: #00a03c;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+}
