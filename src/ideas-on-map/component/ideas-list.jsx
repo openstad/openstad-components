@@ -145,7 +145,7 @@ export default class IdeasList extends React.Component {
               </div>);
           }
           let argcountHTML = null;
-          if (this.config.argument.isActive && !this.config.content.ignoreReactionsForIdeaIds.match(new RegExp(`(?:^|\\D)${idea.id}(?:\\D|$)`))) {
+          if (this.config.argument.isActive && !this.config.argument.ignoreReactionsForIdeaIds.match(new RegExp(`(?:^|\\D)${idea.id}(?:\\D|$)`))) {
             argcountHTML = (
               <div className="osc-reactions">
                 {idea.argCount || 0}

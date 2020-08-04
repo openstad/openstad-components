@@ -68,11 +68,12 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         formIntro: 'Mijn reactie op deze inzending is ...',
         placeholder: '',
         requiredUserRole: 'member',
+        ignoreReactionsForIdeaIds: '',
+        closeReactionsForIdeaIds: '',
       },
       content: {
         mobilePreviewLoggedInHTML: 'Een locatie vlakbij <h4>{address}</h4>{addButton}',
         mobilePreviewNotLoggedInHTML: 'Een locatie vlakbij <h4>{address}</h4><div>Wilt u een nieuw punt toevoegen? Dan moet u eerst <a href="{loginLink}">inloggen</a>.</div>',
-        ignoreReactionsForIdeaIds: '',
       },
 		};
 		self.config = merge.recursive(self.defaultConfig, self.config, props.config || {})
@@ -788,7 +789,8 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
           },
           showVoteButtons: this.config.idea.showVoteButtons,
         };
-        config.argument.isActive = this.config.argument.isActive && !this.config.content.ignoreReactionsForIdeaIds.match(new RegExp(`(?:^|\\D)${this.state.currentIdea.id}(?:\\D|$)`));
+        config.argument.isActive = this.config.argument.isActive && !this.config.argument.ignoreReactionsForIdeaIds.match(new RegExp(`(?:^|\\D)${this.state.currentIdea.id}(?:\\D|$)`));
+        config.argument.isClosed = this.config.argument.isClosed || this.config.argument.closeReactionsForIdeaIds.match(new RegExp(`(?:^|\\D)${this.state.currentIdea.id}(?:\\D|$)`));
         infoHTML = (
 			    <OpenStadComponentIdeaDetails id={this.divId + '-infoblock'} config={config} idea={this.state.currentIdea} label={this.state.currentIdea.extraData.type} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.ideadetails = el)}/>
         );

@@ -82,7 +82,6 @@ export default class Map extends OpenStadComponentNLMap {
   }
 
   showMarkers({ keepCenter=false }) {
-    console.log('keepCenter', keepCenter);
 	  var self = this;
     self.markers.forEach((marker) => {
       self.showMarker(marker)
@@ -101,7 +100,6 @@ export default class Map extends OpenStadComponentNLMap {
   }
 
   fadeMarkers({ exception }) {
-    console.log(exception && exception.id);
     let self = this;
     self.markers.forEach((marker) => {
       if (exception && marker.data && marker.data.id && exception.id == marker.data.id) {

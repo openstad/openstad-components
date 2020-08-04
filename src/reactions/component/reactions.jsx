@@ -20,7 +20,7 @@ export default class OpenStadComponentReactions extends OpenStadComponent {
     self.defaultConfig = {
       scrollToNewReaction: true,
       isClosed: false,
-      closedText: null,
+      closedText: 'De reactiemogelijkheid is gesloten/',
       sentiment: undefined,
       siteId: null,
       ideaId: null,

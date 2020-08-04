@@ -24,7 +24,6 @@ export default class InfoBlock extends React.Component {
         selectionInactiveLoggedInHTML: 'Ingelogd: er is een punt geselecteerd buiten de polygon, met een {address}',
         selectionActiveNotLoggedInHTML: 'Niet ingelogd: er is een punt geselecteerd binnen de polygon, met een adres: {address} en {loginButton} of <a href="{loginLink}">login link</a>.',
         selectionInactiveNotLoggedInHTML: 'Niet ingelogd: er is een punt geselecteerd buiten de polygon, met een {address}',
-        ignoreReactionsForIdeaIds: '',
       },
       idea: {
         canAddNewIdeas: true,
@@ -32,6 +31,7 @@ export default class InfoBlock extends React.Component {
       },
       argument: {
         isActive: true,
+        ignoreReactionsForIdeaIds: '',
       },
 		};
 
@@ -171,7 +171,7 @@ export default class InfoBlock extends React.Component {
           </div>);
       }
       let argcountHTML = null;
-      if (this.config.argument.isActive && !this.config.content.ignoreReactionsForIdeaIds.match(new RegExp(`(?:^|\\D)${idea.id}(?:\\D|$)`))) {
+      if (this.config.argument.isActive && !this.config.argument.ignoreReactionsForIdeaIds.match(new RegExp(`(?:^|\\D)${idea.id}(?:\\D|$)`))) {
         argcountHTML = (
           <div className="osc-reactions">
             {idea.argCount || 0}
