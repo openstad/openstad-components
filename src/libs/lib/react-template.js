@@ -9,7 +9,7 @@ export default function({ html='' }) {
 
   Object.keys(args).forEach((key) => {
 
-    let regEx = new RegExp(`^(.*)\\{${key}\\}(.*)$`);
+    let regEx = new RegExp(`^((?:.|\n|\r)*)\\{${key}\\}((?:.|\n|\r)*)$`);
     let match = regEx.exec(html);
 
     if (match) {
