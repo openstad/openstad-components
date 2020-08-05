@@ -142,14 +142,14 @@ export default class FormfieldInputWithCounter extends React.Component {
         
       case 'textarea':
         inputHTML = (
-				  <textarea key={self.key} ref={el => (self.input = el)} value={this.state.value} disabled={this.props.disabled} placeholder={this.config.placeholder} onChange={e => self.handleOnChange({ value: self.input.value })} onKeyUp={e => self.onInputKeyUp(e)} onFocus={e => self.onInputFocus(e)} onBlur={e => self.onInputBlur(e)}></textarea>
+				  <textarea key={self.key} ref={el => (self.input = el)} value={this.state.value} disabled={this.props.disabled} placeholder={this.config.placeholder} onChange={e => self.handleOnChange({ value: self.input.value })} onKeyUp={e => self.onInputKeyUp()} onFocus={e => self.onInputFocus(e)} onBlur={e => self.onInputBlur(e)}></textarea>
         );
         break;
 
       case 'input':
       default:
         inputHTML = (
-				  <input key={self.key} ref={el => (self.input = el)} value={this.state.value} disabled={this.props.disabled} placeholder={this.config.placeholder} onChange={e => self.handleOnChange({ value: self.input.value })} onKeyUp={e => self.onInputKeyUp(e)} onFocus={e => self.onInputFocus(e)} onBlur={e => self.onInputBlur(e)}></input>
+				  <input key={self.key} ref={el => (self.input = el)} value={this.state.value} disabled={this.props.disabled} placeholder={this.config.placeholder} onChange={e => self.handleOnChange({ value: self.input.value })} onKeyUp={e => self.onInputKeyUp()} onFocus={e => self.onInputFocus(e)} onBlur={e => self.onInputBlur(e)}></input>
         );
 
     }

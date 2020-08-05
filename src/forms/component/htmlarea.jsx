@@ -66,10 +66,10 @@ export default class OpenStadComponentHTMLArea extends React.Component  {
     return (
       <div className="osc-html-editor">
         <div className="osc-html-editor-buttons">
-          <div className="osc-html-editor-button" onMouseDown={e => this.executeAction(e, 'bold')}>bold</div>
-          <div className="osc-html-editor-button" onMouseDown={e => this.executeAction(e, 'italic')}>italic</div>
-          <div className="osc-html-editor-button" onMouseDown={e => this.executeAction(e, 'insertunorderedlist')}>lijst</div>
-          <div className="osc-html-editor-button" onMouseDown={e => this.executeAction(e, 'createlink', prompt('Lank naar','http://'))}>link</div>
+          <div className="osc-html-editor-button osc-html-editor-button-bold" onMouseDown={e => this.executeAction(e, 'bold')}>&nbsp;</div>
+          <div className="osc-html-editor-button osc-html-editor-button-italic" onMouseDown={e => this.executeAction(e, 'italic')}>&nbsp;</div>
+          <div className="osc-html-editor-button osc-html-editor-button-insertunorderedlist" onMouseDown={e => this.executeAction(e, 'insertunorderedlist')}>&nbsp;</div>
+          <div className="osc-html-editor-button osc-html-editor-button-createlink" onMouseDown={e => this.executeAction(e, 'createlink', prompt('Lank naar','http://'))}>&nbsp;</div>
         </div>
         <div className="osc-html-editor-content" contentEditable={true}
              onFocus={ e => this.onFocus(e)}

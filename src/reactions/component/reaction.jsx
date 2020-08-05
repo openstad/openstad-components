@@ -76,6 +76,7 @@ export default class OpenStadComponentReaction extends OpenStadComponent {
   }
 
   canLike() {
+    if (this.config.isClosed) return false;
     let requiredUserRole = this.config.requiredUserRole;
     let userRole = this.props.user && this.props.user.role;
     return (( requiredUserRole == 'anonymous' && userRole ) ||
@@ -91,7 +92,7 @@ export default class OpenStadComponentReaction extends OpenStadComponent {
 
     let self = this;
 
-    if (!self.canDelete()) return alert('Je kunt deze reactie niet verwijderen');
+    if (!self.canDelete()) return alert('U kunt deze reactie niet verwijderen');
 
     let url = `${self.config.api && self.config.api.url   }/api/site/${  self.config.siteId  }/idea/${  self.config.ideaId  }/argument/${  self.props.data.id}`;
     let headers = OpenStadComponentLibs.api.getHeaders(self.config);
@@ -127,7 +128,7 @@ export default class OpenStadComponentReaction extends OpenStadComponent {
 
     let self = this;
 
-    if (!self.canLike()) return alert('Je kunt deze reactie niet liken');
+    if (!self.canLike()) return alert('U kunt deze reactie niet liken');
 
     let url = `${self.config.api && self.config.api.url   }/api/site/${  self.config.siteId  }/idea/${  self.config.ideaId  }/argument/${  self.props.data.id  }/vote`;
     let headers = OpenStadComponentLibs.api.getHeaders(self.config);
@@ -203,7 +204,7 @@ export default class OpenStadComponentReaction extends OpenStadComponent {
 
     let replyButtonHTML = null;
     let replyFormHTML = null;
-    if (self.canReply()) {
+    if (self.canReply() && !self.config.isClosed) {
       replyButtonHTML = (<a href="#" onClick={ () => self.toggleReplyForm() } className="osc-reply-button">Reageren</a>);
       if (self.state.isReplyFromActive) {
         let config = { ...self.config, parentId: data.id };

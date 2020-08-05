@@ -15,12 +15,14 @@ import api from './lib/api/index.js';
 import user from './lib/user/index.js';
 import localStorage from './lib/local-storage.js';
 import sessionStorage from './lib/session-storage.js';
+import reactTemplate from './lib/react-template.js';
 
 let OpenStadComponentLibs = {
   api,
   user,
   localStorage,
   sessionStorage,
+  reactTemplate,
 }
 export default OpenStadComponentLibs;
 

@@ -19,6 +19,8 @@ export default class OpenStadComponentReactions extends OpenStadComponent {
 
     self.defaultConfig = {
       scrollToNewReaction: true,
+      isClosed: false,
+      closedText: 'De reactiemogelijkheid is gesloten/',
       sentiment: undefined,
       siteId: null,
       ideaId: null,
@@ -145,12 +147,21 @@ export default class OpenStadComponentReactions extends OpenStadComponent {
 
     let title = self.config.title ? <h3>{self.config.title}</h3> : null;
 
+    let reactionFormHTML = <OpenStadComponentReactionForm config={self.config} user={self.state.user}/>;
+    if (self.config.isClosed) {
+      if (self.config.closedText) {
+        reactionFormHTML = <div className="osc-closed-text">{self.config.closedText}</div>
+      } else {
+        reactionFormHTML = null
+      }
+    }
+
     return (
       <div id={this.id} className={self.props.className || 'osc-reactions'} ref={(el) => { this.instance = el; }} >
 
         {title}
 
-        <OpenStadComponentReactionForm config={self.config} user={self.state.user}/>
+        {reactionFormHTML}
 
         {reactions}
         <br/><br/>
