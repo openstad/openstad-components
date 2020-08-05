@@ -120,6 +120,16 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
     let self = this;
 
+    window.addEventListener( 'hashchange', e => {
+      self.hideIdeaDetails();
+      let match = window.location.hash.match(/(\w)(\d+)/);
+      if (match) {
+        let ideaId = match[2];
+        let idea = self.state.ideas && self.state.ideas.find(idea => idea.id == ideaId);
+        self.showIdeaDetails(idea)
+      }
+    }, false );
+
     // when the map is ready
 		document.addEventListener('osc-map-is-ready', function(e) {
 
@@ -228,7 +238,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         return response.json();
       })
       .then( json => {
-        showIdeaDetails = showIdeaDetails || OpenStadComponentLibs.localStorage.get('osc-ideas-on-map-details'); //  document.location.hash.replace(/.*details=(\d+).*/, "$1");
+        showIdeaDetails = showIdeaDetails || ( window.location.hash.match(/(\w)(\d+)/) && window.location.hash.match(/(\w)(\d+)/)[2] ) || OpenStadComponentLibs.localStorage.get('osc-ideas-on-map-details'); //  document.location.hash.replace(/.*details=(\d+).*/, "$1");
         showIdeaSelected = showIdeaSelected || OpenStadComponentLibs.localStorage.get('osc-ideas-on-map-selected'); // document.location.hash.replace(/.*selected=(\d+).*/, "$1");
         let ideas = json.filter( idea => idea.location )
         ideas.map( idea => {
@@ -294,6 +304,8 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
   hideIdeaDetails() {
     let self = this;
+    OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-details', null );
+    OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-selected', null);
     self.setState({ status: 'idea-selected' }, function() {
       // todo: dit zou hij zelf via state moeten doen
       self.map.map.invalidateSize();
@@ -315,7 +327,8 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     let self = this;
     if (this.state.editIdea && typeof this.state.editIdea.id == 'number') {
       let idea = self.state.ideas.find(idea => idea.id == self.state.editIdea.id)
-      self.showIdeaDetails(idea)
+      // self.showIdeaDetails(idea)
+      document.location.href = "#D" + idea.id
     } else {
       self.setState({ status: 'location-selected' }, function() {
         // todo: dit zou hij zelf via state moeten doen
@@ -633,7 +646,8 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     this.setState({ status: 'idea-selected', currentIdea: idea }, function() {
       this.setSelectedIdea(idea);
       // if (showDetails) this.showIdeaDetails(idea);
-      this.showIdeaDetails(idea);
+      // this.showIdeaDetails(idea);
+      document.location.href = "#D" + idea.id;
     });
   };
 
@@ -668,7 +682,8 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   };
 
   onSelectedIdeaClick(idea) {
-    this.showIdeaDetails(idea);
+    // this.showIdeaDetails(idea);
+    document.location.href = "#D" + idea.id
   };
   
   onNewIdeaClick() {
@@ -795,7 +810,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 			    <OpenStadComponentIdeaDetails id={this.divId + '-infoblock'} config={config} idea={this.state.currentIdea} label={this.state.currentIdea.extraData.type} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.ideadetails = el)}/>
         );
         filterHTML = (
-				  <div className="osc-ideas-on-map-filterbar"><div className="osc-backbutton" onClick={() => this.hideIdeaDetails()}>Terug naar overzicht</div></div>
+				  <div className="osc-ideas-on-map-filterbar"><div className="osc-backbutton" onClick={() => document.location.href="#"}>Terug naar overzicht</div></div>
         );
         break;
 
@@ -844,7 +859,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
           }
         } else {
           mobilePopupHTML = (
-            <div className="ocs-mobile-popup ocs-clickable" onClick={ () =>  { this.setState({ mobileState: 'opened' }); this.infoblock.setState({ mobileState: 'opened' }); this.showIdeaDetails(this.state.currentIdea) } }>
+            <div className="ocs-mobile-popup ocs-clickable" onClick={ () =>  { this.setState({ mobileState: 'opened' }); this.infoblock.setState({ mobileState: 'opened' }); document.location.href = "#D" + this.state.currentIdea.id; /* this.showIdeaDetails(this.state.currentIdea) */ } }>
               <div className="osc-image" style={{ backgroundImage: `url(${this.state.currentIdea && this.state.currentIdea.image})` }}></div>
               { eval(this.state.currentIdea && `this.state.currentIdea.${this.config.titleField}`) }
             </div>
