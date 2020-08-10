@@ -97,6 +97,9 @@ export default class OpenStadComponentReactionForm extends OpenStadComponent {
           }
 
           self.setState({ description: '', isBusy: false, isValid: false }, () => {
+
+            self.description.handleOnChange({ value: '' });
+
             if (self.config.argumentId) {
 		          let event = new CustomEvent('osc-reaction-edited', { detail: json });
 		          document.dispatchEvent(event);

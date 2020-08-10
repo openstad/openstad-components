@@ -126,7 +126,7 @@ export default class FormfieldInputWithCounter extends React.Component {
         //   <CKEditor
         //     editor={ ClassicEditor }
         //     config={{ toolbar: [ 'h3', 'bold', 'italic', 'link' ] }}
-        //     data={this.props.value}
+        //     data={this.state.value}
         //     onInit={ editor => {
         //       // TODO: betere selector
         //       document.querySelector('.ck-content').addEventListener('keyup', function(e) {

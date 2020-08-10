@@ -3518,7 +3518,7 @@ var FormfieldInputWithCounter = /*#__PURE__*/function (_React$Component) {
           //   <CKEditor
           //     editor={ ClassicEditor }
           //     config={{ toolbar: [ 'h3', 'bold', 'italic', 'link' ] }}
-          //     data={this.props.value}
+          //     data={this.state.value}
           //     onInit={ editor => {
           //       // TODO: betere selector
           //       document.querySelector('.ck-content').addEventListener('keyup', function(e) {
@@ -5398,6 +5398,10 @@ var OpenStadComponentReactionForm = /*#__PURE__*/function (_OpenStadComponent) {
             isBusy: false,
             isValid: false
           }, function () {
+            self.description.handleOnChange({
+              value: ''
+            });
+
             if (self.config.argumentId) {
               var event = new CustomEvent('osc-reaction-edited', {
                 detail: json
@@ -5592,12 +5596,18 @@ var OpenStadComponentReaction = /*#__PURE__*/function (_OpenStadComponent) {
     key: "componentDidMount",
     value: function componentDidMount(prevProps, prevState) {
       var self = this;
-      document.addEventListener('osc-new-reaction-stored', function (event) {
+      this.storedListener = document.addEventListener('osc-new-reaction-stored', function (event) {
         self.onNewReactionStored(event.detail);
       });
-      document.addEventListener('osc-reaction-edited', function (event) {
+      this.editedListener = document.addEventListener('osc-reaction-edited', function (event) {
         self.onReactionEdited(event.detail);
       });
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      document.removeEventListener('osc-new-reaction-stored', this.storedListener);
+      document.removeEventListener('osc-reaction-edited', this.editedListener);
     }
   }, {
     key: "showMenu",
@@ -5974,15 +5984,22 @@ var OpenStadComponentReactions = /*#__PURE__*/function (_OpenStadComponent) {
         self.fetchData();
       }
 
-      document.addEventListener('osc-new-reaction-stored', function (event) {
+      this.storedListener = document.addEventListener('osc-new-reaction-stored', function (event) {
         self.onNewReactionStored(event.detail);
       });
-      document.addEventListener('osc-reaction-edited', function (event) {
+      this.editedListener = document.addEventListener('osc-reaction-edited', function (event) {
         self.onReactionEdited(event.detail);
       });
-      document.addEventListener('osc-reaction-deleted', function (event) {
+      this.deletedListener = document.addEventListener('osc-reaction-deleted', function (event) {
         self.onReactionDeleted(event.detail);
       });
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      document.removeEventListener('osc-new-reaction-stored', this.storedListener);
+      document.removeEventListener('osc-reaction-edited', this.editedListener);
+      document.removeEventListener('osc-reaction-deleted', this.deletedListener);
     }
   }, {
     key: "fetchData",
