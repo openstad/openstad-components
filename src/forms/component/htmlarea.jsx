@@ -14,7 +14,8 @@ export default class OpenStadComponentHTMLArea extends React.Component  {
     this.state = {
       value: this.props.value,
 	  };
-    
+
+    this.onKeyUpx = this.onKeyUpx.bind(this);
 
   }
 
@@ -53,7 +54,7 @@ export default class OpenStadComponentHTMLArea extends React.Component  {
     }
   }
 
-  onKeyUp() {
+  onKeyUpx() {
     let value = this.input.innerHTML;
     value = this.filterHTML(value);
     this.setState({ value })
@@ -74,7 +75,7 @@ export default class OpenStadComponentHTMLArea extends React.Component  {
         <div className="osc-html-editor-content" contentEditable={true}
              onFocus={ e => this.onFocus(e)}
              onBlur={ e => this.onBlur(e)}
-             onKeyUp={ e => this.onKeyUp()}
+             onKeyUp={ e => this.onKeyUpx()}
              // dangerouslySetInnerHTML={{ __html: this.state.value }}
              ref={el => (this.input = el)}
         />

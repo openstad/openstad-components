@@ -2,9 +2,11 @@ import merge from 'merge';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import OpenStadComponent from '../../component/index.jsx';
+
 'use strict';
 
-export default class OpenStadComponentDefaultInput extends React.Component {
+export default class OpenStadComponentDefaultInput extends OpenStadComponent {
 
   constructor(props) {
 

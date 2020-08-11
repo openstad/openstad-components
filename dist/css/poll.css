@@ -7,6 +7,12 @@
 .osc-opacity-25 {
   opacity: 0.25;
 }
+.osc-opacity-50 {
+  opacity: 0.5;
+}
+.osc-opacity-65 {
+  opacity: 0.65;
+}
 .osc-button {
   position: relative;
   display: inline-block;

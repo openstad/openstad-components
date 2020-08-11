@@ -3,6 +3,7 @@ import React from 'react';
 import VoteButton from './vote-button.jsx';
 
 import OpenStadComponentLibs from '../../libs/index.jsx';
+import OpenStadComponentPoll from '../../poll/index.jsx';
 import OpenStadComponentReactions from '../../reactions/index.jsx';
 
 'use strict';
@@ -26,6 +27,9 @@ export default class IdeasDetails extends React.Component {
       argument: {
         isActive: true,
       },
+      poll: {
+        canAddPoll: false,
+      },
       showVoteButtons: true,
       labels: {},
 		};
@@ -33,6 +37,8 @@ export default class IdeasDetails extends React.Component {
 
     this.state = {
       idea: this.props.idea,
+      ideaId: ( props.idea && props.idea.id ) || this.config.ideaId,
+      showPollForm: false,
     };
         
   }
@@ -41,23 +47,35 @@ export default class IdeasDetails extends React.Component {
 
     let self = this;
     
-		self.storedListener = function(event) {
+		self.reactionStoredListener = function(event) {
       self.onReactionStored(event.detail);
     }
-    document.addEventListener('osc-reaction-stored', self.storedListener);
+    document.addEventListener('osc-reaction-stored', self.reactionStoredListener);
 
-		self.deletedListener = function(event) {
+		self.reactionDeletedListener = function(event) {
       self.onReactionDeleted(event.detail);
     }
-    document.addEventListener('osc-reaction-deleted', self.deletedListener);
+    document.addEventListener('osc-reaction-deleted', self.reactionDeletedListener);
+    
+		self.pollCreatedListener = function(event) {
+      self.onPollCreated(event.detail);
+    }
+    document.addEventListener('osc-new-poll-stored', self.pollCreatedListener);
+    
+		self.pollDeletedListener = function(event) {
+      self.onPollDeleted(event.detail);
+    }
+    document.addEventListener('osc-poll-deleted', self.pollDeletedListener);
 
     self.fetchData();
 
 	}
 
   componentWillUnmount() {
-		document.removeEventListener('osc-reaction-stored', this.storedListener);
-		document.removeEventListener('osc-reaction-deleted', this.deletedListener);
+		document.removeEventListener('osc-reaction-stored', this.reactionStoredListener);
+		document.removeEventListener('osc-reaction-deleted', this.reactionDeletedListener);
+		document.removeEventListener('osc-new-poll-stored', this.pollCreatedListener);
+		document.removeEventListener('osc-poll-deleted', this.pollDeletedListener);
   }
 
   dispatchEditIdeaClick(e) {
@@ -69,6 +87,23 @@ export default class IdeasDetails extends React.Component {
 		  document.dispatchEvent(event);
     }
   };
+
+  showPollForm() {
+    this.setState({
+      showPollForm: true
+    })
+  }
+
+  hidePollForm() {
+    this.setState({
+      showPollForm: false
+    })
+  }
+
+  dispatchAddPollClick(e) {
+    e.stopPropagation();
+    this.showPollForm();
+  }
   
   onReactionStored(data) {
     this.state.idea.argCount++;
@@ -80,15 +115,26 @@ export default class IdeasDetails extends React.Component {
     this.setState({ idea: this.state.idea });
   }
 
+  onPollCreated() {
+    this.hidePollForm();
+    this.fetchData();
+  }
+
+  onPollDeleted() {
+    this.fetchData();
+  }
+  
   fetchData() {
 
     let self = this;
 
-    let ideaId = self.config.ideaId || (this.state.idea && this.state.idea.id);
+    let ideaId = self.state.ideaId || (this.state.idea && this.state.idea.id);
 
     if (!ideaId) return;
 
     let url = `${ self.config.api.url }/api/site/${  self.config.siteId  }/idea/${ ideaId }?includeVoteCount=1&includeArguments=1&includeUser=1&includeUserVote=1`;
+    if (self.config.poll.canAddPoll) url += '&includePoll=1';
+
     let headers = OpenStadComponentLibs.api.getHeaders(self.config);
 		
     fetch(url, { headers })
@@ -168,6 +214,25 @@ export default class IdeasDetails extends React.Component {
       );
     }
 
+    let pollHTML = null;
+    let addPollButtonHTML = null;
+    if (idea.can && idea.can.edit && self.config.poll.canAddPoll) {
+      if (idea.poll || self.state.showPollForm) {
+        pollHTML = (
+        <div>
+			    <div id="poll" className="osc-poll-header"><h3>{self.config.poll.title || 'Poll'}</h3></div>
+          <OpenStadComponentPoll config={{ ...self.config, ...self.config.poll, ideaId: self.state.ideaId }} poll={idea.poll}/>
+        </div>
+        )
+      } else {
+        addPollButtonHTML = (
+          <div className="osc-editbuttons-container">
+            <button className="osc-idea-details-editbutton osc-edit" onClick={(event) => self.dispatchAddPollClick(event)}>Add poll</button>
+          </div>
+        )
+      }
+    }
+
     let voteButtonsHTML = null;
     if (self.config.showVoteButtons) {
       voteButtonsHTML = (
@@ -179,7 +244,7 @@ export default class IdeasDetails extends React.Component {
     }
 
     let editButtonsHTML = null;
-    if ( self.config.user && self.config.user.role && self.config.user.role == 'admin' ) {
+    if ( idea.can && idea.can.edit ) {
       editButtonsHTML = (
         <div className="osc-editbuttons-container">
           <button className="osc-idea-details-editbutton osc-edit" onClick={(event) => self.dispatchEditIdeaClick(event)}>Bewerk idee</button>
@@ -248,13 +313,9 @@ export default class IdeasDetails extends React.Component {
               </div>
 
               <div className="osc-details-stats">
-
                 {voteButtonsHTML}
-
                 {reactionsCountHTML}
-
                 {editButtonsHTML}
-
               </div>
 
             </div>
@@ -272,7 +333,12 @@ export default class IdeasDetails extends React.Component {
 
             <p className="osc-details-description" dangerouslySetInnerHTML={{ __html: idea.description }}></p>
 
+            {addPollButtonHTML}
+
 			    </div>
+
+          {pollHTML}
+
           {reactionsHTML}
 
 			    <div className="osc-bottom-spacer"></div>

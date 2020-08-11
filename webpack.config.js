@@ -17,6 +17,7 @@ module.exports = {
     "lightbox": './src/lightbox/index.jsx',
     "nlmap": './src/nlmap/index.jsx',
     "previous-next-button-block": './src/previous-next-button-block/index.jsx',
+    "poll": './src/poll/index.jsx',
     "reactions": './src/reactions/index.jsx',
   },
 

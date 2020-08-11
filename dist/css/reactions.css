@@ -155,7 +155,7 @@
 .osc-number-button .osc-number-button-text:hover {
   text-decoration: underline;
 }
-.osc-choices-guide-editbutton,
+.osc-editbutton,
 .osc-idea-details-editbutton {
   display: block;
   position: relative;
@@ -182,7 +182,7 @@
   overflow: hidden;
   cursor: pointer;
 }
-.osc-choices-guide-editbutton:after,
+.osc-editbutton:after,
 .osc-idea-details-editbutton:after {
   position: absolute;
   top: 5px;
@@ -192,11 +192,11 @@
   background-color: black;
   content: '';
 }
-.osc-choices-guide-editbutton.osc-delete:after,
+.osc-editbutton.osc-delete:after,
 .osc-idea-details-editbutton.osc-delete:after {
   background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgdmlld0JveD0iMCAwIDM2IDM2Ij4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPHBhdGggZmlsbD0idHJhbnNwYXJlbnQiIGQ9Ik0wIDBoMzZ2MzZIMHoiLz4KICAgICAgICA8cGF0aCBkPSJNMTcuNzE5IDE2LjI2MmEuOTMxLjkzMSAwIDAgMC0xIC44NDN2Ny43MTlhLjkzMi45MzIgMCAwIDAgMSAuODQ0LjkzMi45MzIgMCAwIDAgMS0uODQ0di03LjcxOWEuOTMyLjkzMiAwIDAgMC0xLS44NDN6TTE5LjYyOSAxMC44NjFIMTUuODFhLjcuNyAwIDAgMC0uNy43di44aDUuMjJ2LS44YS43LjcgMCAwIDAtLjcwMS0uN3pNMTMuNzU1IDE2LjI2MmEuOTMyLjkzMiAwIDAgMC0xIC44NDN2Ny43MTlhLjkzMi45MzIgMCAwIDAgMSAuODQ0LjkzMi45MzIgMCAwIDAgMS0uODQ0di03LjcxOWEuOTMxLjkzMSAwIDAgMC0xLS44NDN6TTIxLjY4MiAxNi4yNjJhLjkzMi45MzIgMCAwIDAtMSAuODQzdjcuNzE5YS45MzIuOTMyIDAgMCAwIDEgLjg0NC45MzIuOTMyIDAgMCAwIDEtLjg0NHYtNy43MTlhLjkzMS45MzEgMCAwIDAtMS0uODQzeiIvPgogICAgICAgIDxwYXRoIGZpbGw9IiNGRkYiIGZpbGwtcnVsZT0ibm9uemVybyIgZD0iTTI1LjUwOSAxMi4zNTlIMjIuMTl2LTEuNTg3QTEuNzcyIDEuNzcyIDAgMCAwIDIwLjQxOCA5SDE1LjAyYy0uOTc4IDAtMS43NzEuNzkzLTEuNzcxIDEuNzcxdjEuNTg4SDkuOTNhLjkzMS45MzEgMCAwIDAgMCAxLjg2MWguNTUydjExLjc0NGEyIDIgMCAwIDAgMiAyaDEwLjQ3NmEyIDIgMCAwIDAgMi0yVjE0LjIyaC41NTJhLjkzMS45MzEgMCAwIDAgMC0xLjg2MWgtLjAwMXpNMTQuNzU1IDI0LjgyNGEuOTMyLjkzMiAwIDAgMS0xIC44NDQuOTMyLjkzMiAwIDAgMS0xLS44NDR2LTcuNzE5YS45MzIuOTMyIDAgMCAxIDEtLjg0My45MzEuOTMxIDAgMCAxIDEgLjg0M3Y3LjcxOXptMy45NjQgMGEuOTMyLjkzMiAwIDAgMS0xIC44NDQuOTMyLjkzMiAwIDAgMS0xLS44NDR2LTcuNzE5YS45MzEuOTMxIDAgMCAxIDEtLjg0My45MzIuOTMyIDAgMCAxIDEgLjg0M3Y3LjcxOXptMS42MS0xMi40NjVoLTUuMjJ2LS44YS43LjcgMCAwIDEgLjctLjdoMy44MTlhLjcuNyAwIDAgMSAuNy43bC4wMDEuOHptMi4zNTMgMTIuNDY1YS45MzIuOTMyIDAgMCAxLTEgLjg0NC45MzIuOTMyIDAgMCAxLTEtLjg0NHYtNy43MTlhLjkzMi45MzIgMCAwIDEgMS0uODQzLjkzMS45MzEgMCAwIDEgMSAuODQzdjcuNzE5eiIvPgogICAgPC9nPgo8L3N2Zz4=);
 }
-.osc-choices-guide-editbutton.osc-edit:after,
+.osc-editbutton.osc-edit:after,
 .osc-idea-details-editbutton.osc-edit:after {
   background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgdmlld0JveD0iMCAwIDM2IDM2Ij4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPHBhdGggZmlsbD0idHJhbnNwYXJlbnQiIGQ9Ik0wIDBoMzZ2MzZIMHoiLz4KICAgICAgICA8ZyBmaWxsPSIjRkZGIiBmaWxsLXJ1bGU9Im5vbnplcm8iPgogICAgICAgICAgICA8cGF0aCBkPSJNOS43NzUgMjMuNTY0bC4wMTIuMDE0Yy0uMTguMTI4LS4zMjEuMzAzLS40MS41MDVsLTEuNDMgMy40ODVhLjU0NC41NDQgMCAwIDAgLjA1NS42MDQuNDkuNDkgMCAwIDAgLjQ1Mi4xMDMuODQxLjg0MSAwIDAgMCAuMTU1LS4wNDhsMy41MDUtMS40MjNhMS4yMiAxLjIyIDAgMCAwIC41MDktLjQwN2wuMDEyLjAxMi40NzItLjQ2Ny0yLjg2Mi0yLjg0Ny0uNDcuNDd6TTExLjM0MyAyMS45OWwxMS41LTExLjQ5NyAyLjg5NSAyLjg5Ni0xMS41IDExLjQ5OHpNMjkuMDc3IDkuMjczbC0xLjk5Mi0xLjk4MmMtLjM2OS0uMzY2LS42MTktLjM4Mi0uOTI3LS4wNzVsLTIuMTYyIDIuMTUgMi45MTIgMi44OTYgMi4xNzQtMi4xNjJhLjQ5Mi40OTIgMCAwIDAtLjAwNS0uODI3eiIvPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+);
 }
@@ -646,6 +646,50 @@
   width: 30px;
   height: 30px;
   content: "";
+}
+.osc-form .osc-radios .osc-radio-container {
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.osc-form .osc-radios .osc-radio-container h4 {
+  padding: 0 !important;
+  margin: 0 !important;
+  font-size: 1em !important;
+  line-height: 1em !important;
+  font-weight: bold !important;
+}
+.osc-form .osc-radios .osc-radio-container input[type="radio"] {
+  opacity: 0;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+}
+.osc-form .osc-radios .osc-radio-container .osc-radio-input {
+  position: relative;
+  float: left;
+  width: 24px;
+  height: 24px;
+  margin-right: 12px;
+  border: solid 1px #767676;
+  border-radius: 12px;
+  background-color: white;
+}
+.osc-form .osc-radios .osc-radio-container .osc-radio-input.osc-radio-input-checked:after {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 0px;
+  height: 0px;
+  border: solid 9px black;
+  border-radius: 9px;
+  content: '';
+}
+.osc-form .osc-radios .osc-radio-container .osc-radio-text {
+  float: left;
+  width: calc(100% - 37px);
+  margin-top: 3px;
+  line-height: 1.38;
 }
 .osc-form .osc-select select {
   background-position: center right 10px;

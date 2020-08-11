@@ -328,7 +328,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
 
         let editButtonHTML = null;
         if (self.config.user && self.config.user.role && self.config.user.role == 'admin') {
-          editButtonHTML = <button className="osc-choices-guide-editbutton osc-edit" onClick={event => self.showEditForm()}>Bewerk keuzewijzer</button>;
+          editButtonHTML = <button className="osc-editbutton osc-edit" onClick={event => self.showEditForm()}>Bewerk keuzewijzer</button>;
         }
 
         let previousUrl = null; let previousAction = null; let previousLabel = null;
