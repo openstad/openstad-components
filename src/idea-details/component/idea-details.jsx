@@ -222,20 +222,22 @@ export default class IdeasDetails extends React.Component {
     
     let pollHTML = null;
     let addPollButtonHTML = null;
-    if (idea.poll || self.state.showPollForm) {
-      pollHTML = (
-        <div>
-			    <div id="poll" className="osc-poll-header"><h3>{self.config.poll.title || 'Poll'}</h3></div>
-          <OpenStadComponentPoll config={{ ...self.config, ...self.config.poll, ideaId: self.state.ideaId }} poll={idea.poll}/>
-        </div>
-      )
-    } else {
-      if (idea.can && idea.can.edit && self.config.poll.canAddPolls) {
-        addPollButtonHTML = (
-          <div className="osc-editbuttons-container">
-            <button className="osc-idea-details-editbutton osc-edit" onClick={(event) => self.dispatchAddPollClick(event)}>Add poll</button>
+    if (self.config.poll.canAddPolls) {
+      if (idea.poll || self.state.showPollForm) {
+        pollHTML = (
+          <div>
+			      <div id="poll" className="osc-poll-header"><h3>{self.config.poll.title || 'Poll'}</h3></div>
+            <OpenStadComponentPoll config={{ ...self.config, ...self.config.poll, ideaId: self.state.ideaId }} poll={idea.poll}/>
           </div>
         )
+      } else {
+        if (idea.can && idea.can.edit) {
+          addPollButtonHTML = (
+            <div className="osc-editbuttons-container">
+              <button className="osc-idea-details-editbutton osc-edit" onClick={(event) => self.dispatchAddPollClick(event)}>Add poll</button>
+            </div>
+          )
+        }
       }
     }
 
