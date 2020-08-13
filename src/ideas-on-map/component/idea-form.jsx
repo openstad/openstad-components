@@ -30,62 +30,99 @@ export default class IdeasForm extends React.Component {
       fields: [],
     };
 		self.config = merge.recursive(self.defaultConfig, self.config, props.config || {})
+    self.config.fields = [ ...self.config.fields ];
 
-    let fields = self.config.fields;
+    let fields = self.config.fields || [];
 
     if (!self.props.idea.extraData) self.props.idea.extraData = {};
 
-    if (fields) {
-
-      let state = { formfields: {
+    let state = {
+      formfields: {
         id: self.props.idea.id || '',
         user: self.props.idea.user || {},
-      }};
-      fields.forEach((field) => {
-        if (field.name) {
-          state.formfields[field.name] = eval('self.props.idea.' + field.name);
-          field.value = eval('self.props.idea.' + field.name);
-        }
-      });
-      self.state = state;
+      },
+      showFormErrorsWarning: false,
+      isBusy: false,
+    };
 
-      let titleField = fields.find(field => field.name == 'title');
-      if (titleField) {
-		    titleField.minLength = self.config.titleMinLength;
-		    titleField.maxLength = self.config.titleMaxLength;
+    fields.forEach((field) => {
+      if (field.name) {
+        state.formfields[field.name] = eval('self.props.idea.' + field.name);
+        field.value = eval('self.props.idea.' + field.name);
+      }
+    });
+
+    let titleField = fields.find(field => field.name == 'title');
+    if (titleField) {
+		  titleField.minLength = self.config.titleMinLength;
+		  titleField.maxLength = self.config.titleMaxLength;
+    }
+
+    let summaryField = fields.find(field => field.name == 'summary');
+    if (summaryField) {
+		  summaryField.minLength = self.config.summaryMinLength;
+		  summaryField.maxLength = self.config.summaryMaxLength;
+    }
+
+    let descriptionField = fields.find(field => field.name == 'description');
+    if (descriptionField) {
+		  descriptionField.minLength = self.config.descriptionMinLength;
+		  descriptionField.maxLength = self.config.descriptionMaxLength;
+    }
+
+    let imageField = fields.find(field => field.inputType == 'image-upload'); // TODO: multiple images?
+    if (imageField) {
+		  imageField.imageserver = self.config.imageserver;
+    }
+
+    if (OpenStadComponentLibs.user.hasRole( self.config.user, 'editor' ) ) {
+
+      // typeId
+      if (self.config.types && self.config.typeField == 'typeId') {
+        let choices = [];
+        self.config.types.forEach(type => {
+          let typeDef = type;
+          if (!typeDef.auth || ( typeDef.auth.createableBy && OpenStadComponentLibs.user.hasRole( self.config.user, typeDef.auth.createableBy ) )) {
+            choices.push({ title: typeDef.name, value: typeDef.id || typeDef.value})
+          }
+        });
+        self.config.fields.push({
+				  name: "typeId",
+				  title: "Type inzending",
+				  value: self.props.idea.typeId,
+          inputType: "multiple-choice",
+          choices
+			  })
+        state.formfields.typeId = self.props.idea.typeId;
       }
 
-      let summaryField = fields.find(field => field.name == 'summary');
-      if (summaryField) {
-		    summaryField.minLength = self.config.summaryMinLength;
-		    summaryField.maxLength = self.config.summaryMaxLength;
-      }
+      // moderator
+      self.config.fields.push({
+				name: "modBreak",
+				title: "Moderator reactie",
+				value: self.props.idea.modBreak,
+				inputType: "textarea-with-counter",
+				minLength: 0,
+				maxLength: 2000,
+			})
+      state.formfields.modBreak = self.props.idea.modBreak;
 
-      let descriptionField = fields.find(field => field.name == 'description');
-      if (descriptionField) {
-		    descriptionField.minLength = self.config.descriptionMinLength;
-		    descriptionField.maxLength = self.config.descriptionMaxLength;
-      }
+    } else {
 
-      let imageField = fields.find(field => field.inputType == 'image-upload'); // TODO: multiple images?
-      if (imageField) {
-		    imageField.imageserver = self.config.imageserver;
+      // hidden: typeId
+      if (self.config.types && self.config.typeField == 'typeId') {
+        self.config.fields.push({
+				  name: "typeId",
+				  value: self.props.idea.typeId,
+				  inputType: "hidden",
+			  })
+        state.formfields.typeId = self.props.idea.typeId;
       }
-
-      // dit moet anders want nu tekent hij er elke keer 1 bij
-      // if (self.config.user && self.config.user.role == 'admin') {
-      //   self.config.fields.push({
-      //     name: "modBreak",
-      //     title: "Moderator reactie",
-      //     value: state.formfields.modBreak,
-      //     inputType: "textarea-with-counter",
-			//     minLength: 0,
-			//     maxLength: 2000,
-      //   })
-      // }
 
     }
-    
+
+    self.state = state;
+
   }
 
 	componentDidMount(prevProps, prevState) {
@@ -135,68 +172,76 @@ export default class IdeasForm extends React.Component {
 
     let self = this;
 
-    let formValues = self.form.getValues();
-    // console.log(formValues);
+    self.setState({ isBusy: true }, () => {
 
-    let isValid = self.form.validate({ showErrors: true });
+      let formValues = self.form.getValues();
 
-	  if ( !isValid  || !self.validateIdea() ) { // validateIdea doet nog locatie en images
-      self.setState({ showFormErrorsWarning: true });
-      return;
-    }
+      let isValid = self.form.validate({ showErrors: true });
 
-    self.setState({ showFormErrorsWarning: false });
+	    if ( !isValid  || !self.validateIdea() ) { // validateIdea doet nog locatie en images
+        self.setState({ isBusy: true, showFormErrorsWarning: true });
+        return;
+      }
 
-	  if (!self.config.api.isUserLoggedIn) return alert('Je bent niet ingelogd');
+      self.setState({ showFormErrorsWarning: false });
 
-	  var url = self.config.api.url + '/api/site/' + self.config.siteId + '/idea';
+	    if (!self.config.api.isUserLoggedIn) return alert('Je bent niet ingelogd');
+
+	    var url = self.config.api.url + '/api/site/' + self.config.siteId + '/idea';
       let headers = OpenStadComponentLibs.api.getHeaders(self.config);
 
 
-    let body = {
-      location: JSON.stringify({ "type": "Point", ...self.state.formfields['location'] }),
-    };
-    Object.keys(formValues).forEach(key => {
-      let match = key.match(/^extraData\.(.+)/)
-      if (match) {
-        if (!body.extraData) body.extraData = {};
-        body.extraData[match[1]] = formValues[key];
-      } else {
-        body[key] = formValues[key];
-      }
-    });
-
-    // if ( self.config.user && self.config.user.role == 'admin' ) {
-    //   body.modBreak = self.state.formfields['modBreak'];
-    // }
-
-    console.log('--------------------');
-    console.log(body);
-
-    let method = 'POST';
-    if (typeof this.state.formfields.id == 'number') {
-      method = 'PUT';
-      url = url + '/' + this.state.formfields.id;
-    }
-
-    fetch(url, {
-      method,
-      headers,
-      body: JSON.stringify(body) // body data type must match "Content-Type" header
-    })
-      .then((response) => {
-        if (!response.ok) throw Error(response)
-        return response.json();
-      })
-      .then( json => {
-		    var event = new window.CustomEvent('newIdeaStored', { detail: { idea: json } });
-		    document.dispatchEvent(event);
-      })
-      .catch((err) => {
-        console.log('Niet goed');
-        console.log(err);
+      let body = {
+        location: JSON.stringify({ "type": "Point", ...self.state.formfields['location'] }),
+      };
+      Object.keys(formValues).forEach(key => {
+        let match = key.match(/^extraData\.(.+)/)
+        if (match) {
+          if (!body.extraData) body.extraData = {};
+          body.extraData[match[1]] = formValues[key];
+        } else {
+          body[key] = formValues[key];
+        }
       });
 
+      // if ( self.config.user && self.config.user.role == 'admin' ) {
+      //   body.modBreak = self.state.formfields['modBreak'];
+      // }
+
+      let method = 'POST';
+      if (typeof this.state.formfields.id == 'number') {
+        method = 'PUT';
+        url = url + '/' + this.state.formfields.id;
+      }
+
+      fetch(url, {
+        method,
+        headers,
+        body: JSON.stringify(body) // body data type must match "Content-Type" header
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw response;
+          }
+          return response.json();
+        })
+        .then( json => {
+          self.setState({ isBusy: false }, () => {
+		        var event = new window.CustomEvent('newIdeaStored', { detail: { idea: json } });
+		        document.dispatchEvent(event);
+          })
+        })
+        .catch((err) => {
+          console.log('Niet goed');
+          console.log(err);
+          if ( typeof err.json == 'function' ) {
+            err.json().then(json => self.setState({ isBusy: false, showFormErrorsWarning: json.message }) );
+          } else {
+            self.setState({ isBusy: false, showFormErrorsWarning: err.message || err })
+          }
+        });
+    })
+    
   }
   
 	render() {
@@ -205,16 +250,18 @@ export default class IdeasForm extends React.Component {
 
     let formErrorsWarningHTML = null;
     if (self.state.showFormErrorsWarning) {
+      let text = 'Niet alle velden zijn correct ingevuld. Scroll naar boven om te zien wat er mis gaat.';
+      if (typeof self.state.showFormErrorsWarning == 'string') {
+        text = self.state.showFormErrorsWarning;
+      }
       formErrorsWarningHTML = (
-        <div className="osc-form-errors-warning">
-          Niet alle velden zijn correct ingevuld. Scroll naar boven om te zien wat er mis gaat.
-        </div>
+        <div className="osc-form-errors-warning">{ text }</div>
       );
     }
 
     let formHTML = null;
     formHTML = (
-      <OpenStadComponentForms.Form config={ self.config }  ref={(el) => { self.form = el;}}/>
+      <OpenStadComponentForms.Form config={ self.config } values={{ typeId: self.state.formfields.typeId /* typeId is hidden */ }} ref={(el) => { self.form = el;}}/>
     )
 
     return (
@@ -246,7 +293,7 @@ export default class IdeasForm extends React.Component {
           <br/>
           {formErrorsWarningHTML}
           <br/>
-          <a className="osc-button osc-button-blue" onClick={() => self.submitIdea()} ref={el => (self.submitButton = el)}>Versturen</a>
+          <a className={`osc-button osc-button-blue${ self.state.isBusy ? ' osc-disabled' : '' }`} onClick={() => { if (!self.state.isBusy) self.submitIdea() } } ref={el => (self.submitButton = el)}>Versturen</a>
           <br/>
           <br/>
           <br/>

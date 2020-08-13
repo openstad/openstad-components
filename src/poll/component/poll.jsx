@@ -64,10 +64,6 @@ export default class OpenStadComponentPoll extends OpenStadComponent {
 
     let self = this;
 
-    console.log('++');
-    console.log(self.state.poll);
-    console.log(self.config.ideaId);
-
     // user
     if (!( self.state.user && self.state.user.role )) {
       OpenStadComponentLibs.user.getUser({ user: self.config.user, jwt: self.config.jwt, siteId: self.config.siteId, api: self.config.api }, (err, user) => {

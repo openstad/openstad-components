@@ -135,7 +135,13 @@ export default class IdeasList extends React.Component {
           if (!idea) {
             console.log('idea is undef', i, self.state.ideas);
           }
-          let typeDef = self.config.types.find(entry => idea.extraData && entry.name == idea.extraData.theme); // TODO: use typefield
+          let ideaTypeValue;
+          try {
+            ideaTypeValue = eval(`idea.${self.config.typeField}`);
+          } catch (err) {
+            ideaTypeValue = '';
+          }
+          let typeDef = self.config.types.find(entry => ideaTypeValue && ( entry.id == ideaTypeValue || entry.name == ideaTypeValue ));
           if (!typeDef || !typeDef.listicon) { typeDef = { listicon: { html: '' } }; } // console.log(idea.extraData.theme + ' niet gevonden'); }
           let voteCountHTML = null;
           if (this.config.idea.showVoteButtons) {

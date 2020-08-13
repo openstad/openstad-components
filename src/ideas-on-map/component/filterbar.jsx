@@ -114,7 +114,7 @@ export default class Filterbar extends React.Component {
             <select value={self.state.selectedType} onChange={() => self.handleTypeChange( self.typeSelector.value )} className="osc-default-select osc-margin-right osc-type-selector" ref={el => (self.typeSelector = el)}>
               <option value="0">Alle thema's</option>;
               { self.state.types.map((type, i) => {
-                return <option key={'type-option-' + i}>{ type.name }</option>;
+                return <option key={'type-option-' + i} value={ type.id || type.name }>{ type.name }</option>;
               })}
             </select>
           </div>

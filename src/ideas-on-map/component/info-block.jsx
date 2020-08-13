@@ -33,6 +33,7 @@ export default class InfoBlock extends React.Component {
         isActive: true,
         ignoreReactionsForIdeaIds: '',
       },
+      types: [],
 		};
 
     this.config = merge.recursive(defaultConfig, this.config, props.config || {})
@@ -88,9 +89,9 @@ export default class InfoBlock extends React.Component {
 		document.dispatchEvent(event);
   }
   
-  dispatchNewIdeaClick(e) {
+  dispatchNewIdeaClick(e, typeId) {
     e.stopPropagation();
-		var event = new window.CustomEvent('newIdeaClick', { detail: {} });
+		var event = new window.CustomEvent('newIdeaClick', { detail: { typeId } });
 		document.dispatchEvent(event);
   };
   
@@ -129,9 +130,29 @@ export default class InfoBlock extends React.Component {
 
       if (self.config.api.isUserLoggedIn) {
         if (self.config.idea.canAddNewIdeas) {
-          addButton = (
-            <button className="osc-button osc-button-blue" onClick={(event) => self.dispatchNewIdeaClick(event)}>Nieuw punt toevoegen</button>
-          );
+
+          if (self.config.types && self.config.typeField == 'typeId') {
+            addButton = (
+              <span className="osc-new-idea-buttons">
+                {self.config.types.map(
+                  type => {
+                    let typeDef = type;
+                    if (!typeDef.auth || ( typeDef.auth.createableBy && OpenStadComponentLibs.user.hasRole( self.config.user, typeDef.auth.createableBy ) )) {
+                      let buttonBgHTML = typeDef ? <div className="osc-button-background-image" dangerouslySetInnerHTML={{ __html: typeDef.buttonicon && typeDef.buttonicon.html || '' }}></div> : null;
+                      return (<button className="osc-button osc-button-white" onClick={(event) => self.dispatchNewIdeaClick(event, typeDef.id || typeDef.name)}>{buttonBgHTML}{ typeDef && typeDef.buttonLabel || 'Nieuw punt toevoegen' }</button>)
+                    } else return null;
+                  }
+                )}
+              </span>
+            );
+            
+          } else {
+            addButton = (
+              <button className="osc-button osc-button-blue" onClick={(event) => self.dispatchNewIdeaClick(event)}>Nieuw punt toevoegen</button>
+            );
+          }
+
+          
         }
       } else {
         if (self.config.idea.canAddNewIdeas) {
@@ -161,7 +182,13 @@ export default class InfoBlock extends React.Component {
     // selected idea
     if (self.state.selectedIdea) {
       let idea = self.state.selectedIdea;
-      let typeDef = self.config.types.find(entry => idea.extraData && entry.name == idea.extraData.theme);
+      let ideaTypeValue;
+      try {
+        ideaTypeValue = eval(`idea.${self.config.typeField}`);
+      } catch (err) {
+        ideaTypeValue = '';
+      }
+      let typeDef = self.config.types.find(entry => entry.name == ideaTypeValue || entry.id == ideaTypeValue);
       if (!typeDef || !typeDef.listicon) { typeDef = { listicon: { html: '' } }; } // console.log(idea.extraData.theme + ' niet gevonden'); }
       let voteCountHTML = null;
       if (this.config.idea.showVoteButtons) {
