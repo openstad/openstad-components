@@ -247,12 +247,13 @@
 .osc-button {
   position: relative;
   display: inline-block;
-  padding: 12px 15px;
+  padding: 10px 13px;
   font-size: 16px;
   font-weight: 600;
   line-height: 20px;
-  border: 0 none;
+  border: 1px solid black;
   cursor: pointer;
+  border-color: #c4c4c4;
   background-color: #c4c4c4;
 }
 .osc-button:active,
@@ -264,6 +265,7 @@
 }
 .osc-button:hover {
   text-decoration: underline;
+  border-color: #aaa;
   background-color: #aaa;
 }
 .osc-close-button-black {
@@ -363,10 +365,10 @@
 .osc-number-button .osc-number-button-text {
   position: relative;
   display: inline-block;
-  padding: 12px 15px;
+  padding: 10px 13px;
   font-size: 16px;
   font-weight: 600;
-  border: 0 none;
+  border: 1px solid black;
   cursor: pointer;
   display: block;
   float: left;
@@ -1205,13 +1207,14 @@
 .osc-poll .osc-form .osc-button-blue {
   position: relative;
   display: inline-block;
-  padding: 12px 15px;
+  padding: 10px 13px;
   font-size: 16px;
   font-weight: 600;
   line-height: 20px;
-  border: 0 none;
+  border: 1px solid black;
   cursor: pointer;
   color: white;
+  border-color: #164995;
   background-color: #164995;
 }
 .osc-poll .osc-form .osc-button-blue:active,
@@ -1223,6 +1226,7 @@
 }
 .osc-poll .osc-form .osc-button-blue:hover {
   text-decoration: underline;
+  border-color: #003066;
   background-color: #003066;
 }
 .osc-poll .osc-form .osc-button-blue.osc-not-logged-in-button {
@@ -1249,13 +1253,14 @@
 .osc-poll .osc-button-blue {
   position: relative;
   display: inline-block;
-  padding: 12px 15px;
+  padding: 10px 13px;
   font-size: 16px;
   font-weight: 600;
   line-height: 20px;
-  border: 0 none;
+  border: 1px solid black;
   cursor: pointer;
   color: white;
+  border-color: #164995;
   background-color: #164995;
 }
 .osc-poll .osc-button-blue:active,
@@ -1267,6 +1272,7 @@
 }
 .osc-poll .osc-button-blue:hover {
   text-decoration: underline;
+  border-color: #003066;
   background-color: #003066;
 }
 .osc-poll .osc-button-blue.osc-not-logged-in-button {
@@ -2037,12 +2043,13 @@
 .osc-button {
   position: relative;
   display: inline-block;
-  padding: 12px 15px;
+  padding: 10px 13px;
   font-size: 16px;
   font-weight: 600;
   line-height: 20px;
-  border: 0 none;
+  border: 1px solid black;
   cursor: pointer;
+  border-color: #c4c4c4;
   background-color: #c4c4c4;
 }
 .osc-button:active,
@@ -2054,6 +2061,7 @@
 }
 .osc-button:hover {
   text-decoration: underline;
+  border-color: #aaa;
   background-color: #aaa;
 }
 .osc-close-button-black {
@@ -2153,10 +2161,10 @@
 .osc-number-button .osc-number-button-text {
   position: relative;
   display: inline-block;
-  padding: 12px 15px;
+  padding: 10px 13px;
   font-size: 16px;
   font-weight: 600;
-  border: 0 none;
+  border: 1px solid black;
   cursor: pointer;
   display: block;
   float: left;
@@ -2372,13 +2380,14 @@
 .osc-reactions .osc-button-blue {
   position: relative;
   display: inline-block;
-  padding: 12px 15px;
+  padding: 10px 13px;
   font-size: 16px;
   font-weight: 600;
   line-height: 20px;
-  border: 0 none;
+  border: 1px solid black;
   cursor: pointer;
   color: white;
+  border-color: #164995;
   background-color: #164995;
 }
 .osc-reactions .osc-button-blue:active,
@@ -2390,6 +2399,7 @@
 }
 .osc-reactions .osc-button-blue:hover {
   text-decoration: underline;
+  border-color: #003066;
   background-color: #003066;
 }
 .osc-reactions ul {

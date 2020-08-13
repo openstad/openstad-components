@@ -16,6 +16,7 @@ export default class Map extends OpenStadComponentNLMap {
         maxClusterRadius: 100,
         showCoverageOnHover: false,
       },
+      types: [],
     };
 		this.config = merge.recursive(this.defaultConfig, this.config, props.config || {})
 
@@ -43,10 +44,10 @@ export default class Map extends OpenStadComponentNLMap {
     self.ideas.push(idea);
     // todo: dit moet met een iconCreate functie
     let typename = idea && eval(`idea.${self.config.typeField}`);
-		let typeDef = self.config.types.find(entry => entry.name == typename);
-    // if (!typeDef) { console.log(typename + ' niet gevonden'); }
-		let color = typeDef && typeDef.color || '#164995';
-    let icondef = ( typeDef && ( typeDef.mapicon || typeDef.icon ) ) || { html: `<svg viewBox="0 0 26 26"><circle cx="13" cy="13" r="13" fill="${color}"/></svg>`, width: 26, height: 26, anchor: [13, 13] };
+		let typeDef = self.config.types.find(entry => typename && ( entry.id == typename || entry.name == typename ));
+    if (!typeDef) typeDef = {};
+	  let color = typeDef.color || typeDef.backgroundColor || '#164995';
+    let icondef = ( ( typeDef.mapicon || typeDef.icon ) ) || { html: `<svg viewBox="0 0 26 26"><circle cx="13" cy="13" r="13" fill="${color}"/></svg>`, width: 26, height: 26, anchor: [13, 13] };
 		let icon = L.divIcon({ html: icondef.html, className: 'osc-ideas-on-map-icon', iconSize: L.point(icondef.width, icondef.height), iconAnchor: icondef.anchor });
     self.addMarker({ lat: idea.location.coordinates[0], lng: idea.location.coordinates[1], data: idea, icon });
   }
@@ -78,7 +79,7 @@ export default class Map extends OpenStadComponentNLMap {
   }
 
   setBoundsAndCenter(points) {
-    super.setBoundsAndCenter(points || ( this.config.autoZoomAndCenter == 'polygon' && this.config.polygon ) || this.map.markers);
+    super.setBoundsAndCenter(points || ( this.config.autoZoomAndCenter == 'polygon' && this.config.polygon ) || this.markers);
   }
 
   showMarkers({ keepCenter=false }) {

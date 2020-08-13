@@ -16,12 +16,13 @@
 .osc-button {
   position: relative;
   display: inline-block;
-  padding: 12px 15px;
+  padding: 10px 13px;
   font-size: 16px;
   font-weight: 600;
   line-height: 20px;
-  border: 0 none;
+  border: 1px solid black;
   cursor: pointer;
+  border-color: #c4c4c4;
   background-color: #c4c4c4;
 }
 .osc-button:active,
@@ -33,6 +34,7 @@
 }
 .osc-button:hover {
   text-decoration: underline;
+  border-color: #aaa;
   background-color: #aaa;
 }
 .osc-close-button-black {
@@ -132,10 +134,10 @@
 .osc-number-button .osc-number-button-text {
   position: relative;
   display: inline-block;
-  padding: 12px 15px;
+  padding: 10px 13px;
   font-size: 16px;
   font-weight: 600;
-  border: 0 none;
+  border: 1px solid black;
   cursor: pointer;
   display: block;
   float: left;
@@ -787,13 +789,14 @@ form.osc-form {
 .osc-ideas-on-map .osc-button-blue {
   position: relative;
   display: inline-block;
-  padding: 12px 15px;
+  padding: 10px 13px;
   font-size: 16px;
   font-weight: 600;
   line-height: 20px;
-  border: 0 none;
+  border: 1px solid black;
   cursor: pointer;
   color: white;
+  border-color: #164995;
   background-color: #164995;
 }
 .osc-ideas-on-map .osc-button-blue:active,
@@ -805,6 +808,7 @@ form.osc-form {
 }
 .osc-ideas-on-map .osc-button-blue:hover {
   text-decoration: underline;
+  border-color: #003066;
   background-color: #003066;
 }
 .osc-ideas-on-map .osc-button-blue.osc-not-logged-in-button {
@@ -813,6 +817,32 @@ form.osc-form {
   background-repeat: no-repeat;
   background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0yMCAwVjIwSDExLjI1VjE3LjVIMTcuNVYyLjVIMTEuMjVWMEgyMFpNMTAuNTEyNSA0LjI1NjI1TDE2LjI2MjUgMTBMMTAuNTEyNSAxNS43NDM3TDguNzUgMTMuOTc1TDExLjQ3NSAxMS4yNUgwVjguNzVIMTEuNDc1TDguNzUgNi4wMjVMMTAuNTEyNSA0LjI1NjI1WiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+Cg==);
   padding-left: 40px;
+}
+.osc-ideas-on-map .osc-button-white {
+  position: relative;
+  display: inline-block;
+  padding: 10px 13px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 20px;
+  border: 1px solid black;
+  cursor: pointer;
+  color: #164995;
+  border-color: #164995;
+  background-color: white;
+}
+.osc-ideas-on-map .osc-button-white:active,
+.osc-ideas-on-map .osc-button-white:focus {
+  outline: 0;
+}
+.osc-ideas-on-map .osc-button-white.osc-disabled {
+  opacity: 0.3;
+}
+.osc-ideas-on-map .osc-button-white:hover {
+  text-decoration: underline;
+  color: #003066;
+  border-color: #003066;
+  background-color: white;
 }
 .osc-ideas-on-map .osc-image {
   background-position: center center;
@@ -965,6 +995,20 @@ form.osc-form {
   background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgLTUgMzIgMzIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxtYXNrIGlkPSJtYXNrMCIgbWFzay10eXBlPSJhbHBoYSIgbWFza1VuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeD0iMCIgeT0iMCIgd2lkdGg9IjMyIiBoZWlnaHQ9IjIyIj4KPHBhdGggZD0iTTguNzA3NDggMjEuNzY4N1YxNy40MTVIMzJWMjEuNzY4N0g4LjcwNzQ4Wk0wIDIxLjc2ODdWMTcuNDE1SDQuMzUzNzRWMjEuNzY4N0gwWk04LjcwNzQ4IDEzLjA2MTJWOC43MDc0OEgzMlYxMy4wNjEySDguNzA3NDhaTTAgMTMuMDYxMlY4LjcwNzQ4SDQuMzUzNzRWMTMuMDYxMkgwWk04LjcwNzQ4IDQuMzUzNzRWMEgzMlY0LjM1Mzc0SDguNzA3NDhaTTAgNC4zNTM3NFYwSDQuMzUzNzRWNC4zNTM3NEgwWiIgZmlsbD0id2hpdGUiLz4KPC9tYXNrPgo8ZyBtYXNrPSJ1cmwoI21hc2swKSI+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNLTAuMDQzNTc5MSAyMS43NjgzSDMyLjA4N1YtMC4wNDM5NDUzSC0wLjA0MzU3OTFWMjEuNzY4M1oiIGZpbGw9ImJsYWNrIi8+CjwvZz4KPC9zdmc+Cg==);
   padding-top: 10px;
   margin-bottom: 0px;
+}
+.osc-ideas-on-map .osc-ideas-on-map-info .osc-info-block-new-idea .osc-new-idea-buttons .osc-button {
+  position: relative;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding-left: 40px;
+}
+.osc-ideas-on-map .osc-ideas-on-map-info .osc-info-block-new-idea .osc-new-idea-buttons .osc-button .osc-button-background-image {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
 }
 .osc-ideas-on-map .osc-ideas-on-map-info .osc-info-block-selected-idea {
   cursor: pointer;
@@ -2111,12 +2155,13 @@ form.osc-form {
 .osc-button {
   position: relative;
   display: inline-block;
-  padding: 12px 15px;
+  padding: 10px 13px;
   font-size: 16px;
   font-weight: 600;
   line-height: 20px;
-  border: 0 none;
+  border: 1px solid black;
   cursor: pointer;
+  border-color: #c4c4c4;
   background-color: #c4c4c4;
 }
 .osc-button:active,
@@ -2128,6 +2173,7 @@ form.osc-form {
 }
 .osc-button:hover {
   text-decoration: underline;
+  border-color: #aaa;
   background-color: #aaa;
 }
 .osc-close-button-black {
@@ -2227,10 +2273,10 @@ form.osc-form {
 .osc-number-button .osc-number-button-text {
   position: relative;
   display: inline-block;
-  padding: 12px 15px;
+  padding: 10px 13px;
   font-size: 16px;
   font-weight: 600;
-  border: 0 none;
+  border: 1px solid black;
   cursor: pointer;
   display: block;
   float: left;
@@ -3069,13 +3115,14 @@ form.osc-form {
 .osc-poll .osc-form .osc-button-blue {
   position: relative;
   display: inline-block;
-  padding: 12px 15px;
+  padding: 10px 13px;
   font-size: 16px;
   font-weight: 600;
   line-height: 20px;
-  border: 0 none;
+  border: 1px solid black;
   cursor: pointer;
   color: white;
+  border-color: #164995;
   background-color: #164995;
 }
 .osc-poll .osc-form .osc-button-blue:active,
@@ -3087,6 +3134,7 @@ form.osc-form {
 }
 .osc-poll .osc-form .osc-button-blue:hover {
   text-decoration: underline;
+  border-color: #003066;
   background-color: #003066;
 }
 .osc-poll .osc-form .osc-button-blue.osc-not-logged-in-button {
@@ -3113,13 +3161,14 @@ form.osc-form {
 .osc-poll .osc-button-blue {
   position: relative;
   display: inline-block;
-  padding: 12px 15px;
+  padding: 10px 13px;
   font-size: 16px;
   font-weight: 600;
   line-height: 20px;
-  border: 0 none;
+  border: 1px solid black;
   cursor: pointer;
   color: white;
+  border-color: #164995;
   background-color: #164995;
 }
 .osc-poll .osc-button-blue:active,
@@ -3131,6 +3180,7 @@ form.osc-form {
 }
 .osc-poll .osc-button-blue:hover {
   text-decoration: underline;
+  border-color: #003066;
   background-color: #003066;
 }
 .osc-poll .osc-button-blue.osc-not-logged-in-button {
@@ -3239,12 +3289,13 @@ form.osc-form {
 .osc-button {
   position: relative;
   display: inline-block;
-  padding: 12px 15px;
+  padding: 10px 13px;
   font-size: 16px;
   font-weight: 600;
   line-height: 20px;
-  border: 0 none;
+  border: 1px solid black;
   cursor: pointer;
+  border-color: #c4c4c4;
   background-color: #c4c4c4;
 }
 .osc-button:active,
@@ -3256,6 +3307,7 @@ form.osc-form {
 }
 .osc-button:hover {
   text-decoration: underline;
+  border-color: #aaa;
   background-color: #aaa;
 }
 .osc-close-button-black {
@@ -3355,10 +3407,10 @@ form.osc-form {
 .osc-number-button .osc-number-button-text {
   position: relative;
   display: inline-block;
-  padding: 12px 15px;
+  padding: 10px 13px;
   font-size: 16px;
   font-weight: 600;
-  border: 0 none;
+  border: 1px solid black;
   cursor: pointer;
   display: block;
   float: left;
@@ -3574,13 +3626,14 @@ form.osc-form {
 .osc-reactions .osc-button-blue {
   position: relative;
   display: inline-block;
-  padding: 12px 15px;
+  padding: 10px 13px;
   font-size: 16px;
   font-weight: 600;
   line-height: 20px;
-  border: 0 none;
+  border: 1px solid black;
   cursor: pointer;
   color: white;
+  border-color: #164995;
   background-color: #164995;
 }
 .osc-reactions .osc-button-blue:active,
@@ -3592,6 +3645,7 @@ form.osc-form {
 }
 .osc-reactions .osc-button-blue:hover {
   text-decoration: underline;
+  border-color: #003066;
   background-color: #003066;
 }
 .osc-reactions ul {

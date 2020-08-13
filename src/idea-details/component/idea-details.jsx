@@ -31,7 +31,8 @@ export default class IdeasDetails extends React.Component {
         canAddPoll: false,
       },
       showVoteButtons: true,
-      labels: {},
+      showLabels: false,
+      types: null,
 		};
 		this.config = merge.recursive(defaultConfig, this.config, this.props.config || {})
 
@@ -204,14 +205,19 @@ export default class IdeasDetails extends React.Component {
     if (!idea) return null;
 
     let labelHTML = null;
-    if (self.config.labels && self.props.label && self.config.labels[ self.props.label ]) {
-      // console.log(self.config.labels[ self.props.label ]);
-      let color = self.config.labels[ self.props.label ].color || 'white';
-      let backgroundColor = self.config.labels[ self.props.label ].backgroundColor || '#164995';
-      let text = self.config.labels[ self.props.label ].text;
-      labelHTML = (
-        <div className="ocs-idea-label" style={{ color, backgroundColor }}>{text}</div>
-      );
+
+    if (self.config.showLabels) {
+      // TODO: idea.extraData.type is tmp voor Gerard Dou
+      let typeId = idea.typeId || idea.extraData.type;
+      let typeDef = self.config.types && self.config.types.find(def => def.id == typeId || def.value == typeId);
+      if (typeDef) {
+        let labelText = typeDef.label;
+        let backgroundColor = typeDef.backgroundColor;
+        let textColor = typeDef.textColor;
+        labelHTML = (
+          <div className="ocs-idea-label" style={{ color: textColor, backgroundColor }}>{labelText}</div>
+        );
+      }
     }
 
     let pollHTML = null;

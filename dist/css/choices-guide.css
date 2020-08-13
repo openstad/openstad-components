@@ -16,12 +16,13 @@
 .osc-button {
   position: relative;
   display: inline-block;
-  padding: 12px 15px;
+  padding: 10px 13px;
   font-size: 16px;
   font-weight: 600;
   line-height: 20px;
-  border: 0 none;
+  border: 1px solid black;
   cursor: pointer;
+  border-color: #c4c4c4;
   background-color: #c4c4c4;
 }
 .osc-button:active,
@@ -33,6 +34,7 @@
 }
 .osc-button:hover {
   text-decoration: underline;
+  border-color: #aaa;
   background-color: #aaa;
 }
 .osc-close-button-black {
@@ -132,10 +134,10 @@
 .osc-number-button .osc-number-button-text {
   position: relative;
   display: inline-block;
-  padding: 12px 15px;
+  padding: 10px 13px;
   font-size: 16px;
   font-weight: 600;
-  border: 0 none;
+  border: 1px solid black;
   cursor: pointer;
   display: block;
   float: left;
