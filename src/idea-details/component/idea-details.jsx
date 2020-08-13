@@ -28,7 +28,7 @@ export default class IdeasDetails extends React.Component {
         isActive: true,
       },
       poll: {
-        canAddPoll: false,
+        canAddPolls: false,
       },
       showVoteButtons: true,
       labels: {},
@@ -133,7 +133,7 @@ export default class IdeasDetails extends React.Component {
     if (!ideaId) return;
 
     let url = `${ self.config.api.url }/api/site/${  self.config.siteId  }/idea/${ ideaId }?includeVoteCount=1&includeArguments=1&includeUser=1&includeUserVote=1`;
-    if (self.config.poll.canAddPoll) url += '&includePoll=1';
+    if (self.config.poll.canAddPolls) url += '&includePoll=1';
 
     let headers = OpenStadComponentLibs.api.getHeaders(self.config);
 		
@@ -216,20 +216,22 @@ export default class IdeasDetails extends React.Component {
 
     let pollHTML = null;
     let addPollButtonHTML = null;
-    if (idea.can && idea.can.edit && self.config.poll.canAddPoll) {
+    if (self.config.poll.canAddPolls) {
       if (idea.poll || self.state.showPollForm) {
         pollHTML = (
-        <div>
-			    <div id="poll" className="osc-poll-header"><h3>{self.config.poll.title || 'Poll'}</h3></div>
-          <OpenStadComponentPoll config={{ ...self.config, ...self.config.poll, ideaId: self.state.ideaId }} poll={idea.poll}/>
-        </div>
-        )
-      } else {
-        addPollButtonHTML = (
-          <div className="osc-editbuttons-container">
-            <button className="osc-idea-details-editbutton osc-edit" onClick={(event) => self.dispatchAddPollClick(event)}>Add poll</button>
+          <div>
+			      <div id="poll" className="osc-poll-header"><h3>{self.config.poll.title || 'Poll'}</h3></div>
+            <OpenStadComponentPoll config={{ ...self.config, ...self.config.poll, ideaId: self.state.ideaId }} poll={idea.poll}/>
           </div>
         )
+      } else {
+        if (idea.can && idea.can.edit) {
+          addPollButtonHTML = (
+            <div className="osc-editbuttons-container">
+              <button className="osc-idea-details-editbutton osc-edit" onClick={(event) => self.dispatchAddPollClick(event)}>Add poll</button>
+            </div>
+          )
+        }
       }
     }
 
