@@ -97,6 +97,11 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
             entry.listicon = JSON.parse(entry.listicon)
           } catch (err) { console.log(entry); console.log(err) }
         }
+        if (entry.buttonicon && typeof entry.buttonicon == 'string') {
+          try {
+            entry.buttonicon = JSON.parse(entry.buttonicon)
+          } catch (err) { console.log(entry); console.log(err) }
+        }
       });
     }
 
@@ -182,7 +187,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       self.onSelectedIdeaClick(event.detail.idea);
     });
 		document.addEventListener('newIdeaClick', function(event) {
-      self.onNewIdeaClick();
+      self.onNewIdeaClick({ typeId: event.detail.typeId });
     });
 		document.addEventListener('clickMobileSwitcher', function(event) {
       self.onClickMobileSwitcher();
@@ -213,6 +218,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
     // form changes
 		document.addEventListener('newIdeaStored', function(event) {
+      console.log('1');
       self.onNewIdeaStored(event.detail.idea);
     });
     
@@ -221,7 +227,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   fetchData({ showIdeaDetails, showIdeaSelected }) {
 
     let self = this;
-    let url = `${ self.config.api.url }/api/site/${  self.config.siteId  }/idea?includeVoteCount=1&includeArguments=1&includeUser=1`;
+    let url = `${ self.config.api.url }/api/site/${  self.config.siteId  }/idea?includeVoteCount=1&includeArgsCount=1&includeUser=1`;
     let headers = OpenStadComponentLibs.api.getHeaders(self.config);
 
     // remove existing
@@ -327,7 +333,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     let self = this;
     if (this.state.editIdea && typeof this.state.editIdea.id == 'number') {
       let idea = self.state.ideas.find(idea => idea.id == self.state.editIdea.id)
-      // self.showIdeaDetails(idea)
+      self.showIdeaDetails(idea)
       document.location.href = "#D" + idea.id
     } else {
       self.setState({ status: 'location-selected' }, function() {
@@ -686,8 +692,9 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     document.location.href = "#D" + idea.id
   };
   
-  onNewIdeaClick() {
+  onNewIdeaClick({ typeId }) {
     let self = this;
+    this.state.editIdea.typeId = typeId;
     self.showIdeaForm(this.state.editIdea, () => {
       let location = { lat: this.state.editIdea.location.coordinates[0], lng: this.state.editIdea.location.coordinates[1] };
       self.ideaform.handleLocationChange({ location, address: 'Bezig met adresgegevens ophalen...' });
@@ -703,6 +710,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   onNewIdeaStored(idea) {
     let self = this;
     self.setNewIdea(null);
+		self.showIdeaDetails(idea);
     self.fetchData({showIdeaSelected: idea.id});
   }
 
@@ -798,17 +806,20 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
           user: this.config.user,
           api: this.config.api,
           argument: { ...this.config.argument },
-          labels: {
-            Kans: { text: 'Dit gaat goed', color: 'black', backgroundColor: '#bed200' },
-            Knelpunt: { text: 'Dit kan beter', color: 'black', backgroundColor: '#ff9100' },
-          },
           showVoteButtons: this.config.idea.showVoteButtons,
           poll: this.config.poll,
+          showLabels: this.config.idea.showLabels,
+          types: this.config.types,
         };
         config.argument.isActive = this.config.argument.isActive && !this.config.argument.ignoreReactionsForIdeaIds.match(new RegExp(`(?:^|\\D)${this.state.currentIdea.id}(?:\\D|$)`));
         config.argument.isClosed = this.config.argument.isClosed || this.config.argument.closeReactionsForIdeaIds.match(new RegExp(`(?:^|\\D)${this.state.currentIdea.id}(?:\\D|$)`));
+        // TODO: tmp gerard dou
+        if ( this.state.currentIdea && this.state.currentIdea.extraData && this.state.currentIdea.extraData.type && ( this.state.currentIdea.extraData.type == 'Kans' || this.state.currentIdea.extraData.type == 'Knelpunt' ) ) {
+          config.types = [{"name": "Kans","label": "Dit gaat goed","value": "Kans","buttonLabel": "Ik wil een idee posten","backgroundColor": "#bed200","textColor": "black"},{"name": "Knelpunt","label": "Dit kan beter","value": "Knelpunt","backgroundColor": "#ff9100","textColor": "black"}];
+          config.showLabels = true;
+        }
         infoHTML = (
-			    <OpenStadComponentIdeaDetails id={this.divId + '-infoblock'} config={config} idea={this.state.currentIdea} label={this.state.currentIdea.extraData.type} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.ideadetails = el)}/>
+			    <OpenStadComponentIdeaDetails id={this.divId + '-infoblock'} config={config} idea={this.state.currentIdea} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.ideadetails = el)}/>
         );
         filterHTML = (
 				  <div className="osc-ideas-on-map-filterbar"><div className="osc-backbutton" onClick={() => document.location.href="#"}>Terug naar overzicht</div></div>
@@ -817,7 +828,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
       case 'idea-form':
         infoHTML = (
-			    <IdeaForm id={this.divId + '-infoblock'} config={{ siteId: this.config.siteId, user: this.config.user, api: this.config.api, ...this.config.idea }} idea={{ ...this.state.editIdea, user: this.state.editIdea && this.state.editIdea.user || this.config.user }} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.ideaform = el)}/>
+			    <IdeaForm id={this.divId + '-infoblock'} config={{ siteId: this.config.siteId, user: this.config.user, api: this.config.api, ...this.config.idea, types: this.config.types, typeField: this.config.typeField }} idea={{ ...this.state.editIdea, user: this.state.editIdea && this.state.editIdea.user || this.config.user }} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.ideaform = el)}/>
         );
         filterHTML = (
 				  <div className="osc-ideas-on-map-filterbar"><div className="osc-backbutton" onClick={() => this.hideIdeaForm()}>Terug naar {this.state.editIdea && typeof this.state.editIdea.id == 'number' ? 'idee' : 'overzicht'}</div></div>
@@ -867,19 +878,19 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
           );
         }
         infoHTML = (
-			    <InfoBlock id={this.divId + '-infoblock'} config={{ api: this.config.api, title: this.config.title, titleField: this.config.titleField, summaryField: this.config.summaryField, types: this.config.types, content: this.config.content, argument: this.config.argument, idea: this.config.idea  }} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.infoblock = el)}/>
+			    <InfoBlock id={this.divId + '-infoblock'} config={{ api: this.config.api, user: this.config.user, title: this.config.title, titleField: this.config.titleField, summaryField: this.config.summaryField, types: this.config.types, typeField: this.config.typeField, content: this.config.content, argument: this.config.argument, idea: this.config.idea  }} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.infoblock = el)}/>
         );
         filterHTML = (
-				  <Filterbar id={this.divId + '-filterbar'} config={{ types: this.config.types, areas: this.config.areas, doSearchFunction: this.config.doSearchFunction, title: this.config.title }} className="osc-ideas-on-map-filterbar" ref={el => (this.filterbar = el)}/>
+				  <Filterbar id={this.divId + '-filterbar'} config={{ types: this.config.types, typeField: this.config.typeField, areas: this.config.areas, doSearchFunction: this.config.doSearchFunction, title: this.config.title }} className="osc-ideas-on-map-filterbar" ref={el => (this.filterbar = el)}/>
         );
         break;
 
       default:
         infoHTML = (
-			    <InfoBlock id={this.divId + '-infoblock'} config={{ api: this.config.api, title: this.config.title, titleField: this.config.titleField, summaryField: this.config.summaryField, types: this.config.types, content: this.config.content, argument: this.config.argument, idea: this.config.idea  }} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.infoblock = el)}/>
+			    <InfoBlock id={this.divId + '-infoblock'} config={{ api: this.config.api, user: this.config.user, title: this.config.title, titleField: this.config.titleField, summaryField: this.config.summaryField, types: this.config.types, typeField: this.config.typeField, content: this.config.content, argument: this.config.argument, idea: this.config.idea  }} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.infoblock = el)}/>
         );
         filterHTML = (
-				  <Filterbar id={this.divId + '-filterbar'} config={{ types: this.config.types, areas: this.config.areas, doSearchFunction: this.config.doSearchFunction, title: this.config.title }} className="osc-ideas-on-map-filterbar" ref={el => (this.filterbar = el)}/>
+				  <Filterbar id={this.divId + '-filterbar'} config={{ types: this.config.types, typeField: this.config.typeField, areas: this.config.areas, doSearchFunction: this.config.doSearchFunction, title: this.config.title }} className="osc-ideas-on-map-filterbar" ref={el => (this.filterbar = el)}/>
         );
         mobilePopupHTML = null;
         break;

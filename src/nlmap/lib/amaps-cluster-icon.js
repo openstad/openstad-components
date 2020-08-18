@@ -11,8 +11,8 @@ export default function amapsCreateClusterIcon(cluster) {
   let isFaded = false;
   markers.forEach((entry) => {
     let type = entry.data && eval(`entry.data.${self.config.typeField}`);
-    let tmp = self.config.types.find(entry => entry.name == type);
-    let color = tmp && tmp.color || '#164995';
+    let tmp = self.config.types.find(entry => type && ( entry.id == type || entry.name == type ));
+    let color = tmp && ( tmp.color || tmp.backgroundColor ) || '#164995';
     if ( type == undefined ) type = 'undef'
     if ( !colors[color] ) colors[color] = 0;
     colors[color]++;

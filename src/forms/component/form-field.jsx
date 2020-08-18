@@ -4,6 +4,7 @@ import merge from 'merge';
 
 import OpenStadComponent from '../../component/index.jsx';
 
+import OpenStadComponentHidden from './hidden.jsx';
 import OpenStadComponentImageUpload from './image-upload.jsx';
 import OpenStadComponentInputWithCounter from './input-with-counter.jsx';
 import OpenStadComponentPostcode from './postcode.jsx';
@@ -70,6 +71,10 @@ export default class OpenStadComponentFormField extends OpenStadComponent {
     let fieldHTML = null;
 
     switch (self.config.inputType) {
+
+      case 'hidden':
+        fieldHTML = <OpenStadComponentHidden config={self.config} value={ this.props.value || this.config.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
+        break;
 
       case 'html-with-counter':
       case 'htmlarea-with-counter':

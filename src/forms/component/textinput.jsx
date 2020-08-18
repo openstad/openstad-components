@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 
 import OpenStadComponentDefaultInput from './default-input.jsx';
 
-export default class OpenStadComponentSelect extends OpenStadComponentDefaultInput {
+export default class OpenStadComponentText extends OpenStadComponentDefaultInput {
 
 	render() {
 
