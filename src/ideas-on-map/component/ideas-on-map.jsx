@@ -227,7 +227,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   fetchData({ showIdeaDetails, showIdeaSelected }) {
 
     let self = this;
-    let url = `${ self.config.api.url }/api/site/${  self.config.siteId  }/idea?includeVoteCount=1&includeArguments=1&includeUser=1`;
+    let url = `${ self.config.api.url }/api/site/${  self.config.siteId  }/idea?includeVoteCount=1&includeArgsCount=1&includeUser=1`;
     let headers = OpenStadComponentLibs.api.getHeaders(self.config);
 
     // remove existing
