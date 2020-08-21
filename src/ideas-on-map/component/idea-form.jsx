@@ -179,7 +179,7 @@ export default class IdeasForm extends React.Component {
       let isValid = self.form.validate({ showErrors: true });
 
 	    if ( !isValid  || !self.validateIdea() ) { // validateIdea doet nog locatie en images
-        self.setState({ isBusy: true, showFormErrorsWarning: true });
+        self.setState({ isBusy: false, showFormErrorsWarning: true });
         return;
       }
 
