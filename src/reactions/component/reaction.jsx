@@ -210,7 +210,7 @@ export default class OpenStadComponentReaction extends OpenStadComponent {
     let replyButtonHTML = null;
     let replyFormHTML = null;
     if (self.canReply() && !self.config.isClosed) {
-      replyButtonHTML = (<a href="#" onClick={ () => self.toggleReplyForm() } className="osc-reply-button">Reageren</a>);
+      replyButtonHTML = (<a onClick={ () => self.toggleReplyForm() } className="osc-reply-button">Reageren</a>);
       if (self.state.isReplyFromActive) {
         let config = { ...self.config, parentId: data.id };
         config.formIntro = '';

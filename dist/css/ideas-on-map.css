@@ -3791,6 +3791,7 @@ form.osc-form {
   background-size: auto 12px;
   background-position: top 4px right;
   background-repeat: no-repeat;
+  cursor: pointer;
 }
 .osc-reactions .osc-reply {
   margin-left: 20px;
