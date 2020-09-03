@@ -43,7 +43,7 @@ export default class Map extends OpenStadComponentNLMap {
     let self = this;
     self.ideas.push(idea);
     // todo: dit moet met een iconCreate functie
-    let typename = idea && eval(`idea.${self.config.typeField}`);
+    let typename = idea && self.config.typeField ? eval(`idea.${self.config.typeField}`) : 'typeId';
 		let typeDef = self.config.types.find(entry => typename && ( entry.id == typename || entry.name == typename ));
     if (!typeDef) typeDef = {};
 	  let color = typeDef.color || typeDef.backgroundColor || '#164995';

@@ -26,7 +26,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 		self.defaultConfig = {
 			title: 'Inzendingen',
       types: [],
-      typeField: 'extraData.theme',// null,
+      typeField: null,
 
       // dit is opgezet maar wordt niet genbruikt en is daarom niet afgemaakt; latere wijzigingen maken dat dit niet meer werkt
       // currentPolygon: undefined,
@@ -80,6 +80,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
     // defaults
     self.config.doSearchFunction = self.config.doSearchFunction || self.doSearch.bind(self);
+    self.config.typeField = self.config.typeField || 'extraData.theme'
 
     // tmp
     if (self.config.types && self.config.types.length) {
