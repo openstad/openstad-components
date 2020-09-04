@@ -811,6 +811,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
           poll: this.config.poll,
           showLabels: this.config.idea.showLabels,
           types: this.config.types,
+          allowMultipleImages: this.config.idea.allowMultipleImages,
         };
         config.argument.isActive = this.config.argument.isActive && !this.config.argument.ignoreReactionsForIdeaIds.match(new RegExp(`(?:^|\\D)${this.state.currentIdea.id}(?:\\D|$)`));
         config.argument.isClosed = this.config.argument.isClosed || this.config.argument.closeReactionsForIdeaIds.match(new RegExp(`(?:^|\\D)${this.state.currentIdea.id}(?:\\D|$)`));
