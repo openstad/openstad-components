@@ -136,7 +136,7 @@ export default class IdeasDetails extends React.Component {
 
     if (!ideaId) return;
 
-    let url = `${ self.config.api.url }/api/site/${  self.config.siteId  }/idea/${ ideaId }?includeVoteCount=1&includeArguments=1&includeUser=1&includeUserVote=1`;
+    let url = `${ self.config.api.url }/api/site/${  self.config.siteId  }/idea/${ ideaId }?includeVoteCount=1&includeArguments=1&includeArgsCount=1&includeUser=1&includeUserVote=1`;
     if (self.config.poll.canAddPolls) url += '&includePoll=1';
 
     let headers = OpenStadComponentLibs.api.getHeaders(self.config);
@@ -276,6 +276,7 @@ export default class IdeasDetails extends React.Component {
     }
 
     let reactionsCountHTML = null;
+    console.log(idea);
     if ( self.config.argument.isActive ) {
       reactionsCountHTML = (
         <div>
