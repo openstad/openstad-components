@@ -13,12 +13,15 @@ export default class OpenStadComponentSelect extends OpenStadComponentDefaultInp
     super(props);
 
 		let defaultConfig = {
+      allowMultiple: false,
 			imageserver: {
 				process: '',
 				fetch: ''
 			},
     };
 		this.config = merge.recursive(defaultConfig, this.props.config, this.config || {});
+
+    console.log('ALLOWMULTIPLE', this.config.allowMultiple);
 
   }
 
@@ -89,9 +92,10 @@ export default class OpenStadComponentSelect extends OpenStadComponentDefaultInp
 				// set allowed file types with mime types
 				acceptedFileTypes: ['image/*'],
 				allowFileSizeValidation: true,
-				maxFileSize: '8mb',
+        allowMultiple: this.config.allowMultiple,
+				maxFileSize: '100kb',
 				name: 'image',
-				maxFiles: 3,
+				maxFiles: 5,
 				allowBrowse: true,
 				files: [],
 				server: {

@@ -5,6 +5,7 @@ import VoteButton from './vote-button.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
 import OpenStadComponentPoll from '../../poll/index.jsx';
 import OpenStadComponentReactions from '../../reactions/index.jsx';
+import OpenStadComponentImage from '../../idea-image/index.jsx';
 
 'use strict';
 
@@ -32,7 +33,9 @@ export default class IdeasDetails extends React.Component {
       },
       showVoteButtons: true,
       showLabels: false,
+      labels: {},
       types: null,
+      allowMultipleImages: false,
 		};
 		this.config = merge.recursive(defaultConfig, this.config, this.props.config || {})
 
@@ -146,7 +149,6 @@ export default class IdeasDetails extends React.Component {
       .then( json => {
 
         let idea = json;
-        idea.image = (idea.posterImage && idea.posterImage.key) || (idea.extraData && idea.extraData.images && idea.extraData.images[0]) || "https://stemvanwest.amsterdam.nl/img/placeholders/idea.jpg";
         self.setState({ idea }, function() {
           if(OpenStadComponentLibs.localStorage.get('osc-reactions-login-pending')) {
             window.location.hash = `#reactions`;
@@ -305,8 +307,8 @@ export default class IdeasDetails extends React.Component {
 
             <div className="osc-details-image-and-stats">
 
-              <div className="osc-image-container">
-                <div className="osc-image" style={{ backgroundImage: `url(${idea.image})` }}></div>
+              <div className="osc-idea-image-container">
+                <OpenStadComponentImage config={{ allowMultipleImages: self.config.allowMultipleImages }} idea={idea}/>
               </div>
 
               {labelHTML}
