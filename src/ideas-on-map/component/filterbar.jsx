@@ -11,6 +11,7 @@ export default class Filterbar extends React.Component {
 
 		let defaultConfig = {
       types: ( props.config && props.config.types ) || [],
+      typesFilterLabel: 'Alle thema\'s',
       areas: ( props.config && props.config.areas ) || [],
 		};
 		this.config = Object.assign(defaultConfig, this.props.config || {})
@@ -18,6 +19,7 @@ export default class Filterbar extends React.Component {
     this.state = {
       selectedType: undefined,
       types: this.config.types,
+      typesFilterLabel: this.config.typesFilterLabel,
       selectedArea: undefined,
       areas: this.config.areas,
       mobileActiveSelector: null,
@@ -112,7 +114,7 @@ export default class Filterbar extends React.Component {
           <div className={`osc-type-selector-button${ self.state.selectedType && self.state.selectedType != '0'  ? ' osc-active' : '' }`} onClick={() => self.toggleMobileActiveSelector('type')}></div>
           <div className={`osc-type-selector-container${self.state.mobileActiveSelector == 'type' ? ' osc-is-active' : ''}`}>
             <select value={self.state.selectedType} onChange={() => self.handleTypeChange( self.typeSelector.value )} className="osc-default-select osc-margin-right osc-type-selector" ref={el => (self.typeSelector = el)}>
-              <option value="0">Alle thema's</option>;
+              <option value="0">{self.state.typesFilterLabel}</option>;
               { self.state.types.map((type, i) => {
                 return <option key={'type-option-' + i} value={ type.id || type.name }>{ type.name }</option>;
               })}
