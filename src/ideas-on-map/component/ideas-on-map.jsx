@@ -24,7 +24,6 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
 		// config
 		self.defaultConfig = {
-			title: 'Inzendingen',
       types: [],
       typeField: null,
 
@@ -77,6 +76,9 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       },
 		};
 		self.config = merge.recursive(self.defaultConfig, self.config, props.config || {})
+    console.log(typeof (self.config.title));
+    self.config.title = self.config.title || 'Inzendingen';
+
 
     // defaults
     self.config.doSearchFunction = self.config.doSearchFunction || self.doSearch.bind(self);
@@ -473,15 +475,14 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
             self.setState({ editIdea });
             self.infoblock.setNewIdea({ ...self.state.editIdea, address });
           })
-          //self.infoblock.updateIdeas({ ideas: self.getVisibleIdeas().filter( x => x.id != idea.id ), sortOrder: 'distance', showSortButton: false, center: { lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] }, maxLength: 5 });
-          self.infoblock.updateIdeas({ ideas: self.state.ideas.filter( x => x.id != idea.id ), sortOrder: 'distance', showSortButton: false, center: { lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] }, maxLength: 5 });
+          self.infoblock.updateIdeas({ ideas: self.state.ideas.filter( x => x.id != idea.id ), sortOrder: 'distance', hideSortButton: true, center: { lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] }, maxLength: 5 });
         }
       } else {
         self.map.unfadeAllMarkers();
         self.setSelectedLocation(null);
         if (self.infoblock) {
           self.infoblock.setNewIdea(null);
-          self.infoblock.updateIdeas({ ideas: self.getVisibleIdeas(), showSortButton: true });
+          self.infoblock.updateIdeas({ ideas: self.getVisibleIdeas(), hideSortButton: false });
         }
       }
     });
@@ -495,14 +496,13 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       this.map.fadeMarkers({exception: idea});
       if (this.infoblock) {
         this.infoblock.setSelectedIdea(idea);
-        // this.infoblock.updateIdeas({ ideas: this.getVisibleIdeas().filter( x => x.id != idea.id ), sortOrder: 'distance', showSortButton: false, center: { lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] }, maxLength: 5 });
-        this.infoblock.updateIdeas({ ideas: this.state.ideas.filter( x => x.id != idea.id ), sortOrder: 'distance', showSortButton: false, center: { lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] }, maxLength: 5 });
+        this.infoblock.updateIdeas({ ideas: this.state.ideas.filter( x => x.id != idea.id ), sortOrder: 'distance', hideSortButton: true, center: { lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] }, maxLength: 5 });
       }
     } else {
       this.map.unfadeAllMarkers();
       if (this.infoblock) {
         this.infoblock.setSelectedIdea(null);
-        this.infoblock.updateIdeas({ ideas: this.getVisibleIdeas(), showSortButton: true });
+        this.infoblock.updateIdeas({ ideas: this.getVisibleIdeas(), hideSortButton: false });
       }
     }
   }
@@ -533,7 +533,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
           this.setState({ ...this.state, status: 'default', currentIdea: null });
           this.setSelectedIdea(null);
           this.setNewIdea(null);
-          this.infoblock.updateIdeas({ ideas: this.getVisibleIdeas(), showSortButton: true });
+          this.infoblock.updateIdeas({ ideas: this.getVisibleIdeas(), hideSortButton: false });
         } else {
           this.setState({ ...this.state, status: 'location-selected', currentIdea: null });
           this.setSelectedIdea(null);
@@ -614,14 +614,14 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         if (self.infoblock) {
           let selectedIdea = self.state.currentIdea || self.selectedIdea || self.state.editIdea;
           if (selectedIdea && selectedIdea) {
-            self.infoblock.updateIdeas({ ideas: self.state.ideas.filter( x => x.id != selectedIdea.id ), sortOrder: 'distance', showSortButton: false, center: { lat: selectedIdea.location.coordinates[0], lng: selectedIdea.location.coordinates[1] }, maxLength: 5 });
+            self.infoblock.updateIdeas({ ideas: self.state.ideas.filter( x => x.id != selectedIdea.id ), sortOrder: 'distance', hideSortButton: true, center: { lat: selectedIdea.location.coordinates[0], lng: selectedIdea.location.coordinates[1] }, maxLength: 5 });
           }
         }
         break;
 
       default:
         if (self.infoblock) {
-          self.infoblock.updateIdeas({ ideas: self.getVisibleIdeas(), showSortButton: true });
+          self.infoblock.updateIdeas({ ideas: self.getVisibleIdeas(), hideSortButton: false });
         }
 
     }

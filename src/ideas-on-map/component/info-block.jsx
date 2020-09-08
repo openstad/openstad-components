@@ -53,9 +53,9 @@ export default class InfoBlock extends React.Component {
     this.eventTarget = this.config.eventTarget || this.instance;
   }
 
-  updateIdeas({ ideas = this.state.ideas, sortOrder = this.state.currentSortOrder, showSortButton, center = { lat: 52.37104644463586, lng: 4.900402911007405 }, maxLength }) {
+  updateIdeas({ ideas = this.state.ideas, sortOrder = this.state.currentSortOrder, hideSortButton, center = { lat: 52.37104644463586, lng: 4.900402911007405 }, maxLength }) {
     this.setState({ ideas });
-    this.list.updateIdeas({ ideas, sortOrder, showSortButton, center, maxLength });
+    this.list.updateIdeas({ ideas, sortOrder, hideSortButton, center, maxLength });
   }
 
   setSelectedIdea(idea) {

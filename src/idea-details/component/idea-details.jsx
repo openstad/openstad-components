@@ -38,10 +38,8 @@ export default class IdeasDetails extends React.Component {
       typeLabel: 'Thema',
       allowMultipleImages: false,
 		};
-    console.log('x3', { ...defaultConfig });
 
 		this.config = merge.recursive(defaultConfig, this.config, this.props.config || {})
-    console.log('x2', { ...this.props.config });
 
     this.state = {
       idea: this.props.idea,
@@ -280,7 +278,6 @@ export default class IdeasDetails extends React.Component {
     }
 
     let reactionsCountHTML = null;
-    console.log(idea);
     if ( self.config.argument.isActive ) {
       reactionsCountHTML = (
         <div>
@@ -300,8 +297,6 @@ export default class IdeasDetails extends React.Component {
       );
     }
 
-
-    console.log('x1', self.config);
 
     return (
 			<div id={self.id} className={self.props.className || 'osc-info-block-idea-details'} ref={el => (self.instance = el)}>

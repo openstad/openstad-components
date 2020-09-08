@@ -32,6 +32,7 @@ export default class IdeasList extends React.Component {
       currentSortOrder: this.config.idea.sort.defaultSortOrder,
       ideas: this.props.ideas || [],
       currentMouseOverIdea: null,
+      hideSortButton: !this.config.idea.sort.hideSortButton,
     };
 
   }
@@ -39,7 +40,7 @@ export default class IdeasList extends React.Component {
 	componentDidMount(prevProps, prevState) {
 	}
 
-  updateIdeas({ ideas = this.state.ideas, sortOrder = this.state.currentSortOrder, center = { lat: 52.37104644463586, lng: 4.900402911007405 }, maxLength }) {
+  updateIdeas({ ideas = this.state.ideas, sortOrder = this.state.currentSortOrder, hideSortButton, center = { lat: 52.37104644463586, lng: 4.900402911007405 }, maxLength }) {
 
     let self = this;
     let state = { ...self.state };
@@ -82,6 +83,8 @@ export default class IdeasList extends React.Component {
 
     state.ideas = maxLength ? ideas.slice(0, maxLength): ideas;
 
+    state.hideSortButton = hideSortButton;
+
     self.setState(state);
 
   }
@@ -123,7 +126,7 @@ export default class IdeasList extends React.Component {
     let self = this;
 
     let sortSelector = null;
-    if (this.config.idea.sort.showSortButton) {
+    if (this.config.idea.sort.showSortButton && !this.state.hideSortButton) {
       sortSelector = (
         <div className="osc-sort osc-align-right-container osc-margin-right">
           Sorteer op:&nbsp;&nbsp;&nbsp;&nbsp;
