@@ -242,7 +242,7 @@ export default class InfoBlock extends React.Component {
       defaultBlockHTML = (
 			  <div className="osc-info-block-default-block" dangerouslySetInnerHTML={{ __html: noSelectionHTML }}></div>
       );
-      mobileTitle = `${self.config.title} in dit gebied (${self.state.ideas && self.state.ideas.length || 0})`;
+      mobileTitle = `${self.config.ideaName} in dit gebied (${self.state.ideas && self.state.ideas.length || 0})`;
     }
 
     if (self.state.mobileState == 'opened') {
@@ -263,7 +263,7 @@ export default class InfoBlock extends React.Component {
           {defaultBlockHTML}
           {newIdeaHTML}
           {selectedIdeaHTML}
-			    <IdeasList config={{ ...self.config, onIdeaClick: ( event, idea ) => self.dispatchOnIdeaClick(event, idea) }} ideas={self.state.ideas} title={self.config.title + ' ' + titleAddition} key={`osc-ideas-list-321`} ref={el => (self.list = el)}/>
+			    <IdeasList config={{ ...self.config, onIdeaClick: ( event, idea ) => self.dispatchOnIdeaClick(event, idea) }} ideas={self.state.ideas} title={self.config.ideaName + ' ' + titleAddition} key={`osc-ideas-list-321`} ref={el => (self.list = el)}/>
 			  </div>
 			</div>
 
