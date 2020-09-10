@@ -5,6 +5,7 @@ import VoteButton from './vote-button.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
 import OpenStadComponentPoll from '../../poll/index.jsx';
 import OpenStadComponentReactions from '../../reactions/index.jsx';
+import OpenStadComponentImage from '../../idea-image/index.jsx';
 
 'use strict';
 
@@ -32,8 +33,12 @@ export default class IdeasDetails extends React.Component {
       },
       showVoteButtons: true,
       showLabels: false,
+      labels: {},
       types: null,
+      typeLabel: 'Thema',
+      allowMultipleImages: false,
 		};
+
 		this.config = merge.recursive(defaultConfig, this.config, this.props.config || {})
 
     this.state = {
@@ -133,7 +138,7 @@ export default class IdeasDetails extends React.Component {
 
     if (!ideaId) return;
 
-    let url = `${ self.config.api.url }/api/site/${  self.config.siteId  }/idea/${ ideaId }?includeVoteCount=1&includeArguments=1&includeUser=1&includeUserVote=1`;
+    let url = `${ self.config.api.url }/api/site/${  self.config.siteId  }/idea/${ ideaId }?includeVoteCount=1&includeArguments=1&includeArgsCount=1&includeUser=1&includeUserVote=1`;
     if (self.config.poll.canAddPolls) url += '&includePoll=1';
 
     let headers = OpenStadComponentLibs.api.getHeaders(self.config);
@@ -146,7 +151,6 @@ export default class IdeasDetails extends React.Component {
       .then( json => {
 
         let idea = json;
-        idea.image = (idea.posterImage && idea.posterImage.key) || (idea.extraData && idea.extraData.images && idea.extraData.images[0]) || "https://stemvanwest.amsterdam.nl/img/placeholders/idea.jpg";
         self.setState({ idea }, function() {
           if(OpenStadComponentLibs.localStorage.get('osc-reactions-login-pending')) {
             window.location.hash = `#reactions`;
@@ -293,6 +297,7 @@ export default class IdeasDetails extends React.Component {
       );
     }
 
+
     return (
 			<div id={self.id} className={self.props.className || 'osc-info-block-idea-details'} ref={el => (self.instance = el)}>
 
@@ -305,8 +310,8 @@ export default class IdeasDetails extends React.Component {
 
             <div className="osc-details-image-and-stats">
 
-              <div className="osc-image-container">
-                <div className="osc-image" style={{ backgroundImage: `url(${idea.image})` }}></div>
+              <div className="osc-idea-image-container">
+                <OpenStadComponentImage config={{ allowMultipleImages: self.config.allowMultipleImages }} idea={idea}/>
               </div>
 
               {labelHTML}
@@ -332,7 +337,7 @@ export default class IdeasDetails extends React.Component {
               <span className="ocs-gray-text">Door </span>{idea.user.nickName || idea.user.fullName || idea.user.firstName +' ' + idea.user.lastName}
               <span className="ocs-gray-text"> op </span>{idea.createDateHumanized}
 						  <span className="ocs-gray-text">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-						  <span className="ocs-gray-text">Thema: </span>{idea.extraData.theme}
+			        <span className="ocs-gray-text">{self.config.typeLabel}: </span>{idea.extraData.theme}
             </p>
 
             {modBreakHTML}

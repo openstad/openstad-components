@@ -20,6 +20,7 @@ import OpenStadComponentNLMap from './nlmap/index.jsx';
 import OpenStadComponentLightbox from './lightbox/index.jsx';
 import OpenStadComponentIdeasOnMap from './ideas-on-map/index.jsx';
 import OpenStadComponentIdeasDetails from './idea-details/index.jsx';
+import OpenStadComponentIdeasImage from './idea-image/index.jsx';
 import OpenStadComponentPreviousNextButtonBlock from './previous-next-button-block/index.jsx';
 import OpenStadComponentPoll from './poll/index.jsx';
 import OpenStadComponentReactions from './reactions/index.jsx';
@@ -34,6 +35,7 @@ export {
   OpenStadComponentNLMap as NLMap,
   OpenStadComponentIdeasOnMap as IdeasOnMap,
   OpenStadComponentIdeasDetails as IdeasDetails,
+  OpenStadComponentIdeasImage as IdeasImage,
   OpenStadComponentLightbox as Lightbox,
   OpenStadComponentPreviousNextButtonBlock as PreviousNextButtonBlock,
   OpenStadComponentPoll as Poll,

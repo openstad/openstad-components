@@ -3,6 +3,7 @@ import React from 'react';
 import IdeasList from './ideas-list.jsx';
 
 import OpenStadComponentLibs from '../../libs/index.jsx';
+import OpenStadComponentImage from '../../idea-image/index.jsx';
 
 // TODO: na verandering op verandering denk ik dat dit een status moet gaan krijgen ipv. de new en selected versie.
 // TODO: setNewIdea refactoren naar setSelectedLocation
@@ -52,9 +53,9 @@ export default class InfoBlock extends React.Component {
     this.eventTarget = this.config.eventTarget || this.instance;
   }
 
-  updateIdeas({ ideas = this.state.ideas, sortOrder = this.state.currentSortOrder, showSortButton, center = { lat: 52.37104644463586, lng: 4.900402911007405 }, maxLength }) {
+  updateIdeas({ ideas = this.state.ideas, sortOrder = this.state.currentSortOrder, hideSortButton, center = { lat: 52.37104644463586, lng: 4.900402911007405 }, maxLength }) {
     this.setState({ ideas });
-    this.list.updateIdeas({ ideas, sortOrder, showSortButton, center, maxLength });
+    this.list.updateIdeas({ ideas, sortOrder, hideSortButton, center, maxLength });
   }
 
   setSelectedIdea(idea) {
@@ -209,7 +210,9 @@ export default class InfoBlock extends React.Component {
           <button className="osc-close-button-black" onClick={(event) => self.dispatchUpdateSelectedIdea(event, null)} ref={el => (self.resetButton = el)}/>
           <h3>Geselecteerd</h3>
           <div className="osc-info-block-selected-idea-idea">
-            <div className="osc-image" style={{ backgroundImage: `url(${idea.image})` }}></div>
+            <div className="osc-idea-image-container">
+              <OpenStadComponentImage config={{}} idea={idea}/>
+            </div>
             <div className="osc-content">
               <h4>{ eval(`idea.${self.config.titleField}`) }</h4>
               <div className="osc-summary">
@@ -239,7 +242,7 @@ export default class InfoBlock extends React.Component {
       defaultBlockHTML = (
 			  <div className="osc-info-block-default-block" dangerouslySetInnerHTML={{ __html: noSelectionHTML }}></div>
       );
-      mobileTitle = `${self.config.title} in dit gebied (${self.state.ideas && self.state.ideas.length || 0})`;
+      mobileTitle = `${self.config.ideaName} in dit gebied (${self.state.ideas && self.state.ideas.length || 0})`;
     }
 
     if (self.state.mobileState == 'opened') {
@@ -260,7 +263,7 @@ export default class InfoBlock extends React.Component {
           {defaultBlockHTML}
           {newIdeaHTML}
           {selectedIdeaHTML}
-			    <IdeasList config={{ ...self.config, onIdeaClick: ( event, idea ) => self.dispatchOnIdeaClick(event, idea) }} ideas={self.state.ideas} title={self.config.title + ' ' + titleAddition} key={`osc-ideas-list-321`} ref={el => (self.list = el)}/>
+			    <IdeasList config={{ ...self.config, onIdeaClick: ( event, idea ) => self.dispatchOnIdeaClick(event, idea) }} ideas={self.state.ideas} title={self.config.ideaName + ' ' + titleAddition} key={`osc-ideas-list-321`} ref={el => (self.list = el)}/>
 			  </div>
 			</div>
 

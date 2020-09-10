@@ -1,4 +1,7 @@
+import merge from 'merge';
 import React from 'react';
+
+import OpenStadComponentImage from '../../idea-image/index.jsx';
 
 'use strict';
 
@@ -9,26 +12,27 @@ export default class IdeasList extends React.Component {
     super(props);
 
 		// config
-		let defaultConfig = {
+		this.defaultConfig = {
       types: [],
       titleField: 'title',
       summaryField: 'summary',
-      // sortOptions: [{ value: 'random', name: 'Random' }, { value: 'ranking', name: 'Ranking' }, { value: 'newest', name: 'Nieuwste eerst' }, { value: 'oldest', name: 'Oudste eerst' }, { value: 'distance', name: 'Afstand' }],
-      sortOptions: [{ value: 'newest', name: 'Nieuwste eerst' }, { value: 'oldest', name: 'Oudste eerst' }],
-      showSortButton: true,
       idea: {
         showVoteButtons: true,
+        sort: {
+          sortOptions: [{ value: 'createdtime,desc', label: 'Nieuwste eerst' },{ value: 'createdtime,asc', label: 'Oudste eerst' }],
+          showSortButton: true,
+          defaultSortOrder: 'createdtime,desc',
+        }
       },
-      defaultSortOrder: 'newest',
 		};
-		this.config = Object.assign(defaultConfig, this.props.config || {})
+		this.config = merge.recursive(this.defaultConfig, props.config || {})
 		this.config.onIdeaClick = this.config.onIdeaClick || this.onIdeaClick.bind(this);
 
     this.state = {
-      currentSortOrder: this.config.defaultSortOrder,
+      currentSortOrder: this.config.idea.sort.defaultSortOrder,
       ideas: this.props.ideas || [],
-      showSortButton: this.config.showSortButton,
       currentMouseOverIdea: null,
+      hideSortButton: !this.config.idea.sort.hideSortButton,
     };
 
   }
@@ -36,25 +40,40 @@ export default class IdeasList extends React.Component {
 	componentDidMount(prevProps, prevState) {
 	}
 
-  updateIdeas({ ideas = this.state.ideas, sortOrder = this.state.currentSortOrder, showSortButton = this.state.showSortButton, center = { lat: 52.37104644463586, lng: 4.900402911007405 }, maxLength }) {
+  updateIdeas({ ideas = this.state.ideas, sortOrder = this.state.currentSortOrder, hideSortButton, center = { lat: 52.37104644463586, lng: 4.900402911007405 }, maxLength }) {
 
     let self = this;
     let state = { ...self.state };
 
 		switch(sortOrder){
-			case 'ranking':
-				ideas = ideas.sort( function(a,b) { return a.ranking - a.ranking });
+			case 'title':
+				ideas = ideas.sort( function(a,b) { if (a.title.toLowerCase() < b.title.toLowerCase()) { return -1; } if (b.title.toLowerCase() < a.title.toLowerCase()) { return 1; } return 0; });
 				break;
-			case 'newest':
+			case 'ranking,asc':
+				ideas = ideas.sort( function(a,b) { return a.ranking - b.ranking });
+				break;
+			case 'likes,asc':
+				ideas = ideas.sort( function(a,b) { return a.yes - b.yes });
+				break;
+			case 'likes,desc':
+				ideas = ideas.sort( function(a,b) { return b.yes - a.yes });
+				break;
+			case 'createdtime,desc':
 				ideas = ideas.sort( function(a,b) { return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime() });
 				break;
-			case 'oldest':
+			case 'createdtime,asc':
 				ideas = ideas.sort( function(a,b) { return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime() });
 				break;
 			case 'distance':
 				ideas = ideas
           .map( idea => { idea._distance = Math.sqrt( Math.pow( idea.location.coordinates[0] - center.lat, 2 ) + Math.pow( idea.location.coordinates[1] - center.lng, 2 ) ); return idea; } )
           .sort( function(a,b) { return a._distance - b._distance })
+				break;
+			case 'args,desc':
+				ideas = ideas.sort( function(a,b) { return b.argCount - a.argCount })
+				break;
+			case 'args,asc':
+				ideas = ideas.sort( function(a,b) { return a.argCount - b.argCount })
 				break;
 			case 'random':
 			default:
@@ -64,7 +83,7 @@ export default class IdeasList extends React.Component {
 
     state.ideas = maxLength ? ideas.slice(0, maxLength): ideas;
 
-    state.showSortButton = showSortButton;
+    state.hideSortButton = hideSortButton;
 
     self.setState(state);
 
@@ -107,13 +126,13 @@ export default class IdeasList extends React.Component {
     let self = this;
 
     let sortSelector = null;
-    if (this.state.showSortButton) {
+    if (this.config.idea.sort.showSortButton && !this.state.hideSortButton) {
       sortSelector = (
         <div className="osc-sort osc-align-right-container osc-margin-right">
           Sorteer op:&nbsp;&nbsp;&nbsp;&nbsp;
           <select value={self.state.currentSortOrder} onChange={() => self.setSortOrder({ sortOrder: self.sortSelector.value })} className="osc-default-select" ref={el => (self.sortSelector = el)}>
-            { self.config.sortOptions.map((option, i) => {
-              return <option value={ option.value } key={'sort-option-' + i}>{ option.name }</option>;
+            { self.config.idea.sort.sortOptions.map((option, i) => {
+              return <option value={ option.value } key={'sort-option-' + i}>{ option.label }</option>;
             })}
           </select>
         </div>
@@ -160,7 +179,9 @@ export default class IdeasList extends React.Component {
           return (
             <div className={`osc-info-block-ideas-list-idea${self.state.currentMouseOverIdea && self.state.currentMouseOverIdea != idea.id ? ' osc-opacity-65' : ''}`} onClick={(event) => self.config.onIdeaClick(event, idea)} key={'info-block-' + i} onMouseOver={e => self.dispatchMouseOverListItem(e, idea)} onMouseOut={e => self.dispatchMouseOutListItem(e)}>
               <div className="osc-content">
-                <div className="osc-image" style={{ backgroundImage: `url(${idea.image})` }}></div>
+                <div className="osc-idea-image-container">
+                  <OpenStadComponentImage config={{}} idea={idea}/>
+                </div>
                 <h4 className="osc-title">{ eval(`idea.${self.config.titleField}`) }</h4>
                 <div className="osc-summary">
                   { eval(`idea.${self.config.summaryField}`) }

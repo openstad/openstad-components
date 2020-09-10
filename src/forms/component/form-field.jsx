@@ -7,6 +7,7 @@ import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentHidden from './hidden.jsx';
 import OpenStadComponentImageUpload from './image-upload.jsx';
 import OpenStadComponentInputWithCounter from './input-with-counter.jsx';
+import OpenStadComponentRadios from './radios.jsx';
 import OpenStadComponentPostcode from './postcode.jsx';
 import OpenStadComponentSelect from './select.jsx';
 import OpenStadComponentText from './textinput.jsx';
@@ -92,6 +93,10 @@ export default class OpenStadComponentFormField extends OpenStadComponent {
 
       case 'postcode':
         fieldHTML = <OpenStadComponentPostcode config={self.config} onChange={self.handleOnChange} ref={el => (self.input = el)}/>
+        break;
+
+      case 'radios':
+        fieldHTML = <OpenStadComponentRadios config={self.config} value={ this.props.value || this.config.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
         break;
 
       case 'select':
