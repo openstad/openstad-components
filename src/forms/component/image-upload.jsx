@@ -93,7 +93,7 @@ export default class OpenStadComponentSelect extends OpenStadComponentDefaultInp
 				acceptedFileTypes: ['image/*'],
 				allowFileSizeValidation: true,
         allowMultiple: this.config.allowMultiple,
-				maxFileSize: '100kb',
+				maxFileSize: '8mb',
 				name: 'image',
 				maxFiles: 5,
 				allowBrowse: true,
