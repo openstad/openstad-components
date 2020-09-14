@@ -211,7 +211,7 @@ export default class InfoBlock extends React.Component {
           <h3>Geselecteerd</h3>
           <div className="osc-info-block-selected-idea-idea">
             <div className="osc-idea-image-container">
-              <OpenStadComponentImage config={{}} idea={idea}/>
+              <OpenStadComponentImage config={{}} idea={idea} key={'image-' + idea.id}/>
             </div>
             <div className="osc-content">
               <h4>{ eval(`idea.${self.config.titleField}`) }</h4>

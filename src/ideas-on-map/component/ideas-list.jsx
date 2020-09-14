@@ -180,7 +180,7 @@ export default class IdeasList extends React.Component {
             <div className={`osc-info-block-ideas-list-idea${self.state.currentMouseOverIdea && self.state.currentMouseOverIdea != idea.id ? ' osc-opacity-65' : ''}`} onClick={(event) => self.config.onIdeaClick(event, idea)} key={'info-block-' + i} onMouseOver={e => self.dispatchMouseOverListItem(e, idea)} onMouseOut={e => self.dispatchMouseOutListItem(e)}>
               <div className="osc-content">
                 <div className="osc-idea-image-container">
-                  <OpenStadComponentImage config={{}} idea={idea}/>
+                  <OpenStadComponentImage config={{}} idea={idea} key={'image-' + idea.id}/>
                 </div>
                 <h4 className="osc-title">{ eval(`idea.${self.config.titleField}`) }</h4>
                 <div className="osc-summary">

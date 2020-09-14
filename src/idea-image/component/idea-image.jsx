@@ -51,7 +51,7 @@ export default class OpenStadComponentIdeaImage extends OpenStadComponent {
         <div id={self.divId} className="osc-idea-multiple-images">
         
           <div className="osc-idea-image-spacer">
-            <div className="osc-idea-image" style={image ? { backgroundImage: `url(${image})` } : {}}></div>
+            <div className="osc-idea-image" style={image ? { backgroundImage: `url(${image})` } : {}} key={'image-' + idea.id}></div>
           </div>
 
           <div className="osc-idea-multiple-images-thumbs">
@@ -78,7 +78,7 @@ export default class OpenStadComponentIdeaImage extends OpenStadComponent {
       // singular
       return (
         <div id={self.divId} className="osc-idea-image-spacer">
-          <div className="osc-idea-image" style={image ? { backgroundImage: `url(${image})` } : {}}></div>
+          <div className="osc-idea-image" style={image ? { backgroundImage: `url(${image})` } : {}} key={'image-' + idea.id}></div>
         </div>
       );
       
