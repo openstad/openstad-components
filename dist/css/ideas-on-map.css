@@ -1983,6 +1983,11 @@ form.osc-form {
 .osc-idea-details-container .osc-idea-details .osc-details-image-and-stats .osc-idea-image-container {
   width: 700px;
 }
+@media only screen and (max-width: 700px) {
+  .osc-idea-details-container .osc-idea-details .osc-details-image-and-stats .osc-idea-image-container {
+    width: 100%;
+  }
+}
 .osc-idea-details-container .osc-idea-details .osc-details-image-and-stats .ocs-idea-label {
   position: absolute;
   top: 10px;
