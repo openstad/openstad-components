@@ -133,7 +133,12 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       if (match) {
         let ideaId = match[2];
         let idea = self.state.ideas && self.state.ideas.find(idea => idea.id == ideaId);
-        self.showIdeaDetails(idea)
+console.log(match);
+        if (match[1] == 'D') {
+          self.showIdeaDetails(idea)
+        } else {
+					// self.setSelectedIdea(idea);
+        }
       }
     }, false );
 
@@ -246,8 +251,10 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         return response.json();
       })
       .then( json => {
-        showIdeaDetails = showIdeaDetails || ( window.location.hash.match(/(\w)(\d+)/) && window.location.hash.match(/(\w)(\d+)/)[2] ) || OpenStadComponentLibs.localStorage.get('osc-ideas-on-map-details'); //  document.location.hash.replace(/.*details=(\d+).*/, "$1");
-        showIdeaSelected = showIdeaSelected || OpenStadComponentLibs.localStorage.get('osc-ideas-on-map-selected'); // document.location.hash.replace(/.*selected=(\d+).*/, "$1");
+        // showIdeaDetails = showIdeaDetails || ( window.location.hash.match(/(\w)(\d+)/) && window.location.hash.match(/(\w)(\d+)/)[2] ) || OpenStadComponentLibs.localStorage.get('osc-ideas-on-map-details'); //  document.location.hash.replace(/.*details=(\d+).*/, "$1");
+        // showIdeaSelected = showIdeaSelected || OpenStadComponentLibs.localStorage.get('osc-ideas-on-map-selected'); // document.location.hash.replace(/.*selected=(\d+).*/, "$1");
+        showIdeaDetails = showIdeaDetails || ( window.location.hash.match(/D(\d+)/) && window.location.hash.match(/D(\d+)/)[1] );
+        showIdeaSelected = showIdeaSelected || ( window.location.hash.match(/S(\d+)/) && window.location.hash.match(/S(\d+)/)[1] );
         let ideas = json.filter( idea => idea.location )
         ideas.map( idea => {
           if ( idea.id == showIdeaDetails) {
@@ -300,9 +307,9 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   showIdeaDetails(idea) {
     let self = this;
     self.setSelectedIdea(idea);
-    OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-details', idea && idea.id );
-    OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-selected', null);
-    // self.infoblock.setState({ mobileState: self.state.mobileState = 'opened' })
+    // OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-details', idea && idea.id );
+    // OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-selected', null);
+    self.infoblock.setState({ mobileState: self.state.mobileState = 'opened' })
     self.setState({ status: 'idea-details', currentIdea: idea }, function() {
     // self.setState({ status: 'idea-details', currentIdea: idea, mobileState: self.state.mobileState = 'opened' }, function() {
       self.map.map.invalidateSize();
@@ -312,8 +319,8 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
   hideIdeaDetails() {
     let self = this;
-    OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-details', null );
-    OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-selected', null);
+    // OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-details', null );
+    // OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-selected', null);
     self.setState({ status: 'idea-selected' }, function() {
       // todo: dit zou hij zelf via state moeten doen
       self.map.map.invalidateSize();
@@ -488,8 +495,8 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   }
 
   setSelectedIdea(idea) {
-    OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-selected', idea && idea.id );
-    OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-details', null);
+    // OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-selected', idea && idea.id );
+    // OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-details', null);
     this.selectedIdea = idea;
     if (idea) {
       this.map.fadeMarkers({exception: idea});
@@ -775,6 +782,10 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     }
     this.map.updateFading();
   }
+
+  onClickBackToOverview(idea) {
+    document.location.href='#S'+this.state.currentIdea.id;
+  }
   
   onClickMobileSwitcher() {
     let self = this;
@@ -787,7 +798,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       }
     })
   }
-  
+
 	render() {
 
     let infoHTML = null; // todo: ik denk dat dit naar infoblock moet
@@ -824,7 +835,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 			    <OpenStadComponentIdeaDetails id={this.divId + '-infoblock'} config={config} idea={this.state.currentIdea} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.ideadetails = el)}/>
         );
         filterHTML = (
-				  <div className="osc-ideas-on-map-filterbar"><div className="osc-backbutton" onClick={() => document.location.href="#"}>Terug naar overzicht</div></div>
+				  <div className="osc-ideas-on-map-filterbar"><div className="osc-backbutton" onClick={() => this.onClickBackToOverview() }>Terug naar overzicht</div></div>
         );
         break;
 
