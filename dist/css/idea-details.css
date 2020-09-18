@@ -128,6 +128,9 @@
 .osc-idea-details-container .osc-idea-details .osc-details-vote-buttons-container {
   margin-bottom: 20px;
 }
+.osc-idea-details-container .osc-idea-details .osc-author-link {
+  color: black;
+}
 .osc-idea-details-container .osc-idea-details .osc-details-summary,
 .osc-idea-details-container .osc-idea-details .osc-details-description {
   width: 700px;

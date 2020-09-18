@@ -149,9 +149,11 @@ export default class IdeasForm extends React.Component {
 	  var isValid = true;
 
 	  // location
+    console.log('++', self.state.formfields['location']);
 	  if (self.state.formfields['location']) {
 			self['form-warning-location'].style.display = 'none';
 		} else {
+      console.log('xxx');
 			self['form-warning-location'].style.display = 'block';
 			isValid = false;
 		}
@@ -178,7 +180,7 @@ export default class IdeasForm extends React.Component {
 
       let isValid = self.form.validate({ showErrors: true });
 
-	    if ( !isValid  || !self.validateIdea() ) { // validateIdea doet nog locatie en images
+	    if ( !self.validateIdea() || !isValid ) { // validateIdea doet nog locatie en images
         self.setState({ isBusy: false, showFormErrorsWarning: true });
         return;
       }

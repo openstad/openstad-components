@@ -292,11 +292,15 @@ export default class IdeasDetails extends React.Component {
       reactionsHTML = (
         <div>
 			    <div id="reactions" className="osc-reactions-header"><h3>{self.config.argument.title || 'Reacties'}</h3></div>
-          <OpenStadComponentReactions config={{ ...self.config.argument, title: undefined, api: self.config.api, user: self.config.user, siteId: self.config.siteId, ideaId: idea.id }}/>
+          <OpenStadComponentReactions config={{ ...self.config.argument, title: undefined, api: self.config.api, user: self.config.user, siteId: self.config.siteId, ideaId: idea.id, loginUrl: self.config.loginUrl, }}/>
         </div>
       );
     }
 
+    let authorHTML = idea.user.nickName || idea.user.fullName || idea.user.firstName +' ' + idea.user.lastName;
+    if (this.config.linkToUserPageUrl) {
+      authorHTML = <a href={this.config.linkToUserPageUrl + '/' + idea.user.id} className="osc-author-link">{authorHTML}</a>
+    }
 
     return (
 			<div id={self.id} className={self.props.className || 'osc-info-block-idea-details'} ref={el => (self.instance = el)}>
@@ -334,7 +338,7 @@ export default class IdeasDetails extends React.Component {
             </div>
 
             <p className="">
-              <span className="ocs-gray-text">Door </span>{idea.user.nickName || idea.user.fullName || idea.user.firstName +' ' + idea.user.lastName}
+              <span className="ocs-gray-text">Door </span>{authorHTML}
               <span className="ocs-gray-text"> op </span>{idea.createDateHumanized}
 						  <span className="ocs-gray-text">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
 			        <span className="ocs-gray-text">{self.config.typeLabel}: </span>{idea.extraData.theme}

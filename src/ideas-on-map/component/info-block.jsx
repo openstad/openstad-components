@@ -38,6 +38,7 @@ export default class InfoBlock extends React.Component {
 		};
 
     this.config = merge.recursive(defaultConfig, this.config, props.config || {})
+    this.config.loginUrl = this.config.loginUrl || '/oauth/login?returnTo=' + encodeURIComponent(document.location.href);
 
     this.state = {
       currentSortOrder: this.config.defaultSortOrder,
@@ -158,9 +159,9 @@ export default class InfoBlock extends React.Component {
       } else {
         if (self.config.idea.canAddNewIdeas) {
           loginButton = (
-            <button onClick={() => { document.location.href = '/oauth/login?returnTo=' + encodeURIComponent(document.location.href) }} className="osc-button-blue osc-not-logged-in-button">Inloggen</button>
+            <button onClick={() => { document.location.href = this.config.loginUrl }} className="osc-button-blue osc-not-logged-in-button">Inloggen</button>
           );
-          loginLink = "javascript: document.location.href = '/oauth/login?returnTo=' + encodeURIComponent(document.location.href)";
+          loginLink = `javascript: document.location.href = '${this.config.loginUrl}'`;
         }
       }
 
