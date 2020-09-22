@@ -955,7 +955,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         {filterHTML}
         {infoHTML}
         <div className={`osc-ideas-on-map-map osc-ideas-on-map-map-${this.config.displayType}`}>
-			    <Map id={this.divId + '-map'} config={{ ...this.config.map, types: this.config.types, typeField: this.config.typeField }} ref={el => (this.map = el)}/>
+			    <Map id={this.divId + '-map'} config={{ ...this.config.map, types: this.config.types, typeField: this.config.typeField, zoomControl: this.config.displayType == 'simple' ? false : true }} ref={el => (this.map = el)}/>
         </div>
         {simpleHTML}
         {mobilePopupHTML}
