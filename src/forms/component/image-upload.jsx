@@ -22,7 +22,8 @@ export default class OpenStadComponentSelect extends OpenStadComponentDefaultInp
 		this.config = merge.recursive(defaultConfig, this.props.config, this.config || {});
 
     var uploadedFiles = [];
-    props.value.forEach((image) => {
+    let value = props.value || [];
+    value.forEach((image) => {
       uploadedFiles.push({
         source: { url: image },
         options : {
