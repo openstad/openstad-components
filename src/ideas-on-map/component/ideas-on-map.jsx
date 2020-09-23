@@ -599,12 +599,11 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         if (this.state.editIdea) {
           this.setState({ status: 'default', currentIdea: null });
           this.setNewIdea(null);
-          this.setSelectedIdea(null);
-          this.setSelectedIdea(null);
+          this.onUpdateSelectedIdea(null);
         } else {
           this.setState({ status: 'idea-selected', currentIdea: event.target.data });
           this.setNewIdea(null);
-          this.setSelectedIdea(event.target.data);
+          this.onUpdateSelectedIdea(event.target.data);
         }
         document.querySelector('#osc-ideas-on-map-info').scrollTo(0,0)
 
@@ -662,6 +661,11 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 	onUpdateSelectedIdea(idea) {
     if (this.state.editIdea) this.setNewIdea(null);
     let status = idea ? 'idea-selected' : 'default';
+    if (idea) {
+      document.location.href='#S'+this.state.currentIdea.id;
+    } else {
+      document.location.href = "#";
+    }
     this.setState({ ...this.state, status, currentIdea: idea }, function() {
       this.setSelectedIdea(idea);
     });

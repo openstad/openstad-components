@@ -149,7 +149,6 @@ export default class IdeasForm extends React.Component {
 	  var isValid = true;
 
 	  // location
-    console.log('++', self.state.formfields['location']);
 	  if (self.state.formfields['location']) {
 			self['form-warning-location'].style.display = 'none';
 		} else {
@@ -215,9 +214,6 @@ export default class IdeasForm extends React.Component {
         method = 'PUT';
         url = url + '/' + this.state.formfields.id;
       }
-
-      console.log('++++', body.extraData.images && body.extraData.images.length);
-      console.log(body.extraData.images);
 
       fetch(url, {
         method,
