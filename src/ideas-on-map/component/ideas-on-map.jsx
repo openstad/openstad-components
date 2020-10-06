@@ -27,6 +27,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       displayType: 'complete',
       displayWidth: null,
       displayHeight: null,
+      canSelectLocation: true,
       types: [],
       typeField: null,
 
@@ -123,7 +124,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       selectedLocation: null,
       currentMouseOverIdea: null,
     }
-    
+
   }
 
 	componentDidMount(prevProps, prevState) {
@@ -270,6 +271,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         self.map.setBoundsAndCenter();
 
         self.setState({ ideas }, function () {
+          self.setState({ mobileState: self.config.startWithListOpenOnMobile ? 'opened' : 'closed' })
           // self.setSelectedLocation({ lat: 52.37104644463586, lng: 4.900402911007405 })
           // return setTimeout(function(){ self.showIdeaForm() }, 500)
           if (typeof showIdeaSelected == 'object' && showIdeaSelected != null) {
@@ -340,11 +342,22 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
   showIdeaForm(idea, next) {
     let self = this;
-    self.setState({ status: 'idea-form', editIdea: idea }, function() {
-      self.map.map.invalidateSize();
-      self.map.hideMarkers({ exception: { location: idea && idea.location && { lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] } || self.map.selectedLocation } })
-      if (next) next();
-    });
+
+    if (self.config.idea.formUrl) {
+      let url = self.config.idea.formUrl;
+      url = url.replace(/:ideaId/, typeof idea.id == 'number' ? idea.id : '');
+      url = url.replace(/:location/, idea.location ? JSON.stringify({ lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] }) : '');
+      url = url.replace(/:typeId/, idea.typeId);
+      url = url.replace(/:address/, idea.address);
+      document.location.href = url;
+    } else {
+      self.setState({ status: 'idea-form', editIdea: idea }, function() {
+        self.map.map.invalidateSize();
+        self.map.hideMarkers({ exception: { location: idea && idea.location && { lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] } || self.map.selectedLocation } })
+        if (next) next();
+      });
+    }
+
   }
 
   hideIdeaForm() {
@@ -469,6 +482,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   }
 
   setSelectedLocation(location) {
+    // xxx
     let self = this;
     self.map.setSelectedLocation(location)
     if (self.ideaform) {
@@ -488,6 +502,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     self.setState({ editIdea: idea }, function() {
       if (idea) {
         self.map.fadeMarkers({exception: [idea.location]});
+        // xxx
         if (idea.location) self.setSelectedLocation({ lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] });  
         if (self.infoblock) {
           self.setState({ editIdea: self.state.editIdea });
@@ -563,6 +578,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
           this.setNewIdea(null);
           this.infoblock.updateIdeas({ ideas: this.getVisibleIdeas(), hideSortButton: false });
         } else {
+          if (!this.config.canSelectLocation) break;
           this.setState({ ...this.state, status: 'location-selected', currentIdea: null });
           this.setSelectedIdea(null);
           let newIdea = { id: 'New Idea', location: { coordinates: [ event.latlng.lat, event.latlng.lng ] } };
@@ -727,8 +743,9 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   
   onNewIdeaClick({ typeId }) {
     let self = this;
-    this.state.editIdea.typeId = typeId;
-    self.showIdeaForm(this.state.editIdea, () => {
+    let editIdea = this.state.editIdea || {};
+    editIdea.typeId = typeId;
+    self.showIdeaForm(editIdea, () => {
       let location = { lat: this.state.editIdea.location.coordinates[0], lng: this.state.editIdea.location.coordinates[1] };
       self.ideaform.handleLocationChange({ location, address: 'Bezig met adresgegevens ophalen...' });
 		  self.map.getPointInfo(location, null, function(json, marker) {
@@ -848,6 +865,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
           showLabels: this.config.idea.showLabels,
           types: this.config.types,
           allowMultipleImages: this.config.idea.allowMultipleImages,
+          shareChannelsSelection: this.config.idea.shareChannelsSelection,
           loginUrl: this.config.loginUrl,
           linkToUserPageUrl: this.config.linkToUserPageUrl,
         };

@@ -40,6 +40,7 @@ export default class IdeasDetails extends React.Component {
 		};
 
 		this.config = merge.recursive(defaultConfig, this.config, this.props.config || {})
+    if (!this.config.shareChannelsSelection) this.config.shareChannelsSelection = ["facebook","twitter","mail","whatsapp"];
 
     this.state = {
       idea: this.props.idea,
@@ -302,6 +303,27 @@ export default class IdeasDetails extends React.Component {
       authorHTML = <a href={this.config.linkToUserPageUrl + '/' + idea.user.id} className="osc-author-link">{authorHTML}</a>
     }
 
+    let shareButtonsHTML = null;
+    if (self.config.shareChannelsSelection.length) {
+      let facebookButtonHTML = self.config.shareChannelsSelection.includes('facebook') ? (<li><a className="osc-share-facebook" target="_blank" href={ 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(document.location.href) }>Facebook</a></li>) : null;
+      let twitterButtonHTML = self.config.shareChannelsSelection.includes('twitter') ? (<li><a className="osc-share-twitter" target="_blank" href={ 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(document.location.href) }>Twitter</a></li>) : null;
+      let mailButtonHTML = self.config.shareChannelsSelection.includes('mail') ? (<li><a className="osc-share-email" target="_blank" href={ 'mailto:?subject=' + encodeURIComponent(eval(`idea.${self.config.titleField}`)) + '&body=' + encodeURIComponent(document.location.href)}>Email</a></li>) : null;
+      let whatsappButtonHTML = self.config.shareChannelsSelection.includes('whatsapp') ? (<li><a className="osc-share-whatsapp" target="_blank" href={ 'https://wa.me/?text=' + encodeURIComponent(document.location.href) }>WhatsApp</a></li>) : null;
+
+      shareButtonsHTML = (
+      <div className="osc-details-sharebuttons">
+        <ul>
+          {facebookButtonHTML}
+          {twitterButtonHTML}
+          {mailButtonHTML}
+          {whatsappButtonHTML}
+				</ul>
+      </div>);
+
+
+    }
+    
+
     return (
 			<div id={self.id} className={self.props.className || 'osc-info-block-idea-details'} ref={el => (self.instance = el)}>
 
@@ -320,14 +342,7 @@ export default class IdeasDetails extends React.Component {
 
               {labelHTML}
 
-              <div className="osc-details-sharebuttons">
-                <ul>
-							    <li><a className="osc-share-facebook" target="_blank" href={ 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(document.location.href) }>Facebook</a></li>
-							    <li><a className="osc-share-twitter" target="_blank" href={ 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(document.location.href) }>Twitter</a></li>
-							    <li><a className="osc-share-email" target="_blank" href={ 'mailto:?subject=' + encodeURIComponent(eval(`idea.${self.config.titleField}`)) + '&body=' + encodeURIComponent(document.location.href)}>Email</a></li>
-							    <li><a className="osc-share-whatsapp" target="_blank" href={ 'https://wa.me/?text=' + encodeURIComponent(document.location.href) }>WhatsApp</a></li>
-						    </ul>
-              </div>
+              {shareButtonsHTML}
 
               <div className="osc-details-stats">
                 {voteButtonsHTML}

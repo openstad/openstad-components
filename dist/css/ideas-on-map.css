@@ -969,6 +969,11 @@ form.osc-form {
     display: none;
   }
 }
+@media only screen and (max-width: 880px) {
+  .osc-ideas-on-map .osc-ideas-on-map-info .osc-info-block-default-block.osc-visible-on-mobile {
+    display: block;
+  }
+}
 .osc-ideas-on-map .osc-ideas-on-map-info .osc-info-block-default-block .osc-info-block-default-block-line {
   height: 44px;
   margin-bottom: 18px;
@@ -995,15 +1000,15 @@ form.osc-form {
   padding-top: 10px;
   margin-bottom: 0px;
 }
-.osc-ideas-on-map .osc-ideas-on-map-info .osc-info-block-new-idea .osc-new-idea-buttons .osc-button {
+.osc-ideas-on-map .osc-ideas-on-map-info .osc-new-idea-buttons .osc-button {
   position: relative;
   margin-right: 10px;
   margin-bottom: 10px;
   padding-left: 40px;
 }
-.osc-ideas-on-map .osc-ideas-on-map-info .osc-info-block-new-idea .osc-new-idea-buttons .osc-button .osc-button-background-image {
+.osc-ideas-on-map .osc-ideas-on-map-info .osc-new-idea-buttons .osc-button .osc-button-background-image {
   position: absolute;
-  top: 2px;
+  top: 11px;
   left: 2px;
   width: 40px;
   height: 40px;
