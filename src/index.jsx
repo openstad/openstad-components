@@ -21,6 +21,7 @@ import OpenStadComponentLightbox from './lightbox/index.jsx';
 import OpenStadComponentIdeasOnMap from './ideas-on-map/index.jsx';
 import OpenStadComponentIdeasDetails from './idea-details/index.jsx';
 import OpenStadComponentIdeasImage from './idea-image/index.jsx';
+import OpenStadComponentPolygonEditor from './polygon-editor/index.jsx';
 import OpenStadComponentPreviousNextButtonBlock from './previous-next-button-block/index.jsx';
 import OpenStadComponentPoll from './poll/index.jsx';
 import OpenStadComponentReactions from './reactions/index.jsx';
@@ -37,6 +38,7 @@ export {
   OpenStadComponentIdeasDetails as IdeasDetails,
   OpenStadComponentIdeasImage as IdeasImage,
   OpenStadComponentLightbox as Lightbox,
+  OpenStadComponentPolygonEditor as PolygonEditor,
   OpenStadComponentPreviousNextButtonBlock as PreviousNextButtonBlock,
   OpenStadComponentPoll as Poll,
   OpenStadComponentReactions as Reactions,

@@ -19,6 +19,7 @@ module.exports = {
     "nlmap": './src/nlmap/index.jsx',
     "previous-next-button-block": './src/previous-next-button-block/index.jsx',
     "poll": './src/poll/index.jsx',
+    "polygon-editor": './src/polygon-editor/index.jsx',
     "reactions": './src/reactions/index.jsx',
   },
 
