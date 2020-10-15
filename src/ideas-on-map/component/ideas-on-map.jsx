@@ -781,13 +781,14 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   }
   
   onChangeTypeFilter(value) {
+
     let self = this;
     self.setSelectedIdea(null);
     self.setNewIdea(null);
     self.setSelectedLocation(null);
 	  self.map.setFilter(function(marker) {
 		  if (value && value !== '0') {
-			  return marker.data && eval(`marker.data.${self.config.typeField}`) && eval(`marker.data.${self.config.typeField}`) == value;
+			  return marker.data && eval(`marker.data.${self.config.typeField}`).toLowerCase() && eval(`marker.data.${self.config.typeField}`).toLowerCase() == value.toLowerCase();
 		  } else {
 			  return true;
 		  }
