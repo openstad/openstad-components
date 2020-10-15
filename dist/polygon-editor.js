@@ -2941,6 +2941,9 @@ var OpenStadComponentNLMap = /*#__PURE__*/function (_OpenStadComponent) {
         });
         break;
 
+      case "test":
+        break;
+
       default:
         self.files.push({
           type: 'css',
@@ -3026,6 +3029,13 @@ var OpenStadComponentNLMap = /*#__PURE__*/function (_OpenStadComponent) {
       switch (self.config.variant) {
         case "amaps":
           self.map = amaps.createMap(_objectSpread({}, self.config));
+          break;
+
+        case "test":
+          self.map = L.map(self.config.target).setView([52.3710476, 4.9005494], 16);
+          var tiles = L.tileLayer('https://t1.data.amsterdam.nl/topo_wm/{z}/{x}/{y}.png', {
+            maxZoom: 21
+          }).addTo(self.map);
           break;
 
         default:
@@ -3631,6 +3641,20 @@ var Map = /*#__PURE__*/function (_OpenStadComponentNLM) {
       document.addEventListener('osc-map-marker-click', function (event) {
         self.onMarkerClick(event.detail);
       });
+      document.addEventListener('osc-map-is-ready', function (e) {
+        self.map.on('mousedown', function (detail) {
+          var event = new CustomEvent('osc-map-mousedown', {
+            detail: detail
+          });
+          document.dispatchEvent(event);
+        });
+        self.map.on('mouseup', function (detail) {
+          var event = new CustomEvent('osc-map-mouseup', {
+            detail: detail
+          });
+          document.dispatchEvent(event);
+        });
+      });
     }
   }, {
     key: "onMapClick",
@@ -3831,7 +3855,13 @@ var OpenStadComponentPolygonEditor = /*#__PURE__*/function (_OpenStadComponent) 
     self.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive(self.defaultConfig, self.config, props.config || {});
     self.state = {
       currentMouseOverIdea: null,
-      points: props.points || []
+      points: props.points || [{
+        lat: 52.37104644463586,
+        lng: 4.900402911007405
+      }, {
+        lat: 52.37204644463586,
+        lng: 4.901402911007405
+      }]
     };
     return _this;
   }
@@ -3848,6 +3878,15 @@ var OpenStadComponentPolygonEditor = /*#__PURE__*/function (_OpenStadComponent) 
       // });
       // when the map is ready
 
+      document.addEventListener('osc-map-click', function (event) {
+        self.onMapClick(event.detail);
+      });
+      document.addEventListener('osc-map-mousedown', function (event) {
+        self.onMapMouseDown(event.detail);
+      });
+      document.addEventListener('osc-map-mouseup', function (event) {
+        self.onMapMouseUp(event.detail);
+      });
       document.addEventListener('osc-map-is-ready', function (e) {
         self.init();
       });
@@ -3856,27 +3895,7 @@ var OpenStadComponentPolygonEditor = /*#__PURE__*/function (_OpenStadComponent) 
     key: "init",
     value: function init() {
       var self = this;
-      var iconDef = this.config.polygonEditor.pointIcon;
-      var icon = L.divIcon({
-        html: iconDef.html,
-        className: 'osc-ideas-on-map-icon',
-        iconSize: L.point(iconDef.width, iconDef.height),
-        iconAnchor: iconDef.anchor
-      });
-      self.map.addMarker({
-        lat: 52.37104644463586,
-        lng: 4.900402911007405,
-        icon: icon
-      });
-      self.map.addMarker({
-        lat: 52.37204644463586,
-        lng: 4.901402911007405,
-        icon: icon
-      });
-      var polyline = L.polyline(points, {
-        color: '#880000',
-        weight: 4
-      }).addTo(map);
+      self.drawPoints();
     }
   }, {
     key: "fetchData",
@@ -3902,19 +3921,63 @@ var OpenStadComponentPolygonEditor = /*#__PURE__*/function (_OpenStadComponent) 
           });
         });
       }
-    } // onMapClick(event) {
-    //   console.log(event.target.data);
-    // }
-    //  
-    // onMarkerClick(event) {
+    } // onMarkerClick(event) {
     //   console.log(event.target.data);
     // }
     // onChangeMapBoundaries() {
     // }
 
   }, {
+    key: "addPoint",
+    value: function addPoint(latlng) {
+      var self = this;
+      var points = self.state.points;
+      points.push(latlng);
+      self.setState({
+        points: points
+      }, function () {
+        self.drawPoints();
+      });
+    }
+  }, {
     key: "drawPoints",
-    value: function drawPoints() {}
+    value: function drawPoints() {
+      var self = this;
+      var iconDef = this.config.polygonEditor.pointIcon;
+      var icon = L.divIcon({
+        html: iconDef.html,
+        className: 'osc-ideas-on-map-icon',
+        iconSize: L.point(iconDef.width, iconDef.height),
+        iconAnchor: iconDef.anchor
+      }); //    var polyline = L.polyline(points, { color: '#880000', weight: 4, }).addTo(map);
+
+      var points = self.state.points;
+      points.forEach(function (point) {
+        if (!point.marker) {
+          self.map.addMarker({
+            lat: point.lat,
+            lng: point.lng,
+            icon: icon
+          });
+        }
+      });
+    }
+  }, {
+    key: "onMapMouseDown",
+    value: function onMapMouseDown(detail) {
+      console.log('MouseDown:', detail);
+    }
+  }, {
+    key: "onMapMouseUp",
+    value: function onMapMouseUp(detail) {
+      console.log('MouseUp:', detail);
+    }
+  }, {
+    key: "onMapClick",
+    value: function onMapClick(detail) {
+      console.log('Click:', detail);
+      this.addPoint(detail.latlng);
+    }
   }, {
     key: "render",
     value: function render() {

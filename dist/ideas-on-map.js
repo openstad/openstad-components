@@ -9486,6 +9486,9 @@ var OpenStadComponentNLMap = /*#__PURE__*/function (_OpenStadComponent) {
         });
         break;
 
+      case "test":
+        break;
+
       default:
         self.files.push({
           type: 'css',
@@ -9571,6 +9574,13 @@ var OpenStadComponentNLMap = /*#__PURE__*/function (_OpenStadComponent) {
       switch (self.config.variant) {
         case "amaps":
           self.map = amaps.createMap(_objectSpread({}, self.config));
+          break;
+
+        case "test":
+          self.map = L.map(self.config.target).setView([52.3710476, 4.9005494], 16);
+          var tiles = L.tileLayer('https://t1.data.amsterdam.nl/topo_wm/{z}/{x}/{y}.png', {
+            maxZoom: 21
+          }).addTo(self.map);
           break;
 
         default:

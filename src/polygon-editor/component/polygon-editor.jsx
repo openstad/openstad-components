@@ -15,7 +15,7 @@ export default class OpenStadComponentPolygonEditor extends OpenStadComponent {
 
     super(props);
 
-		var self = this;
+		let self = this;
 
 		// config
 		self.defaultConfig = {
@@ -34,7 +34,15 @@ export default class OpenStadComponentPolygonEditor extends OpenStadComponent {
 
     self.state = {
       currentMouseOverIdea: null,
-      points: props.points || [],
+      points: props.points || [      {
+			  lat: 52.37104644463586,
+			  lng: 4.900402911007405,
+      },
+      {
+			  lat: 52.37204644463586,
+			  lng: 4.901402911007405,
+      }
+],
     }
     
   }
@@ -52,6 +60,18 @@ export default class OpenStadComponentPolygonEditor extends OpenStadComponent {
     // });
     // when the map is ready
 
+		document.addEventListener('osc-map-click', function(event) {
+			self.onMapClick(event.detail);
+		});
+
+		document.addEventListener('osc-map-mousedown', function(event) {
+			self.onMapMouseDown(event.detail);
+		});
+
+		document.addEventListener('osc-map-mouseup', function(event) {
+			self.onMapMouseUp(event.detail);
+		});
+
 		document.addEventListener('osc-map-is-ready', function(e) {
       self.init()
     })
@@ -59,30 +79,8 @@ export default class OpenStadComponentPolygonEditor extends OpenStadComponent {
 	}
 
   init() {
-
     let self = this;
-    let iconDef = this.config.polygonEditor.pointIcon;
-		let icon = L.divIcon({ html: iconDef.html, className: 'osc-ideas-on-map-icon', iconSize: L.point(iconDef.width, iconDef.height), iconAnchor: iconDef.anchor });
-
-
-    self.map.addMarker(
-      {
-			  lat: 52.37104644463586,
-			  lng: 4.900402911007405,
-        icon,
-      }
-    )
-    self.map.addMarker(
-      {
-			  lat: 52.37204644463586,
-			  lng: 4.901402911007405,
-        icon,
-      }
-    )
-
-    var polyline = L.polyline(points, { color: '#880000', weight: 4, }).addTo(map);
-    
-
+    self.drawPoints();
   }
 
   fetchData() {
@@ -102,10 +100,6 @@ export default class OpenStadComponentPolygonEditor extends OpenStadComponent {
     }
   }
   
-	// onMapClick(event) {
-  //   console.log(event.target.data);
-  // }
-  //  
 	// onMarkerClick(event) {
   //   console.log(event.target.data);
   // }
@@ -113,8 +107,48 @@ export default class OpenStadComponentPolygonEditor extends OpenStadComponent {
   // onChangeMapBoundaries() {
   // }
 
+  addPoint(latlng) {
+		let self = this;
+    let points = self.state.points;
+    points.push(latlng)
+    self.setState({ points }, function() {
+      self.drawPoints();
+    });
+  }
+  
   drawPoints() {
-    
+		let self = this;
+
+    let iconDef = this.config.polygonEditor.pointIcon;
+		let icon = L.divIcon({ html: iconDef.html, className: 'osc-ideas-on-map-icon', iconSize: L.point(iconDef.width, iconDef.height), iconAnchor: iconDef.anchor });
+//    var polyline = L.polyline(points, { color: '#880000', weight: 4, }).addTo(map);
+
+    let points = self.state.points;
+    points.forEach((point) => {
+      if (!point.marker) {
+        self.map.addMarker(
+          {
+			      lat: point.lat,
+			      lng: point.lng,
+            icon,
+          }
+        );
+      }
+    });
+  }
+
+
+  onMapMouseDown(detail) {
+    console.log('MouseDown:', detail);
+  }
+
+  onMapMouseUp(detail) {
+    console.log('MouseUp:', detail);
+  }
+
+  onMapClick(detail) {
+    console.log('Click:', detail);
+    this.addPoint(detail.latlng);
   }
 
 	render() {

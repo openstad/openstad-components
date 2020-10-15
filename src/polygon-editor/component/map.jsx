@@ -31,13 +31,24 @@ export default class Map extends OpenStadComponentNLMap {
 			self.onMarkerClick(event.detail);
 		});
 
+		document.addEventListener('osc-map-is-ready', function(e) {
+		  self.map.on('mousedown', function(detail) {
+		    var event = new CustomEvent('osc-map-mousedown', { detail });
+		    document.dispatchEvent(event);
+		  });
+		  self.map.on('mouseup', function(detail) {
+		    var event = new CustomEvent('osc-map-mouseup', { detail });
+		    document.dispatchEvent(event);
+		  });
+    });
+   
   }
 
 	onMapClick(detail) {
     super.onMapClick(detail);
     console.log(detail);
   }
-
+  
 	onMarkerClick(detail) {
     console.log(detail);
   }

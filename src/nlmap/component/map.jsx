@@ -42,6 +42,8 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 				// self.files.push({ type: 'css', href: "https://map.data.amsterdam.nl/dist/css/ams-map.css"}); // in tegenstelling tot wat ze beloven overschrijft dit ook css buiten de map
 				self.files.push({ type: 'script', src: "https://map.data.amsterdam.nl/dist/amaps.iife.js"});
 				break;
+			case "test":
+				break;
 			default:
 				self.files.push({ type: 'css', href: "https://nlmaps.nl/dist/assets/css/nlmaps.css"});
 				self.files.push({ type: 'script', src: "https://nlmaps.nl/dist/nlmaps.iife.js"});
@@ -102,6 +104,12 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 		switch(self.config.variant) {
 			case "amaps":
 				self.map = amaps.createMap({ ...self.config });
+				break;
+			case "test":
+        self.map = L.map(self.config.target).setView([52.3710476,4.9005494], 16);
+        var tiles = L.tileLayer('https://t1.data.amsterdam.nl/topo_wm/{z}/{x}/{y}.png', {
+	        maxZoom: 21
+        }).addTo(self.map);
 				break;
 			default:
 				self.map = nlmaps.createMap(self.config);
