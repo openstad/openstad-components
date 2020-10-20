@@ -78,10 +78,11 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         mobilePreviewLoggedInHTML: 'Een locatie vlakbij <h4>{address}</h4>{addButton}',
         mobilePreviewNotLoggedInHTML: 'Een locatie vlakbij <h4>{address}</h4><div>Wilt u een nieuw punt toevoegen? Dan moet u eerst <a href="{loginLink}">inloggen</a>.</div>',
       },
+      search: {},
 		};
 		self.config = merge.recursive(self.defaultConfig, self.config, props.config || {})
     self.config.ideaName = self.config.ideaName || 'Inzendingen';
-
+    self.config.search.searchIn = props.config.search && props.config.search.searchIn || ['ideas', 'addresses'];
 
     // defaults
     self.config.doSearchFunction = self.config.doSearchFunction || self.doSearch.bind(self);
@@ -392,21 +393,27 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
 		let searchResult = { ideas: [], locations: [] };
 
-    // search in ideas
-		this.state.ideas.forEach((idea) => {
-			let title = eval(`idea.${self.config.titleField}`) || '';
-      let titlelLc = title.toLowerCase();
-			let summary = eval(`idea.${self.config.summaryField}`) || '';
-      let summaryLc = summary.toLowerCase();
-			if (titlelLc.match(searchValueLc) || summaryLc.match(searchValueLc)) {
-				searchResult.ideas.push({
-					text: title,
-					onClick: function() {
-            self.onUpdateSelectedIdea(idea)
-          },
-				})
-			}
-		});
+    // search in ideas xxx
+    if (this.config.search.searchIn.includes('ideas')) {
+		  this.state.ideas.forEach((idea) => {
+			  let title = eval(`idea.${self.config.titleField}`) || '';
+        let titlelLc = title.toLowerCase();
+			  let summary = eval(`idea.${self.config.summaryField}`) || '';
+        let summaryLc = summary.toLowerCase();
+			  if (titlelLc.match(searchValueLc) || summaryLc.match(searchValueLc)) {
+				  searchResult.ideas.push({
+					  text: title,
+					  onClick: function() {
+              self.onUpdateSelectedIdea(idea)
+            },
+				  })
+			  }
+		  });
+    }
+
+    if (!this.config.search.searchIn.includes('addresses')) {
+      setImmediate(function(){callback(searchValue, searchResult)});
+    }
 
     // search for addresses
     fetch('https://geodata.nationaalgeoregister.nl/locatieserver/v3/suggest?rows=5&fq=gemeentenaam:amsterdam&fq=*:*&q=' + searchValueLc, {
@@ -430,7 +437,8 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         console.log('Search failed:', err);
         callback(searchValue, searchResult)
       });
-    
+
+
     function onClickAddress(id) {
       fetch('https://geodata.nationaalgeoregister.nl/locatieserver/v3/lookup?fq=gemeentenaam:amsterdam&&id=' + id, {
         headers: {
@@ -454,7 +462,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         });
       
     }
-		
+
 	}
 
   // dit is opgezet maar wordt niet genbruikt en is daarom niet afgemaakt; latere wijzigingen maken dat dit niet meer werkt
@@ -678,7 +686,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     if (this.state.editIdea) this.setNewIdea(null);
     let status = idea ? 'idea-selected' : 'default';
     if (idea) {
-      document.location.href='#S'+this.state.currentIdea.id;
+      document.location.href='#S'+idea.id;
     } else {
       document.location.href = "#";
     }
@@ -941,7 +949,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 			    <InfoBlock id={this.divId + '-infoblock'} config={{ api: this.config.api, user: this.config.user, ideaName: this.config.ideaName, titleField: this.config.titleField, summaryField: this.config.summaryField, types: this.config.types, typeField: this.config.typeField, content: this.config.content, argument: this.config.argument, idea: this.config.idea, loginUrl: this.config.loginUrl  }} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.infoblock = el)}/>
         );
         filterHTML = (
-				  <Filterbar id={this.divId + '-filterbar'} config={{ types: this.config.types, typesFilterLabel: this.config.typesFilterLabel, typeField: this.config.typeField, areas: this.config.areas, doSearchFunction: this.config.doSearchFunction }} className="osc-ideas-on-map-filterbar" ref={el => (this.filterbar = el)}/>
+				  <Filterbar id={this.divId + '-filterbar'} config={{ types: this.config.types, typesFilterLabel: this.config.typesFilterLabel, typeField: this.config.typeField, areas: this.config.areas, doSearchFunction: this.config.doSearchFunction, ideaName: this.config.ideaName, search: this.config.search }} className="osc-ideas-on-map-filterbar" ref={el => (this.filterbar = el)}/>
         );
         break;
 
@@ -950,7 +958,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 			    <InfoBlock id={this.divId + '-infoblock'} config={{ api: this.config.api, user: this.config.user, ideaName: this.config.ideaName, titleField: this.config.titleField, summaryField: this.config.summaryField, types: this.config.types, typeField: this.config.typeField, content: this.config.content, argument: this.config.argument, idea: this.config.idea, loginUrl: this.config.loginUrl  }} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.infoblock = el)}/>
         );
         filterHTML = (
-				  <Filterbar id={this.divId + '-filterbar'} config={{ types: this.config.types, typesFilterLabel: this.config.typesFilterLabel, typeField: this.config.typeField, areas: this.config.areas, doSearchFunction: this.config.doSearchFunction }} className="osc-ideas-on-map-filterbar" ref={el => (this.filterbar = el)}/>
+				  <Filterbar id={this.divId + '-filterbar'} config={{ types: this.config.types, typesFilterLabel: this.config.typesFilterLabel, typeField: this.config.typeField, areas: this.config.areas, doSearchFunction: this.config.doSearchFunction, ideaName: this.config.ideaName, search: this.config.search }} className="osc-ideas-on-map-filterbar" ref={el => (this.filterbar = el)}/>
         );
         mobilePopupHTML = null;
         break;
