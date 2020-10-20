@@ -874,6 +874,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
           showLabels: this.config.idea.showLabels,
           types: this.config.types,
           allowMultipleImages: this.config.idea.allowMultipleImages,
+          metaDataTemplate: this.config.idea.metaDataTemplate,
           shareChannelsSelection: this.config.idea.shareChannelsSelection,
           loginUrl: this.config.loginUrl,
           linkToUserPageUrl: this.config.linkToUserPageUrl,
