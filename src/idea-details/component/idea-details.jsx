@@ -54,10 +54,17 @@ export default class IdeasDetails extends React.Component {
 
     let self = this;
     
-		self.reactionStoredListener = function(event) {
+		self.reactionAddedListener = function(event) {
+      console.log('++++++++++++++++++++');
+      self.onReactionStored(event.detail, true);
+    }
+    document.addEventListener('osc-new-reaction-stored', self.reactionAddedListener);
+
+		self.reactionEditedListener = function(event) {
+      console.log('--------------------');
       self.onReactionStored(event.detail);
     }
-    document.addEventListener('osc-reaction-stored', self.reactionStoredListener);
+    document.addEventListener('osc-reaction-edited', self.reactionEditedListener);
 
 		self.reactionDeletedListener = function(event) {
       self.onReactionDeleted(event.detail);
@@ -79,7 +86,8 @@ export default class IdeasDetails extends React.Component {
 	}
 
   componentWillUnmount() {
-		document.removeEventListener('osc-reaction-stored', this.reactionStoredListener);
+		document.removeEventListener('osc-new-reaction-stored', this.reactionAddedListener);
+		document.removeEventListener('osc-reaction-edited', this.reactionEditedListener);
 		document.removeEventListener('osc-reaction-deleted', this.reactionDeletedListener);
 		document.removeEventListener('osc-new-poll-stored', this.pollCreatedListener);
 		document.removeEventListener('osc-poll-deleted', this.pollDeletedListener);
@@ -112,8 +120,8 @@ export default class IdeasDetails extends React.Component {
     this.showPollForm();
   }
   
-  onReactionStored(data) {
-    this.state.idea.argCount++;
+  onReactionStored(data, isNew) {
+    if (isNew) this.state.idea.argCount++;
     this.setState({ idea: this.state.idea });
   }
 
