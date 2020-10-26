@@ -92,9 +92,9 @@ export default class Map extends OpenStadComponentNLMap {
 
   hideMarkers({ exception }) {
 	  var self = this;
-    if (exception) self.setBoundsAndCenter([ exception.location ]);
+    if (exception && exception.location) self.setBoundsAndCenter([ exception.location ]);
     self.markers.forEach((marker) => {
-      if (!(exception && exception.location.lat == marker._latlng.lat && exception.location.lng == marker._latlng.lng)) {
+      if (!(exception && exception.location && exception.location.lat == marker._latlng.lat && exception.location.lng == marker._latlng.lng)) {
         self.hideMarker(marker)
       }
     });

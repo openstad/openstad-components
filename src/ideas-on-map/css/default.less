@@ -175,6 +175,12 @@
         display: none;
       }
 
+      &.osc-visible-on-mobile {
+        @media @phone {
+          display: block;
+        }
+      }
+
       .osc-info-block-default-block-line {
 
         height: 44px;
@@ -200,26 +206,22 @@
 
     }
     
-    .osc-info-block-new-idea {
+    .osc-new-idea-buttons {
+      .osc-button {
+        position: relative;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        padding-left: 40px;
 
-      .osc-new-idea-buttons {
-        .osc-button {
-          position: relative;
-          margin-right: 10px;
-          margin-bottom: 10px;
-          padding-left: 40px;
-
-          .osc-button-background-image {
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 40px;
-            height: 40px;
-            overflow: hidden;
-          }
+        .osc-button-background-image {
+          position: absolute;
+          top: 11px;
+          left: 2px;
+          width: 40px;
+          height: 40px;
+          overflow: hidden;
         }
       }
-      
     }
 
     .osc-info-block-selected-idea {

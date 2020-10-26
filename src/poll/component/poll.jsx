@@ -38,6 +38,7 @@ export default class OpenStadComponentPoll extends OpenStadComponent {
     };
 
     self.config = merge.recursive(self.defaultConfig, self.config, props.config || {});
+    self.config.loginUrl = self.config.loginUrl || '/oauth/login?returnTo=' + encodeURIComponent(document.location.href);
     self.hideEditForm = self.hideEditForm.bind(self);
 
     self.state = {

@@ -101,11 +101,15 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 		// init map
 		switch(self.config.variant) {
 			case "amaps":
-				self.map = amaps.createMap(self.config);
+				self.map = amaps.createMap({ ...self.config });
 				break;
 			default:
 				self.map = nlmaps.createMap(self.config);
 		}
+
+    if (self.config.zoomControl == false) {
+      self.map.removeControl(self.map.zoomControl);
+    }
 
 		// clustering
 		if (self.config.clustering && self.config.clustering.isActive && L.markerClusterGroup) {

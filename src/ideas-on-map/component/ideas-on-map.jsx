@@ -24,6 +24,10 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
 		// config
 		self.defaultConfig = {
+      displayType: 'complete',
+      displayWidth: null,
+      displayHeight: null,
+      canSelectLocation: true,
       types: [],
       typeField: null,
 
@@ -120,7 +124,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       selectedLocation: null,
       currentMouseOverIdea: null,
     }
-    
+
   }
 
 	componentDidMount(prevProps, prevState) {
@@ -133,7 +137,11 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       if (match) {
         let ideaId = match[2];
         let idea = self.state.ideas && self.state.ideas.find(idea => idea.id == ideaId);
-        self.showIdeaDetails(idea)
+        if (match[1] == 'D') {
+          self.showIdeaDetails(idea)
+        } else {
+					// self.setSelectedIdea(idea);
+        }
       }
     }, false );
 
@@ -220,7 +228,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
     // form changes
 		document.addEventListener('newIdeaStored', function(event) {
-      console.log('1');
+      document.location.href = "#";
       self.onNewIdeaStored(event.detail.idea);
     });
     
@@ -246,8 +254,10 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         return response.json();
       })
       .then( json => {
-        showIdeaDetails = showIdeaDetails || ( window.location.hash.match(/(\w)(\d+)/) && window.location.hash.match(/(\w)(\d+)/)[2] ) || OpenStadComponentLibs.localStorage.get('osc-ideas-on-map-details'); //  document.location.hash.replace(/.*details=(\d+).*/, "$1");
-        showIdeaSelected = showIdeaSelected || OpenStadComponentLibs.localStorage.get('osc-ideas-on-map-selected'); // document.location.hash.replace(/.*selected=(\d+).*/, "$1");
+        // showIdeaDetails = showIdeaDetails || ( window.location.hash.match(/(\w)(\d+)/) && window.location.hash.match(/(\w)(\d+)/)[2] ) || OpenStadComponentLibs.localStorage.get('osc-ideas-on-map-details'); //  document.location.hash.replace(/.*details=(\d+).*/, "$1");
+        // showIdeaSelected = showIdeaSelected || OpenStadComponentLibs.localStorage.get('osc-ideas-on-map-selected'); // document.location.hash.replace(/.*selected=(\d+).*/, "$1");
+        showIdeaDetails = showIdeaDetails || ( window.location.hash.match(/^#D(\d+)/) && window.location.hash.match(/^#D(\d+)/)[1] );
+        showIdeaSelected = showIdeaSelected || ( window.location.hash.match(/^#S(\d+)/) && window.location.hash.match(/^#S(\d+)/)[1] );
         let ideas = json.filter( idea => idea.location )
         ideas.map( idea => {
           if ( idea.id == showIdeaDetails) {
@@ -261,6 +271,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         self.map.setBoundsAndCenter();
 
         self.setState({ ideas }, function () {
+          self.setState({ mobileState: self.config.startWithListOpenOnMobile ? 'opened' : 'closed' })
           // self.setSelectedLocation({ lat: 52.37104644463586, lng: 4.900402911007405 })
           // return setTimeout(function(){ self.showIdeaForm() }, 500)
           if (typeof showIdeaSelected == 'object' && showIdeaSelected != null) {
@@ -278,15 +289,22 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 						self.setNewIdea(null);
 					  self.showIdeaDetails(showIdeaDetails);
           }
+          if (window.location.hash.match(/^#newidea/)) {
+            // TODO: dit moet ook bestaande ideeen gaan werken
+            let hash = window.location.hash;
+            let match = hash.match(/&([^&]+)=([^&]+)/g);
+            let newIdea = {  };
+            if (match) {
+              match.forEach((entry) => {
+                let [key, val] = entry.split('=');
+                key = key.substring(1, key.length);
+                newIdea[key] = decodeURIComponent(val);
+              });
+            }
+					  self.setNewIdea(newIdea);
+				    self.showIdeaForm(newIdea);
+          }
           self.onChangeMapBoundaries();
-
-          // dev form
-          // if (!showIdeaSelected) {
-					//   self.setSelectedIdea(null);
-					//   self.setNewIdea({ location: { coordinates: [52.37104644463586, 4.900402911007405] }, title: "Rutrum tincidunt", type: "Kans", theme: "Overig", summary: "rutrum tincidunt, dui sapien feugiat justo, eget egestas ligula nulla nec erat.", description: "rutrum tincidunt, dui sapien feugiat justo, eget egestas ligula nulla nec erat. maecenas tempus tempor eros. donec a justo. curabitur tellus. pellentesque risus. fusce at arcu. ut lacinia mi vel lectus. phasellus imperdiet. fusce luctus lacus a odio. in et turpis at libero tristique vulputate. sed varius ipsum. suspendisse potenti. suspendisse potenti. donec tempus arcu quis metus."});
-					//   self.showIdeaForm();
-					// }
-          // einde dev form
 				});
 
       })
@@ -300,9 +318,9 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   showIdeaDetails(idea) {
     let self = this;
     self.setSelectedIdea(idea);
-    OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-details', idea && idea.id );
-    OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-selected', null);
-    // self.infoblock.setState({ mobileState: self.state.mobileState = 'opened' })
+    // OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-details', idea && idea.id );
+    // OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-selected', null);
+    if (self.infoblock) self.infoblock.setState({ mobileState: self.state.mobileState = 'opened' })
     self.setState({ status: 'idea-details', currentIdea: idea }, function() {
     // self.setState({ status: 'idea-details', currentIdea: idea, mobileState: self.state.mobileState = 'opened' }, function() {
       self.map.map.invalidateSize();
@@ -312,8 +330,8 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
   hideIdeaDetails() {
     let self = this;
-    OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-details', null );
-    OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-selected', null);
+    // OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-details', null );
+    // OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-selected', null);
     self.setState({ status: 'idea-selected' }, function() {
       // todo: dit zou hij zelf via state moeten doen
       self.map.map.invalidateSize();
@@ -324,11 +342,22 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
   showIdeaForm(idea, next) {
     let self = this;
-    self.setState({ status: 'idea-form', editIdea: idea }, function() {
-      self.map.map.invalidateSize();
-      self.map.hideMarkers({ exception: { location: idea && { lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] } || self.map.selectedLocation } })
-      if (next) next();
-    });
+
+    if (self.config.idea.formUrl) {
+      let url = self.config.idea.formUrl;
+      url = url.replace(/:ideaId/, typeof idea.id == 'number' ? idea.id : '');
+      url = url.replace(/:location/, idea.location ? JSON.stringify({ lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] }) : '');
+      url = url.replace(/:typeId/, idea.typeId);
+      url = url.replace(/:address/, idea.address);
+      document.location.href = url;
+    } else {
+      self.setState({ status: 'idea-form', editIdea: idea }, function() {
+        self.map.map.invalidateSize();
+        self.map.hideMarkers({ exception: { location: idea && idea.location && { lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] } || self.map.selectedLocation } })
+        if (next) next();
+      });
+    }
+
   }
 
   hideIdeaForm() {
@@ -338,12 +367,21 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       self.showIdeaDetails(idea)
       document.location.href = "#D" + idea.id
     } else {
-      self.setState({ status: 'location-selected' }, function() {
-        // todo: dit zou hij zelf via state moeten doen
-        self.map.map.invalidateSize();
-        self.map.showMarkers({})
-        self.setNewIdea(self.state.editIdea)
-      });
+      document.location.href='#';
+      if (self.state.editIdea && self.state.editIdea.location) {
+        self.setState({ status: 'location-selected' }, function() {
+          // todo: dit zou hij zelf via state moeten doen
+          self.map.map.invalidateSize();
+          self.map.showMarkers({})
+          self.setNewIdea(self.state.editIdea)
+        });
+      } else {
+        self.setState({ status: 'default' }, function() {
+          self.map.map.invalidateSize();
+          self.map.showMarkers({})
+          self.setNewIdea(null)
+        });
+      }
     }
   }
 
@@ -444,6 +482,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   }
 
   setSelectedLocation(location) {
+    // xxx
     let self = this;
     self.map.setSelectedLocation(location)
     if (self.ideaform) {
@@ -463,17 +502,22 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     self.setState({ editIdea: idea }, function() {
       if (idea) {
         self.map.fadeMarkers({exception: [idea.location]});
-        self.setSelectedLocation({ lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] });  
+        // xxx
+        if (idea.location) self.setSelectedLocation({ lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] });  
         if (self.infoblock) {
           self.setState({ editIdea: self.state.editIdea });
-          self.infoblock.setNewIdea({ ...self.state.editIdea, address: 'Bezig met adresgegevens ophalen...' });
-          self.map.getPointInfo({ lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] }, null, function(json, marker) {
-            let address = json && json._display || 'Geen adres gevonden';
-            let editIdea = self.state.editIdea;
-            editIdea.address = address;
-            self.setState({ editIdea });
-            self.infoblock.setNewIdea({ ...self.state.editIdea, address });
-          })
+          if (idea.location) {
+            self.infoblock.setNewIdea({ ...self.state.editIdea, address: 'Bezig met adresgegevens ophalen...' });
+            self.map.getPointInfo({ lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] }, null, function(json, marker) {
+              let address = json && json._display || 'Geen adres gevonden';
+              let editIdea = self.state.editIdea;
+              editIdea.address = address;
+              self.setState({ editIdea });
+              self.infoblock.setNewIdea({ ...self.state.editIdea, address });
+            })
+          } else {
+            self.infoblock.setNewIdea({ ...self.state.editIdea, address: 'Geen locatie geselecteerd...' });
+          }
           self.infoblock.updateIdeas({ ideas: self.state.ideas.filter( x => x.id != idea.id ), sortOrder: 'distance', hideSortButton: true, center: { lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] }, maxLength: 5 });
         }
       } else {
@@ -488,8 +532,8 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   }
 
   setSelectedIdea(idea) {
-    OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-selected', idea && idea.id );
-    OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-details', null);
+    // OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-selected', idea && idea.id );
+    // OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-details', null);
     this.selectedIdea = idea;
     if (idea) {
       this.map.fadeMarkers({exception: idea});
@@ -507,7 +551,6 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   }
   
 	onMapClick(event, forceSelectLocation) {
-
 
 		if ( this.state.mobileState == 'opened' ) { // werkt omdat hij alleen op mobiel opend kan zijn
 			this.infoblock.setState({ mobileState: 'closed' })
@@ -530,10 +573,12 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       default:
         if (( this.selectedIdea || this.map.selectedLocation ) && !forceSelectLocation) {
           this.setState({ ...this.state, status: 'default', currentIdea: null });
+          document.location.href='#';
           this.setSelectedIdea(null);
           this.setNewIdea(null);
           this.infoblock.updateIdeas({ ideas: this.getVisibleIdeas(), hideSortButton: false });
         } else {
+          if (!this.config.canSelectLocation) break;
           this.setState({ ...this.state, status: 'location-selected', currentIdea: null });
           this.setSelectedIdea(null);
           let newIdea = { id: 'New Idea', location: { coordinates: [ event.latlng.lat, event.latlng.lng ] } };
@@ -570,12 +615,11 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         if (this.state.editIdea) {
           this.setState({ status: 'default', currentIdea: null });
           this.setNewIdea(null);
-          this.setSelectedIdea(null);
-          this.setSelectedIdea(null);
+          this.onUpdateSelectedIdea(null);
         } else {
           this.setState({ status: 'idea-selected', currentIdea: event.target.data });
           this.setNewIdea(null);
-          this.setSelectedIdea(event.target.data);
+          this.onUpdateSelectedIdea(event.target.data);
         }
         document.querySelector('#osc-ideas-on-map-info').scrollTo(0,0)
 
@@ -633,6 +677,11 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 	onUpdateSelectedIdea(idea) {
     if (this.state.editIdea) this.setNewIdea(null);
     let status = idea ? 'idea-selected' : 'default';
+    if (idea) {
+      document.location.href='#S'+this.state.currentIdea.id;
+    } else {
+      document.location.href = "#";
+    }
     this.setState({ ...this.state, status, currentIdea: idea }, function() {
       this.setSelectedIdea(idea);
     });
@@ -694,8 +743,9 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   
   onNewIdeaClick({ typeId }) {
     let self = this;
-    this.state.editIdea.typeId = typeId;
-    self.showIdeaForm(this.state.editIdea, () => {
+    let editIdea = this.state.editIdea || {};
+    editIdea.typeId = typeId;
+    self.showIdeaForm(editIdea, () => {
       let location = { lat: this.state.editIdea.location.coordinates[0], lng: this.state.editIdea.location.coordinates[1] };
       self.ideaform.handleLocationChange({ location, address: 'Bezig met adresgegevens ophalen...' });
 		  self.map.getPointInfo(location, null, function(json, marker) {
@@ -731,13 +781,14 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   }
   
   onChangeTypeFilter(value) {
+
     let self = this;
     self.setSelectedIdea(null);
     self.setNewIdea(null);
     self.setSelectedLocation(null);
 	  self.map.setFilter(function(marker) {
 		  if (value && value !== '0') {
-			  return marker.data && eval(`marker.data.${self.config.typeField}`) && eval(`marker.data.${self.config.typeField}`) == value;
+			  return marker.data && eval(`marker.data.${self.config.typeField}`).toLowerCase() && eval(`marker.data.${self.config.typeField}`).toLowerCase() == value.toLowerCase();
 		  } else {
 			  return true;
 		  }
@@ -775,10 +826,14 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     }
     this.map.updateFading();
   }
+
+  onClickBackToOverview(idea) {
+    document.location.href='#S'+this.state.currentIdea.id;
+  }
   
   onClickMobileSwitcher() {
     let self = this;
-    self.infoblock.setState({ mobileState: self.state.mobileState == 'closed' ? 'opened' : 'closed' })
+    if (self.infoblock) self.infoblock.setState({ mobileState: self.state.mobileState == 'closed' ? 'opened' : 'closed' })
     self.setState({ mobileState: self.state.mobileState == 'closed' ? 'opened' : 'closed' }, function() {
       self.map.map.invalidateSize();
       if (this.state.status == 'location-selected' || this.state.status == 'idea-selected') {
@@ -787,7 +842,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       }
     })
   }
-  
+
 	render() {
 
     let infoHTML = null; // todo: ik denk dat dit naar infoblock moet
@@ -811,6 +866,9 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
           showLabels: this.config.idea.showLabels,
           types: this.config.types,
           allowMultipleImages: this.config.idea.allowMultipleImages,
+          shareChannelsSelection: this.config.idea.shareChannelsSelection,
+          loginUrl: this.config.loginUrl,
+          linkToUserPageUrl: this.config.linkToUserPageUrl,
         };
         config.argument.isActive = this.config.argument.isActive && !this.config.argument.ignoreReactionsForIdeaIds.match(new RegExp(`(?:^|\\D)${this.state.currentIdea.id}(?:\\D|$)`));
         config.argument.isClosed = this.config.argument.isClosed || this.config.argument.closeReactionsForIdeaIds.match(new RegExp(`(?:^|\\D)${this.state.currentIdea.id}(?:\\D|$)`));
@@ -824,7 +882,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 			    <OpenStadComponentIdeaDetails id={this.divId + '-infoblock'} config={config} idea={this.state.currentIdea} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.ideadetails = el)}/>
         );
         filterHTML = (
-				  <div className="osc-ideas-on-map-filterbar"><div className="osc-backbutton" onClick={() => document.location.href="#"}>Terug naar overzicht</div></div>
+				  <div className="osc-ideas-on-map-filterbar"><div className="osc-backbutton" onClick={() => this.onClickBackToOverview() }>Terug naar overzicht</div></div>
         );
         break;
 
@@ -880,7 +938,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
           );
         }
         infoHTML = (
-			    <InfoBlock id={this.divId + '-infoblock'} config={{ api: this.config.api, user: this.config.user, ideaName: this.config.ideaName, titleField: this.config.titleField, summaryField: this.config.summaryField, types: this.config.types, typeField: this.config.typeField, content: this.config.content, argument: this.config.argument, idea: this.config.idea  }} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.infoblock = el)}/>
+			    <InfoBlock id={this.divId + '-infoblock'} config={{ api: this.config.api, user: this.config.user, ideaName: this.config.ideaName, titleField: this.config.titleField, summaryField: this.config.summaryField, types: this.config.types, typeField: this.config.typeField, content: this.config.content, argument: this.config.argument, idea: this.config.idea, loginUrl: this.config.loginUrl  }} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.infoblock = el)}/>
         );
         filterHTML = (
 				  <Filterbar id={this.divId + '-filterbar'} config={{ types: this.config.types, typesFilterLabel: this.config.typesFilterLabel, typeField: this.config.typeField, areas: this.config.areas, doSearchFunction: this.config.doSearchFunction }} className="osc-ideas-on-map-filterbar" ref={el => (this.filterbar = el)}/>
@@ -889,7 +947,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
       default:
         infoHTML = (
-			    <InfoBlock id={this.divId + '-infoblock'} config={{ api: this.config.api, user: this.config.user, ideaName: this.config.ideaName, titleField: this.config.titleField, summaryField: this.config.summaryField, types: this.config.types, typeField: this.config.typeField, content: this.config.content, argument: this.config.argument, idea: this.config.idea  }} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.infoblock = el)}/>
+			    <InfoBlock id={this.divId + '-infoblock'} config={{ api: this.config.api, user: this.config.user, ideaName: this.config.ideaName, titleField: this.config.titleField, summaryField: this.config.summaryField, types: this.config.types, typeField: this.config.typeField, content: this.config.content, argument: this.config.argument, idea: this.config.idea, loginUrl: this.config.loginUrl  }} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.infoblock = el)}/>
         );
         filterHTML = (
 				  <Filterbar id={this.divId + '-filterbar'} config={{ types: this.config.types, typesFilterLabel: this.config.typesFilterLabel, typeField: this.config.typeField, areas: this.config.areas, doSearchFunction: this.config.doSearchFunction }} className="osc-ideas-on-map-filterbar" ref={el => (this.filterbar = el)}/>
@@ -899,13 +957,30 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
             
     }
 
+    let divStyle = {};
+    let simpleHTML = null;
+    if ( this.config.displayType == 'simple' ) {
+      filterHTML = null;
+      infoHTML = null;
+      mobilePopupHTML = null;
+      let buttonHTML = null;
+      if (this.config.linkToCompleteUrl) buttonHTML = <button onClick={() => { document.location.href = this.config.linkToCompleteUrl }} className="osc-button-blue" style={{position: 'absolute', top: 20, right: 20}}>Bekijk de volledige kaart</button>
+      simpleHTML = (
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 1000 }}>
+          {buttonHTML}
+        </div>)
+      if (this.config.displayWidth) divStyle.width = this.config.displayWidth;
+      if (this.config.displayHeight) divStyle.height = this.config.displayHeight;
+    }
+
     return (
-			<div id={this.divId} className={`osc-ideas-on-map osc-ideas-on-map-${this.state.status} osc-mobile-${this.state.mobileState}`} ref={el => (this.instance = el)}>
+			<div id={this.divId} className={`osc-ideas-on-map osc-ideas-on-map-${this.state.status} osc-mobile-${this.state.mobileState}`} style={divStyle} ref={el => (this.instance = el)}>
         {filterHTML}
         {infoHTML}
-        <div className="osc-ideas-on-map-map">
-				  <Map id={this.divId + '-map'} className="" config={{ ...this.config.map, types: this.config.types, typeField: this.config.typeField }} ref={el => (this.map = el)}/>
+        <div className={`osc-ideas-on-map-map osc-ideas-on-map-map-${this.config.displayType}`}>
+			    <Map id={this.divId + '-map'} config={{ ...this.config.map, types: this.config.types, typeField: this.config.typeField, zoomControl: this.config.displayType == 'simple' ? false : true }} ref={el => (this.map = el)}/>
         </div>
+        {simpleHTML}
         {mobilePopupHTML}
 			</div>
     );

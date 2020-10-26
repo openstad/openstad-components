@@ -19,7 +19,6 @@ export default class OpenStadComponentIdeaImage extends OpenStadComponent {
 
     this.state = {
       currentImageIndex: 0,
-      idea: this.props.idea,
       width: 0,
     };
         
@@ -37,7 +36,7 @@ export default class OpenStadComponentIdeaImage extends OpenStadComponent {
 	render() {
 
     let self = this;
-    let idea = self.state.idea;
+    let idea = self.props.idea;
 
     if (!idea) return null;
 

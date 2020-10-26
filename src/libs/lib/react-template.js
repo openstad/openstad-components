@@ -1,5 +1,7 @@
 import merge from 'merge';
 
+// TODO: dit werkt alleen als het er 1 is
+
 export default function({ html='' }) {
 
   let args = arguments[0];
@@ -9,7 +11,7 @@ export default function({ html='' }) {
 
   Object.keys(args).forEach((key) => {
 
-    let regEx = new RegExp(`^((?:.|\n|\r)*)\\{${key}\\}((?:.|\n|\r)*)$`);
+    let regEx = new RegExp(`^((?:.|\n|\r)*)\\{${key}\\}((?:.|\n|\r)*)$`, 'g');
     let match = regEx.exec(html);
 
     if (match) {

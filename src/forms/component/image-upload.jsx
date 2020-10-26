@@ -21,7 +21,29 @@ export default class OpenStadComponentSelect extends OpenStadComponentDefaultInp
     };
 		this.config = merge.recursive(defaultConfig, this.props.config, this.config || {});
 
-    console.log('ALLOWMULTIPLE', this.config.allowMultiple);
+    var uploadedFiles = [];
+    let value = props.value || [];
+    value.forEach((image) => {
+      uploadedFiles.push({
+        source: { url: image },
+        options : {
+          type: 'local',
+          // mock file information
+          file: {
+            name: image,
+            //		 size: 3001025,
+            //	 type: 'image/png'
+          },
+          metadata: {
+            poster: image,
+          }
+        }
+      })
+    });
+
+    this.state = {
+      uploadedFiles: uploadedFiles,
+    }
 
   }
 
@@ -37,7 +59,8 @@ export default class OpenStadComponentSelect extends OpenStadComponentDefaultInp
       "https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.js",
     ];
     this.loadNextFile();
-	}
+
+  }
   
   loadNextFile() {
     var self = this;
@@ -93,11 +116,13 @@ export default class OpenStadComponentSelect extends OpenStadComponentDefaultInp
 				acceptedFileTypes: ['image/*'],
 				allowFileSizeValidation: true,
         allowMultiple: this.config.allowMultiple,
+        allowReorder: true,
+        styleItemPanelAspectRatio: 1,
 				maxFileSize: '8mb',
 				name: 'image',
 				maxFiles: 5,
 				allowBrowse: true,
-				files: [],
+				files: this.state.uploadedFiles,
 				server: {
 					process: this.config.imageserver.process,
 					fetch: this.config.imageserver.fetch,
@@ -170,7 +195,7 @@ export default class OpenStadComponentSelect extends OpenStadComponentDefaultInp
 			var images = this.imageuploader.getFiles();
 			images.forEach((image) => {
 				try {
-					var serverId = JSON.parse(image.serverId)
+					var serverId = typeof image.serverId == 'string' ? JSON.parse(image.serverId) : image.serverId;
 					self.state.value.push(serverId.url)
 				} catch(err) { console.log(err) }
 			});
