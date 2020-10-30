@@ -2,6 +2,7 @@ import merge from 'merge';
 import React from 'react';
 import VoteButton from './vote-button.jsx';
 
+import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
 import OpenStadComponentPoll from '../../poll/index.jsx';
 import OpenStadComponentReactions from '../../reactions/index.jsx';
@@ -9,7 +10,7 @@ import OpenStadComponentImage from '../../idea-image/index.jsx';
 
 'use strict';
 
-export default class IdeasDetails extends React.Component {
+export default class IdeasDetails extends OpenStadComponent {
 
   constructor(props) {
 
@@ -19,12 +20,6 @@ export default class IdeasDetails extends React.Component {
 		let defaultConfig = {
       siteId: null,
       ideaId: null,
-      user: {},
-			api: {
-        url: null,
-        headers: null,
-        isUserLoggedIn: false,
-      },
       argument: {
         isActive: true,
       },

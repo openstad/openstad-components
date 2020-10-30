@@ -19,7 +19,8 @@ import { ChoicesGuide, ChoicesGuideResult } from './choices-guide/index.jsx';
 import OpenStadComponentNLMap from './nlmap/index.jsx';
 import OpenStadComponentLightbox from './lightbox/index.jsx';
 import OpenStadComponentIdeasOnMap from './ideas-on-map/index.jsx';
-import OpenStadComponentIdeasDetails from './idea-details/index.jsx';
+import OpenStadComponentIdeaDetails from './idea-details/index.jsx';
+import OpenStadComponentIdeasOverview from './ideas-overview/index.jsx';
 import OpenStadComponentIdeasImage from './idea-image/index.jsx';
 import OpenStadComponentPreviousNextButtonBlock from './previous-next-button-block/index.jsx';
 import OpenStadComponentPoll from './poll/index.jsx';
@@ -34,7 +35,8 @@ export {
   ChoicesGuideResult,
   OpenStadComponentNLMap as NLMap,
   OpenStadComponentIdeasOnMap as IdeasOnMap,
-  OpenStadComponentIdeasDetails as IdeasDetails,
+  OpenStadComponentIdeaDetails as IdeaDetails,
+  OpenStadComponentIdeasOverview as IdeasOverview,
   OpenStadComponentIdeasImage as IdeasImage,
   OpenStadComponentLightbox as Lightbox,
   OpenStadComponentPreviousNextButtonBlock as PreviousNextButtonBlock,

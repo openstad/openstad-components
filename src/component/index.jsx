@@ -1,3 +1,4 @@
+import merge from 'merge';
 import React from 'react';
 
 'use strict';
@@ -17,17 +18,27 @@ export default class OpenStadComponent extends React.Component {
       });
     }
 
+		// config
     self.config = self.config || props.config;
-
-    if (self.config) {
+    if (typeof self.config == 'string') {
       try {
         self.config = JSON.parse(self.config);
       } catch (err) {}
     }
+		let defaultConfig = {
+      siteId: null,
+			api: {
+        url: null,
+        headers: null,
+        isUserLoggedIn: false,
+      },
+      user: {},
+    }
+		self.config = merge.recursive(defaultConfig, self.config, self.props.config || {})
 
     self.divId = self.divId || ( self.config && self.config.divId ) || props.id || `openstad-component-${  parseInt( 100000000 * Math.random() )}`;
     
-    window[self.divId] = this;
+    window[self.divId] = self;
 
   }
 

@@ -13,6 +13,7 @@ module.exports = {
     "all": './src/index.jsx',
     "choices-guide": './src/choices-guide/index.jsx',
     "idea-details": './src/idea-details/index.jsx',
+    "ideas-overview": './src/ideas-overview/index.jsx',
     "idea-image": './src/idea-image/index.jsx',
     "ideas-on-map": './src/ideas-on-map/index.jsx',
     "lightbox": './src/lightbox/index.jsx',
@@ -93,6 +94,20 @@ module.exports = {
         ],
       },
 
+      // deze kwam ik ergens tegen maar heb ik nog niet geprobeerd
+			// {
+			//   test: /\.css/,
+			//   use: [
+			//   	{
+			//   		loader: MiniCssExtractPlugin.loader,
+			//   		options: {
+			//   			hmr: process.env.NODE_ENV === 'development',
+			//   		},
+			//   	},
+			//   	'css-loader',
+			//   ],
+			// },
+      
 		],
 	},
 	

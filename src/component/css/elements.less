@@ -3,13 +3,20 @@
 // Onderstaand moet nog opgesplitst
 // Onderstaand moet helemaal omgebouwd naaar functions zoals nu previous/next, zodat je hem alleen als reference kunt inladen en niet alles mee wordt gecompileerd
 
-.osc-align-right-container {
-  
+.osc-align-right-container() {
   text-align: right;
 }
 
-.osc-margin-right {
+.osc-align-right-container {
+  .osc-align-right-container()
+}
+
+.osc-margin-right() {
   margin-right: 15px;
+}
+
+.osc-margin-right {
+  .osc-margin-right();
 }
 
 .osc-opacity-25 {
@@ -48,7 +55,7 @@
 
 }
 
-.osc-button {
+.osc-button() {
 
   .osc-button-basics;
   border-color: #c4c4c4;
@@ -60,6 +67,10 @@
     background-color: #aaa;
   }
 
+}
+
+.osc-button {
+  .osc-button();
 }
 
 .osc-button-white() {
@@ -185,7 +196,7 @@
   padding-left: 40px;
 }
 
-.osc-default-select {
+.osc-default-select() {
   .osc-arrow-down-black-background;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -202,7 +213,11 @@
   background-color: white;
 }
 
-.osc-default-input {
+.osc-default-select {
+  .osc-default-select();
+}
+
+.osc-default-input() {
 	appearance: none;
 	height: 44px;
 	padding: 0 20px;
@@ -214,6 +229,10 @@
 	line-height: 44px;
 	text-align: left;
 	background-color: white;
+}
+
+.osc-default-input {
+  .osc-default-input();
 }
 
 .osc-clear-both {
