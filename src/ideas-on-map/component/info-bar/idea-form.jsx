@@ -266,7 +266,7 @@ export default class IdeasForm extends React.Component {
     )
 
     return (
-			<div id={self.id} className={self.props.className || 'osc-info-block-idea-form'} ref={el => (self.instance = el)}>
+			<div id={self.id} className={self.props.className || 'osc-infobar-idea-form'} ref={el => (self.instance = el)}>
 
 			  <div className="osc-spacer"></div>
 

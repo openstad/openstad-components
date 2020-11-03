@@ -144,7 +144,7 @@ export default class IdeasList extends React.Component {
     let titleHML = (<h3 className="osc-title">{self.props.title} ({self.state.ideas.length})</h3>);
 
     return (
-			<div id={self.id} className={self.props.className || 'osc-info-block-ideas-list'} ref={el => (self.instance = el)}>
+			<div id={self.id} className={self.props.className || 'osc-infobar-ideas-list'} ref={el => (self.instance = el)}>
 
         {sortSelector}
 
@@ -177,7 +177,7 @@ export default class IdeasList extends React.Component {
               </div>);
           }
           return (
-            <div className={`osc-info-block-ideas-list-idea${self.state.currentMouseOverIdea && self.state.currentMouseOverIdea != idea.id ? ' osc-opacity-65' : ''}`} onClick={(event) => self.config.onIdeaClick(event, idea)} key={'info-block-' + i} onMouseOver={e => self.dispatchMouseOverListItem(e, idea)} onMouseOut={e => self.dispatchMouseOutListItem(e)}>
+            <div className={`osc-infobar-ideas-list-idea${self.state.currentMouseOverIdea && self.state.currentMouseOverIdea != idea.id ? ' osc-opacity-65' : ''}`} onClick={(event) => self.config.onIdeaClick(event, idea)} key={'infobar-' + i} onMouseOver={e => self.dispatchMouseOverListItem(e, idea)} onMouseOut={e => self.dispatchMouseOutListItem(e)}>
               <div className="osc-content">
                 <div className="osc-idea-image-container">
                   <OpenStadComponentImage config={{}} idea={idea} key={'image-' + idea.id}/>

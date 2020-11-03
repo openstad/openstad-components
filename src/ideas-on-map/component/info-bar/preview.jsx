@@ -6,7 +6,8 @@ import OpenStadComponentImage from '../../../idea-image/index.jsx';
 
 'use strict';
 
-// todo: selectedidea moet via idea-overview.tile gaan werken
+// todo: dit moet nog heel erg opgeschoond
+// todo: selectedidea weergave kan met idea-overview.tile gaan werken
 
 export default class Preview extends React.Component {
 
@@ -22,8 +23,8 @@ export default class Preview extends React.Component {
       api: {
       },
       content: {
-        noSelectionLoggedInHTML: '<div class=\"osc-info-block-default-block\"><div class=\"osc-info-block-default-block-line osc-line-1\">Klik op een plek op de kaart om een nieuw punt toe te voegen.</div><div class=\"osc-info-block-default-block-line osc-line-2\">Selecteer een inzending op de kaart om meer informatie over de inzending te bekijken.</div><div class=\"osc-info-block-default-block-line osc-line-3\">Bekijk hieronder de inzendingen die nu zichtbaar zijn op de kaart.</div></div>',
-        noSelectionNotLoggedInHTML: '<div class=\"osc-info-block-default-block\"><div class=\"osc-info-block-default-block-line osc-line-1\">Klik op een plek op de kaart om een nieuw punt toe te voegen.</div><div class=\"osc-info-block-default-block-line osc-line-2\">Selecteer een inzending op de kaart om meer informatie over de inzending te bekijken.</div><div class=\"osc-info-block-default-block-line osc-line-3\">Bekijk hieronder de inzendingen die nu zichtbaar zijn op de kaart.</div></div>',
+        noSelectionLoggedInHTML: '<div class=\"osc-infobar-default-block\"><div class=\"osc-infobar-default-block-line osc-line-1\">Klik op een plek op de kaart om een nieuw punt toe te voegen.</div><div class=\"osc-infobar-default-block-line osc-line-2\">Selecteer een inzending op de kaart om meer informatie over de inzending te bekijken.</div><div class=\"osc-infobar-default-block-line osc-line-3\">Bekijk hieronder de inzendingen die nu zichtbaar zijn op de kaart.</div></div>',
+        noSelectionNotLoggedInHTML: '<div class=\"osc-infobar-default-block\"><div class=\"osc-infobar-default-block-line osc-line-1\">Klik op een plek op de kaart om een nieuw punt toe te voegen.</div><div class=\"osc-infobar-default-block-line osc-line-2\">Selecteer een inzending op de kaart om meer informatie over de inzending te bekijken.</div><div class=\"osc-infobar-default-block-line osc-line-3\">Bekijk hieronder de inzendingen die nu zichtbaar zijn op de kaart.</div></div>',
         selectionActiveLoggedInHTML: 'Ingelogd: er is een punt geselecteerd binnen de polygon, met een adres: {address} en {addButton}.',
         selectionInactiveLoggedInHTML: 'Ingelogd: er is een punt geselecteerd buiten de polygon, met een {address}',
         selectionActiveNotLoggedInHTML: 'Niet ingelogd: er is een punt geselecteerd binnen de polygon, met een adres: {address} en {loginButton} of <a href="{loginLink}">login link</a>.',
@@ -65,8 +66,9 @@ export default class Preview extends React.Component {
 		document.dispatchEvent(event);
   }
 
-  dispatchSelectedIdeaClick() {
-    console.log('dispatchSelectedIdeaClick moet nog');
+  dispatchSelectedIdeaClick(e, idea) {
+		var event = new window.CustomEvent('osc-selected-idea-click', { detail: { idea } });
+		document.dispatchEvent(event);
   }
   
   dispatchClosePreview(e, what) {
@@ -131,11 +133,11 @@ export default class Preview extends React.Component {
         addButton = (
           <span className="osc-new-idea-buttons">
             {self.config.types.map(
-              type => {
+              (type, i) => {
                 let typeDef = type;
                 if (!typeDef.auth || ( typeDef.auth.createableBy && OpenStadComponentLibs.user.hasRole( self.config.user, typeDef.auth.createableBy ) )) {
                   let buttonBgHTML = typeDef ? <div className="osc-button-background-image" dangerouslySetInnerHTML={{ __html: typeDef.buttonicon && typeDef.buttonicon.html || '' }}></div> : null;
-                  return (<button className="osc-button osc-button-white" onClick={(event) => self.dispatchNewIdeaClick(event, typeDef.id || typeDef.name)}>{buttonBgHTML}{ typeDef && typeDef.buttonLabel || 'Nieuw punt toevoegen' }</button>)
+                  return (<button className="osc-button osc-button-white" onClick={(event) => self.dispatchNewIdeaClick(event, {typeId: typeDef.id || typeDef.name})} key={`osc-button-${i}`}>{buttonBgHTML}{ typeDef && typeDef.buttonLabel || 'Nieuw punt toevoegen' }</button>)
                 } else return null;
               }
             )}
@@ -174,7 +176,7 @@ export default class Preview extends React.Component {
       contentHTML = OpenStadComponentLibs.reactTemplate({ html: contentHTML, addButton, loginButton })
 
       selectedLocationHTML = (
-			  <div className="osc-info-block-new-idea">
+			  <div className="osc-infobar-new-idea">
           <button className="osc-close-button-black" onClick={(event) => self.dispatchClosePreview(event, 'location')} ref={el => (self.resetButton = el)}/>
           {contentHTML}
         </div>
@@ -211,10 +213,10 @@ export default class Preview extends React.Component {
           </div>);
       }
       selectedIdeaHTML = (
-			  <div className="osc-info-block-selected-idea" onClick={(event) => self.dispatchSelectedIdeaClick(event, self.props.selectedIdea)}>
+			  <div className="osc-infobar-selected-idea" onClick={(event) => self.dispatchSelectedIdeaClick(event, self.props.selectedIdea)}>
           <button className="osc-close-button-black" onClick={(event) => self.dispatchClosePreview(event, 'idea')} ref={el => (self.resetButton = el)}/>
           <h3>Geselecteerd</h3>
-          <div className="osc-info-block-selected-idea-idea">
+          <div className="osc-infobar-selected-idea-idea">
             <div className="osc-idea-image-container">
               <OpenStadComponentImage config={{}} idea={idea} key={'image-' + idea.id}/>
             </div>
@@ -246,7 +248,7 @@ export default class Preview extends React.Component {
       noSelectionHTML = noSelectionHTML.replace(/\{loginLink\}/g, loginLink);
       noSelectionHTML = OpenStadComponentLibs.reactTemplate({ html: noSelectionHTML, addButton, loginButton })
       defaultBlockHTML = (
-			  <div className={`osc-info-block-default-block${ self.config.content.showNoSelectionOnMobile ? ' osc-visible-on-mobile' : '' }`}>{noSelectionHTML}</div>
+			  <div className={`osc-infobar-default-block${ self.config.content.showNoSelectionOnMobile ? ' osc-visible-on-mobile' : '' }`}>{noSelectionHTML}</div>
       );
       mobileTitle = `${self.config.ideaName} in dit gebied (${self.state.ideas && self.state.ideas.length || 0})`;
 
