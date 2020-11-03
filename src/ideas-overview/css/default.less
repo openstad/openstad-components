@@ -1,0 +1,36 @@
+@import (reference) '../../component/css/default.less';
+@import './ideas-list.less';
+@import './ideas-filterbar.less';
+@import './ideas-filter.less';
+@import './ideas-search.less';
+@import './ideas-sort.less';
+@import './idea-tile.less';
+
+@margin: 20px;
+
+.osc-ideas-overview {
+
+  width: 100%;
+
+  .osc-tile-list-container {
+    
+    overflow-x: hidden;
+  
+    .osc-tile-list {
+      width: calc( 100% + @margin );
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: flex-start;
+    }
+
+  }
+
+  .osc-align-right-container {
+    .osc-align-right-container()
+  }
+
+  .osc-margin-right {
+    .osc-margin-right();
+  }
+
+}

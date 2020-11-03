@@ -1,0 +1,216 @@
+@import (reference) '../../component/css/default.less';
+
+// flex voor de colommen is misschien mooier?
+
+
+.osc-idea-tile {
+
+  position: relative;
+  width: 100%;
+  margin-bottom: @margin;
+  margin-right: @margin;
+
+  .osc-idea-image-container {
+    background-color: white;
+  }
+
+  .osc-idea-tile-content {
+
+    position: relative;
+    margin-top: 12px;
+    padding: 10px;
+    background-color: #f6f7f7;
+
+    .osc-theme-and-area {
+      width: 100%;
+      margin: 0 0 12px 0;
+      font-size: 14px;
+      font-style: italic;
+      line-height: 18px;
+      color: #999;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+
+      .osc-divider {
+        display: inline-block;
+        position: relative;
+        width: 21px;
+        &:before {
+          position: absolute;
+          top: -15px;
+          left: 10px;
+          content: "|"
+        }
+      }
+
+      .osc-theme,
+      .osc-area {
+        display: inline-block;
+      }
+
+    }
+
+    .osc-title {
+      font-size: 16px;
+      margin: 0 0 12px 0;
+      padding: 0;
+    }
+
+    .osc-summary {
+      overflow: hidden;
+      line-height: 1.2em;
+      margin: 0 0 12px 0;
+      padding: 0;
+    }
+
+    .osc-idea-stats-container {
+
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
+
+      width: 100%;
+      margin: 0;
+
+      font-size: 15px;
+
+      .osc-idea-stat {
+        width: calc(( 100% - ( 2 * @margin ) ) / 3);
+      }
+
+      .osc-yes-votes {
+        position: relative;
+        width: 40px;
+        padding-left: 30px;
+        line-height: 30px;
+        &:after {
+          position: absolute;
+          top: 0;
+          left: 0;
+          .osc-thumbs-up-outline-background();
+          width: 25px;
+          height: 25px;
+          content: '';
+        }
+      }
+
+      .osc-no-votes {
+        position: relative;
+        width: 40px;
+        padding-left: 30px;
+        line-height: 30px;
+        &:after {
+          position: absolute;
+          top: 7px;
+          left: 0;
+          .osc-thumbs-down-outline-background();
+          width: 25px;
+          height: 25px;
+          content: '';
+        }
+      }
+
+      .osc-reactions {
+        position: relative;
+        width: 40px;
+        padding-left: 30px;
+        line-height: 30px;
+        &:after {
+          position: absolute;
+          top: 0;
+          left: 0;
+          .osc-reactions-outline-background();
+          width: 25px;
+          height: 25px;
+          content: '';
+        }
+      }
+
+    }
+
+  }
+
+  .osc-typeicon {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 34px;
+    height: 34px;
+  }
+
+  &.osc-displaytype-list {
+
+    display: flex;
+    flex-flow: row;
+    justify-content: flex-start;
+
+    .osc-idea-image-container {
+      min-width: 35%;
+      max-width: 35%;
+      width: 35%;
+      flex-grow: 1;
+    }
+
+    .osc-idea-tile-content {
+
+      margin-top: 0;
+      padding-left: 3%;
+      padding-right: 5%;
+      flex-grow: 8;
+
+      .osc-idea-stats-container {
+
+        justify-content: flex-start;
+
+        .osc-yes-votes {
+          min-width: 70px;
+        }
+        .osc-no-votes {
+          min-width: 70px;
+        }
+
+        .osc-reactions {
+          min-width: 70px;
+        }
+
+      }
+
+    }
+
+  }
+
+  &.osc-displaytype-grid {
+  }
+
+  &.osc-displaytype-tiles {
+
+    .osc-typeicon {
+      top: 10px;
+      bottom: auto;
+      right: 10px;
+    }
+
+  }
+
+  &.osc-2-columns {
+    width: calc(( 100% - ( 2 * @margin ) ) / 2);
+  }
+
+  &.osc-3-columns {
+    width: calc(( 100% - ( 3 * @margin ) ) / 3);
+  }
+
+  &.osc-4-columns {
+    width: calc(( 100% - ( 4 * @margin ) ) / 4);
+  }
+
+  &.osc-5-columns {
+    width: calc(( 100% - ( 5 * @margin ) ) / 5);
+  }
+
+  &.osc-6-columns {
+    width: calc(( 100% - ( 6 * @margin ) ) / 6);
+  }
+
+}
