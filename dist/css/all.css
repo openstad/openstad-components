@@ -9136,6 +9136,23 @@ form.osc-form {
   padding: 0 10px;
   content: ' | ';
 }
+.osc-reactions .osc-reply .osc-reaction-user.osc-is-admin,
+.osc-reactions .osc-reaction .osc-reaction-user.osc-is-admin {
+  position: relative;
+  padding-left: 20px;
+}
+.osc-reactions .osc-reply .osc-reaction-user.osc-is-admin:before,
+.osc-reactions .osc-reaction .osc-reaction-user.osc-is-admin:before {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MC41NyA0NC44NiIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQ0Ij48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6I2FiYWJhYjt9LmNscy0ye2ZpbGw6I2VjMDAwMDt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPmthYXJ0LXZsYWctZ3Jvb3Q8L3RpdGxlPjxnIGlkPSJMYXllcl8yIiBkYXRhLW5hbWU9IkxheWVyIDIiPjxnIGlkPSJJREVFX0RFVEFJTCIgZGF0YS1uYW1lPSJJREVFIERFVEFJTCI+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNS40OCw0Mi4yOVYzOS44NkMyLjMsNDAuMiwwLDQxLjE2LDAsNDIuMjljMCwxLjQyLDMuNiwyLjU3LDgsMi41N3M4LTEuMTUsOC0yLjU3YzAtMS4xNS0yLjM4LTIuMTItNS42NS0yLjQ1djIuNDVaIi8+PHBvbHlnb24gY2xhc3M9ImNscy0yIiBwb2ludHM9IjQwLjQgMjUuMiAyNy44OSAxMi42OSA0MC41OCAwIDUuNDggMCA1LjQ4IDM5Ljg2IDUuNDggNDIuMjkgMTAuNDMgNDIuMjkgMTAuNDQgMzkuODQgMTAuNSAyNS4yIDQwLjQgMjUuMiIvPjwvZz48L2c+PC9zdmc+);
+  position: absolute;
+  top: 2px;
+  left: 0px;
+  width: 16px;
+  height: 16px;
+  content: '';
+}
 .osc-reactions .osc-reply .osc-reaction-date,
 .osc-reactions .osc-reaction .osc-reaction-date {
   display: inline-block;

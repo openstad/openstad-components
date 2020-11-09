@@ -35,13 +35,13 @@ export default class IdeasDetails extends React.Component {
       showLabels: false,
       labels: {},
       types: null,
-      typeLabel: 'Thema',
       allowMultipleImages: false,
 		};
 
 		this.config = merge.recursive(defaultConfig, this.config, this.props.config || {})
     if (!this.config.shareChannelsSelection) this.config.shareChannelsSelection = ["facebook","twitter","mail","whatsapp"];
-
+    if (typeof this.config.metaDataTemplate == 'undefined') this.config.metaDataTemplate = '<span class="ocs-gray-text">Door </span>{username} <span class="ocs-gray-text"> op </span>{createDate} <span class="ocs-gray-text">&nbsp;&nbsp;|&nbsp;&nbsp;</span> <span class="ocs-gray-text">Thema: </span>{theme}';
+    
     this.state = {
       idea: this.props.idea,
       ideaId: ( props.idea && props.idea.id ) || this.config.ideaId,
@@ -54,10 +54,17 @@ export default class IdeasDetails extends React.Component {
 
     let self = this;
     
-		self.reactionStoredListener = function(event) {
+		self.reactionAddedListener = function(event) {
+      console.log('++++++++++++++++++++');
+      self.onReactionStored(event.detail, true);
+    }
+    document.addEventListener('osc-new-reaction-stored', self.reactionAddedListener);
+
+		self.reactionEditedListener = function(event) {
+      console.log('--------------------');
       self.onReactionStored(event.detail);
     }
-    document.addEventListener('osc-reaction-stored', self.reactionStoredListener);
+    document.addEventListener('osc-reaction-edited', self.reactionEditedListener);
 
 		self.reactionDeletedListener = function(event) {
       self.onReactionDeleted(event.detail);
@@ -79,7 +86,8 @@ export default class IdeasDetails extends React.Component {
 	}
 
   componentWillUnmount() {
-		document.removeEventListener('osc-reaction-stored', this.reactionStoredListener);
+		document.removeEventListener('osc-new-reaction-stored', this.reactionAddedListener);
+		document.removeEventListener('osc-reaction-edited', this.reactionEditedListener);
 		document.removeEventListener('osc-reaction-deleted', this.reactionDeletedListener);
 		document.removeEventListener('osc-new-poll-stored', this.pollCreatedListener);
 		document.removeEventListener('osc-poll-deleted', this.pollDeletedListener);
@@ -112,8 +120,8 @@ export default class IdeasDetails extends React.Component {
     this.showPollForm();
   }
   
-  onReactionStored(data) {
-    this.state.idea.argCount++;
+  onReactionStored(data, isNew) {
+    if (isNew) this.state.idea.argCount++;
     this.setState({ idea: this.state.idea });
   }
 
@@ -298,11 +306,6 @@ export default class IdeasDetails extends React.Component {
       );
     }
 
-    let authorHTML = idea.user.nickName || idea.user.fullName || idea.user.firstName +' ' + idea.user.lastName;
-    if (this.config.linkToUserPageUrl) {
-      authorHTML = <a href={this.config.linkToUserPageUrl + '/' + idea.user.id} className="osc-author-link">{authorHTML}</a>
-    }
-
     let shareButtonsHTML = null;
     if (self.config.shareChannelsSelection.length) {
       let facebookButtonHTML = self.config.shareChannelsSelection.includes('facebook') ? (<li><a className="osc-share-facebook" target="_blank" href={ 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(document.location.href) }>Facebook</a></li>) : null;
@@ -322,7 +325,16 @@ export default class IdeasDetails extends React.Component {
 
 
     }
-    
+
+    let authorHTML = idea.user.nickName || idea.user.fullName || idea.user.firstName +' ' + idea.user.lastName;
+    if (this.config.linkToUserPageUrl) {
+      authorHTML = <a href={this.config.linkToUserPageUrl + '/' + idea.user.id} className="osc-author-link">{authorHTML}</a>
+    }
+
+    let metaDataHTML = self.config.metaDataTemplate;
+    metaDataHTML = metaDataHTML.replace(/\{createDate\}/, idea.createDateHumanized);
+    metaDataHTML = metaDataHTML.replace(/\{theme\}/, idea.extraData.theme);
+    metaDataHTML = OpenStadComponentLibs.reactTemplate({ html: metaDataHTML, username: authorHTML })
 
     return (
 			<div id={self.id} className={self.props.className || 'osc-info-block-idea-details'} ref={el => (self.instance = el)}>
@@ -353,10 +365,7 @@ export default class IdeasDetails extends React.Component {
             </div>
 
             <p className="">
-              <span className="ocs-gray-text">Door </span>{authorHTML}
-              <span className="ocs-gray-text"> op </span>{idea.createDateHumanized}
-						  <span className="ocs-gray-text">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-			        <span className="ocs-gray-text">{self.config.typeLabel}: </span>{idea.extraData.theme}
+              {metaDataHTML}
             </p>
 
             {modBreakHTML}

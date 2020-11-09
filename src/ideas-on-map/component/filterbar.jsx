@@ -1,3 +1,4 @@
+import merge from 'merge';
 import React from 'react';
 import Search from './search.jsx';
 
@@ -13,8 +14,11 @@ export default class Filterbar extends React.Component {
       types: ( props.config && props.config.types ) || [],
       typesFilterLabel: 'Alle thema\'s',
       areas: ( props.config && props.config.areas ) || [],
+      search: {},
 		};
-		this.config = Object.assign(defaultConfig, this.props.config || {})
+		this.config = merge.recursive(this.defaultConfig, this.config, props.config || {})
+
+    this.config.searchIn = typeof props.config.search.searchIn == 'object' && props.config.search.searchIn || ['ideas', 'addresses'];
 
     this.state = {
       selectedType: undefined,
@@ -101,14 +105,22 @@ export default class Filterbar extends React.Component {
       );
     }
 
+    let searchHTML = null;
+    if ( this.config.searchIn && this.config.searchIn.length && this.config.doSearchFunction) {
+      searchHTML = (
+        <div className="osc-search-container">
+          <div className="osc-search-button" onClick={() => self.toggleMobileActiveSelector('search')}></div>
+			    <Search config={{ searchIn: this.config.search.searchIn, placeholder: this.config.search.placeholder, doSearchFunction: this.config.doSearchFunction, ideaName: this.config.ideaName }} className={`osc-search${self.state.mobileActiveSelector == 'search' ? ' osc-is-active' : ''}`}/>
+        </div>
+      );
+    }
+
+
     return (
 			<div id={self.id} className={self.props.className || 'osc-filterbar'} ref={el => (self.instance = el)}>
 
-        <div className="osc-search-container">
-          <div className="osc-search-button" onClick={() => self.toggleMobileActiveSelector('search')}></div>
-				  <Search config={{ ...this.config }} className={`osc-search${self.state.mobileActiveSelector == 'search' ? ' osc-is-active' : ''}`}/>
-        </div>
-
+        {searchHTML}
+        
         <div className="osc-selectors-container osc-align-right-container">
 
           <div className={`osc-type-selector-button${ self.state.selectedType && self.state.selectedType != '0'  ? ' osc-active' : '' }`} onClick={() => self.toggleMobileActiveSelector('type')}></div>
