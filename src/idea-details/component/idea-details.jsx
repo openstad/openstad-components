@@ -55,13 +55,11 @@ export default class IdeasDetails extends React.Component {
     let self = this;
     
 		self.reactionAddedListener = function(event) {
-      console.log('++++++++++++++++++++');
       self.onReactionStored(event.detail, true);
     }
     document.addEventListener('osc-new-reaction-stored', self.reactionAddedListener);
 
 		self.reactionEditedListener = function(event) {
-      console.log('--------------------');
       self.onReactionStored(event.detail);
     }
     document.addEventListener('osc-reaction-edited', self.reactionEditedListener);

@@ -214,7 +214,10 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 		document.addEventListener('osc-idea-liked', function(event) {
       self.onIdeaLiked(event.detail);
     });
-		document.addEventListener('osc-reaction-stored', function(event) {
+		document.addEventListener('osc-new-reaction-stored', function(event) {
+      self.onReactionStored(event.detail, true);
+    });
+		document.addEventListener('osc-reaction-edited', function(event) {
       self.onReactionStored(event.detail);
     });
 		document.addEventListener('osc-reaction-deleted', function(event) {
@@ -777,17 +780,18 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     idea.yes += data.change;
   }
 
-  onReactionStored(data) {
+  onReactionStored(data, isNew) {
+    if (isNew) {
     let idea = this.state.ideas.find( idea => idea.id == data.ideaId );
-    idea.argCount++;
-    setTimeout(e => { window.location.hash = `#osc-reaction-${data.id}` }, 1000);
+      idea.argCount++;
+    }
   }
 
   onReactionDeleted(data) {
     let idea = this.state.ideas.find( idea => idea.id == data.ideaId );
     idea.argCount--;
   }
-  
+
   onChangeTypeFilter(value) {
 
     let self = this;
