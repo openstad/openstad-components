@@ -106,7 +106,8 @@ export default class Filterbar extends React.Component {
     }
 
     let searchHTML = null;
-    if ( this.config.searchIn && this.config.searchIn.length && this.config.doSearchFunction) {
+    console.log(self.config);
+    if ( self.config.searchIn && self.config.searchIn.length && self.config.doSearchFunction) {
       searchHTML = (
         <div className="osc-search-container">
           <div className="osc-search-button" onClick={() => self.toggleMobileActiveSelector('search')}></div>
