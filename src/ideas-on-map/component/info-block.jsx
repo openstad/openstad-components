@@ -135,7 +135,7 @@ export default class InfoBlock extends React.Component {
                 let typeDef = type;
                 if (!typeDef.auth || ( typeDef.auth.createableBy && OpenStadComponentLibs.user.hasRole( self.config.user, typeDef.auth.createableBy ) )) {
                   let buttonBgHTML = typeDef ? <div className="osc-button-background-image" dangerouslySetInnerHTML={{ __html: typeDef.buttonicon && typeDef.buttonicon.html || '' }}></div> : null;
-                  return (<button className="osc-button osc-button-white" onClick={(event) => self.dispatchNewIdeaClick(event, typeDef.id || typeDef.name)}>{buttonBgHTML}{ typeDef && typeDef.buttonLabel || 'Nieuw punt toevoegen' }</button>)
+                  return (<button className={'osc-button osc-button-white' + ( typeDef && typeDef.auth && typeDef.auth.createableBy ? ` osc-button-required-role-is-${typeDef.auth.createableBy}` : '' )} onClick={(event) => self.dispatchNewIdeaClick(event, typeDef.id || typeDef.name)}>{buttonBgHTML}{ typeDef && typeDef.buttonLabel || 'Nieuw punt toevoegen' }</button>)
                 } else return null;
               }
             )}
