@@ -29,7 +29,7 @@ export default class IdeasSort extends OpenStadComponent {
         
   }
 
-  doSort(ideas, sortOrder) {
+  doSort({ ideas, sortOrder, center }) {
 
     sortOrder = sortOrder || this.state.currentValue;
 
@@ -53,6 +53,7 @@ export default class IdeasSort extends OpenStadComponent {
 				ideas = ideas.sort( function(a,b) { return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime() });
 				break;
 			case 'distance':
+        center = center || this.config.center;
 				ideas = ideas
           .map( idea => { idea._distance = Math.sqrt( Math.pow( idea.location.coordinates[0] - center.lat, 2 ) + Math.pow( idea.location.coordinates[1] - center.lng, 2 ) ); return idea; } )
           .sort( function(a,b) { return a._distance - b._distance })
@@ -78,7 +79,7 @@ export default class IdeasSort extends OpenStadComponent {
     let self = this;
     let ideas = self.props.ideas || [];
 
-    ideas = self.doSort(ideas, sortOrder);
+    ideas = self.doSort({ ideas, sortOrder });
 
     this.setState({
       ideas,
@@ -95,7 +96,8 @@ export default class IdeasSort extends OpenStadComponent {
     let self = this;
     let ideas = self.props.ideas || [];
 
-    if (!self.config.showSort) {
+    let showSort = typeof self.props.showSort != 'undefined' ? self.props.showSort : self.config.showSort;
+    if (!showSort) {
       return null;
     }
 

@@ -25,8 +25,6 @@ export default class OpenStadComponentReactions extends OpenStadComponent {
       siteId: null,
       ideaId: null,
       title: null,
-      descriptionMinLength: 30,
-      descriptionMaxLength: 500,
       user: null,
       loginUrl: '',
       api: {

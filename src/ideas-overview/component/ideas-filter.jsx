@@ -32,8 +32,7 @@ export default class IdeasFilter extends OpenStadComponent {
 
     let self = this;
     value = value || this.state.currentValue;
-    console.log('doFilter', value);
-
+    // console.log('doFilter', value);
 
     ideas = ideas.filter(idea => {
       let fieldName = self.config.fieldName;

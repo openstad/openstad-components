@@ -1,9 +1,8 @@
 import merge from 'merge';
 import React from 'react';
 
-import OpenStadComponentLibs from '../../../libs/index.jsx';
-
-import OpenStadComponentForms from '../../../forms/index.jsx';
+import OpenStadComponentLibs from '../../libs/index.jsx';
+import OpenStadComponentForms from '../../forms/index.jsx';
 
 // import OpenStadComponentImageUpload from './openstad-component-formelements/image-upload.jsx';
 // import OpenStadComponentFormelementsInputWithCounter from './openstad-component-formelements/input-with-counter.jsx';
@@ -32,7 +31,7 @@ export default class IdeasForm extends React.Component {
 		self.config = merge.recursive(self.defaultConfig, self.config, props.config || {})
     self.config.fields = [ ...self.config.fields ];
 
-    let fields = self.config.fields || [];
+    let fields = self.config.idea.fields || [];
 
     if (!self.props.idea.extraData) self.props.idea.extraData = {};
 
@@ -54,20 +53,20 @@ export default class IdeasForm extends React.Component {
 
     let titleField = fields.find(field => field.name == 'title');
     if (titleField) {
-		  titleField.minLength = self.config.titleMinLength;
-		  titleField.maxLength = self.config.titleMaxLength;
+		  titleField.minLength = self.config.idea.titleMinLength;
+		  titleField.maxLength = self.config.idea.titleMaxLength;
     }
 
     let summaryField = fields.find(field => field.name == 'summary');
     if (summaryField) {
-		  summaryField.minLength = self.config.summaryMinLength;
-		  summaryField.maxLength = self.config.summaryMaxLength;
+		  summaryField.minLength = self.config.idea.summaryMinLength;
+		  summaryField.maxLength = self.config.idea.summaryMaxLength;
     }
 
     let descriptionField = fields.find(field => field.name == 'description');
     if (descriptionField) {
-		  descriptionField.minLength = self.config.descriptionMinLength;
-		  descriptionField.maxLength = self.config.descriptionMaxLength;
+		  descriptionField.minLength = self.config.idea.descriptionMinLength;
+		  descriptionField.maxLength = self.config.idea.descriptionMaxLength;
     }
 
     let imageField = fields.find(field => field.inputType == 'image-upload'); // TODO: multiple images?
@@ -86,7 +85,7 @@ export default class IdeasForm extends React.Component {
             choices.push({ title: typeDef.name, value: typeDef.id || typeDef.value})
           }
         });
-        self.config.fields.push({
+        self.config.idea.fields.push({
 				  name: "typeId",
 				  title: "Type inzending",
 				  value: self.props.idea.typeId,
@@ -97,7 +96,7 @@ export default class IdeasForm extends React.Component {
       }
 
       // moderator
-      self.config.fields.push({
+      self.config.idea.fields.push({
 				name: "modBreak",
 				title: "Moderator reactie",
 				value: self.props.idea.modBreak,
@@ -111,7 +110,7 @@ export default class IdeasForm extends React.Component {
 
       // hidden: typeId
       if (self.config.types && self.config.typeField == 'typeId') {
-        self.config.fields.push({
+        self.config.idea.fields.push({
 				  name: "typeId",
 				  value: self.props.idea.typeId,
 				  inputType: "hidden",
@@ -138,7 +137,7 @@ export default class IdeasForm extends React.Component {
   }
 
   dispatchUpdateEditIdea(idea) {
-		var event = new window.CustomEvent('updateEditIdea', { detail: { idea } });
+		var event = new window.CustomEvent('osc-update-edit-idea', { detail: { idea } });
 		document.dispatchEvent(event);
   }
 
@@ -228,7 +227,7 @@ export default class IdeasForm extends React.Component {
         })
         .then( json => {
           self.setState({ isBusy: false }, () => {
-		        var event = new window.CustomEvent('newIdeaStored', { detail: { idea: json } });
+		        var event = new window.CustomEvent('osc-new-idea-stored', { detail: { idea: json } });
 		        document.dispatchEvent(event);
           })
         })
@@ -262,7 +261,7 @@ export default class IdeasForm extends React.Component {
 
     let formHTML = null;
     formHTML = (
-      <OpenStadComponentForms.Form config={ self.config } values={{ typeId: self.state.formfields.typeId /* typeId is hidden */ }} ref={(el) => { self.form = el;}}/>
+      <OpenStadComponentForms.Form config={{ fields: self.config.idea.fields }} values={{ typeId: self.state.formfields.typeId /* typeId is hidden */ }} ref={(el) => { self.form = el;}}/>
     )
 
     return (

@@ -2,8 +2,8 @@ import merge from 'merge';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Filterbar from './filterbar.jsx';
-import InfoBar from './info-bar/info-bar.jsx';
-import Preview from './info-bar/preview.jsx';
+import InfoBar from './infobar.jsx';
+import Preview from './preview.jsx';
 import Map from './map.jsx';
 
 import OpenStadComponent from '../../component/index.jsx';
@@ -13,7 +13,7 @@ import OpenStadComponentLibs from '../../libs/index.jsx';
 // TODO: editIdea vs newIdea opschonen
 // TODO: vervang handle functies door events, bijvoorbeeld bij opzoeken adres
 // TODO: events renamen naar osc-xxx
-// TODO: remove event listener is niet consequent doorgevoerd
+// TODO: remove event listener is nog niet overal consequent doorgevoerd
 
 'use strict';
 
@@ -27,30 +27,16 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
 		// config
 		self.defaultConfig = {
-      displayType: 'complete',
-      displayWidth: null,
-      displayHeight: null,
+      display: {
+        type: 'complete',
+        width: null,
+        height: null,
+      },
       canSelectLocation: true,
       types: [],
       typeField: null,
-
-      // dit is opgezet maar wordt niet genbruikt en is daarom niet afgemaakt; latere wijzigingen maken dat dit niet meer werkt
-      // currentPolygon: undefined,
-      // areas: [
-      //  { name: "Heel West",
-      //    value: "Heel West",
-      //    polygon: [{ "lng": 4.8353454, "lat": 52.3731265 }, { "lng": 4.8422025, "lat": 52.3721002 }, { "lng": 4.8421761, "lat": 52.3695836 }, { "lng": 4.8455807, "lat": 52.3696369 }, { "lng": 4.8476385, "lat": 52.369853 }, { "lng": 4.8477361, "lat": 52.3695885 }, { "lng": 4.8484176, "lat": 52.369697 }, { "lng": 4.8504835, "lat": 52.3653302 }, { "lng": 4.8504956, "lat": 52.3643692 }, { "lng": 4.8501587, "lat": 52.3638376 }, { "lng": 4.8494487, "lat": 52.3633001 }, { "lng": 4.8495059, "lat": 52.3610989 }, { "lng": 4.8489152, "lat": 52.3608149 }, { "lng": 4.8487824, "lat": 52.3578658 }, { "lng": 4.8504012, "lat": 52.3578553 }, { "lng": 4.8518982, "lat": 52.357844 }, { "lng": 4.8538275, "lat": 52.3581295 }, { "lng": 4.854723, "lat": 52.3578629 }, { "lng": 4.854635, "lat": 52.3577532 }, { "lng": 4.85436, "lat": 52.3572975 }, { "lng": 4.8540881, "lat": 52.3564026 }, { "lng": 4.8547969, "lat": 52.3562758 }, { "lng": 4.8698903, "lat": 52.3601067 }, { "lng": 4.8699397, "lat": 52.3600231 }, { "lng": 4.8714122, "lat": 52.3603737 }, { "lng": 4.8712647, "lat": 52.3605634 }, { "lng": 4.8715288, "lat": 52.3605997 }, { "lng": 4.8716826, "lat": 52.3604277 }, { "lng": 4.8738605, "lat": 52.3608533 }, { "lng": 4.8738525, "lat": 52.3610213 }, { "lng": 4.8740097, "lat": 52.3610407 }, { "lng": 4.8741351, "lat": 52.3608935 }, { "lng": 4.8750611, "lat": 52.3608041 }, { "lng": 4.8756501, "lat": 52.3606138 }, { "lng": 4.876429, "lat": 52.3607996 }, { "lng": 4.8765642, "lat": 52.3606177 }, { "lng": 4.876929, "lat": 52.3606957 }, { "lng": 4.8768495, "lat": 52.360911 }, { "lng": 4.8771709, "lat": 52.3609696 }, { "lng": 4.8774, "lat": 52.3607583 }, { "lng": 4.8819952, "lat": 52.3620427 }, { "lng": 4.8813956, "lat": 52.3630818 }, { "lng": 4.8808146, "lat": 52.3634904 }, { "lng": 4.8793708, "lat": 52.3643261 }, { "lng": 4.8792691, "lat": 52.3649574 }, { "lng": 4.8787082, "lat": 52.3658206 }, { "lng": 4.8775395, "lat": 52.3667815 }, { "lng": 4.8767523, "lat": 52.3685117 }, { "lng": 4.8754901, "lat": 52.3697867 }, { "lng": 4.8745065, "lat": 52.3718772 }, { "lng": 4.8745782, "lat": 52.3725454 }, { "lng": 4.8753796, "lat": 52.373407 }, { "lng": 4.8755899, "lat": 52.3743025 }, { "lng": 4.8799131, "lat": 52.3813052 }, { "lng": 4.8796339, "lat": 52.3819128 }, { "lng": 4.880478, "lat": 52.3822531 }, { "lng": 4.8818058, "lat": 52.3843528 }, { "lng": 4.882637, "lat": 52.3854107 }, { "lng": 4.8846503, "lat": 52.3883466 }, { "lng": 4.8857963, "lat": 52.3881476 }, { "lng": 4.8911796, "lat": 52.3884502 }, { "lng": 4.8937804, "lat": 52.3886712 }, { "lng": 4.8956658, "lat": 52.3888313 }, { "lng": 4.8927982, "lat": 52.3933453 }, { "lng": 4.8850924, "lat": 52.398824 }, { "lng": 4.8762366, "lat": 52.3945287 }, { "lng": 4.8726422, "lat": 52.3948206 }, { "lng": 4.8719896, "lat": 52.3947192 }, { "lng": 4.8719508, "lat": 52.3952766 }, { "lng": 4.8715979, "lat": 52.39538 }, { "lng": 4.8667403, "lat": 52.393136 }, { "lng": 4.8643092, "lat": 52.3927072 }, { "lng": 4.8627057, "lat": 52.3938521 }, { "lng": 4.8603441, "lat": 52.3949382 }, { "lng": 4.858593, "lat": 52.3952782 }, { "lng": 4.8569204, "lat": 52.3953667 }, { "lng": 4.8569896, "lat": 52.3938363 }, { "lng": 4.8573172, "lat": 52.3938424 }, { "lng": 4.8574043, "lat": 52.3920751 }, { "lng": 4.8589526, "lat": 52.3912226 }, { "lng": 4.8592744, "lat": 52.3905434 }, { "lng": 4.8592929, "lat": 52.3887899 }, { "lng": 4.8449045, "lat": 52.3887733 }, { "lng": 4.8451066, "lat": 52.3850658 }, { "lng": 4.8446526, "lat": 52.3850638 }, { "lng": 4.8390117, "lat": 52.3850241 }, { "lng": 4.8392807, "lat": 52.3829687 }, { "lng": 4.838548, "lat": 52.3808766 }, { "lng": 4.836707, "lat": 52.3763581 }, { "lng": 4.8353454, "lat": 52.3731265 }] },
-      //  { name: "De Baarsjes",
-      //    value: "De Baarsjes",
-      //    polygon: [{"lng":4.8558724,"lat":52.374202},{"lng":4.8577714,"lat":52.3681953},{"lng":4.8582878,"lat":52.3648623},{"lng":4.8592819,"lat":52.3648966},{"lng":4.8598228,"lat":52.364783},{"lng":4.8613989,"lat":52.3664539},{"lng":4.8661845,"lat":52.3717538},{"lng":4.8664001,"lat":52.3721596},{"lng":4.8663889,"lat":52.372566},{"lng":4.865846,"lat":52.3733281},{"lng":4.8646717,"lat":52.3734961},{"lng":4.8641583,"lat":52.3750737},{"lng":4.8640923,"lat":52.3752839},{"lng":4.8559599,"lat":52.3743342},{"lng":4.8558724,"lat":52.374202}] },
-      //  { name: "Oud West",
-      //    value: "Oud West",
-      //    polygon: [{"lng":4.8546816,"lat":52.3568634},{"lng":4.855041,"lat":52.3563261},{"lng":4.858839,"lat":52.3572696},{"lng":4.8625458,"lat":52.3582427},{"lng":4.8646701,"lat":52.3588487},{"lng":4.868731,"lat":52.3597955},{"lng":4.8703188,"lat":52.3601231},{"lng":4.8717136,"lat":52.3604376},{"lng":4.8738218,"lat":52.3609651},{"lng":4.8763055,"lat":52.3607226},{"lng":4.8776842,"lat":52.3608635},{"lng":4.878167,"lat":52.3610044},{"lng":4.8812676,"lat":52.3618856},{"lng":4.8807043,"lat":52.3623966},{"lng":4.8798675,"lat":52.3633663},{"lng":4.8795778,"lat":52.3639428},{"lng":4.8792613,"lat":52.3644931},{"lng":4.8791272,"lat":52.3650598},{"lng":4.8787785,"lat":52.3656691},{"lng":4.8779202,"lat":52.3663734},{"lng":4.8773838,"lat":52.366809},{"lng":4.8772336,"lat":52.3676312},{"lng":4.8769385,"lat":52.3681389},{"lng":4.8754311,"lat":52.3697536},{"lng":4.8746211,"lat":52.3714043},{"lng":4.8744494,"lat":52.3720594},{"lng":4.8744602,"lat":52.3723083},{"lng":4.8752166,"lat":52.3729895},{"lng":4.8745943,"lat":52.3731762},{"lng":4.870925,"lat":52.3724033},{"lng":4.8680175,"lat":52.3717974},{"lng":4.8665959,"lat":52.3715648},{"lng":4.8654211,"lat":52.3703825},{"lng":4.8641176,"lat":52.3689905},{"lng":4.8628623,"lat":52.3676443},{"lng":4.8616499,"lat":52.3662554},{"lng":4.8604268,"lat":52.3648862},{"lng":4.8602505,"lat":52.3647431},{"lng":4.8591448,"lat":52.3634056},{"lng":4.8580772,"lat":52.3621247},{"lng":4.8575783,"lat":52.3615515},{"lng":4.857117,"lat":52.3604245},{"lng":4.856248,"lat":52.3592681},{"lng":4.8555345,"lat":52.3580035},{"lng":4.855299,"lat":52.357674},{"lng":4.855269,"lat":52.3576447},{"lng":4.855115,"lat":52.3574166},{"lng":4.8549071,"lat":52.3571512},{"lng":4.85479,"lat":52.3570018},{"lng":4.8546816,"lat":52.3568634}] },
-      // ],
-
       titleField: 'title',
       summaryField: 'summary',
-      // areaField: self.config.areaField || 'extraData.gebied',
       user: {},
       api: {
         url: null,
@@ -59,23 +45,6 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       },
       idea: {
         canAddNewIdeas: true,
-        showVoteButtons: true,
-        titleMinLength: 10,
-        titleMaxLength: 20,
-        summaryMinLength: 20,
-        summaryMaxLength: 140,
-        descriptionMinLength: 140,
-        descriptionMaxLength: 5000,
-      },
-      argument: {
-        isActive: true,
-        descriptionMinLength: 30,
-        descriptionMaxLength: 500,
-        formIntro: 'Mijn reactie op deze inzending is ...',
-        placeholder: '',
-        requiredUserRole: 'member',
-        ignoreReactionsForIdeaIds: '',
-        closeReactionsForIdeaIds: '',
       },
       content: {
       },
@@ -83,7 +52,6 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 		};
 		self.config = merge.recursive(self.defaultConfig, self.config, props.config || {})
     self.config.ideaName = self.config.ideaName || 'Inzendingen';
-    self.config.search.searchIn = props.config.search && props.config.search.searchIn || ['ideas', 'addresses'];
 
     // defaults
     self.config.doSearchFunction = self.config.doSearchFunction || self.doSearch.bind(self);
@@ -116,6 +84,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     self.state = {
       ideas: [],
       visibleIdeas: [],
+      listedIdeas: [],
       status: 'default', // default, idea-selected, location-selected, idea-details, idea-form
       mobileState: 'closed',
       // oud
@@ -124,7 +93,6 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       // new, maar nog niet overal gebruikt
       selectedIdea: null,
       selectedLocation: null,
-      currentMouseOverIdea: null,
     }
 
   }
@@ -175,15 +143,11 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     });
     
     // handle filter changes
-		document.addEventListener('typeFilterUpdate', function(event) {
-      self.onChangeTypeFilter(event.detail.value);
+	  document.addEventListener('osc-ideas-filter-onchange', function(event) {
+      self.onChangeFilter(event.detail);
     });
-    // document.addEventListener('areaFilterUpdate', function(event) {
-    //   self.onChangeAreaFilter(event.detail.value);
-    // });
 
-
-    // handle infobar events
+    // infobar events
 		document.addEventListener('osc-set-selected-idea', function(event) {
       self.onUpdateSelectedIdea(event.detail);
     });
@@ -199,26 +163,16 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 		document.addEventListener('osc-click-mobile-switcher', function(event) {
       self.onClickMobileSwitcher();
     });
-    
-    
-    // handle infoblock changes oud
-		document.addEventListener('updateSelectedIdea', function(event) {
-      self.onUpdateSelectedIdea(event.detail.idea);
-    });
-		document.addEventListener('updateEditIdea', function(event) {
-      self.onUpdateEditIdea(event.detail.idea);
-    });
-		document.addEventListener('ideaClick', function(event) {
+
+    // ideas list events
+		document.addEventListener('osc-idea-tile-click', function(event) {
       self.onIdeaClick(event.detail.idea);
     });
-		document.addEventListener('selectedIdeaClick', function(event) {
-      self.onSelectedIdeaClick(event.detail.idea);
+		document.addEventListener('osc-idea-tile-mouse-over', function(event) {
+      self.onTileMouseOver(event.detail.idea);
     });
-		document.addEventListener('mouseOverListItem', function(event) {
-      self.onMouseOverListItem(event.detail.idea);
-    });
-		document.addEventListener('mouseOutListItem', function(event) {
-      self.onMouseOutListItem();
+		document.addEventListener('osc-idea-tile-mouse-out', function(event) {
+      self.onTileMouseOut(event.detail.idea);
     });
 
     // details changes
@@ -242,9 +196,12 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     });
 
     // form changes
-		document.addEventListener('newIdeaStored', function(event) {
+		document.addEventListener('osc-new-idea-stored', function(event) {
       document.location.href = "#";
       self.onNewIdeaStored(event.detail.idea);
+    });
+		document.addEventListener('osc-update-edit-idea', function(event) {
+      self.onUpdateEditIdea(event.detail.idea);
     });
     
 	}
@@ -407,27 +364,22 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
 		let searchResult = { ideas: [], locations: [] };
 
-    // search in ideas xxx
-    if (this.config.search.searchIn.includes('ideas')) {
-		  this.state.ideas.forEach((idea) => {
-			  let title = eval(`idea.${self.config.titleField}`) || '';
-        let titlelLc = title.toLowerCase();
-			  let summary = eval(`idea.${self.config.summaryField}`) || '';
-        let summaryLc = summary.toLowerCase();
-			  if (titlelLc.match(searchValueLc) || summaryLc.match(searchValueLc)) {
-				  searchResult.ideas.push({
-					  text: title,
-					  onClick: function() {
-              self.onUpdateSelectedIdea(idea)
-            },
-				  })
-			  }
-		  });
-    }
-
-    if (!this.config.search.searchIn.includes('addresses')) {
-      setImmediate(function(){callback(searchValue, searchResult)});
-    }
+    // search in ideas
+		this.state.ideas.forEach((idea) => {
+			let title = eval(`idea.${self.config.titleField}`) || '';
+      let titlelLc = title.toLowerCase();
+			let summary = eval(`idea.${self.config.summaryField}`) || '';
+      let summaryLc = summary.toLowerCase();
+			if (titlelLc.match(searchValueLc) || summaryLc.match(searchValueLc)) {
+				searchResult.ideas.push({
+					text: title,
+					onClick: function() {
+            //xxx
+            self.onUpdateSelectedIdea(idea)
+          },
+				})
+			}
+		});
 
     // search for addresses
     fetch('https://geodata.nationaalgeoregister.nl/locatieserver/v3/suggest?rows=5&fq=gemeentenaam:amsterdam&fq=*:*&q=' + searchValueLc, {
@@ -479,20 +431,6 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
 	}
 
-  // dit is opgezet maar wordt niet genbruikt en is daarom niet afgemaakt; latere wijzigingen maken dat dit niet meer werkt
-  // setCurrentPolygon(polygon) {
-  //   let state = { ...this.state };
-  //   state.currentPolygon = polygon ? this.map.createCutoutPolygon(polygon): undefined;
-  //   this.setState(state);
-  // }
-
-  // removeCurrentPolygon() {
-  //   this.map.removePolygon(this.state.currentPolygon)
-  //   let state = { ...this.state };
-  //   state.currentPolygon = undefined;
-  //   this.setState(state);
-  // }
-
   getVisibleIdeas() {
 		if ( this.state.mobileState == 'opened' ) { // werkt omdat hij alleen op mobiel opend kan zijn
       return this.state.visibleIdeas;
@@ -504,10 +442,10 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   }
 
   setSelectedLocation(location) {
-    // xxx
+
     let self = this;
 
-    self.map.setSelectedLocation(location)
+    self.map && self.map.setSelectedLocation(location)
 
     if (location)  {
       if (self.infobar.ideaform) {
@@ -519,7 +457,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 			  })
       }
     } else {
-      self.map.unfadeAllMarkers();
+      self.map && self.map.unfadeAllMarkers();
       this.setState({ status: 'default', currentIdea: null, newIdea: null, editIdea: null }, function() {
       });
     }
@@ -564,6 +502,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     // OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-selected', idea && idea.id );
     // OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-details', null);
     this.selectedIdea = idea;
+
     if (idea) {
       this.map.fadeMarkers({exception: idea});
       if (this.infobar) {
@@ -571,7 +510,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         this.infobar.updateIdeas({ ideas: this.state.ideas.filter( x => x.id != idea.id ), sortOrder: 'distance', hideSortButton: true, center: { lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] }, maxLength: 5 });
       }
     } else {
-      this.map.unfadeAllMarkers();
+      this.map && this.map.unfadeAllMarkers();
       if (this.infobar) {
         this.infobar.setSelectedIdea(null);
         this.infobar.updateIdeas({ ideas: this.getVisibleIdeas(), hideSortButton: false });
@@ -604,6 +543,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
           this.setState({ ...this.state, status: 'default', currentIdea: null });
           document.location.href='#';
           this.setSelectedIdea(null);
+          this.setSelectedLocation(null);
           this.setNewIdea(null);
           this.infobar.updateIdeas({ ideas: this.getVisibleIdeas(), hideSortButton: false });
         } else {
@@ -668,6 +608,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
   onChangeMapBoundaries() {
     let self = this;
+    if (!self.map) return;
     self.map.updateFading();
     switch (self.state.status) {
 
@@ -703,6 +644,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     if (this.state.editIdea) this.setNewIdea(null);
     let status = idea ? 'idea-selected' : 'default';
     if (idea) {
+      // xxx
       document.location.href='#S'+idea.id;
     } else {
       document.location.href = "#";
@@ -801,43 +743,21 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     let idea = this.state.ideas.find( idea => idea.id == data.ideaId );
     idea.argCount--;
   }
-
-  onChangeTypeFilter(value) {
-    let self = this;
-    self.setSelectedIdea(null);
-    self.setNewIdea(null);
-    self.setSelectedLocation(null);
-	  self.map.setFilter(function(marker) {
-		  if (value && value !== '0') {
-			  return marker.data && eval(`marker.data.${self.config.typeField}`) && eval(`marker.data.${self.config.typeField}`) == value;
-		  } else {
-			  return true;
-		  }
-	  })
-    self.setState({ status: 'default' })
-    self.map.setBoundsAndCenter();
-    self.onChangeMapBoundaries(); // todo: rename
+  
+  onChangeFilter(filter) {
+    this.setSelectedIdea(null);
+		this.setNewIdea(null);
+		this.setSelectedLocation(null);
+		this.setState({ status: 'default' })
+		this.onChangeMapBoundaries(); // todo: rename
   }
-
-  // dit is opgezet maar wordt niet genbruikt en is daarom niet afgemaakt; latere wijzigingen maken dat dit niet meer werkt
-  // onChangeAreaFilter(area) {
-  //   let self = this;
-  //   self.setSelectedIdea(null);
-  //   self.setNewIdea(null);
-  //   self.removeCurrentPolygon();
-  //   self.setCurrentPolygon( area && area.polygon );
-  //   self.setState({ status: 'default' })
-  //   self.map.setBoundsAndCenter(area && area.polygon || self.config.map.polygon || self.map.markers);
-  // }
-
-  onMouseOverListItem(idea) {
-    this.setState({ currentMouseOverIdea: idea });
+  
+  onTileMouseOver(idea) {
     this.map.fadeMarkers({ exception: idea })
     this.map.updateFading();
   }
 
-  onMouseOutListItem(idea) {
-    this.setState({ currentMouseOverIdea: null });
+  onTileMouseOut(idea) {
     this.map.unfadeAllMarkers()
     if (this.selectedIdea) {
       this.map.fadeMarkers({exception: this.selectedIdea});
@@ -877,7 +797,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 			    <InfoBar config={this.config} displayType="details" idea={this.state.currentIdea} className="osc-ideas-on-map-info" ref={el => (this.infobar = el)}/>
         );
         filterHTML = (
-				  <div className="osc-ideas-on-map-filterbar"><div className="osc-backbutton" onClick={() => this.onClickBackToOverview() }>Terug naar overzicht</div></div>
+				  <div className="osc-ideas-filterbar"><div className="osc-backbutton" onClick={() => this.onClickBackToOverview() }>Terug naar overzicht</div></div>
         );
         break;
 
@@ -886,7 +806,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 			    <InfoBar config={this.config} displayType="form" idea={{ ...this.state.editIdea, user: this.state.editIdea && this.state.editIdea.user || this.config.user }} className="osc-ideas-on-map-info" ref={el => (this.infobar = el)}/>
         );
         filterHTML = (
-				  <div className="osc-ideas-on-map-filterbar"><div className="osc-backbutton" onClick={() => this.hideIdeaForm()}>Terug naar {this.state.editIdea && typeof this.state.editIdea.id == 'number' ? 'idee' : 'overzicht'}</div></div>
+				  <div className="osc-ideas-filterbar"><div className="osc-backbutton" onClick={() => this.hideIdeaForm()}>Terug naar {this.state.editIdea && typeof this.state.editIdea.id == 'number' ? 'idee' : 'overzicht'}</div></div>
         );
         break;
 
@@ -910,7 +830,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 			    <InfoBar config={this.config} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.infobar = el)}/>
         );
         filterHTML = (
-				  <Filterbar id={this.divId + '-filterbar'} config={{ types: this.config.types, typesFilterLabel: this.config.typesFilterLabel, typeField: this.config.typeField, areas: this.config.areas, doSearchFunction: this.config.doSearchFunction, ideaName: this.config.ideaName, search: this.config.search }} className="osc-ideas-on-map-filterbar" ref={el => (this.filterbar = el)}/>
+          <Filterbar config={this.config} className="osc-ideas-filterbar"/>
         );
         break;
 
@@ -919,7 +839,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 			    <InfoBar config={this.config} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.infobar = el)}/>
         );
         filterHTML = (
-				  <Filterbar id={this.divId + '-filterbar'} config={{ types: this.config.types, typesFilterLabel: this.config.typesFilterLabel, typeField: this.config.typeField, areas: this.config.areas, doSearchFunction: this.config.doSearchFunction, ideaName: this.config.ideaName, search: this.config.search }} className="osc-ideas-on-map-filterbar" ref={el => (this.filterbar = el)}/>
+          <Filterbar config={this.config} className="osc-ideas-filterbar"/>
         );
         mobilePopupHTML = null;
         break;
@@ -928,7 +848,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
     let divStyle = {};
     let simpleHTML = null;
-    if ( this.config.displayType == 'simple' ) {
+    if ( this.config.display.type == 'simple' ) {
       filterHTML = null;
       infoHTML = null;
       mobilePopupHTML = null;
@@ -938,16 +858,16 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 1000 }}>
           {buttonHTML}
         </div>)
-      if (this.config.displayWidth) divStyle.width = this.config.displayWidth;
-      if (this.config.displayHeight) divStyle.height = this.config.displayHeight;
+      if (this.config.display.width) divStyle.width = this.config.display.width;
+      if (this.config.display.height) divStyle.height = this.config.display.height;
     }
 
     return (
 			<div id={this.divId} className={`osc-ideas-on-map osc-ideas-on-map-${this.state.status} osc-mobile-${this.state.mobileState}`} style={divStyle} ref={el => (this.instance = el)}>
         {filterHTML}
         {infoHTML}
-        <div className={`osc-ideas-on-map-map osc-ideas-on-map-map-${this.config.displayType}`}>
-			    <Map id={this.divId + '-map'} config={{ ...this.config.map, types: this.config.types, typeField: this.config.typeField, zoomControl: this.config.displayType == 'simple' ? false : true }} ref={el => (this.map = el)}/>
+        <div className={`osc-ideas-on-map-map osc-ideas-on-map-map-${this.config.display.type}`}>
+			    <Map id={this.divId + '-map'} config={{ ...this.config.map, types: this.config.types, typeField: this.config.typeField, zoomControl: this.config.display.type == 'simple' ? false : true }} ref={el => (this.map = el)}/>
         </div>
         {simpleHTML}
         {mobilePopupHTML}

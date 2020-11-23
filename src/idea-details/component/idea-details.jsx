@@ -10,6 +10,8 @@ import OpenStadComponentImage from '../../idea-image/index.jsx';
 
 'use strict';
 
+// todo: een error op fetch wordt niet goed afgevangen
+
 export default class IdeasDetails extends OpenStadComponent {
 
   constructor(props) {
@@ -28,12 +30,16 @@ export default class IdeasDetails extends OpenStadComponent {
       },
       argument: {
         isActive: true,
+        formIntro: 'Mijn reactie op deze inzending is ...',
+        ignoreReactionsForIdeaIds: '',
+        closeReactionsForIdeaIds: '',
       },
       poll: {
         canAddPolls: false,
       },
       labels: {},
       types: null,
+      typeField: 'typeId',
       typeLabel: 'Thema',
 		};
 
@@ -215,9 +221,9 @@ export default class IdeasDetails extends OpenStadComponent {
     let labelHTML = null;
 
     if (self.config.idea.showLabels) {
-      // TODO: idea.extraData.type is tmp voor Gerard Dou
-      let typeId = idea.typeId || idea.extraData.type;
+      let typeId = eval(`idea.${self.config.typeField}`);
       let typeDef = self.config.types && self.config.types.find(def => def.id == typeId || def.value == typeId);
+      console.log('==', typeId, typeDef, self.config.types);
       if (typeDef) {
         let labelText = typeDef.label;
         let backgroundColor = typeDef.backgroundColor;

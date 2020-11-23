@@ -9,7 +9,9 @@ import ReactDOM from 'react-dom';
 import './css/default.less';
 
 // the module
+import OpenStadComponentIdeasList from './component/ideas-list.jsx';
 import OpenStadComponentIdeasOverview from './component/ideas-overview.jsx';
+import OpenStadComponentIdeasFilterbar from './component/ideas-filterbar.jsx';
 import OpenStadComponentIdeasFilter from './component/ideas-filter.jsx';
 import OpenStadComponentIdeasSearch from './component/ideas-search.jsx';
 import OpenStadComponentIdeasSort from './component/ideas-sort.jsx';
@@ -22,7 +24,9 @@ OpenStadComponentIdeasOverview.renderElement = function renderElement( elem, con
 
 export {
   OpenStadComponentIdeasOverview as default,
+  OpenStadComponentIdeasList as IdeasList,
   OpenStadComponentIdeasOverview as IdeasOverview,
+  OpenStadComponentIdeasFilterbar as IdeasFilterbar,
   OpenStadComponentIdeasFilter as IdeasFilter,
   OpenStadComponentIdeasSort as IdeasSort,
   OpenStadComponentIdeasSearch as IdeasSearch,

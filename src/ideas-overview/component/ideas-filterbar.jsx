@@ -14,6 +14,7 @@ export default class IdeasFilterbar extends OpenStadComponent {
     super(props);
 
 		let defaultConfig = {
+      display: {},
 		};
 		this.config = merge.recursive(defaultConfig, this.config, this.props.config || {})
 
@@ -29,16 +30,23 @@ export default class IdeasFilterbar extends OpenStadComponent {
 
     let self = this;
 
-	  document.addEventListener('osc-ideas-search-onchange', function(event) {
+    self.ideasSearchOnchangeListener = function(event) {
       self.doNextPendingResetAction();
-    });
+    }
+	  document.addEventListener('osc-ideas-search-onchange', self.ideasSearchOnchangeListener);
 
-	  document.addEventListener('osc-ideas-filter-onchange', function(event) {
+    self.ideasFilterOnchangeListener = function(event) {
       self.hideMobileActiveSelector();
       self.doNextPendingResetAction();
-    });
+    }      
+	  document.addEventListener('osc-ideas-filter-onchange', self.ideasFilterOnchangeListener);
 
 	}
+
+  componentWillUnmount() {
+    document.removeEventListener('osc-ideas-search-onchange', this.ideasSearchOnchangeListener)
+    document.removeEventListener('osc-ideas-filter-onchange', this.ideasFilterOnchangeListener)
+  }
 
   toggleMobileActiveSelector(which) {
     if (this.state.mobileActiveSelector != which) {
@@ -73,6 +81,11 @@ export default class IdeasFilterbar extends OpenStadComponent {
 	render() {
 
     let self = this;
+
+    let showFilterbar = typeof self.props.showFilterbar != 'undefined' ? self.props.showFilterbar : self.config.display.showFilterbar;
+    if (!showFilterbar) {
+      return null;
+    }
 
     let searchHTML = null;
     if (self.config.search) {

@@ -11,7 +11,8 @@ import IdeasSort from './ideas-sort.jsx';
 // TODO:
 // fixed set of ids
 // filter
-// search
+// search is nu as you type, dat zou ook met suggestions moeten kunnen en dan configurabel zijn
+// gebruik default een configurabele link-to-plan-url denk ik
 // sort positioneren
 // hidesortbutton kan er uit; die hoort in de parent (ideas-on-map)
 
@@ -28,6 +29,7 @@ export default class IdeasOverview extends OpenStadComponent {
       siteId: null,
       title: 'Inzendingen',
       display: {
+        showFilterbar: true,
       },
       idea:{
         titleField: 'title',
@@ -43,47 +45,43 @@ export default class IdeasOverview extends OpenStadComponent {
 		};
 
 		this.config = merge.recursive(defaultConfig, this.config, this.props.config || {})
-    if (!this.config.shareChannelsSelection) this.config.shareChannelsSelection = ["facebook","twitter","mail","whatsapp"];
 
     this.state = {
       ideas: this.props.ideas || [],
       filters: {},
       search: null,
-      // hideSortButton: true,
     };
         
   }
 
 	componentDidMount(prevProps, prevState) {
     let self = this;
-
-	  document.addEventListener('osc-idea-tile-click', function(event) {
-      // self.onIdeaTileClick(event.detail);
-    });
-	  document.addEventListener('osc-idea-tile-mouse-over', function(event) {
-      // self.onIdeaTileMouseOver(event.detail);
-    });
-
-	  document.addEventListener('osc-idea-tile-mouse-out', function(event) {
-      // self.onIdeaTileMouseOut(event.detail);
-    });
-
-	  document.addEventListener('osc-ideas-filter-onchange', function(event) {
+    
+    self.ideasFilterOnchangeListener = function(event) {
       self.updateFilter(event.detail);
-    });
+    };
+    document.addEventListener('osc-ideas-filter-onchange', self.ideasFilterOnchangeListener)
 
-	  document.addEventListener('osc-ideas-search-onchange', function(event) {
+    self.ideasSearchOnchangeListener = function(event) {
       self.updateSearch(event.detail);
-    });
+    };
+    document.addEventListener('osc-ideas-search-onchange', self.ideasSearchOnchangeListener)
 
-	  document.addEventListener('osc-ideas-sort-onchange', function(event) {
+    self.ideasSortOnchangeListener = function(event) {
       self.updateSort(event.detail);
-    });
+    };
+    document.addEventListener('osc-ideas-sort-onchange', self.ideasSortOnchangeListener)
 
-    self.fetchData();
+    if (typeof self.props.ideas == 'undefined') {
+      self.fetchData();
+    }
+
 	}
 
   componentWillUnmount() {
+    document.removeEventListener('osc-ideas-filter-onchange', this.ideasFilterOnchangeListener)
+    document.removeEventListener('osc-ideas-search-onchange', this.ideasSearchOnchangeListener)
+    document.removeEventListener('osc-ideas-sort-onchange', this.ideasSortOnchangeListener)
   }
   
   fetchData() {
@@ -101,7 +99,7 @@ export default class IdeasOverview extends OpenStadComponent {
       .then( json => {
 
         let ideas = json;
-        ideas = self.sorter.doSort(ideas);
+        ideas = self.sorter.doSort({ ideas });
         self.setState({ ideas }, function() {
         });
 
@@ -141,7 +139,8 @@ export default class IdeasOverview extends OpenStadComponent {
 	render() {
 
     let self = this;
-    let ideas = self.state.ideas || [];
+
+    let ideas = typeof self.props.ideas != 'undefined' ? self.props.ideas : self.state.ideas || [];
 
     let filteredIdeas = ideas;
     Object.keys(self.state.filters).forEach((key) => {
@@ -149,8 +148,10 @@ export default class IdeasOverview extends OpenStadComponent {
       filteredIdeas = filter.doFilter(filteredIdeas);
     });
     if (self.state.search) {
-      console.log('filter by search');
       filteredIdeas = self.state.search.doSearch(filteredIdeas);
+    }
+    if (this.props.maxLength) {
+      filteredIdeas = ideas.slice(0, this.props.maxLength);
     }
 
     let titleHML = (<h3 className="osc-title">{self.config.title} ({filteredIdeas.length})</h3>);
@@ -158,8 +159,8 @@ export default class IdeasOverview extends OpenStadComponent {
     return (
 			<div id={self.id} className={`osc-ideas-overview ${self.props.className || ''}`}>
 
-        <IdeasFilterbar config={{ search: self.config.search, filter: self.config.filter }} className="osc-ideas-filterbar"/>
-        <IdeasSort config={{ ...self.config.sort, showSort: self.config.sort.showSort && !self.state.hideSortButton }} ideas={ideas} className="osc-align-right-container" ref={el => self.sorter = el}/>
+        <IdeasFilterbar config={self.config} showFilterbar={self.props.showFilterbar} className="osc-ideas-filterbar"/>
+        <IdeasSort config={{ ...self.config.sort }} ideas={ideas} showSort={!self.props.hideSortButton} className="osc-align-right-container" ref={el => self.sorter = el}/>
         
         {titleHML}
 

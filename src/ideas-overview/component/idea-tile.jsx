@@ -89,19 +89,19 @@ export default class IdeasOverview extends OpenStadComponent {
 
   dispatchIdeaTileClick(event, idea) {
     event.stopPropagation();
-		let newEvent = new window.CustomEvent('osc-idea-tile-click', { detail: { ideaId: idea.id } } );
+		let newEvent = new window.CustomEvent('osc-idea-tile-click', { detail: { idea } } );
 		document.dispatchEvent(newEvent);
   }
 
   dispatchIdeaTileMouseOver(event, idea) {
     event.stopPropagation();
-		let newEvent = new window.CustomEvent('osc-idea-tile-mouse-over', { detail: { ideaId: idea.id } } );
+		let newEvent = new window.CustomEvent('osc-idea-tile-mouse-over', { detail: { idea } } );
 		document.dispatchEvent(newEvent);
   }
 
   dispatchIdeaTileMouseOut(event, idea) {
     event.stopPropagation();
-		let newEvent = new window.CustomEvent('osc-idea-tile-mouse-out', { detail: { ideaId: idea.id } } );
+		let newEvent = new window.CustomEvent('osc-idea-tile-mouse-out', { detail: { idea } } );
 		document.dispatchEvent(newEvent);
   }
 
@@ -189,10 +189,9 @@ export default class IdeasOverview extends OpenStadComponent {
             <div className="osc-typeicon-content" dangerouslySetInnerHTML={{ __html: typeDef.listicon.html }}></div>
           </div>);
       }
-      console.log(typeIconHTML);
     }
 
-    // render
+    // now render
     return (
 			<div id={self.divId} className={`osc-idea-tile osc-displaytype-${self.config.display.type} ${self.props.className || ''}`} onClick={event => self.dispatchIdeaTileClick(event, idea)} onMouseOver={event => self.dispatchIdeaTileMouseOver(event, idea)} onMouseOut={event => self.dispatchIdeaTileMouseOut(event, idea)}>
         <div className="osc-idea-image-container">

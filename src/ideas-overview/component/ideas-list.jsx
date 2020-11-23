@@ -24,10 +24,11 @@ export default class IdeasList extends OpenStadComponent {
 		let defaultConfig = {
       display: {
         title: 'Inzendingen',
-        // type: 'grid-on-one-page',
-        // type: 'linked-tiles',
-        type: 'linked-list',
+        // type: 'grid',
+        type: 'tiles',
+        // type: 'list',
         columns: 3,
+        onMouseOverTileFadeOthers: false,
       },
       idea:{
         titleField: 'title',
@@ -39,35 +40,43 @@ export default class IdeasList extends OpenStadComponent {
         defaultValue: 'createdtime,desc',
       },
       types: [],
-      typeLabel: 'Thema',
 		};
 
 		this.config = merge.recursive(defaultConfig, this.config, this.props.config || {})
-    if (!this.config.shareChannelsSelection) this.config.shareChannelsSelection = ["facebook","twitter","mail","whatsapp"];
 
     this.state = {
-      //currentSortOrder: this.config.idea.sort.defaultValue,
-      //hideSortButton: !this.config.idea.sort.hideSortButton,
+      highLightIdeaId: null,
     };
         
   }
 
 	componentDidMount(prevProps, prevState) {
+
     let self = this;
 
-	  document.addEventListener('osc-idea-tile-click', function(event) {
-      // self.onIdeaTileClick(event.detail);
-    });
-	  document.addEventListener('osc-idea-tile-mouse-over', function(event) {
-      // self.onIdeaTileMouseOver(event.detail);
-    });
-	  document.addEventListener('osc-idea-tile-mouse-out', function(event) {
-      // self.onIdeaTileMouseOut(event.detail);
-    });
+    self.ideaTileMouseOverListener = function(event) {
+      self.onTileMouseOver(event.detail);
+    };
+    document.addEventListener('osc-idea-tile-mouse-over', self.ideaTileMouseOverListener)
+
+    self.ideaTileMouseOutListener = function(event) {
+      self.onTileMouseOut(event.detail);
+    };
+    document.addEventListener('osc-idea-tile-mouse-out', self.ideaTileMouseOutListener)
 
 	}
 
   componentWillUnmount() {
+    document.removeEventListener('osc-idea-tile-mouse-over', this.ideaTileMouseOverListener)
+    document.removeEventListener('osc-idea-tile-mouse-out', this.ideaTileMouseOutListener)
+  }
+
+  onTileMouseOver({ idea }) {
+    this.setState({ highLightIdeaId: idea.id })
+  }
+
+  onTileMouseOut({ idea }) {
+    this.setState({ highLightIdeaId: null })
   }
   
 	render() {
@@ -80,7 +89,7 @@ export default class IdeasList extends OpenStadComponent {
         <div className="osc-tile-list">
           { ideas.map((idea, i) => {
             return (
-              <IdeaTile config={self.config} idea={idea} className={`osc-${self.config.display.columns}-columns`} key={`osc-idea-tile-${idea.id}`}/>
+              <IdeaTile config={self.config} idea={idea} className={`osc-${self.config.display.columns}-columns${this.config.display.onMouseOverTileFadeOthers && self.state.highLightIdeaId && self.state.highLightIdeaId != idea.id ? ' osc-opacity-65' : ''}`} key={`osc-idea-tile-${idea.id}`}/>
             );
           })}
         </div>
