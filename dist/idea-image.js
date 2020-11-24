@@ -2300,6 +2300,9 @@ var OpenStadComponent = /*#__PURE__*/function (_React$Component) {
   function OpenStadComponent(props) {
     var _this;
 
+    var defaultConfig = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var defaultdefaultConfig = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
     _classCallCheck(this, OpenStadComponent);
 
     _this = _super.call(this, props);
@@ -2314,15 +2317,18 @@ var OpenStadComponent = /*#__PURE__*/function (_React$Component) {
     } // config
 
 
-    self.config = self.config || props.config;
-
     if (typeof self.config == 'string') {
       try {
         self.config = JSON.parse(self.config);
       } catch (err) {}
     }
 
-    var defaultConfig = {
+    var propsConfig = props.config || {};
+    Object.keys(propsConfig).forEach(function (key) {
+      return propsConfig[key] === undefined ? delete propsConfig[key] : {};
+    }); // remove undefined
+
+    self.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive({
       siteId: null,
       api: {
         url: null,
@@ -2330,8 +2336,7 @@ var OpenStadComponent = /*#__PURE__*/function (_React$Component) {
         isUserLoggedIn: false
       },
       user: {}
-    };
-    self.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive(defaultConfig, self.config, self.props.config || {});
+    }, defaultConfig, defaultdefaultConfig, propsConfig);
     self.divId = self.divId || self.config && self.config.divId || props.id || "openstad-component-".concat(parseInt(100000000 * Math.random()));
     window[self.divId] = self;
     return _this;
@@ -2362,11 +2367,9 @@ var OpenStadComponent = /*#__PURE__*/function (_React$Component) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OpenStadComponentIdeaImage; });
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! merge */ "./node_modules/merge/merge.js");
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
+/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2391,9 +2394,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-
-'use strict';
-
 var OpenStadComponentIdeaImage = /*#__PURE__*/function (_OpenStadComponent) {
   _inherits(OpenStadComponentIdeaImage, _OpenStadComponent);
 
@@ -2404,12 +2404,9 @@ var OpenStadComponentIdeaImage = /*#__PURE__*/function (_OpenStadComponent) {
 
     _classCallCheck(this, OpenStadComponentIdeaImage);
 
-    _this = _super.call(this, props); // config
-
-    var defaultConfig = {
+    _this = _super.call(this, props, {
       allowMultipleImages: false
-    };
-    _this.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive(defaultConfig, _this.config, _this.props.config || {});
+    });
     _this.state = {
       currentImageIndex: 0,
       width: 0
@@ -2443,25 +2440,25 @@ var OpenStadComponentIdeaImage = /*#__PURE__*/function (_OpenStadComponent) {
 
       if (self.config.allowMultipleImages && images.length > 1) {
         // multiple
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        return /*#__PURE__*/React.createElement("div", {
           id: self.divId,
           className: "osc-idea-multiple-images"
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        }, /*#__PURE__*/React.createElement("div", {
           className: "osc-idea-image-spacer"
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        }, /*#__PURE__*/React.createElement("div", {
           className: "osc-idea-image",
           style: image ? {
             backgroundImage: "url(".concat(image, ")")
           } : {},
           key: 'image-' + idea.id
-        })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        })), /*#__PURE__*/React.createElement("div", {
           className: "osc-idea-multiple-images-thumbs"
         }, images.map(function (thumb, i) {
           var height = 0.1 * self.state.width;
           var width = height * 16 / 9; // let left = ( width *  1.07) * i + ( self.state.width - width *  1.07* images.length ) / 2;
 
           var left = width * 1.05 * i;
-          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          return /*#__PURE__*/React.createElement("div", {
             className: "osc-idea-image-thumb-spacer",
             key: "osc-idea-image-thumb-".concat(i),
             style: {
@@ -2469,7 +2466,7 @@ var OpenStadComponentIdeaImage = /*#__PURE__*/function (_OpenStadComponent) {
               width: width,
               height: height
             }
-          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          }, /*#__PURE__*/React.createElement("div", {
             className: "osc-idea-image-thumb",
             style: thumb ? {
               backgroundImage: "url(".concat(thumb, ")"),
@@ -2482,10 +2479,10 @@ var OpenStadComponentIdeaImage = /*#__PURE__*/function (_OpenStadComponent) {
         })));
       } else {
         // singular
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        return /*#__PURE__*/React.createElement("div", {
           id: self.divId,
           className: "osc-idea-image-spacer"
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        }, /*#__PURE__*/React.createElement("div", {
           className: "osc-idea-image",
           style: image ? {
             backgroundImage: "url(".concat(image, ")")
@@ -2497,7 +2494,7 @@ var OpenStadComponentIdeaImage = /*#__PURE__*/function (_OpenStadComponent) {
   }]);
 
   return OpenStadComponentIdeaImage;
-}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"]);
+}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 

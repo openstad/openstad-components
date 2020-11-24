@@ -1,24 +1,19 @@
-import merge from 'merge';
-import React from 'react';
-import ReactDOM from 'react-dom';
-
 'use strict';
 
-export default class OpenStadComponentPreviousNextButtonBlock extends React.Component {
+import OpenStadComponent from '../../component/index.jsx';
+
+export default class OpenStadComponentPreviousNextButtonBlock extends OpenStadComponent {
 
   constructor(props) {
 
-    super(props);
-
-		this.defaultConfig = {
+    super(props, {
       previousAction: props.previousAction,
       nextAction: props.nextAction,
       previousUrl: props.previousUrl,
       nextUrl: props.nextUrl,
       previousLabel: props.previousLabel || 'Vorige',
       nextLabel: props.nextLabel || 'Volgende',
-		};
-		this.config = merge.recursive(this.defaultConfig, this.config, props.config || {})
+		});
 
   }
 

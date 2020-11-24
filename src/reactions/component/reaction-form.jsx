@@ -1,21 +1,14 @@
-import merge from 'merge';
-import React from 'react';
+'use strict';
 
 import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
-
 import OpenStadComponentForms from '../../forms/index.jsx';
-
-'use strict';
 
 export default class OpenStadComponentReactionForm extends OpenStadComponent {
 
   constructor(props) {
-    super(props);
 
-    let self = this;
-
-    self.defaultConfig = {
+    super(props, {
       argumentId: null,
       api: {
         url: null,
@@ -27,13 +20,12 @@ export default class OpenStadComponentReactionForm extends OpenStadComponent {
       requiredUserRole: 'member',
       formIntro: '',
       placeholder: '',
-    };
+    });
 
-    self.config = merge.recursive(self.defaultConfig, props.config || {});
-    self.config.loginUrl = self.config.loginUrl || '/oauth/login?returnTo=' + encodeURIComponent(document.location.href);
+    this.config.loginUrl = this.config.loginUrl || '/oauth/login?returnTo=' + encodeURIComponent(document.location.href);
     
-    self.state = {
-      description: self.config.description || '',
+    this.state = {
+      description: this.config.description || '',
       isValid: false,
       isBusy: false,
     };
@@ -47,6 +39,7 @@ export default class OpenStadComponentReactionForm extends OpenStadComponent {
   }
 
   canSubmit() {
+    console.log(this.config.requiredUserRole, this.props.user, this.props.user.role);
     let requiredUserRole = this.config.requiredUserRole;
     let user = this.props.user || {};
     return OpenStadComponentLibs.user.hasRole(user, requiredUserRole)

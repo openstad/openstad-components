@@ -1,6 +1,6 @@
-import merge from 'merge';
-import React from 'react';
+'use strict';
 
+import OpenStadComponent from '../../component/index.jsx';
 import IdeasOverview from './ideas-overview.jsx';
 import IdeaDetails from '../../idea-details/index.jsx';
 import IdeaForm from './idea-form.jsx';
@@ -11,16 +11,12 @@ import Preview from './preview.jsx';
 // details en form worden nu langs hier getekend, maar de rest moet nog heel erg opgeschoond
 // ook hier woren nog funcies meegetuurd die via events moeten lopen
 
-export default class InfoBar extends React.Component {
+export default class InfoBar extends OpenStadComponent {
 
   constructor(props) {
 
-    super(props);
-
-		// config
-		let defaultConfig = {
+    super(props, {
       display: {
-        type: 'list',
         columns: 1,
         showFilterbar: false,
       },
@@ -33,10 +29,9 @@ export default class InfoBar extends React.Component {
         ignoreReactionsForIdeaIds: '',
       },
       types: [],
-		};
+		});
 
-    this.config = merge.recursive(defaultConfig, this.config, props.config || {})
-
+		// config
     this.config.loginUrl = this.config.loginUrl || '/oauth/login?returnTo=' + encodeURIComponent(document.location.href);
     // tmp voor oude data
     if (props.config.content.noSelectionHTML && !props.config.content.noSelectionLoggedInHTML) {
@@ -60,13 +55,21 @@ export default class InfoBar extends React.Component {
 
     let self = this;
 
-		document.addEventListener('osc-set-selected-idea', function(event) {
+    self.setSelectedIdeaListener = function(event) {
       self.setSelectedIdea(event.detail);
-    });
-		document.addEventListener('osc-set-selected-location', function(event) {
-      self.setNewIdea(event.detail);
-    });
+    }
+		document.addEventListener('osc-set-selected-idea', self.setSelectedIdeaListener);
 
+    self.setSelectedLocationListener = function(event) {
+      self.setNewIdea(event.detail);
+    }
+		document.addEventListener('osc-set-selected-location', self.setSelectedLocationListener);
+
+  }
+
+  componentWillUnmount() {
+		document.removeEventListener('osc-set-selected-idea', this.setSelectedIdeaListener);
+		document.removeEventListener('osc-set-selected-location', this.setSelectedLocationListener);
   }
   
   updateIdeas({ ideas = this.state.ideas, sortOrder = this.state.currentSortOrder, hideSortButton, center = { lat: 52.37104644463586, lng: 4.900402911007405 }, maxLength }) {
@@ -94,7 +97,7 @@ export default class InfoBar extends React.Component {
     let self = this;
     
     let config = {...self.config};
-    // TODO: tmp gerard dou
+    config.display.type = 'list'
     if ( this.props.idea && this.props.idea.extraData && this.props.idea.extraData.type && ( this.props.idea.extraData.type == 'Kans' || this.props.idea.extraData.type == 'Knelpunt' ) ) {
       config.types = [{"name": "Kans","label": "Dit gaat goed","value": "Kans","buttonLabel": "Ik wil een idee posten","backgroundColor": "#bed200","textColor": "black"},{"name": "Knelpunt","label": "Dit kan beter","value": "Knelpunt","backgroundColor": "#ff9100","textColor": "black"}];
       config.typeField = 'extraData.type'

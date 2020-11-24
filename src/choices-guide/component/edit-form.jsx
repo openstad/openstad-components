@@ -1,42 +1,32 @@
-// todo: het is nu 1 form met switches; uit elkaar trekken in losse forms is netter
+'use strict';
 
-import merge from 'merge';
-
-import OpenStadComponentLibs from '../../libs/index.jsx';
 import OpenStadComponent from '../../component/index.jsx';
+import OpenStadComponentLibs from '../../libs/index.jsx';
 import OpenStadComponentForms from '../../forms/index.jsx';
 
-'use strict';
+// todo: het is nu 1 form met switches; uit elkaar trekken in losse forms is netter
 
 export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent {
 
   constructor(props) {
 
-    super(props);
-
-    let self = this;
-
-    self.id = props.id || `osc-choices-guide-${  parseInt( 1000000 * Math.random() )}`;
-
-    self.defaultConfig = {
+    super(props, {
       siteId: null,
       loginUrl: null,
       noOfQuestionsToShow: 1,
       api: {
         url: null
       },
-    };
+    });
 
-    self.config = merge.recursive(self.defaultConfig, self.config, props.config || {});
-
-    self.state = {
-      choicesGuideId: self.props.data.choicesGuideId,
+    this.state = {
+      choicesGuideId: this.props.data.choicesGuideId,
       currentTarget: {
       },
       busy: false,
     };
 
-    self.onFinished = self.props.onFinished;
+    this.onFinished = this.props.onFinished;
 
   }
 

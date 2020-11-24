@@ -1,9 +1,6 @@
-import merge from 'merge';
-import React from 'react';
+'use strict';
 
 import { IdeasOverview, IdeasList, IdeasFilterbar, IdeasSort } from '../../ideas-overview/index.jsx';
-
-'use strict';
 
 export default class IdeasOverview2 extends IdeasOverview {
 

@@ -2293,6 +2293,9 @@ var OpenStadComponent = /*#__PURE__*/function (_React$Component) {
   function OpenStadComponent(props) {
     var _this;
 
+    var defaultConfig = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var defaultdefaultConfig = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
     _classCallCheck(this, OpenStadComponent);
 
     _this = _super.call(this, props);
@@ -2307,15 +2310,18 @@ var OpenStadComponent = /*#__PURE__*/function (_React$Component) {
     } // config
 
 
-    self.config = self.config || props.config;
-
     if (typeof self.config == 'string') {
       try {
         self.config = JSON.parse(self.config);
       } catch (err) {}
     }
 
-    var defaultConfig = {
+    var propsConfig = props.config || {};
+    Object.keys(propsConfig).forEach(function (key) {
+      return propsConfig[key] === undefined ? delete propsConfig[key] : {};
+    }); // remove undefined
+
+    self.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive({
       siteId: null,
       api: {
         url: null,
@@ -2323,8 +2329,7 @@ var OpenStadComponent = /*#__PURE__*/function (_React$Component) {
         isUserLoggedIn: false
       },
       user: {}
-    };
-    self.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive(defaultConfig, self.config, self.props.config || {});
+    }, defaultConfig, defaultdefaultConfig, propsConfig);
     self.divId = self.divId || self.config && self.config.divId || props.id || "openstad-component-".concat(parseInt(100000000 * Math.random()));
     window[self.divId] = self;
     return _this;
@@ -2355,11 +2360,9 @@ var OpenStadComponent = /*#__PURE__*/function (_React$Component) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OpenStadComponentIdeaImage; });
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! merge */ "./node_modules/merge/merge.js");
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
+/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2384,9 +2387,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-
-'use strict';
-
 var OpenStadComponentIdeaImage = /*#__PURE__*/function (_OpenStadComponent) {
   _inherits(OpenStadComponentIdeaImage, _OpenStadComponent);
 
@@ -2397,12 +2397,9 @@ var OpenStadComponentIdeaImage = /*#__PURE__*/function (_OpenStadComponent) {
 
     _classCallCheck(this, OpenStadComponentIdeaImage);
 
-    _this = _super.call(this, props); // config
-
-    var defaultConfig = {
+    _this = _super.call(this, props, {
       allowMultipleImages: false
-    };
-    _this.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive(defaultConfig, _this.config, _this.props.config || {});
+    });
     _this.state = {
       currentImageIndex: 0,
       width: 0
@@ -2436,25 +2433,25 @@ var OpenStadComponentIdeaImage = /*#__PURE__*/function (_OpenStadComponent) {
 
       if (self.config.allowMultipleImages && images.length > 1) {
         // multiple
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        return /*#__PURE__*/React.createElement("div", {
           id: self.divId,
           className: "osc-idea-multiple-images"
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        }, /*#__PURE__*/React.createElement("div", {
           className: "osc-idea-image-spacer"
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        }, /*#__PURE__*/React.createElement("div", {
           className: "osc-idea-image",
           style: image ? {
             backgroundImage: "url(".concat(image, ")")
           } : {},
           key: 'image-' + idea.id
-        })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        })), /*#__PURE__*/React.createElement("div", {
           className: "osc-idea-multiple-images-thumbs"
         }, images.map(function (thumb, i) {
           var height = 0.1 * self.state.width;
           var width = height * 16 / 9; // let left = ( width *  1.07) * i + ( self.state.width - width *  1.07* images.length ) / 2;
 
           var left = width * 1.05 * i;
-          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          return /*#__PURE__*/React.createElement("div", {
             className: "osc-idea-image-thumb-spacer",
             key: "osc-idea-image-thumb-".concat(i),
             style: {
@@ -2462,7 +2459,7 @@ var OpenStadComponentIdeaImage = /*#__PURE__*/function (_OpenStadComponent) {
               width: width,
               height: height
             }
-          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          }, /*#__PURE__*/React.createElement("div", {
             className: "osc-idea-image-thumb",
             style: thumb ? {
               backgroundImage: "url(".concat(thumb, ")"),
@@ -2475,10 +2472,10 @@ var OpenStadComponentIdeaImage = /*#__PURE__*/function (_OpenStadComponent) {
         })));
       } else {
         // singular
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        return /*#__PURE__*/React.createElement("div", {
           id: self.divId,
           className: "osc-idea-image-spacer"
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        }, /*#__PURE__*/React.createElement("div", {
           className: "osc-idea-image",
           style: image ? {
             backgroundImage: "url(".concat(image, ")")
@@ -2490,7 +2487,7 @@ var OpenStadComponentIdeaImage = /*#__PURE__*/function (_OpenStadComponent) {
   }]);
 
   return OpenStadComponentIdeaImage;
-}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"]);
+}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 
@@ -2560,13 +2557,11 @@ _component_idea_image_jsx__WEBPACK_IMPORTED_MODULE_4__["default"].renderElement 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return IdeasOverview; });
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! merge */ "./node_modules/merge/merge.js");
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
-/* harmony import */ var _libs_index_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../libs/index.jsx */ "./src/libs/index.jsx");
-/* harmony import */ var _idea_image_index_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../idea-image/index.jsx */ "./src/idea-image/index.jsx");
+/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
+/* harmony import */ var _libs_index_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../libs/index.jsx */ "./src/libs/index.jsx");
+/* harmony import */ var _idea_image_index_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../idea-image/index.jsx */ "./src/idea-image/index.jsx");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2591,15 +2586,11 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-
-
  // TODO: gridder display type
 // TODO: show ranking
 // TODO: status labels
 // TODO: vote progress bar
 // TODO: ellipsis op theme and area moet op beide apart
-
-'use strict';
 
 var IdeasOverview = /*#__PURE__*/function (_OpenStadComponent) {
   _inherits(IdeasOverview, _OpenStadComponent);
@@ -2611,8 +2602,7 @@ var IdeasOverview = /*#__PURE__*/function (_OpenStadComponent) {
 
     _classCallCheck(this, IdeasOverview);
 
-    _this = _super.call(this, props); // config
-
+    // config
     var defaultConfig = {
       idea: {
         showVoteButtons: true,
@@ -2674,7 +2664,7 @@ var IdeasOverview = /*#__PURE__*/function (_OpenStadComponent) {
         };
     }
 
-    _this.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive(defaultConfig, _this.config, _this.props.config || {});
+    _this = _super.call(this, props, defaultConfig);
     _this.state = {
       idea: _this.props.idea || {}
     };
@@ -2731,18 +2721,18 @@ var IdeasOverview = /*#__PURE__*/function (_OpenStadComponent) {
         var areaHTML = null;
 
         if (self.config.display.showArea && idea.extraData.area) {
-          areaHTML = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          areaHTML = /*#__PURE__*/React.createElement("div", {
             className: "osc-area"
           }, idea.extraData.area);
         }
 
-        themeAndAreaHTML = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        themeAndAreaHTML = /*#__PURE__*/React.createElement("div", {
           className: "osc-theme-and-area"
-        }, self.config.display.showTheme && idea.extraData.theme && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        }, self.config.display.showTheme && idea.extraData.theme && /*#__PURE__*/React.createElement("div", {
           className: "osc-theme"
-        }, idea.extraData.theme), self.config.display.showTheme && idea.extraData.theme && self.config.display.showArea && idea.extraData.area && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        }, idea.extraData.theme), self.config.display.showTheme && idea.extraData.theme && self.config.display.showArea && idea.extraData.area && /*#__PURE__*/React.createElement("div", {
           className: "osc-divider"
-        }), self.config.display.showArea && idea.extraData.area && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        }), self.config.display.showArea && idea.extraData.area && /*#__PURE__*/React.createElement("div", {
           className: "osc-area"
         }, idea.extraData.area));
       } // stats: no of votes and reactions
@@ -2756,7 +2746,7 @@ var IdeasOverview = /*#__PURE__*/function (_OpenStadComponent) {
         if (this.config.idea.showVoteButtons && this.config.vote.isViewable == true && this.config.vote.voteValues.find(function (val) {
           return val.value === 'yes';
         })) {
-          stats.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          stats.push( /*#__PURE__*/React.createElement("div", {
             className: "osc-yes-votes"
           }, idea.yes || 0));
         }
@@ -2764,7 +2754,7 @@ var IdeasOverview = /*#__PURE__*/function (_OpenStadComponent) {
         if (this.config.idea.showVoteButtons && this.config.vote.isViewable == true && this.config.vote.voteValues.find(function (val) {
           return val.value === 'no';
         })) {
-          stats.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          stats.push( /*#__PURE__*/React.createElement("div", {
             className: "osc-no-votes"
           }, idea.no || 0));
         }
@@ -2772,15 +2762,15 @@ var IdeasOverview = /*#__PURE__*/function (_OpenStadComponent) {
         var argcountHTML = null;
 
         if (this.config.argument.isActive && !this.config.argument.ignoreReactionsForIdeaIds.match(new RegExp("(?:^|\\D)".concat(idea.id, "(?:\\D|$)")))) {
-          stats.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          stats.push( /*#__PURE__*/React.createElement("div", {
             className: "osc-reactions"
           }, idea.argCount || 0));
         }
 
-        statsHTML = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        statsHTML = /*#__PURE__*/React.createElement("div", {
           className: "osc-idea-stats-container"
         }, stats.map(function (statHTML, i) {
-          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          return /*#__PURE__*/React.createElement("div", {
             className: "osc-stat",
             key: "osc-stat-".concat(idea.id, "-").concat(i)
           }, statHTML);
@@ -2790,7 +2780,7 @@ var IdeasOverview = /*#__PURE__*/function (_OpenStadComponent) {
       var voteProgressHTML = null;
 
       if (self.config.display.showVoteProgressbar) {
-        voteProgressHTML = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, "GENOEGSTEMMNBALK");
+        voteProgressHTML = /*#__PURE__*/React.createElement("div", null, "GENOEGSTEMMNBALK");
       } // type icon
 
 
@@ -2823,9 +2813,9 @@ var IdeasOverview = /*#__PURE__*/function (_OpenStadComponent) {
         } catch (err) {}
 
         if (typeDef.listicon.html) {
-          typeIconHTML = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          typeIconHTML = /*#__PURE__*/React.createElement("div", {
             className: "osc-typeicon"
-          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          }, /*#__PURE__*/React.createElement("div", {
             className: "osc-typeicon-content",
             dangerouslySetInnerHTML: {
               __html: typeDef.listicon.html
@@ -2835,7 +2825,7 @@ var IdeasOverview = /*#__PURE__*/function (_OpenStadComponent) {
       } // now render
 
 
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         id: self.divId,
         className: "osc-idea-tile osc-displaytype-".concat(self.config.display.type, " ").concat(self.props.className || ''),
         onClick: function onClick(event) {
@@ -2847,24 +2837,24 @@ var IdeasOverview = /*#__PURE__*/function (_OpenStadComponent) {
         onMouseOut: function onMouseOut(event) {
           return self.dispatchIdeaTileMouseOut(event, idea);
         }
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         className: "osc-idea-image-container"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_idea_image_index_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      }, /*#__PURE__*/React.createElement(_idea_image_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
         config: {},
         idea: idea,
         key: 'image-' + idea.id
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      })), /*#__PURE__*/React.createElement("div", {
         className: "osc-idea-tile-content"
-      }, statusLabelHTML, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h4", {
+      }, statusLabelHTML, /*#__PURE__*/React.createElement("h4", {
         className: "osc-title"
-      }, eval("idea.".concat(self.config.idea.titleField))), themeAndAreaHTML, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }, eval("idea.".concat(self.config.idea.titleField))), themeAndAreaHTML, /*#__PURE__*/React.createElement("div", {
         className: "osc-summary"
       }, eval("idea.".concat(self.config.idea.summaryField))), voteProgressHTML, statsHTML), typeIconHTML);
     }
   }]);
 
   return IdeasOverview;
-}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"]);
+}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 
@@ -2880,11 +2870,9 @@ var IdeasOverview = /*#__PURE__*/function (_OpenStadComponent) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return IdeasFilter; });
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! merge */ "./node_modules/merge/merge.js");
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
+/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2909,9 +2897,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-
-'use strict';
-
 var IdeasFilter = /*#__PURE__*/function (_OpenStadComponent) {
   _inherits(IdeasFilter, _OpenStadComponent);
 
@@ -2923,8 +2908,6 @@ var IdeasFilter = /*#__PURE__*/function (_OpenStadComponent) {
     _classCallCheck(this, IdeasFilter);
 
     _this = _super.call(this, props);
-    var defaultConfig = {};
-    _this.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive(defaultConfig, _this.config, _this.props.config || {});
     _this.doFilter = _this.doFilter.bind(_assertThisInitialized(_this));
     _this.setFilter = _this.setFilter.bind(_assertThisInitialized(_this));
     _this.state = {
@@ -2981,12 +2964,12 @@ var IdeasFilter = /*#__PURE__*/function (_OpenStadComponent) {
       }
 
       var labelHTML = null;
-      if (self.config.label) labelHTML = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      if (self.config.label) labelHTML = /*#__PURE__*/React.createElement("div", {
         className: "osc-filter-label"
       }, self.config.label, ":");
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         className: "osc-ideas-filter ".concat(self.props.className || '')
-      }, labelHTML, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("select", {
+      }, labelHTML, /*#__PURE__*/React.createElement("select", {
         value: self.state.currentValue,
         onChange: function onChange() {
           return self.setFilter({
@@ -2999,7 +2982,7 @@ var IdeasFilter = /*#__PURE__*/function (_OpenStadComponent) {
         }
       }, self.config.filterOptions.map(function (option, i) {
         var selected = null;
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+        return /*#__PURE__*/React.createElement("option", {
           value: option.value,
           key: 'filter-option-' + i
         }, option.label);
@@ -3008,7 +2991,7 @@ var IdeasFilter = /*#__PURE__*/function (_OpenStadComponent) {
   }]);
 
   return IdeasFilter;
-}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"]);
+}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 
@@ -3024,13 +3007,11 @@ var IdeasFilter = /*#__PURE__*/function (_OpenStadComponent) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return IdeasFilterbar; });
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! merge */ "./node_modules/merge/merge.js");
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
-/* harmony import */ var _ideas_filter_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ideas-filter.jsx */ "./src/ideas-overview/component/ideas-filter.jsx");
-/* harmony import */ var _ideas_search_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ideas-search.jsx */ "./src/ideas-overview/component/ideas-search.jsx");
+/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
+/* harmony import */ var _ideas_filter_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ideas-filter.jsx */ "./src/ideas-overview/component/ideas-filter.jsx");
+/* harmony import */ var _ideas_search_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ideas-search.jsx */ "./src/ideas-overview/component/ideas-search.jsx");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3057,9 +3038,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-
-'use strict';
-
 var IdeasFilterbar = /*#__PURE__*/function (_OpenStadComponent) {
   _inherits(IdeasFilterbar, _OpenStadComponent);
 
@@ -3070,11 +3048,9 @@ var IdeasFilterbar = /*#__PURE__*/function (_OpenStadComponent) {
 
     _classCallCheck(this, IdeasFilterbar);
 
-    _this = _super.call(this, props);
-    var defaultConfig = {
+    _this = _super.call(this, props, {
       display: {}
-    };
-    _this.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive(defaultConfig, _this.config, _this.props.config || {});
+    });
     _this.doNextPendingResetAction = _this.doNextPendingResetAction.bind(_assertThisInitialized(_this));
     _this.state = {
       pendingResetActions: []
@@ -3160,14 +3136,14 @@ var IdeasFilterbar = /*#__PURE__*/function (_OpenStadComponent) {
       var searchHTML = null;
 
       if (self.config.search) {
-        searchHTML = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        searchHTML = /*#__PURE__*/React.createElement("div", {
           className: "osc-ideas-search-container"
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        }, /*#__PURE__*/React.createElement("div", {
           className: "osc-ideas-search-button",
           onClick: function onClick() {
             return self.toggleMobileActiveSelector('search');
           }
-        }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_ideas_search_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        }), /*#__PURE__*/React.createElement(_ideas_search_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
           config: self.config.search,
           className: "".concat(self.state.mobileActiveSelector == 'search' ? ' osc-is-active' : ''),
           ref: function ref(el) {
@@ -3178,7 +3154,7 @@ var IdeasFilterbar = /*#__PURE__*/function (_OpenStadComponent) {
 
 
       var resetButtonHTML = null;
-      resetButtonHTML = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+      resetButtonHTML = /*#__PURE__*/React.createElement("button", {
         value: "reset",
         onClick: function onClick() {
           return self.resetAll();
@@ -3192,17 +3168,17 @@ var IdeasFilterbar = /*#__PURE__*/function (_OpenStadComponent) {
           return filter.state.currentValue;
         });
         self.filters = [];
-        filterHTML = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        filterHTML = /*#__PURE__*/React.createElement("div", {
           className: "osc-ideas-filters-and-button-container"
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        }, /*#__PURE__*/React.createElement("div", {
           className: "osc-ideas-filter-button".concat(isActive ? ' osc-active' : ''),
           onClick: function onClick() {
             return self.toggleMobileActiveSelector('filters');
           }
-        }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        }), /*#__PURE__*/React.createElement("div", {
           className: "osc-ideas-filters-container".concat(self.state.mobileActiveSelector == 'filters' ? ' osc-is-active' : '')
         }, self.config.filter.map(function (filterConfig, i) {
-          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_ideas_filter_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+          return /*#__PURE__*/React.createElement(_ideas_filter_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
             config: filterConfig,
             className: "osc-align-right-container",
             key: "osc-ideas-filter-".concat(i),
@@ -3214,17 +3190,17 @@ var IdeasFilterbar = /*#__PURE__*/function (_OpenStadComponent) {
       }
 
       var filtersAndButtonsHTML = null;
-      filtersAndButtonsHTML = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      filtersAndButtonsHTML = /*#__PURE__*/React.createElement("div", {
         className: "osc-ideas-filters-and-reset-button-container"
       }, filterHTML);
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         className: "osc-ideas-filterbar ".concat(self.props.className || '')
       }, searchHTML, filtersAndButtonsHTML);
     }
   }]);
 
   return IdeasFilterbar;
-}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"]);
+}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 
@@ -3240,13 +3216,11 @@ var IdeasFilterbar = /*#__PURE__*/function (_OpenStadComponent) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return IdeasList; });
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! merge */ "./node_modules/merge/merge.js");
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
-/* harmony import */ var _libs_index_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../libs/index.jsx */ "./src/libs/index.jsx");
-/* harmony import */ var _idea_tile_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./idea-tile.jsx */ "./src/ideas-overview/component/idea-tile.jsx");
+/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
+/* harmony import */ var _libs_index_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../libs/index.jsx */ "./src/libs/index.jsx");
+/* harmony import */ var _idea_tile_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./idea-tile.jsx */ "./src/ideas-overview/component/idea-tile.jsx");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3271,16 +3245,12 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-
-
  // TODO:
 // display-type
 // Status labels
 // genoeg stemmen balk
 // thema icon
 // theme & area
-
-'use strict';
 
 var IdeasList = /*#__PURE__*/function (_OpenStadComponent) {
   _inherits(IdeasList, _OpenStadComponent);
@@ -3292,9 +3262,7 @@ var IdeasList = /*#__PURE__*/function (_OpenStadComponent) {
 
     _classCallCheck(this, IdeasList);
 
-    _this = _super.call(this, props); // config
-
-    var defaultConfig = {
+    _this = _super.call(this, props, {
       display: {
         title: 'Inzendingen',
         // type: 'grid',
@@ -3319,8 +3287,7 @@ var IdeasList = /*#__PURE__*/function (_OpenStadComponent) {
         defaultValue: 'createdtime,desc'
       },
       types: []
-    };
-    _this.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive(defaultConfig, _this.config, _this.props.config || {});
+    });
     _this.state = {
       highLightIdeaId: null
     };
@@ -3373,12 +3340,12 @@ var IdeasList = /*#__PURE__*/function (_OpenStadComponent) {
 
       var self = this;
       var ideas = self.props.ideas || [];
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         className: "osc-tile-list-container ".concat(self.props.className || '')
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         className: "osc-tile-list"
       }, ideas.map(function (idea, i) {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_idea_tile_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        return /*#__PURE__*/React.createElement(_idea_tile_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
           config: self.config,
           idea: idea,
           className: "osc-".concat(self.config.display.columns, "-columns").concat(_this2.config.display.onMouseOverTileFadeOthers && self.state.highLightIdeaId && self.state.highLightIdeaId != idea.id ? ' osc-opacity-65' : ''),
@@ -3389,7 +3356,7 @@ var IdeasList = /*#__PURE__*/function (_OpenStadComponent) {
   }]);
 
   return IdeasList;
-}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"]);
+}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 
@@ -3405,16 +3372,14 @@ var IdeasList = /*#__PURE__*/function (_OpenStadComponent) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return IdeasOverview; });
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! merge */ "./node_modules/merge/merge.js");
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
-/* harmony import */ var _libs_index_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../libs/index.jsx */ "./src/libs/index.jsx");
-/* harmony import */ var _ideas_list_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ideas-list.jsx */ "./src/ideas-overview/component/ideas-list.jsx");
-/* harmony import */ var _ideas_filterbar_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ideas-filterbar.jsx */ "./src/ideas-overview/component/ideas-filterbar.jsx");
-/* harmony import */ var _idea_tile_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./idea-tile.jsx */ "./src/ideas-overview/component/idea-tile.jsx");
-/* harmony import */ var _ideas_sort_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./ideas-sort.jsx */ "./src/ideas-overview/component/ideas-sort.jsx");
+/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
+/* harmony import */ var _libs_index_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../libs/index.jsx */ "./src/libs/index.jsx");
+/* harmony import */ var _ideas_list_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ideas-list.jsx */ "./src/ideas-overview/component/ideas-list.jsx");
+/* harmony import */ var _ideas_filterbar_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ideas-filterbar.jsx */ "./src/ideas-overview/component/ideas-filterbar.jsx");
+/* harmony import */ var _idea_tile_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./idea-tile.jsx */ "./src/ideas-overview/component/idea-tile.jsx");
+/* harmony import */ var _ideas_sort_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ideas-sort.jsx */ "./src/ideas-overview/component/ideas-sort.jsx");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -3448,8 +3413,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-
-
  // TODO:
 // fixed set of ids
 // filter
@@ -3457,8 +3420,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 // gebruik default een configurabele link-to-plan-url denk ik
 // sort positioneren
 // hidesortbutton kan er uit; die hoort in de parent (ideas-on-map)
-
-'use strict';
 
 var IdeasOverview = /*#__PURE__*/function (_OpenStadComponent) {
   _inherits(IdeasOverview, _OpenStadComponent);
@@ -3470,9 +3431,7 @@ var IdeasOverview = /*#__PURE__*/function (_OpenStadComponent) {
 
     _classCallCheck(this, IdeasOverview);
 
-    _this = _super.call(this, props); // config
-
-    var defaultConfig = {
+    _this = _super.call(this, props, {
       siteId: null,
       title: 'Inzendingen',
       display: {
@@ -3489,8 +3448,7 @@ var IdeasOverview = /*#__PURE__*/function (_OpenStadComponent) {
       filter: [],
       types: [],
       typeLabel: 'Thema'
-    };
-    _this.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive(defaultConfig, _this.config, _this.props.config || {});
+    });
     _this.state = {
       ideas: _this.props.ideas || [],
       filters: {},
@@ -3538,7 +3496,7 @@ var IdeasOverview = /*#__PURE__*/function (_OpenStadComponent) {
     value: function fetchData() {
       var self = this;
       var url = "".concat(self.config.api.url, "/api/site/").concat(self.config.siteId, "/idea?summary=1&includeVoteCount=1&includeArgsCount=1");
-      var headers = _libs_index_jsx__WEBPACK_IMPORTED_MODULE_3__["default"].api.getHeaders(self.config);
+      var headers = _libs_index_jsx__WEBPACK_IMPORTED_MODULE_1__["default"].api.getHeaders(self.config);
       fetch(url, {
         headers: headers
       }).then(function (response) {
@@ -3619,17 +3577,17 @@ var IdeasOverview = /*#__PURE__*/function (_OpenStadComponent) {
         filteredIdeas = ideas.slice(0, this.props.maxLength);
       }
 
-      var titleHML = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h3", {
+      var titleHML = /*#__PURE__*/React.createElement("h3", {
         className: "osc-title"
       }, self.config.title, " (", filteredIdeas.length, ")");
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         id: self.id,
         className: "osc-ideas-overview ".concat(self.props.className || '')
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_ideas_filterbar_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      }, /*#__PURE__*/React.createElement(_ideas_filterbar_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
         config: self.config,
         showFilterbar: self.props.showFilterbar,
         className: "osc-ideas-filterbar"
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_ideas_sort_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
+      }), /*#__PURE__*/React.createElement(_ideas_sort_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
         config: _objectSpread({}, self.config.sort),
         ideas: ideas,
         showSort: !self.props.hideSortButton,
@@ -3637,7 +3595,7 @@ var IdeasOverview = /*#__PURE__*/function (_OpenStadComponent) {
         ref: function ref(el) {
           return self.sorter = el;
         }
-      }), titleHML, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_ideas_list_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      }), titleHML, /*#__PURE__*/React.createElement(_ideas_list_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
         config: self.config,
         ideas: filteredIdeas,
         className: ""
@@ -3646,7 +3604,7 @@ var IdeasOverview = /*#__PURE__*/function (_OpenStadComponent) {
   }]);
 
   return IdeasOverview;
-}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"]);
+}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 
@@ -3662,11 +3620,9 @@ var IdeasOverview = /*#__PURE__*/function (_OpenStadComponent) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return IdeasSearch; });
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! merge */ "./node_modules/merge/merge.js");
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
+/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3689,16 +3645,12 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-
-
-
-'use strict'; // todo:
+ // todo:
 // button
 // hij doet nu search as you type, ik denk dat je dat niet altijd wilt dus configurabel
 // showSearch
 // showButton
 // showSuggestions
-
 
 var IdeasSearch = /*#__PURE__*/function (_OpenStadComponent) {
   _inherits(IdeasSearch, _OpenStadComponent);
@@ -3710,16 +3662,14 @@ var IdeasSearch = /*#__PURE__*/function (_OpenStadComponent) {
 
     _classCallCheck(this, IdeasSearch);
 
-    _this = _super.call(this, props);
-    var defaultConfig = {
+    _this = _super.call(this, props, {
       placeholder: 'Zoeken',
       fieldNames: ['title', 'summary'],
       showSearch: true,
       showButton: false,
       showSuggestions: false,
       defaultValue: ''
-    };
-    _this.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive(defaultConfig, _this.config, _this.props.config || {});
+    });
     _this.doSearch = _this.doSearch.bind(_assertThisInitialized(_this));
     _this.setSearch = _this.setSearch.bind(_assertThisInitialized(_this));
     _this.state = {
@@ -3740,7 +3690,6 @@ var IdeasSearch = /*#__PURE__*/function (_OpenStadComponent) {
     value: function doSearch(ideas, value) {
       var self = this;
       value = value || this.state.currentValue;
-      console.log('==', value);
       ideas = ideas.filter(function (idea) {
         var found = false;
         self.config.fieldNames.forEach(function (fieldName) {
@@ -3784,14 +3733,14 @@ var IdeasSearch = /*#__PURE__*/function (_OpenStadComponent) {
       }
 
       var labelHTML = null;
-      if (self.config.label) labelHTML = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      if (self.config.label) labelHTML = /*#__PURE__*/React.createElement("div", {
         className: "osc-search-label"
       }, self.config.label, ":"); // TODO
 
       var suggestionsHTML = null;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         className: "osc-ideas-search ".concat(self.props.className || '')
-      }, labelHTML, suggestionsHTML, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+      }, labelHTML, suggestionsHTML, /*#__PURE__*/React.createElement("input", {
         type: "text",
         value: this.state.currentValue,
         placeholder: self.config.placeholder,
@@ -3810,7 +3759,7 @@ var IdeasSearch = /*#__PURE__*/function (_OpenStadComponent) {
         ref: function ref(el) {
           return self.searchInput = el;
         }
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+      }), /*#__PURE__*/React.createElement("button", {
         className: "osc-ideas-search-button".concat(this.state.currentValue ? ' osc-active' : ''),
         onClick: function onClick(event) {
           return self.setSearch({
@@ -3825,7 +3774,7 @@ var IdeasSearch = /*#__PURE__*/function (_OpenStadComponent) {
   }]);
 
   return IdeasSearch;
-}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"]);
+}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 
@@ -3841,11 +3790,9 @@ var IdeasSearch = /*#__PURE__*/function (_OpenStadComponent) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return IdeasSort; });
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! merge */ "./node_modules/merge/merge.js");
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
+/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3870,9 +3817,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-
-'use strict';
-
 var IdeasSort = /*#__PURE__*/function (_OpenStadComponent) {
   _inherits(IdeasSort, _OpenStadComponent);
 
@@ -3883,8 +3827,7 @@ var IdeasSort = /*#__PURE__*/function (_OpenStadComponent) {
 
     _classCallCheck(this, IdeasSort);
 
-    _this = _super.call(this, props);
-    var defaultConfig = {
+    _this = _super.call(this, props, {
       label: null,
       sortOptions: [{
         value: 'createdtime,desc',
@@ -3920,8 +3863,7 @@ var IdeasSort = /*#__PURE__*/function (_OpenStadComponent) {
         latitude: 52.37104644463586,
         longitude: 4.900402911007405
       }
-    };
-    _this.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive(defaultConfig, _this.config, _this.props.config || {});
+    });
     _this.state = {
       currentValue: _this.config.defaultValue
     };
@@ -4045,12 +3987,12 @@ var IdeasSort = /*#__PURE__*/function (_OpenStadComponent) {
       }
 
       var labelHTML = null;
-      if (self.config.label) labelHTML = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      if (self.config.label) labelHTML = /*#__PURE__*/React.createElement("div", {
         className: "osc-sort-label"
       }, self.config.label, ":");
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         className: "osc-ideas-sort ".concat(self.props.className || '')
-      }, labelHTML, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("select", {
+      }, labelHTML, /*#__PURE__*/React.createElement("select", {
         defaultValue: self.state.currentValue,
         onChange: function onChange() {
           return self.setSortOrder({
@@ -4063,7 +4005,7 @@ var IdeasSort = /*#__PURE__*/function (_OpenStadComponent) {
         }
       }, self.config.sortOptions.map(function (option, i) {
         var selected = null;
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+        return /*#__PURE__*/React.createElement("option", {
           value: option.value,
           key: 'sort-option-' + i
         }, option.label);
@@ -4072,7 +4014,7 @@ var IdeasSort = /*#__PURE__*/function (_OpenStadComponent) {
   }]);
 
   return IdeasSort;
-}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"]);
+}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 

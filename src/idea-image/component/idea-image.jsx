@@ -1,21 +1,14 @@
-import merge from 'merge';
-import React from 'react';
+'use strict';
 
 import OpenStadComponent from '../../component/index.jsx';
-
-'use strict';
 
 export default class OpenStadComponentIdeaImage extends OpenStadComponent {
 
   constructor(props) {
 
-    super(props);
-
-		// config
-		let defaultConfig = {
+    super(props, {
       allowMultipleImages: false
-		};
-		this.config = merge.recursive(defaultConfig, this.config, this.props.config || {})
+		});
 
     this.state = {
       currentImageIndex: 0,

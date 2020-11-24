@@ -1,18 +1,12 @@
-import merge from 'merge';
-import React from 'react';
-import ReactDOM from 'react-dom';
-
 'use strict';
 
-export default class OpenStadComponentLightbox extends React.Component {
+import OpenStadComponent from '../../component/index.jsx';
+
+export default class OpenStadComponentLightbox extends OpenStadComponent {
 
   constructor(props) {
 
     super(props);
-
-		this.defaultConfig = {
-		};
-		this.config = merge.recursive(this.defaultConfig, this.config, props.config || {})
 
     this.state = {
       images: [],

@@ -1,17 +1,12 @@
-import merge from 'merge';
-import React from 'react';
+'use strict';
 
 import OpenStadComponent from '../../component/index.jsx';
-
-'use strict';
 
 export default class IdeasSort extends OpenStadComponent {
 
   constructor(props) {
 
-    super(props);
-
-		let defaultConfig = {
+    super(props, {
       label: null,
       sortOptions: [{ value: 'createdtime,desc', label: 'Nieuwste eerst' }, { value: 'createdtime,asc', label: 'Oudste eerst' }, { value: 'title', label: 'Titel' }, { value: 'random', label: 'Willekeurig' }, { value: 'likes,desc', label: 'Meeste likes' }, { value: 'likes,asc', label: 'Minste likes' }, { value: 'args,desc', label: 'Meeste reacties' }, { value: 'args,asc', label: 'Minste reacties' }, { value: 'ranking,asc', label: 'Ranglijst' }],
       defaultValue: 'createdtime,desc',
@@ -20,8 +15,7 @@ export default class IdeasSort extends OpenStadComponent {
 				latitude: 52.37104644463586,
 				longitude: 4.900402911007405,
 			},
-		};
-		this.config = merge.recursive(defaultConfig, this.config, this.props.config || {})
+		});
 
     this.state = {
       currentValue: this.config.defaultValue,

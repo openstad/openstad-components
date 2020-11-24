@@ -1,5 +1,4 @@
-import merge from 'merge';
-import React from 'react';
+'use strict';
 
 import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
@@ -12,16 +11,11 @@ import IdeaTile from './idea-tile.jsx';
 // thema icon
 // theme & area
 
-'use strict';
-
 export default class IdeasList extends OpenStadComponent {
 
   constructor(props) {
 
-    super(props);
-
-		// config
-		let defaultConfig = {
+    super(props, {
       display: {
         title: 'Inzendingen',
         // type: 'grid',
@@ -40,9 +34,7 @@ export default class IdeasList extends OpenStadComponent {
         defaultValue: 'createdtime,desc',
       },
       types: [],
-		};
-
-		this.config = merge.recursive(defaultConfig, this.config, this.props.config || {})
+		});
 
     this.state = {
       highLightIdeaId: null,

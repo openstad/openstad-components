@@ -1,5 +1,3 @@
-import merge from 'merge';
-
 'use strict';
 
 import OpenStadComponent from '../../component/index.jsx';
@@ -9,18 +7,14 @@ import OpenStadComponentFormField from './form-field.jsx';
 export default class OpenStadComponentForm extends OpenStadComponent {
 
   constructor(props) {
-    super(props);
 
-		let self = this;
-
-		self.defaultConfig = {
-      // validateAction: null,
-      // submitAction: null,
+    super(props, {
       title: null,
       intro: null,
       fields: [],
-		};
-		self.config = merge.recursive(self.defaultConfig, self.config, props.config || {})
+		});
+
+		let self = this;
 
     self.state = {
       values: props.values|| {},

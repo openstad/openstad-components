@@ -1,12 +1,11 @@
-import merge from 'merge';
-import React from 'react';
-import VoteButton from './vote-button.jsx';
+'use strict';
 
 import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
 import OpenStadComponentPoll from '../../poll/index.jsx';
 import OpenStadComponentReactions from '../../reactions/index.jsx';
 import OpenStadComponentImage from '../../idea-image/index.jsx';
+import VoteButton from './vote-button.jsx';
 
 'use strict';
 
@@ -16,10 +15,7 @@ export default class IdeasDetails extends OpenStadComponent {
 
   constructor(props) {
 
-    super(props);
-
-		// config
-		let defaultConfig = {
+    super(props, {
       siteId: null,
       ideaId: null,
       idea: {
@@ -41,9 +37,7 @@ export default class IdeasDetails extends OpenStadComponent {
       types: null,
       typeField: 'typeId',
       typeLabel: 'Thema',
-		};
-
-		this.config = merge.recursive(defaultConfig, this.config, this.props.config || {})
+		});
 
     this.state = {
       idea: this.props.idea,
@@ -223,7 +217,6 @@ export default class IdeasDetails extends OpenStadComponent {
     if (self.config.idea.showLabels) {
       let typeId = eval(`idea.${self.config.typeField}`);
       let typeDef = self.config.types && self.config.types.find(def => def.id == typeId || def.value == typeId);
-      console.log('==', typeId, typeDef, self.config.types);
       if (typeDef) {
         let labelText = typeDef.label;
         let backgroundColor = typeDef.backgroundColor;

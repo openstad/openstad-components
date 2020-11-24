@@ -1,10 +1,8 @@
-import merge from 'merge';
-import React from 'react';
+'use strict';
 
+import OpenStadComponent from '../../component/index.jsx';
 import { IdeasFilterbar, IdeasFilter, IdeasSearch } from '../../ideas-overview/index.jsx';
 import Search from './search.jsx';
-
-'use strict';
 
 export default class Filterbar extends IdeasFilterbar {
 

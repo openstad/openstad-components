@@ -1,23 +1,15 @@
-import React from 'react';
-import merge from 'merge';
+'use strict';
 
 import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
-
 import OpenStadComponentReactionForm from './reaction-form.jsx';
 import OpenStadComponentReaction from './reaction.jsx';
-
-'use strict';
 
 export default class OpenStadComponentReactions extends OpenStadComponent {
 
   constructor(props) {
-    super(props);
 
-    let self = this;
-    self.id = props.id || `osc-reactions-${  parseInt( 1000000 * Math.random() )}`;
-
-    self.defaultConfig = {
+    super(props, {
       scrollToNewReaction: true,
       isClosed: false,
       closedText: 'De reactiemogelijkheid is gesloten',
@@ -34,12 +26,10 @@ export default class OpenStadComponentReactions extends OpenStadComponent {
       requiredUserRole: 'member',
       placeholder: '',
       formIntro: '',
-    };
+    });
 
-    self.config = merge.recursive(self.defaultConfig, self.config, props.config || {});
-
-    self.state = {
-      user: self.config.user,
+    this.state = {
+      user: this.config.user,
       reactions: [],
     };
 

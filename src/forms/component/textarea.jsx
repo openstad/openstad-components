@@ -1,7 +1,3 @@
-import merge from 'merge';
-import React from 'react';
-import ReactDOM from 'react-dom';
-
 'use strict';
 
 import OpenStadComponentDefaultInput from './default-input.jsx';

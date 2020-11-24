@@ -2252,22 +2252,20 @@ if (!self.fetch) {
 
 /***/ }),
 
-/***/ "./src/previous-next-button-block/component/previous-next-button-block.jsx":
-/*!*********************************************************************************!*\
-  !*** ./src/previous-next-button-block/component/previous-next-button-block.jsx ***!
-  \*********************************************************************************/
+/***/ "./src/component/index.jsx":
+/*!*********************************!*\
+  !*** ./src/component/index.jsx ***!
+  \*********************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OpenStadComponentPreviousNextButtonBlock; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OpenStadComponent; });
 /* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! merge */ "./node_modules/merge/merge.js");
 /* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "react-dom");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2292,46 +2290,142 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-
 'use strict';
 
-var OpenStadComponentPreviousNextButtonBlock = /*#__PURE__*/function (_React$Component) {
-  _inherits(OpenStadComponentPreviousNextButtonBlock, _React$Component);
+var OpenStadComponent = /*#__PURE__*/function (_React$Component) {
+  _inherits(OpenStadComponent, _React$Component);
+
+  var _super = _createSuper(OpenStadComponent);
+
+  function OpenStadComponent(props) {
+    var _this;
+
+    var defaultConfig = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var defaultdefaultConfig = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+    _classCallCheck(this, OpenStadComponent);
+
+    _this = _super.call(this, props);
+
+    var self = _assertThisInitialized(_this);
+
+    if (props.attributes) {
+      Object.keys(props.attributes).forEach(function (key) {
+        var attribute = props.attributes[key];
+        self[attribute.name] = attribute.value;
+      });
+    } // config
+
+
+    if (typeof self.config == 'string') {
+      try {
+        self.config = JSON.parse(self.config);
+      } catch (err) {}
+    }
+
+    var propsConfig = props.config || {};
+    Object.keys(propsConfig).forEach(function (key) {
+      return propsConfig[key] === undefined ? delete propsConfig[key] : {};
+    }); // remove undefined
+
+    self.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive({
+      siteId: null,
+      api: {
+        url: null,
+        headers: null,
+        isUserLoggedIn: false
+      },
+      user: {}
+    }, defaultConfig, defaultdefaultConfig, propsConfig);
+    self.divId = self.divId || self.config && self.config.divId || props.id || "openstad-component-".concat(parseInt(100000000 * Math.random()));
+    window[self.divId] = self;
+    return _this;
+  }
+
+  _createClass(OpenStadComponent, [{
+    key: "componentDidMount",
+    value: function componentDidMount(prevProps, prevState) {// let event = new Event('isReady');
+      // self.isReady = true;
+      // self.instance.dispatchEvent(event);
+    }
+  }]);
+
+  return OpenStadComponent;
+}(react__WEBPACK_IMPORTED_MODULE_1___default.a.Component);
+
+
+
+/***/ }),
+
+/***/ "./src/previous-next-button-block/component/previous-next-button-block.jsx":
+/*!*********************************************************************************!*\
+  !*** ./src/previous-next-button-block/component/previous-next-button-block.jsx ***!
+  \*********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OpenStadComponentPreviousNextButtonBlock; });
+/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
+
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+var OpenStadComponentPreviousNextButtonBlock = /*#__PURE__*/function (_OpenStadComponent) {
+  _inherits(OpenStadComponentPreviousNextButtonBlock, _OpenStadComponent);
 
   var _super = _createSuper(OpenStadComponentPreviousNextButtonBlock);
 
   function OpenStadComponentPreviousNextButtonBlock(props) {
-    var _this;
-
     _classCallCheck(this, OpenStadComponentPreviousNextButtonBlock);
 
-    _this = _super.call(this, props);
-    _this.defaultConfig = {
+    return _super.call(this, props, {
       previousAction: props.previousAction,
       nextAction: props.nextAction,
       previousUrl: props.previousUrl,
       nextUrl: props.nextUrl,
       previousLabel: props.previousLabel || 'Vorige',
       nextLabel: props.nextLabel || 'Volgende'
-    };
-    _this.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive(_this.defaultConfig, _this.config, props.config || {});
-    return _this;
+    });
   }
 
   _createClass(OpenStadComponentPreviousNextButtonBlock, [{
     key: "render",
     value: function render() {
-      var _this2 = this;
+      var _this = this;
 
       var self = this;
       var previousButtonHTML;
       var previousAction = this.config.previousAction;
       if (this.config.previousUrl) previousAction = function previousAction() {
-        document.location.href = "".concat(_this2.config.previousUrl);
+        document.location.href = "".concat(_this.config.previousUrl);
       };
 
       if (previousAction) {
-        previousButtonHTML = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        previousButtonHTML = /*#__PURE__*/React.createElement("div", {
           className: "osc-previous-button",
           onClick: function onClick(args) {
             previousAction(args);
@@ -2342,11 +2436,11 @@ var OpenStadComponentPreviousNextButtonBlock = /*#__PURE__*/function (_React$Com
       var nextButtonHTML;
       var nextAction = this.config.nextAction;
       if (this.config.nextUrl) nextAction = function nextAction() {
-        document.location.href = "".concat(_this2.config.nextUrl);
+        document.location.href = "".concat(_this.config.nextUrl);
       };
 
       if (nextAction) {
-        nextButtonHTML = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        nextButtonHTML = /*#__PURE__*/React.createElement("div", {
           className: "osc-next-button",
           onClick: function onClick(args) {
             nextAction(args);
@@ -2354,7 +2448,7 @@ var OpenStadComponentPreviousNextButtonBlock = /*#__PURE__*/function (_React$Com
         }, this.config.nextLabel);
       }
 
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         className: "osc-previous-next-button-block",
         ref: function ref(el) {
           return self.instance = el;
@@ -2364,7 +2458,7 @@ var OpenStadComponentPreviousNextButtonBlock = /*#__PURE__*/function (_React$Com
   }]);
 
   return OpenStadComponentPreviousNextButtonBlock;
-}(react__WEBPACK_IMPORTED_MODULE_1___default.a.Component);
+}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 

@@ -5,7 +5,7 @@ import React from 'react';
 
 export default class OpenStadComponent extends React.Component {
 
-  constructor(props) {
+  constructor(props, defaultConfig = {}, defaultdefaultConfig = {}) {
 
     super(props);
 
@@ -19,13 +19,14 @@ export default class OpenStadComponent extends React.Component {
     }
 
 		// config
-    self.config = self.config || props.config;
     if (typeof self.config == 'string') {
       try {
         self.config = JSON.parse(self.config);
       } catch (err) {}
     }
-		let defaultConfig = {
+    let propsConfig = props.config || {};
+    Object.keys(propsConfig).forEach(key => propsConfig[key] === undefined ? delete propsConfig[key] : {}); // remove undefined
+		self.config = merge.recursive({
       siteId: null,
 			api: {
         url: null,
@@ -33,8 +34,7 @@ export default class OpenStadComponent extends React.Component {
         isUserLoggedIn: false,
       },
       user: {},
-    }
-		self.config = merge.recursive(defaultConfig, self.config, self.props.config || {})
+    }, defaultConfig, defaultdefaultConfig, propsConfig)
 
     self.divId = self.divId || ( self.config && self.config.divId ) || props.id || `openstad-component-${  parseInt( 100000000 * Math.random() )}`;
     

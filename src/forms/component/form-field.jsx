@@ -1,5 +1,3 @@
-import merge from 'merge';
-
 'use strict';
 
 import OpenStadComponent from '../../component/index.jsx';
@@ -16,11 +14,8 @@ import OpenStadComponentTextArea from './textarea.jsx';
 export default class OpenStadComponentFormField extends OpenStadComponent {
 
   constructor(props) {
-    super(props);
 
-		let self = this;
-
-		self.defaultConfig = {
+    super(props, {
       inputType: null,
 
       validateAction: null,
@@ -30,8 +25,10 @@ export default class OpenStadComponentFormField extends OpenStadComponent {
       title: null,
       description: null,
       choices: [],
-		};
-		self.config = merge.recursive(self.defaultConfig, self.config, props.config || {})
+		});
+
+		let self = this;
+
     self.config.name = self.config.name || self.config.title.toLowerCase();
 
     self.state = {

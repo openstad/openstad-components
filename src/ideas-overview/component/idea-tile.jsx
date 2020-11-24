@@ -1,5 +1,4 @@
-import merge from 'merge';
-import React from 'react';
+'use strict';
 
 import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
@@ -11,13 +10,9 @@ import OpenStadComponentImage from '../../idea-image/index.jsx';
 // TODO: vote progress bar
 // TODO: ellipsis op theme and area moet op beide apart
 
-'use strict';
-
 export default class IdeasOverview extends OpenStadComponent {
 
   constructor(props) {
-
-    super(props);
 
 		// config
 		let defaultConfig = {
@@ -79,7 +74,7 @@ export default class IdeasOverview extends OpenStadComponent {
         };
     }
 
-		this.config = merge.recursive(defaultConfig, this.config, this.props.config || {})
+    super(props, defaultConfig);
 
     this.state = {
       idea: this.props.idea || {},

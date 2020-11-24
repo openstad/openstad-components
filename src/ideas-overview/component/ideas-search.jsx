@@ -1,9 +1,6 @@
-import merge from 'merge';
-import React from 'react';
+'use strict';
 
 import OpenStadComponent from '../../component/index.jsx';
-
-'use strict';
 
 // todo:
 // button
@@ -12,23 +9,18 @@ import OpenStadComponent from '../../component/index.jsx';
 // showButton
 // showSuggestions
 
-
-
 export default class IdeasSearch extends OpenStadComponent {
 
   constructor(props) {
 
-    super(props);
-
-		let defaultConfig = {
+    super(props, {
       placeholder: 'Zoeken',
       fieldNames: ['title', 'summary'],
       showSearch: true,
       showButton: false,
       showSuggestions: false,
       defaultValue: '',
-		};
-		this.config = merge.recursive(defaultConfig, this.config, this.props.config || {})
+		});
 
     this.doSearch = this.doSearch.bind(this);
     this.setSearch = this.setSearch.bind(this);
@@ -47,8 +39,6 @@ export default class IdeasSearch extends OpenStadComponent {
 
     let self = this;
     value = value || this.state.currentValue;
-
-    console.log('==', value);
 
     ideas = ideas.filter(idea => {
       let found = false;

@@ -1,7 +1,7 @@
+'use strict';
+
 import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentForms from '../../forms/index.jsx';
-
-'use strict';
 
 export default class OpenStadComponentQuestion extends OpenStadComponent {
 

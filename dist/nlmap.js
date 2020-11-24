@@ -2300,6 +2300,9 @@ var OpenStadComponent = /*#__PURE__*/function (_React$Component) {
   function OpenStadComponent(props) {
     var _this;
 
+    var defaultConfig = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var defaultdefaultConfig = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
     _classCallCheck(this, OpenStadComponent);
 
     _this = _super.call(this, props);
@@ -2314,15 +2317,18 @@ var OpenStadComponent = /*#__PURE__*/function (_React$Component) {
     } // config
 
 
-    self.config = self.config || props.config;
-
     if (typeof self.config == 'string') {
       try {
         self.config = JSON.parse(self.config);
       } catch (err) {}
     }
 
-    var defaultConfig = {
+    var propsConfig = props.config || {};
+    Object.keys(propsConfig).forEach(function (key) {
+      return propsConfig[key] === undefined ? delete propsConfig[key] : {};
+    }); // remove undefined
+
+    self.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive({
       siteId: null,
       api: {
         url: null,
@@ -2330,8 +2336,7 @@ var OpenStadComponent = /*#__PURE__*/function (_React$Component) {
         isUserLoggedIn: false
       },
       user: {}
-    };
-    self.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive(defaultConfig, self.config, self.props.config || {});
+    }, defaultConfig, defaultdefaultConfig, propsConfig);
     self.divId = self.divId || self.config && self.config.divId || props.id || "openstad-component-".concat(parseInt(100000000 * Math.random()));
     window[self.divId] = self;
     return _this;
@@ -2362,12 +2367,10 @@ var OpenStadComponent = /*#__PURE__*/function (_React$Component) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OpenStadComponentNLMap; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "react-dom");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
-/* harmony import */ var _lib_amaps_cluster_icon_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../lib/amaps-cluster-icon.js */ "./src/nlmap/lib/amaps-cluster-icon.js");
+/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
+/* harmony import */ var _lib_amaps_cluster_icon_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../lib/amaps-cluster-icon.js */ "./src/nlmap/lib/amaps-cluster-icon.js");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -2399,9 +2402,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-
-'use strict';
-
 var OpenStadComponentNLMap = /*#__PURE__*/function (_OpenStadComponent) {
   _inherits(OpenStadComponentNLMap, _OpenStadComponent);
 
@@ -2412,13 +2412,7 @@ var OpenStadComponentNLMap = /*#__PURE__*/function (_OpenStadComponent) {
 
     _classCallCheck(this, OpenStadComponentNLMap);
 
-    _this = _super.call(this, props);
-
-    var self = _assertThisInitialized(_this); // config
-
-
-    var defaultConfig = {
-      target: self.divId,
+    _this = _super.call(this, props, {
       style: 'standaard',
       marker: false,
       search: false,
@@ -2431,8 +2425,11 @@ var OpenStadComponentNLMap = /*#__PURE__*/function (_OpenStadComponent) {
       disableDefaultUI: true,
       polygon: null,
       autoZoomAndCenter: false
-    };
-    self.config = Object.assign(defaultConfig, self.config || {}); // external css and script files
+    });
+
+    var self = _assertThisInitialized(_this);
+
+    self.config.target = self.divId; // external css and script files
 
     self._loadedFiles = 0;
     self.files = [{
@@ -2549,7 +2546,7 @@ var OpenStadComponentNLMap = /*#__PURE__*/function (_OpenStadComponent) {
 
 
       if (self.config.clustering && self.config.clustering.isActive && L.markerClusterGroup) {
-        var iconCreateFunction = self.config.clustering.iconCreateFunction || _lib_amaps_cluster_icon_js__WEBPACK_IMPORTED_MODULE_3__["default"].bind(self); // ( self.config.variant == 'amaps' ? amapsCreateClusterIcon.bind(self) : self.createClusterIcon );
+        var iconCreateFunction = self.config.clustering.iconCreateFunction || _lib_amaps_cluster_icon_js__WEBPACK_IMPORTED_MODULE_1__["default"].bind(self); // ( self.config.variant == 'amaps' ? amapsCreateClusterIcon.bind(self) : self.createClusterIcon );
 
         if (iconCreateFunction && typeof iconCreateFunction == 'string') iconCreateFunction = eval(iconCreateFunction);
         self.markerClusterGroup = L.markerClusterGroup({
@@ -2941,20 +2938,20 @@ var OpenStadComponentNLMap = /*#__PURE__*/function (_OpenStadComponent) {
     value: function render() {
       var _this2 = this;
 
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         id: this.divId,
         className: this.props.className || 'osc-nlmap',
         ref: function ref(el) {
           return _this2.instance = el;
         }
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         id: this.divId + '-map'
       }));
     }
   }]);
 
   return OpenStadComponentNLMap;
-}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"]);
+}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 

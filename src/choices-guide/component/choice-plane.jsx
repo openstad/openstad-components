@@ -1,16 +1,12 @@
-import merge from 'merge';
+'use strict';
 
 import OpenStadComponent from '../../component/index.jsx';
-
-'use strict';
 
 export default class OpenStadComponentChoicePlane extends OpenStadComponent {
 
   constructor(props) {
 
-    super(props);
-
-    this.defaultConfig = {
+    super(props, {
       plane: {
         topleft: {
           title: "metrostad",
@@ -29,9 +25,7 @@ export default class OpenStadComponentChoicePlane extends OpenStadComponent {
           bgImage: { "src":"https://image-server.staging.openstadsdeel.nl/image/befd03bc1a415bd767f9912e3dcd18a8" },
         },
       }
-    };
-
-    this.config = merge.recursive(this.defaultConfig, this.config, props.config || {});
+    });
 
     this.state = {
     };

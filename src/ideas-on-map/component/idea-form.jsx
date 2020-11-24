@@ -1,6 +1,6 @@
-import merge from 'merge';
-import React from 'react';
+'use strict';
 
+import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
 import OpenStadComponentForms from '../../forms/index.jsx';
 
@@ -9,15 +9,11 @@ import OpenStadComponentForms from '../../forms/index.jsx';
 
 'use strict';
 
-export default class IdeasForm extends React.Component {
+export default class IdeasForm extends OpenStadComponent {
 
   constructor(props) {
 
-    super(props);
-
-		let self = this;
-
-		self.defaultConfig = {
+    super(props, {
       user: {},
 			ideaId: null,
       titleMinLength: 10,
@@ -27,8 +23,10 @@ export default class IdeasForm extends React.Component {
       descriptionMinLength: 140,
       descriptionMaxLength: 5000,
       fields: [],
-    };
-		self.config = merge.recursive(self.defaultConfig, self.config, props.config || {})
+    });
+
+		let self = this;
+
     self.config.fields = [ ...self.config.fields ];
 
     let fields = self.config.idea.fields || [];

@@ -1,5 +1,4 @@
-import merge from 'merge';
-import React from 'react';
+'use strict';
 
 import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
@@ -16,16 +15,11 @@ import IdeasSort from './ideas-sort.jsx';
 // sort positioneren
 // hidesortbutton kan er uit; die hoort in de parent (ideas-on-map)
 
-'use strict';
-
 export default class IdeasOverview extends OpenStadComponent {
 
   constructor(props) {
 
-    super(props);
-
-		// config
-		let defaultConfig = {
+    super(props, {
       siteId: null,
       title: 'Inzendingen',
       display: {
@@ -42,9 +36,7 @@ export default class IdeasOverview extends OpenStadComponent {
       filter: [],
       types: [],
       typeLabel: 'Thema',
-		};
-
-		this.config = merge.recursive(defaultConfig, this.config, this.props.config || {})
+		});
 
     this.state = {
       ideas: this.props.ideas || [],

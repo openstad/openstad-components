@@ -3819,22 +3819,20 @@ if (!self.fetch) {
 
 /***/ }),
 
-/***/ "./src/lightbox/component/lightbox.jsx":
-/*!*********************************************!*\
-  !*** ./src/lightbox/component/lightbox.jsx ***!
-  \*********************************************/
+/***/ "./src/component/index.jsx":
+/*!*********************************!*\
+  !*** ./src/component/index.jsx ***!
+  \*********************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OpenStadComponentLightbox; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OpenStadComponent; });
 /* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! merge */ "./node_modules/merge/merge.js");
 /* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "react-dom");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3859,11 +3857,112 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-
 'use strict';
 
-var OpenStadComponentLightbox = /*#__PURE__*/function (_React$Component) {
-  _inherits(OpenStadComponentLightbox, _React$Component);
+var OpenStadComponent = /*#__PURE__*/function (_React$Component) {
+  _inherits(OpenStadComponent, _React$Component);
+
+  var _super = _createSuper(OpenStadComponent);
+
+  function OpenStadComponent(props) {
+    var _this;
+
+    var defaultConfig = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var defaultdefaultConfig = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+    _classCallCheck(this, OpenStadComponent);
+
+    _this = _super.call(this, props);
+
+    var self = _assertThisInitialized(_this);
+
+    if (props.attributes) {
+      Object.keys(props.attributes).forEach(function (key) {
+        var attribute = props.attributes[key];
+        self[attribute.name] = attribute.value;
+      });
+    } // config
+
+
+    if (typeof self.config == 'string') {
+      try {
+        self.config = JSON.parse(self.config);
+      } catch (err) {}
+    }
+
+    var propsConfig = props.config || {};
+    Object.keys(propsConfig).forEach(function (key) {
+      return propsConfig[key] === undefined ? delete propsConfig[key] : {};
+    }); // remove undefined
+
+    self.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive({
+      siteId: null,
+      api: {
+        url: null,
+        headers: null,
+        isUserLoggedIn: false
+      },
+      user: {}
+    }, defaultConfig, defaultdefaultConfig, propsConfig);
+    self.divId = self.divId || self.config && self.config.divId || props.id || "openstad-component-".concat(parseInt(100000000 * Math.random()));
+    window[self.divId] = self;
+    return _this;
+  }
+
+  _createClass(OpenStadComponent, [{
+    key: "componentDidMount",
+    value: function componentDidMount(prevProps, prevState) {// let event = new Event('isReady');
+      // self.isReady = true;
+      // self.instance.dispatchEvent(event);
+    }
+  }]);
+
+  return OpenStadComponent;
+}(react__WEBPACK_IMPORTED_MODULE_1___default.a.Component);
+
+
+
+/***/ }),
+
+/***/ "./src/lightbox/component/lightbox.jsx":
+/*!*********************************************!*\
+  !*** ./src/lightbox/component/lightbox.jsx ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OpenStadComponentLightbox; });
+/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
+
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+var OpenStadComponentLightbox = /*#__PURE__*/function (_OpenStadComponent) {
+  _inherits(OpenStadComponentLightbox, _OpenStadComponent);
 
   var _super = _createSuper(OpenStadComponentLightbox);
 
@@ -3873,8 +3972,6 @@ var OpenStadComponentLightbox = /*#__PURE__*/function (_React$Component) {
     _classCallCheck(this, OpenStadComponentLightbox);
 
     _this = _super.call(this, props);
-    _this.defaultConfig = {};
-    _this.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive(_this.defaultConfig, _this.config, props.config || {});
     _this.state = {
       images: [],
       startIndex: 0
@@ -3975,7 +4072,7 @@ var OpenStadComponentLightbox = /*#__PURE__*/function (_React$Component) {
       var _this2 = this;
 
       var self = this;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         className: "osc-lightbox",
         onClick: function onClick() {
           _this2.hideLightbox();
@@ -3983,35 +4080,35 @@ var OpenStadComponentLightbox = /*#__PURE__*/function (_React$Component) {
         ref: function ref(el) {
           return self.instance = el;
         }
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         className: "osc-close-button",
         onClick: function onClick(e) {
           return self.hideLightbox(e);
         }
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }), /*#__PURE__*/React.createElement("div", {
         className: "osc-lightbox-main-container",
         ref: function ref(el) {
           return self.mainContainer = el;
         }
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         className: "osc-image-container",
         ref: function ref(el) {
           return self.mainImageContainer = el;
         }
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("img", {
+      }, /*#__PURE__*/React.createElement("img", {
         src: self.state.images[self.state.startIndex] && self.state.images[self.state.startIndex].src,
         ref: function ref(el) {
           return self.mainImage = el;
         }
-      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }))), /*#__PURE__*/React.createElement("div", {
         className: "osc-lightbox-navigation-container"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         className: "osc-lightbox-navigation",
         ref: function ref(el) {
           return self.navigationContainer = el;
         }
       }, self.state.images.map(function (image, i) {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        return /*#__PURE__*/React.createElement("div", {
           className: "osc-image-container",
           style: {
             backgroundImage: "url(".concat(image.src, ")")
@@ -4023,7 +4120,7 @@ var OpenStadComponentLightbox = /*#__PURE__*/function (_React$Component) {
           ref: function ref(el) {
             return self["lighbox-image-container-".concat(i)] = el;
           }
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("img", {
+        }, /*#__PURE__*/React.createElement("img", {
           src: image.src,
           ref: function ref(el) {
             return self["lighbox-image-".concat(i)] = el;
@@ -4034,7 +4131,7 @@ var OpenStadComponentLightbox = /*#__PURE__*/function (_React$Component) {
   }]);
 
   return OpenStadComponentLightbox;
-}(react__WEBPACK_IMPORTED_MODULE_1___default.a.Component);
+}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 

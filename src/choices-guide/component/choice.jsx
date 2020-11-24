@@ -1,17 +1,13 @@
-import merge from 'merge';
+'use strict';
 
 import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentChoicePlane from './choice-plane.jsx';
-
-'use strict';
 
 export default class OpenStadComponentChoice extends OpenStadComponent {
 
   constructor(props) {
 
-    super(props);
-
-    this.defaultConfig = {
+    super(props, {
       type: 'default',
       withPercentage: false,
       minLabel: null,
@@ -21,9 +17,8 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
         min: '#ff9100',
         max: '#bed200'
       }
-    };
+    });
 
-    this.config = merge.recursive('clone', this.defaultConfig, this.config, props.config || {});
     if (this.config.barColor.min == null) this.config.barColor.min = '#ff9100';
     if (this.config.barColor.max == null) this.config.barColor.max = '#bed200';
 

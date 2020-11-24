@@ -1,8 +1,8 @@
+'use strict';
+
 import merge from 'merge';
 import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentQuestion from './question.jsx';
-
-'use strict';
 
 export default class OpenStadComponentQuestionGroup extends OpenStadComponent {
 

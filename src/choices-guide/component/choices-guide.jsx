@@ -1,7 +1,8 @@
-import merge from 'merge';
+'use strict';
 
-import OpenStadComponentLibs from '../../libs/index.jsx';
+import merge from 'merge';
 import OpenStadComponent from '../../component/index.jsx';
+import OpenStadComponentLibs from '../../libs/index.jsx';
 import OpenStadComponentQuestionGroup from './question-group.jsx';
 import OpenStadComponentChoices from './choices.jsx';
 import OpenStadComponentChoicesGuideForm from './edit-form.jsx';
@@ -11,19 +12,11 @@ import OpenStadComponentLightbox from '../../lightbox/index.jsx';
 
 import fetchChoicesGuide from '../lib/fetch.js'
 
-'use strict';
-
 export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
 
   constructor(props) {
 
-    super(props);
-
-    let self = this;
-
-    self.id = props.id || `osc-choices-guide-${  parseInt( 1000000 * Math.random() )}`;
-
-    self.defaultConfig = {
+    super(props, {
       siteId: null,
       loginUrl: null,
       noOfQuestionsToShow: 1,
@@ -41,9 +34,9 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
         minLabel: null,
         maxLabel: null,
       },
-    };
+    });
 
-    self.config = merge.recursive(self.defaultConfig, self.config, props.config || {});
+    let self = this;
 
     // tmp
     if ( !self.config.aspectRatio && self.config.choices && self.config.choices.type && self.config.choices.type == 'plane' ) {

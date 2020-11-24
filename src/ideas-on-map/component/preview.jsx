@@ -1,21 +1,18 @@
-import merge from 'merge';
-import React from 'react';
+'use strict';
+
+import OpenStadComponent from '../../component/index.jsx';
 
 import OpenStadComponentLibs from '../../libs/index.jsx';
 import OpenStadComponentImage from '../../idea-image/index.jsx';
 
-'use strict';
+// todo: dit moet nog heel erg opgeschoond
+// todo: selectedidea weergave kan met idea-overview.tile gaan werken
 
-// todo: selectedidea moet via idea-overview.tile gaan werken
-
-export default class Preview extends React.Component {
+export default class Preview extends OpenStadComponent {
 
   constructor(props) {
 
-    super(props);
-
-		// config
-		let defaultConfig = {
+    super(props, {
       display: {
         type:'idea-selection',
       },
@@ -36,8 +33,9 @@ export default class Preview extends React.Component {
         canAddNewIdeas: true,
         showVoteButtons: true,
       },
-		};
-    this.config = merge.recursive(defaultConfig, this.config, props.config || {})
+		});
+
+		// config
     this.config.loginUrl = this.config.loginUrl || '/oauth/login?returnTo=' + encodeURIComponent(document.location.href);
 
     // tmp voor oude data

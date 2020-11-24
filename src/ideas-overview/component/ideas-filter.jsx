@@ -1,19 +1,12 @@
-import merge from 'merge';
-import React from 'react';
+'use strict';
 
 import OpenStadComponent from '../../component/index.jsx';
-
-'use strict';
 
 export default class IdeasFilter extends OpenStadComponent {
 
   constructor(props) {
 
     super(props);
-
-		let defaultConfig = {
-		};
-		this.config = merge.recursive(defaultConfig, this.config, this.props.config || {})
 
     this.doFilter = this.doFilter.bind(this);
     this.setFilter = this.setFilter.bind(this);

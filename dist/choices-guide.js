@@ -5399,9 +5399,9 @@ if (!self.fetch) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OpenStadComponentChoicePlane; });
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! merge */ "./node_modules/merge/merge.js");
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
+/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -5426,8 +5426,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-'use strict';
-
 var OpenStadComponentChoicePlane = /*#__PURE__*/function (_OpenStadComponent) {
   _inherits(OpenStadComponentChoicePlane, _OpenStadComponent);
 
@@ -5438,8 +5436,7 @@ var OpenStadComponentChoicePlane = /*#__PURE__*/function (_OpenStadComponent) {
 
     _classCallCheck(this, OpenStadComponentChoicePlane);
 
-    _this = _super.call(this, props);
-    _this.defaultConfig = {
+    _this = _super.call(this, props, {
       plane: {
         topleft: {
           title: "metrostad",
@@ -5466,8 +5463,7 @@ var OpenStadComponentChoicePlane = /*#__PURE__*/function (_OpenStadComponent) {
           }
         }
       }
-    };
-    _this.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive(_this.defaultConfig, _this.config, props.config || {});
+    });
     _this.state = {};
     return _this;
   }
@@ -5576,7 +5572,7 @@ var OpenStadComponentChoicePlane = /*#__PURE__*/function (_OpenStadComponent) {
   }]);
 
   return OpenStadComponentChoicePlane;
-}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_1__["default"]);
+}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 
@@ -5592,10 +5588,10 @@ var OpenStadComponentChoicePlane = /*#__PURE__*/function (_OpenStadComponent) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OpenStadComponentChoice; });
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! merge */ "./node_modules/merge/merge.js");
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
-/* harmony import */ var _choice_plane_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./choice-plane.jsx */ "./src/choices-guide/component/choice-plane.jsx");
+/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
+/* harmony import */ var _choice_plane_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./choice-plane.jsx */ "./src/choices-guide/component/choice-plane.jsx");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -5627,8 +5623,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-'use strict';
-
 var OpenStadComponentChoice = /*#__PURE__*/function (_OpenStadComponent) {
   _inherits(OpenStadComponentChoice, _OpenStadComponent);
 
@@ -5639,11 +5633,9 @@ var OpenStadComponentChoice = /*#__PURE__*/function (_OpenStadComponent) {
 
     _classCallCheck(this, OpenStadComponentChoice);
 
-    _this = _super.call(this, props);
-    _this.defaultConfig = {
+    _this = _super.call(this, props, {
       type: 'default'
-    };
-    _this.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive(_this.defaultConfig, _this.config, props.config || {});
+    });
     _this.answerDimensions = props.answerDimensions || 1;
 
     switch (props.answerDimensions) {
@@ -5759,7 +5751,7 @@ var OpenStadComponentChoice = /*#__PURE__*/function (_OpenStadComponent) {
 
       switch (this.config.type) {
         case 'plane':
-          scoreHTML = /*#__PURE__*/React.createElement(_choice_plane_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+          scoreHTML = /*#__PURE__*/React.createElement(_choice_plane_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
             config: _objectSpread({}, self.config),
             data: _objectSpread({}, self.props.data),
             score: score,
@@ -5800,7 +5792,7 @@ var OpenStadComponentChoice = /*#__PURE__*/function (_OpenStadComponent) {
   }]);
 
   return OpenStadComponentChoice;
-}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_1__["default"]);
+}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 
@@ -5816,17 +5808,17 @@ var OpenStadComponentChoice = /*#__PURE__*/function (_OpenStadComponent) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OpenStadComponentChoicesGuideResult; });
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! merge */ "./node_modules/merge/merge.js");
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var fingerprintjs2__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! fingerprintjs2 */ "./node_modules/fingerprintjs2/fingerprint2.js");
-/* harmony import */ var fingerprintjs2__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(fingerprintjs2__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var fingerprintjs2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! fingerprintjs2 */ "./node_modules/fingerprintjs2/fingerprint2.js");
+/* harmony import */ var fingerprintjs2__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(fingerprintjs2__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
 /* harmony import */ var _libs_index_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../libs/index.jsx */ "./src/libs/index.jsx");
-/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
-/* harmony import */ var _choices_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./choices.jsx */ "./src/choices-guide/component/choices.jsx");
-/* harmony import */ var _choice_plane_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./choice-plane.jsx */ "./src/choices-guide/component/choice-plane.jsx");
-/* harmony import */ var _forms_index_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../forms/index.jsx */ "./src/forms/index.jsx");
-/* harmony import */ var _previous_next_button_block_index_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../previous-next-button-block/index.jsx */ "./src/previous-next-button-block/index.jsx");
-/* harmony import */ var _lib_fetch_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../lib/fetch.js */ "./src/choices-guide/lib/fetch.js");
+/* harmony import */ var _choices_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./choices.jsx */ "./src/choices-guide/component/choices.jsx");
+/* harmony import */ var _choice_plane_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./choice-plane.jsx */ "./src/choices-guide/component/choice-plane.jsx");
+/* harmony import */ var _forms_index_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../forms/index.jsx */ "./src/forms/index.jsx");
+/* harmony import */ var _previous_next_button_block_index_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../previous-next-button-block/index.jsx */ "./src/previous-next-button-block/index.jsx");
+/* harmony import */ var _lib_fetch_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../lib/fetch.js */ "./src/choices-guide/lib/fetch.js");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
@@ -5876,8 +5868,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-'use strict';
-
 var OpenStadComponentChoicesGuideResult = /*#__PURE__*/function (_OpenStadComponent) {
   _inherits(OpenStadComponentChoicesGuideResult, _OpenStadComponent);
 
@@ -5888,13 +5878,12 @@ var OpenStadComponentChoicesGuideResult = /*#__PURE__*/function (_OpenStadCompon
 
     _classCallCheck(this, OpenStadComponentChoicesGuideResult);
 
-    _this = _super.call(this, props);
-    _this.defaultConfig = {
+    _this = _super.call(this, props, {
       type: 'default',
       submission: {
         type: 'none'
       }
-    };
+    });
     var allValues = _libs_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].sessionStorage.get('osc-choices-guide.values') || {};
     var allScores = _libs_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].sessionStorage.get('osc-choices-guide.scores') || {};
     _this.state = {
@@ -5914,7 +5903,7 @@ var OpenStadComponentChoicesGuideResult = /*#__PURE__*/function (_OpenStadCompon
     key: "fetchData",
     value: function fetchData() {
       var self = this;
-      Object(_lib_fetch_js__WEBPACK_IMPORTED_MODULE_8__["default"])({
+      Object(_lib_fetch_js__WEBPACK_IMPORTED_MODULE_7__["default"])({
         config: self.config
       }).then(function (data) {
         self.setState(data, function () {
@@ -5982,7 +5971,7 @@ var OpenStadComponentChoicesGuideResult = /*#__PURE__*/function (_OpenStadCompon
         if (!isValid) return;
       }
 
-      fingerprintjs2__WEBPACK_IMPORTED_MODULE_1___default.a.get(function (fingerprintComponents) {
+      fingerprintjs2__WEBPACK_IMPORTED_MODULE_0___default.a.get(function (fingerprintComponents) {
         var fingerprintData;
 
         try {
@@ -6057,7 +6046,7 @@ var OpenStadComponentChoicesGuideResult = /*#__PURE__*/function (_OpenStadCompon
               choices[0].images = choices && choices[0] && choices[0].images[1];
             }
 
-            choicesHTML = /*#__PURE__*/React.createElement(_choices_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], (_React$createElement = {
+            choicesHTML = /*#__PURE__*/React.createElement(_choices_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], (_React$createElement = {
               config: _objectSpread(_objectSpread({}, self.config.choices), {}, {
                 sticky: false,
                 size: 630
@@ -6070,7 +6059,7 @@ var OpenStadComponentChoicesGuideResult = /*#__PURE__*/function (_OpenStadCompon
             break;
 
           default:
-            choicesHTML = /*#__PURE__*/React.createElement(_choices_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], (_React$createElement2 = {
+            choicesHTML = /*#__PURE__*/React.createElement(_choices_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], (_React$createElement2 = {
               config: _objectSpread(_objectSpread({}, self.config.choices), {}, {
                 sticky: false,
                 size: 630,
@@ -6098,7 +6087,7 @@ var OpenStadComponentChoicesGuideResult = /*#__PURE__*/function (_OpenStadCompon
       var previousNextButtonsHTML = null;
 
       if (self.config.submission.type == 'form') {
-        formHTML = /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_6__["default"].Form, {
+        formHTML = /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_5__["default"].Form, {
           config: self.config.submission.form,
           ref: function ref(el) {
             self.form = el;
@@ -6122,7 +6111,7 @@ var OpenStadComponentChoicesGuideResult = /*#__PURE__*/function (_OpenStadCompon
         var nextLabel = self.config.afterLabel || 'Opslaan';
 
         if (previousLabel || nextLabel) {
-          previousNextButtonsHTML = /*#__PURE__*/React.createElement(_previous_next_button_block_index_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
+          previousNextButtonsHTML = /*#__PURE__*/React.createElement(_previous_next_button_block_index_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
             previousAction: previousAction,
             previousUrl: previousUrl,
             previousLabel: previousLabel,
@@ -6146,7 +6135,7 @@ var OpenStadComponentChoicesGuideResult = /*#__PURE__*/function (_OpenStadCompon
   }]);
 
   return OpenStadComponentChoicesGuideResult;
-}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_3__["default"]);
+}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_1__["default"]);
 
 
 
@@ -6164,14 +6153,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OpenStadComponentChoicesGuide; });
 /* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! merge */ "./node_modules/merge/merge.js");
 /* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _libs_index_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../libs/index.jsx */ "./src/libs/index.jsx");
-/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
+/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
+/* harmony import */ var _libs_index_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../libs/index.jsx */ "./src/libs/index.jsx");
 /* harmony import */ var _question_group_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./question-group.jsx */ "./src/choices-guide/component/question-group.jsx");
 /* harmony import */ var _choices_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./choices.jsx */ "./src/choices-guide/component/choices.jsx");
 /* harmony import */ var _edit_form_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./edit-form.jsx */ "./src/choices-guide/component/edit-form.jsx");
 /* harmony import */ var _previous_next_button_block_index_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../previous-next-button-block/index.jsx */ "./src/previous-next-button-block/index.jsx");
 /* harmony import */ var _lightbox_index_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../lightbox/index.jsx */ "./src/lightbox/index.jsx");
 /* harmony import */ var _lib_fetch_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../lib/fetch.js */ "./src/choices-guide/lib/fetch.js");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
@@ -6222,7 +6213,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
  // import OpenStadComponentChoicesGuideResult from './result.jsx';
 
 
-'use strict';
 
 var OpenStadComponentChoicesGuide = /*#__PURE__*/function (_OpenStadComponent) {
   _inherits(OpenStadComponentChoicesGuide, _OpenStadComponent);
@@ -6234,12 +6224,7 @@ var OpenStadComponentChoicesGuide = /*#__PURE__*/function (_OpenStadComponent) {
 
     _classCallCheck(this, OpenStadComponentChoicesGuide);
 
-    _this = _super.call(this, props);
-
-    var self = _assertThisInitialized(_this);
-
-    self.id = props.id || "osc-choices-guide-".concat(parseInt(1000000 * Math.random()));
-    self.defaultConfig = {
+    _this = _super.call(this, props, {
       siteId: null,
       loginUrl: null,
       noOfQuestionsToShow: 1,
@@ -6248,8 +6233,10 @@ var OpenStadComponentChoicesGuide = /*#__PURE__*/function (_OpenStadComponent) {
       },
       sticky: null // result: {},
 
-    };
-    self.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive(self.defaultConfig, self.config, props.config || {}); // tmp
+    });
+
+    var self = _assertThisInitialized(_this); // tmp
+
 
     if (!self.config.aspectRatio && self.config.choices && self.config.choices.type && self.config.choices.type == 'plane') {
       self.config.aspectRatio = '10x7';
@@ -6259,8 +6246,8 @@ var OpenStadComponentChoicesGuide = /*#__PURE__*/function (_OpenStadComponent) {
       self.config.choiceTitleIncludesPreference = true;
     }
 
-    var allValues = _libs_index_jsx__WEBPACK_IMPORTED_MODULE_1__["default"].sessionStorage.get('osc-choices-guide.values') || {};
-    var allScores = _libs_index_jsx__WEBPACK_IMPORTED_MODULE_1__["default"].sessionStorage.get('osc-choices-guide.scores') || {};
+    var allValues = _libs_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].sessionStorage.get('osc-choices-guide.values') || {};
+    var allScores = _libs_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].sessionStorage.get('osc-choices-guide.scores') || {};
     self.state = {
       editMode: false,
       title: 'Loading....',
@@ -6320,8 +6307,8 @@ var OpenStadComponentChoicesGuide = /*#__PURE__*/function (_OpenStadComponent) {
   }, {
     key: "hideEditForm",
     value: function hideEditForm() {
-      var allValues = _libs_index_jsx__WEBPACK_IMPORTED_MODULE_1__["default"].sessionStorage.get('osc-choices-guide.values') || {};
-      var allScores = _libs_index_jsx__WEBPACK_IMPORTED_MODULE_1__["default"].sessionStorage.get('osc-choices-guide.scores') || {};
+      var allValues = _libs_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].sessionStorage.get('osc-choices-guide.values') || {};
+      var allScores = _libs_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].sessionStorage.get('osc-choices-guide.scores') || {};
       this.setState({
         editMode: false,
         title: 'Loading....',
@@ -6448,12 +6435,12 @@ var OpenStadComponentChoicesGuide = /*#__PURE__*/function (_OpenStadComponent) {
         scores: scores,
         firstAnswerGiven: Object.keys(answers).length > 0
       }, function () {
-        var allValues = _libs_index_jsx__WEBPACK_IMPORTED_MODULE_1__["default"].sessionStorage.get('osc-choices-guide.values') || {};
+        var allValues = _libs_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].sessionStorage.get('osc-choices-guide.values') || {};
         allValues[_this5.config.choicesGuideId] = answers;
-        _libs_index_jsx__WEBPACK_IMPORTED_MODULE_1__["default"].sessionStorage.set('osc-choices-guide.values', allValues);
-        var allScores = _libs_index_jsx__WEBPACK_IMPORTED_MODULE_1__["default"].sessionStorage.get('osc-choices-guide.scores') || {};
+        _libs_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].sessionStorage.set('osc-choices-guide.values', allValues);
+        var allScores = _libs_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].sessionStorage.get('osc-choices-guide.scores') || {};
         allScores[_this5.config.choicesGuideId] = scores;
-        _libs_index_jsx__WEBPACK_IMPORTED_MODULE_1__["default"].sessionStorage.set('osc-choices-guide.scores', allScores);
+        _libs_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].sessionStorage.set('osc-choices-guide.scores', allScores);
       });
     }
   }, {
@@ -6656,7 +6643,7 @@ var OpenStadComponentChoicesGuide = /*#__PURE__*/function (_OpenStadComponent) {
   }]);
 
   return OpenStadComponentChoicesGuide;
-}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"]);
+}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_1__["default"]);
 
 
 
@@ -6672,11 +6659,11 @@ var OpenStadComponentChoicesGuide = /*#__PURE__*/function (_OpenStadComponent) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OpenStadComponentChoices; });
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! merge */ "./node_modules/merge/merge.js");
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
 /* harmony import */ var _libs_index_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../libs/index.jsx */ "./src/libs/index.jsx");
-/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
-/* harmony import */ var _choice_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./choice.jsx */ "./src/choices-guide/component/choice.jsx");
+/* harmony import */ var _choice_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./choice.jsx */ "./src/choices-guide/component/choice.jsx");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -6709,8 +6696,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-'use strict';
-
 var OpenStadComponentChoices = /*#__PURE__*/function (_OpenStadComponent) {
   _inherits(OpenStadComponentChoices, _OpenStadComponent);
 
@@ -6721,12 +6706,10 @@ var OpenStadComponentChoices = /*#__PURE__*/function (_OpenStadComponent) {
 
     _classCallCheck(this, OpenStadComponentChoices);
 
-    _this = _super.call(this, props);
-    _this.defaultConfig = {
+    _this = _super.call(this, props, {
       type: 'default',
       sticky: null
-    };
-    _this.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive(_this.defaultConfig, _this.config, props.config || {});
+    });
     _this.choiceElements = [];
     _this.state = {
       title: 'Je hebt nog geen keuze gemaakt',
@@ -6784,7 +6767,7 @@ var OpenStadComponentChoices = /*#__PURE__*/function (_OpenStadComponent) {
         className: "osc-choices"
       }, Object.keys(self.props.choices).map(function (key, i) {
         var choice = self.props.choices[key];
-        return /*#__PURE__*/React.createElement(_choice_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        return /*#__PURE__*/React.createElement(_choice_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
           config: _objectSpread({
             divId: "choice-".concat(choice.id)
           }, self.config),
@@ -6801,7 +6784,7 @@ var OpenStadComponentChoices = /*#__PURE__*/function (_OpenStadComponent) {
   }]);
 
   return OpenStadComponentChoices;
-}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"]);
+}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 
@@ -6817,11 +6800,11 @@ var OpenStadComponentChoices = /*#__PURE__*/function (_OpenStadComponent) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OpenStadComponentChoicesGuideForm; });
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! merge */ "./node_modules/merge/merge.js");
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
 /* harmony import */ var _libs_index_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../libs/index.jsx */ "./src/libs/index.jsx");
-/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
-/* harmony import */ var _forms_index_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../forms/index.jsx */ "./src/forms/index.jsx");
+/* harmony import */ var _forms_index_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../forms/index.jsx */ "./src/forms/index.jsx");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -6846,12 +6829,9 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-// todo: het is nu 1 form met switches; uit elkaar trekken in losse forms is netter
 
 
-
-
-'use strict';
+ // todo: het is nu 1 form met switches; uit elkaar trekken in losse forms is netter
 
 var OpenStadComponentChoicesGuideForm = /*#__PURE__*/function (_OpenStadComponent) {
   _inherits(OpenStadComponentChoicesGuideForm, _OpenStadComponent);
@@ -6863,26 +6843,20 @@ var OpenStadComponentChoicesGuideForm = /*#__PURE__*/function (_OpenStadComponen
 
     _classCallCheck(this, OpenStadComponentChoicesGuideForm);
 
-    _this = _super.call(this, props);
-
-    var self = _assertThisInitialized(_this);
-
-    self.id = props.id || "osc-choices-guide-".concat(parseInt(1000000 * Math.random()));
-    self.defaultConfig = {
+    _this = _super.call(this, props, {
       siteId: null,
       loginUrl: null,
       noOfQuestionsToShow: 1,
       api: {
         url: null
       }
-    };
-    self.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive(self.defaultConfig, self.config, props.config || {});
-    self.state = {
-      choicesGuideId: self.props.data.choicesGuideId,
+    });
+    _this.state = {
+      choicesGuideId: _this.props.data.choicesGuideId,
       currentTarget: {},
       busy: false
     };
-    self.onFinished = self.props.onFinished;
+    _this.onFinished = _this.props.onFinished;
     return _this;
   }
 
@@ -7187,7 +7161,7 @@ var OpenStadComponentChoicesGuideForm = /*#__PURE__*/function (_OpenStadComponen
           title = 'Bewerk keuzewijzer';
           formfieldsHTML = /*#__PURE__*/React.createElement("div", {
             className: "openstad-form"
-          }, /*#__PURE__*/React.createElement("h3", null, "Titel"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_3__["default"].InputWithCounter, {
+          }, /*#__PURE__*/React.createElement("h3", null, "Titel"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].InputWithCounter, {
             key: "x1",
             config: {
               inputType: 'input',
@@ -7203,7 +7177,7 @@ var OpenStadComponentChoicesGuideForm = /*#__PURE__*/function (_OpenStadComponen
             ref: function ref(el) {
               self.titleField = el;
             }
-          }), /*#__PURE__*/React.createElement("h3", null, "Beschrijving"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_3__["default"].InputWithCounter, {
+          }), /*#__PURE__*/React.createElement("h3", null, "Beschrijving"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].InputWithCounter, {
             key: "x2",
             config: {
               inputType: 'textarea',
@@ -7219,7 +7193,7 @@ var OpenStadComponentChoicesGuideForm = /*#__PURE__*/function (_OpenStadComponen
             ref: function ref(el) {
               return self.descriptionField = el;
             }
-          }), /*#__PURE__*/React.createElement("h3", null, "Afbeeldingen"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_3__["default"].Textarea, {
+          }), /*#__PURE__*/React.createElement("h3", null, "Afbeeldingen"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].Textarea, {
             key: "i1",
             config: {},
             value: self.state.currentTarget.images,
@@ -7339,7 +7313,7 @@ var OpenStadComponentChoicesGuideForm = /*#__PURE__*/function (_OpenStadComponen
 
         case 'choice':
           title = 'Bewerk Keuze';
-          formfieldsHTML = /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", null, "Titel"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_3__["default"].InputWithCounter, {
+          formfieldsHTML = /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", null, "Titel"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].InputWithCounter, {
             config: {
               inputType: 'input',
               minLength: 1,
@@ -7354,7 +7328,7 @@ var OpenStadComponentChoicesGuideForm = /*#__PURE__*/function (_OpenStadComponen
             ref: function ref(el) {
               return self.titleField = el;
             }
-          }), /*#__PURE__*/React.createElement("h3", null, "Beschrijving"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_3__["default"].InputWithCounter, {
+          }), /*#__PURE__*/React.createElement("h3", null, "Beschrijving"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].InputWithCounter, {
             config: {
               inputType: 'textarea',
               minLength: 1,
@@ -7369,7 +7343,7 @@ var OpenStadComponentChoicesGuideForm = /*#__PURE__*/function (_OpenStadComponen
             ref: function ref(el) {
               return self.descriptionField = el;
             }
-          }), /*#__PURE__*/React.createElement("h3", null, "Afbeeldingen"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_3__["default"].Textarea, {
+          }), /*#__PURE__*/React.createElement("h3", null, "Afbeeldingen"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].Textarea, {
             key: "i2",
             config: {},
             value: self.state.currentTarget.images,
@@ -7381,7 +7355,7 @@ var OpenStadComponentChoicesGuideForm = /*#__PURE__*/function (_OpenStadComponen
             ref: function ref(el) {
               return self.imagesField = el;
             }
-          }), /*#__PURE__*/React.createElement("h3", null, "Antwoorden"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_3__["default"].Text, {
+          }), /*#__PURE__*/React.createElement("h3", null, "Antwoorden"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].Text, {
             config: {},
             value: self.state.currentTarget.answers,
             onChange: function onChange(data) {
@@ -7392,7 +7366,7 @@ var OpenStadComponentChoicesGuideForm = /*#__PURE__*/function (_OpenStadComponen
             ref: function ref(el) {
               return self.answersField = el;
             }
-          }), /*#__PURE__*/React.createElement("h3", null, "Volgorde nummer"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_3__["default"].Text, {
+          }), /*#__PURE__*/React.createElement("h3", null, "Volgorde nummer"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].Text, {
             config: {},
             value: self.state.currentTarget.seqnr,
             onChange: function onChange(data) {
@@ -7410,7 +7384,7 @@ var OpenStadComponentChoicesGuideForm = /*#__PURE__*/function (_OpenStadComponen
           title = 'Bewerk Vragengroep';
           formfieldsHTML = /*#__PURE__*/React.createElement("div", {
             className: "openstad-form"
-          }, /*#__PURE__*/React.createElement("h3", null, "Titel"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_3__["default"].InputWithCounter, {
+          }, /*#__PURE__*/React.createElement("h3", null, "Titel"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].InputWithCounter, {
             config: {
               inputType: 'input',
               minLength: 1,
@@ -7425,7 +7399,7 @@ var OpenStadComponentChoicesGuideForm = /*#__PURE__*/function (_OpenStadComponen
             ref: function ref(el) {
               return self.titleField = el;
             }
-          }), /*#__PURE__*/React.createElement("h3", null, "Beschrijving"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_3__["default"].InputWithCounter, {
+          }), /*#__PURE__*/React.createElement("h3", null, "Beschrijving"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].InputWithCounter, {
             config: {
               inputType: 'textarea',
               minLength: 1,
@@ -7440,7 +7414,7 @@ var OpenStadComponentChoicesGuideForm = /*#__PURE__*/function (_OpenStadComponen
             ref: function ref(el) {
               return self.descriptionField = el;
             }
-          }), /*#__PURE__*/React.createElement("h3", null, "Afbeeldingen"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_3__["default"].Textarea, {
+          }), /*#__PURE__*/React.createElement("h3", null, "Afbeeldingen"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].Textarea, {
             key: "i3",
             config: {},
             value: self.state.currentTarget.images,
@@ -7469,7 +7443,7 @@ var OpenStadComponentChoicesGuideForm = /*#__PURE__*/function (_OpenStadComponen
             value: "2"
           }, "2"), /*#__PURE__*/React.createElement("option", {
             value: "3"
-          }, "3")), /*#__PURE__*/React.createElement("h3", null, "Volgorde nummer"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_3__["default"].Text, {
+          }, "3")), /*#__PURE__*/React.createElement("h3", null, "Volgorde nummer"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].Text, {
             config: {},
             value: self.state.currentTarget.seqnr,
             onChange: function onChange(data) {
@@ -7487,7 +7461,7 @@ var OpenStadComponentChoicesGuideForm = /*#__PURE__*/function (_OpenStadComponen
           title = "Bewerk Vraag ".concat(self.state.currentTarget.questionId);
           formfieldsHTML = /*#__PURE__*/React.createElement("div", {
             className: "openstad-form"
-          }, /*#__PURE__*/React.createElement("h3", null, "Titel"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_3__["default"].InputWithCounter, {
+          }, /*#__PURE__*/React.createElement("h3", null, "Titel"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].InputWithCounter, {
             config: {
               inputType: 'input',
               minLength: 1,
@@ -7502,7 +7476,7 @@ var OpenStadComponentChoicesGuideForm = /*#__PURE__*/function (_OpenStadComponen
             ref: function ref(el) {
               return self.titleField = el;
             }
-          }), /*#__PURE__*/React.createElement("h3", null, "Beschrijving"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_3__["default"].InputWithCounter, {
+          }), /*#__PURE__*/React.createElement("h3", null, "Beschrijving"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].InputWithCounter, {
             config: {
               inputType: 'textarea',
               minLength: 1,
@@ -7517,7 +7491,7 @@ var OpenStadComponentChoicesGuideForm = /*#__PURE__*/function (_OpenStadComponen
             ref: function ref(el) {
               return self.descriptionField = el;
             }
-          }), /*#__PURE__*/React.createElement("h3", null, "Afbeeldingen"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_3__["default"].Textarea, {
+          }), /*#__PURE__*/React.createElement("h3", null, "Afbeeldingen"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].Textarea, {
             key: "i4",
             config: {},
             value: self.state.currentTarget.images,
@@ -7529,7 +7503,7 @@ var OpenStadComponentChoicesGuideForm = /*#__PURE__*/function (_OpenStadComponen
             ref: function ref(el) {
               return self.imagesField = el;
             }
-          }), /*#__PURE__*/React.createElement("h3", null, "Label minimale waarde"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_3__["default"].InputWithCounter, {
+          }), /*#__PURE__*/React.createElement("h3", null, "Label minimale waarde"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].InputWithCounter, {
             config: {
               inputType: 'input',
               minLength: 1,
@@ -7544,7 +7518,7 @@ var OpenStadComponentChoicesGuideForm = /*#__PURE__*/function (_OpenStadComponen
             ref: function ref(el) {
               return self.minLabelField = el;
             }
-          }), /*#__PURE__*/React.createElement("h3", null, "Label maximale waarde"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_3__["default"].InputWithCounter, {
+          }), /*#__PURE__*/React.createElement("h3", null, "Label maximale waarde"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].InputWithCounter, {
             config: _defineProperty({
               inputType: 'input',
               maxLength: 1
@@ -7577,7 +7551,7 @@ var OpenStadComponentChoicesGuideForm = /*#__PURE__*/function (_OpenStadComponen
             value: "enum-buttons"
           }, "multiple choice - buttons"), /*#__PURE__*/React.createElement("option", {
             value: "enum-radio"
-          }, "multiple choice - radio")), /*#__PURE__*/React.createElement("h3", null, "Waarden"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_3__["default"].Textarea, {
+          }, "multiple choice - radio")), /*#__PURE__*/React.createElement("h3", null, "Waarden"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].Textarea, {
             config: {},
             value: self.state.currentTarget.values,
             onChange: function onChange(data) {
@@ -7588,7 +7562,7 @@ var OpenStadComponentChoicesGuideForm = /*#__PURE__*/function (_OpenStadComponen
             ref: function ref(el) {
               return self.valuesField = el;
             }
-          }), /*#__PURE__*/React.createElement("h3", null, "Volgorde nummer"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_3__["default"].Text, {
+          }), /*#__PURE__*/React.createElement("h3", null, "Volgorde nummer"), /*#__PURE__*/React.createElement(_forms_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].Text, {
             config: {},
             value: self.state.currentTarget.seqnr,
             onChange: function onChange(data) {
@@ -7619,7 +7593,7 @@ var OpenStadComponentChoicesGuideForm = /*#__PURE__*/function (_OpenStadComponen
   }]);
 
   return OpenStadComponentChoicesGuideForm;
-}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"]);
+}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 
@@ -7639,6 +7613,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
 /* harmony import */ var _question_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./question.jsx */ "./src/choices-guide/component/question.jsx");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -7670,7 +7646,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-'use strict';
 
 var OpenStadComponentQuestionGroup = /*#__PURE__*/function (_OpenStadComponent) {
   _inherits(OpenStadComponentQuestionGroup, _OpenStadComponent);
@@ -7858,6 +7833,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OpenStadComponentQuestion; });
 /* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
 /* harmony import */ var _forms_index_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../forms/index.jsx */ "./src/forms/index.jsx");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -7882,7 +7859,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-'use strict';
 
 var OpenStadComponentQuestion = /*#__PURE__*/function (_OpenStadComponent) {
   _inherits(OpenStadComponentQuestion, _OpenStadComponent);
@@ -8414,6 +8390,9 @@ var OpenStadComponent = /*#__PURE__*/function (_React$Component) {
   function OpenStadComponent(props) {
     var _this;
 
+    var defaultConfig = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var defaultdefaultConfig = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
     _classCallCheck(this, OpenStadComponent);
 
     _this = _super.call(this, props);
@@ -8428,15 +8407,18 @@ var OpenStadComponent = /*#__PURE__*/function (_React$Component) {
     } // config
 
 
-    self.config = self.config || props.config;
-
     if (typeof self.config == 'string') {
       try {
         self.config = JSON.parse(self.config);
       } catch (err) {}
     }
 
-    var defaultConfig = {
+    var propsConfig = props.config || {};
+    Object.keys(propsConfig).forEach(function (key) {
+      return propsConfig[key] === undefined ? delete propsConfig[key] : {};
+    }); // remove undefined
+
+    self.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive({
       siteId: null,
       api: {
         url: null,
@@ -8444,8 +8426,7 @@ var OpenStadComponent = /*#__PURE__*/function (_React$Component) {
         isUserLoggedIn: false
       },
       user: {}
-    };
-    self.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive(defaultConfig, self.config, self.props.config || {});
+    }, defaultConfig, defaultdefaultConfig, propsConfig);
     self.divId = self.divId || self.config && self.config.divId || props.id || "openstad-component-".concat(parseInt(100000000 * Math.random()));
     window[self.divId] = self;
     return _this;
@@ -8476,13 +8457,9 @@ var OpenStadComponent = /*#__PURE__*/function (_React$Component) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OpenStadComponentDefaultInput; });
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! merge */ "./node_modules/merge/merge.js");
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "react-dom");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
+/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -8507,10 +8484,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-
-
-'use strict';
-
 var OpenStadComponentDefaultInput = /*#__PURE__*/function (_OpenStadComponent) {
   _inherits(OpenStadComponentDefaultInput, _OpenStadComponent);
 
@@ -8519,20 +8492,20 @@ var OpenStadComponentDefaultInput = /*#__PURE__*/function (_OpenStadComponent) {
   function OpenStadComponentDefaultInput(props) {
     var _this;
 
+    var defaultConfig = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
     _classCallCheck(this, OpenStadComponentDefaultInput);
 
-    _this = _super.call(this, props);
-
-    var self = _assertThisInitialized(_this);
-
-    self.defaultConfig = {
+    _this = _super.call(this, props, {
       choices: [],
       name: '',
       placeholder: '',
       disabled: false,
       required: false
-    };
-    self.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive(self.defaultConfig, self.config, props.config || {});
+    }, defaultConfig);
+
+    var self = _assertThisInitialized(_this);
+
     self.state = {
       value: props.value,
       error: null
@@ -8573,7 +8546,7 @@ var OpenStadComponentDefaultInput = /*#__PURE__*/function (_OpenStadComponent) {
   }]);
 
   return OpenStadComponentDefaultInput;
-}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_3__["default"]);
+}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 
@@ -8589,17 +8562,17 @@ var OpenStadComponentDefaultInput = /*#__PURE__*/function (_OpenStadComponent) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OpenStadComponentFormField; });
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! merge */ "./node_modules/merge/merge.js");
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
-/* harmony import */ var _hidden_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./hidden.jsx */ "./src/forms/component/hidden.jsx");
-/* harmony import */ var _image_upload_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./image-upload.jsx */ "./src/forms/component/image-upload.jsx");
-/* harmony import */ var _input_with_counter_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./input-with-counter.jsx */ "./src/forms/component/input-with-counter.jsx");
-/* harmony import */ var _radios_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./radios.jsx */ "./src/forms/component/radios.jsx");
-/* harmony import */ var _postcode_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./postcode.jsx */ "./src/forms/component/postcode.jsx");
-/* harmony import */ var _select_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./select.jsx */ "./src/forms/component/select.jsx");
-/* harmony import */ var _textinput_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./textinput.jsx */ "./src/forms/component/textinput.jsx");
-/* harmony import */ var _textarea_jsx__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./textarea.jsx */ "./src/forms/component/textarea.jsx");
+/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
+/* harmony import */ var _hidden_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./hidden.jsx */ "./src/forms/component/hidden.jsx");
+/* harmony import */ var _image_upload_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./image-upload.jsx */ "./src/forms/component/image-upload.jsx");
+/* harmony import */ var _input_with_counter_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./input-with-counter.jsx */ "./src/forms/component/input-with-counter.jsx");
+/* harmony import */ var _radios_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./radios.jsx */ "./src/forms/component/radios.jsx");
+/* harmony import */ var _postcode_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./postcode.jsx */ "./src/forms/component/postcode.jsx");
+/* harmony import */ var _select_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./select.jsx */ "./src/forms/component/select.jsx");
+/* harmony import */ var _textinput_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./textinput.jsx */ "./src/forms/component/textinput.jsx");
+/* harmony import */ var _textarea_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./textarea.jsx */ "./src/forms/component/textarea.jsx");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -8629,9 +8602,6 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
-'use strict';
-
-
 
 
 
@@ -8651,11 +8621,7 @@ var OpenStadComponentFormField = /*#__PURE__*/function (_OpenStadComponent) {
 
     _classCallCheck(this, OpenStadComponentFormField);
 
-    _this = _super.call(this, props);
-
-    var self = _assertThisInitialized(_this);
-
-    self.defaultConfig = {
+    _this = _super.call(this, props, {
       inputType: null,
       validateAction: null,
       changeAction: null,
@@ -8663,8 +8629,10 @@ var OpenStadComponentFormField = /*#__PURE__*/function (_OpenStadComponent) {
       title: null,
       description: null,
       choices: []
-    };
-    self.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive(self.defaultConfig, self.config, props.config || {});
+    });
+
+    var self = _assertThisInitialized(_this);
+
     self.config.name = self.config.name || self.config.title.toLowerCase();
     self.state = {
       value: props.value || undefined
@@ -8717,7 +8685,7 @@ var OpenStadComponentFormField = /*#__PURE__*/function (_OpenStadComponent) {
 
       switch (self.config.inputType) {
         case 'hidden':
-          fieldHTML = /*#__PURE__*/React.createElement(_hidden_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+          fieldHTML = /*#__PURE__*/React.createElement(_hidden_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
             config: self.config,
             value: this.props.value || this.config.value,
             onChange: self.handleOnChange,
@@ -8729,7 +8697,7 @@ var OpenStadComponentFormField = /*#__PURE__*/function (_OpenStadComponent) {
 
         case 'html-with-counter':
         case 'htmlarea-with-counter':
-          fieldHTML = /*#__PURE__*/React.createElement(_input_with_counter_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+          fieldHTML = /*#__PURE__*/React.createElement(_input_with_counter_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
             config: _objectSpread(_objectSpread({}, self.config), {}, {
               inputType: 'htmlarea'
             }),
@@ -8742,7 +8710,7 @@ var OpenStadComponentFormField = /*#__PURE__*/function (_OpenStadComponent) {
           break;
 
         case 'image-upload':
-          fieldHTML = /*#__PURE__*/React.createElement(_image_upload_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+          fieldHTML = /*#__PURE__*/React.createElement(_image_upload_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
             config: self.config,
             value: this.props.value || this.config.value,
             onChange: self.handleOnChange,
@@ -8754,7 +8722,7 @@ var OpenStadComponentFormField = /*#__PURE__*/function (_OpenStadComponent) {
 
         case 'input-with-counter':
         case 'text-with-counter':
-          fieldHTML = /*#__PURE__*/React.createElement(_input_with_counter_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+          fieldHTML = /*#__PURE__*/React.createElement(_input_with_counter_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
             config: _objectSpread({
               inputType: 'input'
             }, self.config),
@@ -8767,7 +8735,7 @@ var OpenStadComponentFormField = /*#__PURE__*/function (_OpenStadComponent) {
           break;
 
         case 'postcode':
-          fieldHTML = /*#__PURE__*/React.createElement(_postcode_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
+          fieldHTML = /*#__PURE__*/React.createElement(_postcode_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
             config: self.config,
             onChange: self.handleOnChange,
             ref: function ref(el) {
@@ -8777,7 +8745,7 @@ var OpenStadComponentFormField = /*#__PURE__*/function (_OpenStadComponent) {
           break;
 
         case 'radios':
-          fieldHTML = /*#__PURE__*/React.createElement(_radios_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
+          fieldHTML = /*#__PURE__*/React.createElement(_radios_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
             config: self.config,
             value: this.props.value || this.config.value,
             onChange: self.handleOnChange,
@@ -8789,7 +8757,7 @@ var OpenStadComponentFormField = /*#__PURE__*/function (_OpenStadComponent) {
 
         case 'select':
         case 'multiple-choice':
-          fieldHTML = /*#__PURE__*/React.createElement(_select_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
+          fieldHTML = /*#__PURE__*/React.createElement(_select_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], {
             config: self.config,
             value: this.props.value || this.config.value,
             onChange: self.handleOnChange,
@@ -8800,7 +8768,7 @@ var OpenStadComponentFormField = /*#__PURE__*/function (_OpenStadComponent) {
           break;
 
         case 'text':
-          fieldHTML = /*#__PURE__*/React.createElement(_textinput_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
+          fieldHTML = /*#__PURE__*/React.createElement(_textinput_jsx__WEBPACK_IMPORTED_MODULE_7__["default"], {
             config: self.config,
             value: this.props.value || this.config.value,
             onChange: self.handleOnChange,
@@ -8811,7 +8779,7 @@ var OpenStadComponentFormField = /*#__PURE__*/function (_OpenStadComponent) {
           break;
 
         case 'textarea':
-          fieldHTML = /*#__PURE__*/React.createElement(_textarea_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], {
+          fieldHTML = /*#__PURE__*/React.createElement(_textarea_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
             config: self.config,
             value: this.props.value || this.config.value,
             onChange: self.handleOnChange,
@@ -8822,7 +8790,7 @@ var OpenStadComponentFormField = /*#__PURE__*/function (_OpenStadComponent) {
           break;
 
         case 'textarea-with-counter':
-          fieldHTML = /*#__PURE__*/React.createElement(_input_with_counter_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+          fieldHTML = /*#__PURE__*/React.createElement(_input_with_counter_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
             config: _objectSpread(_objectSpread({}, self.config), {}, {
               inputType: 'textarea'
             }),
@@ -8848,7 +8816,7 @@ var OpenStadComponentFormField = /*#__PURE__*/function (_OpenStadComponent) {
   }]);
 
   return OpenStadComponentFormField;
-}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_1__["default"]);
+}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 
@@ -8864,11 +8832,11 @@ var OpenStadComponentFormField = /*#__PURE__*/function (_OpenStadComponent) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OpenStadComponentForm; });
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! merge */ "./node_modules/merge/merge.js");
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
-/* harmony import */ var _libs_index_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../libs/index.jsx */ "./src/libs/index.jsx");
-/* harmony import */ var _form_field_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./form-field.jsx */ "./src/forms/component/form-field.jsx");
+/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
+/* harmony import */ var _libs_index_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../libs/index.jsx */ "./src/libs/index.jsx");
+/* harmony import */ var _form_field_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./form-field.jsx */ "./src/forms/component/form-field.jsx");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -8898,9 +8866,6 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 
-'use strict';
-
-
 
 
 
@@ -8914,18 +8879,14 @@ var OpenStadComponentForm = /*#__PURE__*/function (_OpenStadComponent) {
 
     _classCallCheck(this, OpenStadComponentForm);
 
-    _this = _super.call(this, props);
-
-    var self = _assertThisInitialized(_this);
-
-    self.defaultConfig = {
-      // validateAction: null,
-      // submitAction: null,
+    _this = _super.call(this, props, {
       title: null,
       intro: null,
       fields: []
-    };
-    self.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive(self.defaultConfig, self.config, props.config || {});
+    });
+
+    var self = _assertThisInitialized(_this);
+
     self.state = {
       values: props.values || {}
     };
@@ -9002,7 +8963,7 @@ var OpenStadComponentForm = /*#__PURE__*/function (_OpenStadComponent) {
         fieldsHTML = /*#__PURE__*/React.createElement("div", {
           className: "osc-form-fields"
         }, self.config.fields.map(function (fieldConfig, i) {
-          return /*#__PURE__*/React.createElement(_form_field_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], _defineProperty({
+          return /*#__PURE__*/React.createElement(_form_field_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], _defineProperty({
             config: fieldConfig,
             onChange: self.handleOnChange,
             ref: function ref(el) {
@@ -9026,7 +8987,7 @@ var OpenStadComponentForm = /*#__PURE__*/function (_OpenStadComponent) {
   }]);
 
   return OpenStadComponentForm;
-}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_1__["default"]);
+}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 
@@ -9042,13 +9003,9 @@ var OpenStadComponentForm = /*#__PURE__*/function (_OpenStadComponent) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OpenStadComponentSelect; });
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! merge */ "./node_modules/merge/merge.js");
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "react-dom");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _default_input_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./default-input.jsx */ "./src/forms/component/default-input.jsx");
+/* harmony import */ var _default_input_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./default-input.jsx */ "./src/forms/component/default-input.jsx");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -9070,11 +9027,6 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-
-
-
-'use strict';
 
 
 
@@ -9093,7 +9045,7 @@ var OpenStadComponentSelect = /*#__PURE__*/function (_OpenStadComponentDef) {
     key: "render",
     value: function render() {
       var self = this;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+      return /*#__PURE__*/React.createElement("input", {
         type: "hidden",
         value: this.props.value,
         disabled: this.props.disabled,
@@ -9111,7 +9063,7 @@ var OpenStadComponentSelect = /*#__PURE__*/function (_OpenStadComponentDef) {
   }]);
 
   return OpenStadComponentSelect;
-}(_default_input_jsx__WEBPACK_IMPORTED_MODULE_3__["default"]);
+}(_default_input_jsx__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 
@@ -9127,12 +9079,9 @@ var OpenStadComponentSelect = /*#__PURE__*/function (_OpenStadComponentDef) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OpenStadComponentHTMLArea; });
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! merge */ "./node_modules/merge/merge.js");
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "react-dom");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -9155,14 +9104,12 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-
-
  // TODO: it is probably not ok to write your own html editor, but after intergrating ckeditor or react-rte the build was (more than) twice as large; a bettter solution must be possible
 
 'use strict';
 
-var OpenStadComponentHTMLArea = /*#__PURE__*/function (_React$Component) {
-  _inherits(OpenStadComponentHTMLArea, _React$Component);
+var OpenStadComponentHTMLArea = /*#__PURE__*/function (_OpenStadComponent) {
+  _inherits(OpenStadComponentHTMLArea, _OpenStadComponent);
 
   var _super = _createSuper(OpenStadComponentHTMLArea);
 
@@ -9240,31 +9187,31 @@ var OpenStadComponentHTMLArea = /*#__PURE__*/function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         className: "osc-html-editor"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         className: "osc-html-editor-buttons"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         className: "osc-html-editor-button osc-html-editor-button-bold",
         onMouseDown: function onMouseDown(e) {
           return _this2.executeAction(e, 'bold');
         }
-      }, "\xA0"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }, "\xA0"), /*#__PURE__*/React.createElement("div", {
         className: "osc-html-editor-button osc-html-editor-button-italic",
         onMouseDown: function onMouseDown(e) {
           return _this2.executeAction(e, 'italic');
         }
-      }, "\xA0"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }, "\xA0"), /*#__PURE__*/React.createElement("div", {
         className: "osc-html-editor-button osc-html-editor-button-insertunorderedlist",
         onMouseDown: function onMouseDown(e) {
           return _this2.executeAction(e, 'insertunorderedlist');
         }
-      }, "\xA0"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }, "\xA0"), /*#__PURE__*/React.createElement("div", {
         className: "osc-html-editor-button osc-html-editor-button-createlink",
         onMouseDown: function onMouseDown(e) {
           return _this2.executeAction(e, 'createlink', prompt('Lank naar', 'http://'));
         }
-      }, "\xA0")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }, "\xA0")), /*#__PURE__*/React.createElement("div", {
         className: "osc-html-editor-content",
         contentEditable: true,
         onFocus: function onFocus(e) {
@@ -9285,12 +9232,12 @@ var OpenStadComponentHTMLArea = /*#__PURE__*/function (_React$Component) {
   }]);
 
   return OpenStadComponentHTMLArea;
-}(react__WEBPACK_IMPORTED_MODULE_1___default.a.Component);
+}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 
 function EditButton(props) {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+  return /*#__PURE__*/React.createElement("button", {
     key: props.cmd,
     onMouseDown: function onMouseDown(evt) {
       evt.preventDefault(); // Avoids loosing focus from the editable area
@@ -9312,13 +9259,9 @@ function EditButton(props) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OpenStadComponentSelect; });
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! merge */ "./node_modules/merge/merge.js");
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "react-dom");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _default_input_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./default-input.jsx */ "./src/forms/component/default-input.jsx");
+/* harmony import */ var _default_input_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./default-input.jsx */ "./src/forms/component/default-input.jsx");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -9343,11 +9286,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-
-'use strict';
-
-
-
 var OpenStadComponentSelect = /*#__PURE__*/function (_OpenStadComponentDef) {
   _inherits(OpenStadComponentSelect, _OpenStadComponentDef);
 
@@ -9358,15 +9296,13 @@ var OpenStadComponentSelect = /*#__PURE__*/function (_OpenStadComponentDef) {
 
     _classCallCheck(this, OpenStadComponentSelect);
 
-    _this = _super.call(this, props);
-    var defaultConfig = {
+    _this = _super.call(this, props, {
       allowMultiple: false,
       imageserver: {
         process: '',
         fetch: ''
       }
-    };
-    _this.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive(defaultConfig, _this.props.config, _this.config || {});
+    });
     var uploadedFiles = [];
     var value = props.value || [];
     value.forEach(function (image) {
@@ -9572,14 +9508,14 @@ var OpenStadComponentSelect = /*#__PURE__*/function (_OpenStadComponentDef) {
       var errorHTML = null;
 
       if (self.state.error) {
-        errorHTML = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        errorHTML = /*#__PURE__*/React.createElement("div", {
           className: "osc-form-error"
         }, "Je hebt nog geen afbeelding geupload");
       }
 
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         className: "osc-image-upload-container"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+      }, /*#__PURE__*/React.createElement("input", {
         type: "file",
         className: "imageUploader-gebiedstool filepond-gebiedstool"
       }), errorHTML);
@@ -9587,7 +9523,7 @@ var OpenStadComponentSelect = /*#__PURE__*/function (_OpenStadComponentDef) {
   }]);
 
   return OpenStadComponentSelect;
-}(_default_input_jsx__WEBPACK_IMPORTED_MODULE_3__["default"]);
+}(_default_input_jsx__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 
@@ -9603,13 +9539,11 @@ var OpenStadComponentSelect = /*#__PURE__*/function (_OpenStadComponentDef) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return FormfieldInputWithCounter; });
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! merge */ "./node_modules/merge/merge.js");
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "react-dom");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _htmlarea_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./htmlarea.jsx */ "./src/forms/component/htmlarea.jsx");
+/* harmony import */ var _htmlarea_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./htmlarea.jsx */ "./src/forms/component/htmlarea.jsx");
+/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
+ //import CKEditor from '@ckeditor/ckeditor5-react';
+//import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -9634,14 +9568,9 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
- //import CKEditor from '@ckeditor/ckeditor5-react';
-//import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
-
-'use strict';
-
-var FormfieldInputWithCounter = /*#__PURE__*/function (_React$Component) {
-  _inherits(FormfieldInputWithCounter, _React$Component);
+var FormfieldInputWithCounter = /*#__PURE__*/function (_OpenStadComponent) {
+  _inherits(FormfieldInputWithCounter, _OpenStadComponent);
 
   var _super = _createSuper(FormfieldInputWithCounter);
 
@@ -9650,19 +9579,17 @@ var FormfieldInputWithCounter = /*#__PURE__*/function (_React$Component) {
 
     _classCallCheck(this, FormfieldInputWithCounter);
 
-    _this = _super.call(this, props);
+    _this = _super.call(this, props, {
+      name: 'tekst',
+      inputType: 'input',
+      minLength: 5,
+      maxLength: 1024,
+      placeholder: ''
+    });
 
     var self = _assertThisInitialized(_this);
 
     self.id = props.id || 'osc-formfields-plaintext-with-counter-' + parseInt(1000000 * Math.random());
-    self.defaultConfig = {
-      name: 'tekst',
-      inputType: 'input',
-      minLength: 5,
-      maxLength: 10,
-      placeholder: ''
-    };
-    self.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive(self.defaultConfig, self.config, props.config || {});
     self.state = {
       focused: false,
       value: props.value || '',
@@ -9754,23 +9681,23 @@ var FormfieldInputWithCounter = /*#__PURE__*/function (_React$Component) {
 
       if (self.state.focused) {
         if (self.state.valueLength < self.config.minLength) {
-          counter = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          counter = /*#__PURE__*/React.createElement("div", {
             className: "osc-form-counter osc-form-error"
-          }, "Nog minimaal ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+          }, "Nog minimaal ", /*#__PURE__*/React.createElement("span", {
             className: ""
           }, self.config.minLength - self.state.valueLength), " tekens");
         } else {
           var error = self.state.valueLength > self.config.maxLength ? 'osc-form-error' : '';
-          counter = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          counter = /*#__PURE__*/React.createElement("div", {
             className: 'osc-form-counter ' + error
-          }, "Je hebt nog ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+          }, "Je hebt nog ", /*#__PURE__*/React.createElement("span", {
             className: ""
           }, self.config.maxLength - self.state.valueLength), " tekens over.");
         }
       }
 
       if (self.state.showWarning && self.state.warning) {
-        warning = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        warning = /*#__PURE__*/React.createElement("div", {
           className: "osc-form-warning",
           ref: function ref(el) {
             return _this2['form-warning'] = el;
@@ -9782,7 +9709,7 @@ var FormfieldInputWithCounter = /*#__PURE__*/function (_React$Component) {
 
       switch (self.config.inputType) {
         case 'htmlarea':
-          inputHTML = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_htmlarea_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+          inputHTML = /*#__PURE__*/React.createElement(_htmlarea_jsx__WEBPACK_IMPORTED_MODULE_0__["default"], {
             value: this.state.value,
             onChange: self.handleOnChange,
             onFocus: self.onInputFocus,
@@ -9808,7 +9735,7 @@ var FormfieldInputWithCounter = /*#__PURE__*/function (_React$Component) {
           break;
 
         case 'textarea':
-          inputHTML = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("textarea", {
+          inputHTML = /*#__PURE__*/React.createElement("textarea", {
             key: self.key,
             ref: function ref(el) {
               return self.input = el;
@@ -9835,7 +9762,7 @@ var FormfieldInputWithCounter = /*#__PURE__*/function (_React$Component) {
 
         case 'input':
         default:
-          inputHTML = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+          inputHTML = /*#__PURE__*/React.createElement("input", {
             key: self.key,
             ref: function ref(el) {
               return self.input = el;
@@ -9860,20 +9787,20 @@ var FormfieldInputWithCounter = /*#__PURE__*/function (_React$Component) {
           });
       }
 
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         id: self.id,
         ref: function ref(el) {
           return self.instance = el;
         },
         className: "osc-input-with-counter"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         className: "osc-form-feedback"
       }, inputHTML, counter, warning));
     }
   }]);
 
   return FormfieldInputWithCounter;
-}(react__WEBPACK_IMPORTED_MODULE_1___default.a.Component);
+}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_1__["default"]);
 
 
 
@@ -9889,13 +9816,9 @@ var FormfieldInputWithCounter = /*#__PURE__*/function (_React$Component) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OpenStadComponentPostcode; });
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! merge */ "./node_modules/merge/merge.js");
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "react-dom");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _default_input_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./default-input.jsx */ "./src/forms/component/default-input.jsx");
+/* harmony import */ var _default_input_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./default-input.jsx */ "./src/forms/component/default-input.jsx");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -9917,11 +9840,6 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-
-
-
-'use strict';
 
 
 
@@ -9966,14 +9884,14 @@ var OpenStadComponentPostcode = /*#__PURE__*/function (_OpenStadComponentDef) {
       var errorHTML = null;
 
       if (self.state.error) {
-        errorHTML = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        errorHTML = /*#__PURE__*/React.createElement("div", {
           className: "osc-form-error"
         }, self.state.error);
       }
 
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         className: "osc-textinput"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+      }, /*#__PURE__*/React.createElement("input", {
         type: "text",
         value: this.props.value,
         disabled: this.props.disabled,
@@ -9991,7 +9909,7 @@ var OpenStadComponentPostcode = /*#__PURE__*/function (_OpenStadComponentDef) {
   }]);
 
   return OpenStadComponentPostcode;
-}(_default_input_jsx__WEBPACK_IMPORTED_MODULE_3__["default"]);
+}(_default_input_jsx__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 
@@ -10007,13 +9925,9 @@ var OpenStadComponentPostcode = /*#__PURE__*/function (_OpenStadComponentDef) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OpenStadComponentRadios; });
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! merge */ "./node_modules/merge/merge.js");
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "react-dom");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _default_input_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./default-input.jsx */ "./src/forms/component/default-input.jsx");
+/* harmony import */ var _default_input_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./default-input.jsx */ "./src/forms/component/default-input.jsx");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -10035,11 +9949,6 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-
-
-
-'use strict';
 
 
 
@@ -10061,21 +9970,21 @@ var OpenStadComponentRadios = /*#__PURE__*/function (_OpenStadComponentDef) {
       var errorHTML = null;
 
       if (self.state.error) {
-        errorHTML = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        errorHTML = /*#__PURE__*/React.createElement("div", {
           className: "osc-form-error"
         }, "Je hebt nog geen keuze gemaakt");
       }
 
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         className: "osc-radios"
       }, self.config.choices.map(function (choice) {
         if (choice.dangerousDescription) {
-          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          return /*#__PURE__*/React.createElement("div", {
             className: "osc-radio-container",
             key: choice.value
-          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          }, /*#__PURE__*/React.createElement("div", {
             className: "osc-radio-input".concat(self.state.value == choice.value ? ' osc-radio-input-checked' : '')
-          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+          }, /*#__PURE__*/React.createElement("input", {
             type: "radio",
             name: self.divId,
             value: choice.value,
@@ -10084,19 +9993,19 @@ var OpenStadComponentRadios = /*#__PURE__*/function (_OpenStadComponentDef) {
                 value: choice.value
               });
             }
-          })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          })), /*#__PURE__*/React.createElement("div", {
             className: "osc-radio-text",
             dangerouslySetInnerHTML: {
               __html: choice.dangerousDescription
             }
           }));
         } else {
-          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          return /*#__PURE__*/React.createElement("div", {
             className: "osc-radio-container",
             key: choice.value
-          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          }, /*#__PURE__*/React.createElement("div", {
             className: "osc-radio-input".concat(self.state.value == choice.value ? ' osc-radio-input-checked' : '')
-          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+          }, /*#__PURE__*/React.createElement("input", {
             type: "radio",
             name: self.divId,
             value: choice.value,
@@ -10105,7 +10014,7 @@ var OpenStadComponentRadios = /*#__PURE__*/function (_OpenStadComponentDef) {
                 value: choice.value
               });
             }
-          })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          })), /*#__PURE__*/React.createElement("div", {
             className: "osc-radio-text"
           }, choice.dangerousDescription ? null : choice.description || choice.title || choice.value));
         }
@@ -10114,7 +10023,7 @@ var OpenStadComponentRadios = /*#__PURE__*/function (_OpenStadComponentDef) {
   }]);
 
   return OpenStadComponentRadios;
-}(_default_input_jsx__WEBPACK_IMPORTED_MODULE_3__["default"]);
+}(_default_input_jsx__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 
@@ -10130,13 +10039,9 @@ var OpenStadComponentRadios = /*#__PURE__*/function (_OpenStadComponentDef) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OpenStadComponentSelect; });
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! merge */ "./node_modules/merge/merge.js");
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "react-dom");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _default_input_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./default-input.jsx */ "./src/forms/component/default-input.jsx");
+/* harmony import */ var _default_input_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./default-input.jsx */ "./src/forms/component/default-input.jsx");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -10158,11 +10063,6 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-
-
-
-'use strict';
 
 
 
@@ -10193,14 +10093,14 @@ var OpenStadComponentSelect = /*#__PURE__*/function (_OpenStadComponentDef) {
       var errorHTML = null;
 
       if (self.state.error) {
-        errorHTML = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        errorHTML = /*#__PURE__*/React.createElement("div", {
           className: "osc-form-error"
         }, "Je hebt nog geen keuze gemaakt");
       }
 
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         className: "osc-select"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("select", {
+      }, /*#__PURE__*/React.createElement("select", {
         value: this.state.value || '',
         disabled: this.props.disabled,
         placeholder: this.config.placeholder,
@@ -10213,7 +10113,7 @@ var OpenStadComponentSelect = /*#__PURE__*/function (_OpenStadComponentDef) {
           return self.input = el;
         }
       }, self.config.choices.map(function (choice) {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+        return /*#__PURE__*/React.createElement("option", {
           value: choice.value || '',
           key: choice.value
         }, choice.description || choice.title || choice.value);
@@ -10222,7 +10122,7 @@ var OpenStadComponentSelect = /*#__PURE__*/function (_OpenStadComponentDef) {
   }]);
 
   return OpenStadComponentSelect;
-}(_default_input_jsx__WEBPACK_IMPORTED_MODULE_3__["default"]);
+}(_default_input_jsx__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 
@@ -10237,8 +10137,9 @@ var OpenStadComponentSelect = /*#__PURE__*/function (_OpenStadComponentDef) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -10263,8 +10164,8 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-var Slider = /*#__PURE__*/function (_React$Component) {
-  _inherits(Slider, _React$Component);
+var Slider = /*#__PURE__*/function (_OpenStadComponent) {
+  _inherits(Slider, _OpenStadComponent);
 
   var _super = _createSuper(Slider);
 
@@ -10325,26 +10226,26 @@ var Slider = /*#__PURE__*/function (_React$Component) {
           min = _self$props.min,
           max = _self$props.max,
           step = _self$props.step;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         className: "".concat(self.props.className, " osc-slider")
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         className: "osc-slider-track-container"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         className: "osc-slider-track"
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }), /*#__PURE__*/React.createElement("div", {
         className: "osc-slider-track-progress-container"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         className: "osc-slider-track-progress",
         style: {
           transform: 'scaleX(' + self.calcProgress(min, max, value) + ')'
         }
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      })), /*#__PURE__*/React.createElement("div", {
         className: "osc-slider-track-dot-end osc-slider-track-dot-left"
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }), /*#__PURE__*/React.createElement("div", {
         className: "osc-slider-track-dot-start osc-slider-track-dot-center"
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }), /*#__PURE__*/React.createElement("div", {
         className: "osc-slider-track-dot-end osc-slider-track-dot-right"
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      })), /*#__PURE__*/React.createElement("input", {
         type: "range",
         min: min,
         max: max,
@@ -10363,7 +10264,7 @@ var Slider = /*#__PURE__*/function (_React$Component) {
   }]);
 
   return Slider;
-}(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
+}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ __webpack_exports__["default"] = (Slider);
 
@@ -10379,13 +10280,9 @@ var Slider = /*#__PURE__*/function (_React$Component) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OpenStadComponentSelect; });
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! merge */ "./node_modules/merge/merge.js");
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "react-dom");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _default_input_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./default-input.jsx */ "./src/forms/component/default-input.jsx");
+/* harmony import */ var _default_input_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./default-input.jsx */ "./src/forms/component/default-input.jsx");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -10407,11 +10304,6 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-
-
-
-'use strict';
 
 
 
@@ -10433,14 +10325,14 @@ var OpenStadComponentSelect = /*#__PURE__*/function (_OpenStadComponentDef) {
       var errorHTML = null;
 
       if (self.state.error) {
-        errorHTML = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        errorHTML = /*#__PURE__*/React.createElement("div", {
           className: "osc-form-error"
         }, "Je hebt nog niets ingevuld");
       }
 
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         className: "osc-textarea"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("textarea", {
+      }, /*#__PURE__*/React.createElement("textarea", {
         value: this.props.value,
         disabled: this.props.disabled,
         placeholder: this.config.placeholder,
@@ -10457,7 +10349,7 @@ var OpenStadComponentSelect = /*#__PURE__*/function (_OpenStadComponentDef) {
   }]);
 
   return OpenStadComponentSelect;
-}(_default_input_jsx__WEBPACK_IMPORTED_MODULE_3__["default"]);
+}(_default_input_jsx__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 
@@ -10473,13 +10365,9 @@ var OpenStadComponentSelect = /*#__PURE__*/function (_OpenStadComponentDef) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OpenStadComponentText; });
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! merge */ "./node_modules/merge/merge.js");
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "react-dom");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _default_input_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./default-input.jsx */ "./src/forms/component/default-input.jsx");
+/* harmony import */ var _default_input_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./default-input.jsx */ "./src/forms/component/default-input.jsx");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -10504,11 +10392,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-
-'use strict';
-
-
-
 var OpenStadComponentText = /*#__PURE__*/function (_OpenStadComponentDef) {
   _inherits(OpenStadComponentText, _OpenStadComponentDef);
 
@@ -10527,14 +10410,14 @@ var OpenStadComponentText = /*#__PURE__*/function (_OpenStadComponentDef) {
       var errorHTML = null;
 
       if (self.state.error) {
-        errorHTML = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        errorHTML = /*#__PURE__*/React.createElement("div", {
           className: "osc-form-error"
         }, "Je hebt nog niets ingevuld");
       }
 
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         className: "osc-textinput"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+      }, /*#__PURE__*/React.createElement("input", {
         type: "text",
         value: this.props.value,
         disabled: this.props.disabled,
@@ -10552,7 +10435,7 @@ var OpenStadComponentText = /*#__PURE__*/function (_OpenStadComponentDef) {
   }]);
 
   return OpenStadComponentText;
-}(_default_input_jsx__WEBPACK_IMPORTED_MODULE_3__["default"]);
+}(_default_input_jsx__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 
@@ -11095,12 +10978,9 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OpenStadComponentLightbox; });
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! merge */ "./node_modules/merge/merge.js");
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "react-dom");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -11125,11 +11005,8 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-
-'use strict';
-
-var OpenStadComponentLightbox = /*#__PURE__*/function (_React$Component) {
-  _inherits(OpenStadComponentLightbox, _React$Component);
+var OpenStadComponentLightbox = /*#__PURE__*/function (_OpenStadComponent) {
+  _inherits(OpenStadComponentLightbox, _OpenStadComponent);
 
   var _super = _createSuper(OpenStadComponentLightbox);
 
@@ -11139,8 +11016,6 @@ var OpenStadComponentLightbox = /*#__PURE__*/function (_React$Component) {
     _classCallCheck(this, OpenStadComponentLightbox);
 
     _this = _super.call(this, props);
-    _this.defaultConfig = {};
-    _this.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive(_this.defaultConfig, _this.config, props.config || {});
     _this.state = {
       images: [],
       startIndex: 0
@@ -11241,7 +11116,7 @@ var OpenStadComponentLightbox = /*#__PURE__*/function (_React$Component) {
       var _this2 = this;
 
       var self = this;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         className: "osc-lightbox",
         onClick: function onClick() {
           _this2.hideLightbox();
@@ -11249,35 +11124,35 @@ var OpenStadComponentLightbox = /*#__PURE__*/function (_React$Component) {
         ref: function ref(el) {
           return self.instance = el;
         }
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         className: "osc-close-button",
         onClick: function onClick(e) {
           return self.hideLightbox(e);
         }
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }), /*#__PURE__*/React.createElement("div", {
         className: "osc-lightbox-main-container",
         ref: function ref(el) {
           return self.mainContainer = el;
         }
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         className: "osc-image-container",
         ref: function ref(el) {
           return self.mainImageContainer = el;
         }
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("img", {
+      }, /*#__PURE__*/React.createElement("img", {
         src: self.state.images[self.state.startIndex] && self.state.images[self.state.startIndex].src,
         ref: function ref(el) {
           return self.mainImage = el;
         }
-      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }))), /*#__PURE__*/React.createElement("div", {
         className: "osc-lightbox-navigation-container"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         className: "osc-lightbox-navigation",
         ref: function ref(el) {
           return self.navigationContainer = el;
         }
       }, self.state.images.map(function (image, i) {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        return /*#__PURE__*/React.createElement("div", {
           className: "osc-image-container",
           style: {
             backgroundImage: "url(".concat(image.src, ")")
@@ -11289,7 +11164,7 @@ var OpenStadComponentLightbox = /*#__PURE__*/function (_React$Component) {
           ref: function ref(el) {
             return self["lighbox-image-container-".concat(i)] = el;
           }
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("img", {
+        }, /*#__PURE__*/React.createElement("img", {
           src: image.src,
           ref: function ref(el) {
             return self["lighbox-image-".concat(i)] = el;
@@ -11300,7 +11175,7 @@ var OpenStadComponentLightbox = /*#__PURE__*/function (_React$Component) {
   }]);
 
   return OpenStadComponentLightbox;
-}(react__WEBPACK_IMPORTED_MODULE_1___default.a.Component);
+}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 
@@ -11373,12 +11248,9 @@ _component_lightbox_jsx__WEBPACK_IMPORTED_MODULE_5__["default"].renderElement = 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OpenStadComponentPreviousNextButtonBlock; });
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! merge */ "./node_modules/merge/merge.js");
-/* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "react-dom");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
+
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -11403,46 +11275,38 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-
-'use strict';
-
-var OpenStadComponentPreviousNextButtonBlock = /*#__PURE__*/function (_React$Component) {
-  _inherits(OpenStadComponentPreviousNextButtonBlock, _React$Component);
+var OpenStadComponentPreviousNextButtonBlock = /*#__PURE__*/function (_OpenStadComponent) {
+  _inherits(OpenStadComponentPreviousNextButtonBlock, _OpenStadComponent);
 
   var _super = _createSuper(OpenStadComponentPreviousNextButtonBlock);
 
   function OpenStadComponentPreviousNextButtonBlock(props) {
-    var _this;
-
     _classCallCheck(this, OpenStadComponentPreviousNextButtonBlock);
 
-    _this = _super.call(this, props);
-    _this.defaultConfig = {
+    return _super.call(this, props, {
       previousAction: props.previousAction,
       nextAction: props.nextAction,
       previousUrl: props.previousUrl,
       nextUrl: props.nextUrl,
       previousLabel: props.previousLabel || 'Vorige',
       nextLabel: props.nextLabel || 'Volgende'
-    };
-    _this.config = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive(_this.defaultConfig, _this.config, props.config || {});
-    return _this;
+    });
   }
 
   _createClass(OpenStadComponentPreviousNextButtonBlock, [{
     key: "render",
     value: function render() {
-      var _this2 = this;
+      var _this = this;
 
       var self = this;
       var previousButtonHTML;
       var previousAction = this.config.previousAction;
       if (this.config.previousUrl) previousAction = function previousAction() {
-        document.location.href = "".concat(_this2.config.previousUrl);
+        document.location.href = "".concat(_this.config.previousUrl);
       };
 
       if (previousAction) {
-        previousButtonHTML = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        previousButtonHTML = /*#__PURE__*/React.createElement("div", {
           className: "osc-previous-button",
           onClick: function onClick(args) {
             previousAction(args);
@@ -11453,11 +11317,11 @@ var OpenStadComponentPreviousNextButtonBlock = /*#__PURE__*/function (_React$Com
       var nextButtonHTML;
       var nextAction = this.config.nextAction;
       if (this.config.nextUrl) nextAction = function nextAction() {
-        document.location.href = "".concat(_this2.config.nextUrl);
+        document.location.href = "".concat(_this.config.nextUrl);
       };
 
       if (nextAction) {
-        nextButtonHTML = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        nextButtonHTML = /*#__PURE__*/React.createElement("div", {
           className: "osc-next-button",
           onClick: function onClick(args) {
             nextAction(args);
@@ -11465,7 +11329,7 @@ var OpenStadComponentPreviousNextButtonBlock = /*#__PURE__*/function (_React$Com
         }, this.config.nextLabel);
       }
 
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         className: "osc-previous-next-button-block",
         ref: function ref(el) {
           return self.instance = el;
@@ -11475,7 +11339,7 @@ var OpenStadComponentPreviousNextButtonBlock = /*#__PURE__*/function (_React$Com
   }]);
 
   return OpenStadComponentPreviousNextButtonBlock;
-}(react__WEBPACK_IMPORTED_MODULE_1___default.a.Component);
+}(_component_index_jsx__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 

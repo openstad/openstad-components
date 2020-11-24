@@ -1,6 +1,8 @@
-import React from "react"
+'use strict';
 
-class Slider extends React.Component {
+import OpenStadComponent from '../../component/index.jsx';
+
+class Slider extends OpenStadComponent {
   constructor(props){
     super(props)
     this.state = {

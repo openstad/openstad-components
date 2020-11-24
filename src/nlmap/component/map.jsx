@@ -1,21 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+'use strict';
+
 import OpenStadComponent from '../../component/index.jsx';
 import amapsCreateClusterIcon from '../lib/amaps-cluster-icon.js';
-
-'use strict';
 
 export default class OpenStadComponentNLMap extends OpenStadComponent {
 
   constructor(props) {
 
-    super(props);
-
-		var self = this;
-
-		// config
-		let defaultConfig = {
-			target: self.divId,
+    super(props, {
 			style: 'standaard',
 			marker: false,
 			search: false,
@@ -28,9 +20,11 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 			disableDefaultUI : true,
 			polygon : null,
 			autoZoomAndCenter: false,
-		};
-		self.config = Object.assign(defaultConfig, self.config || {})
+		});
 
+		var self = this;
+    self.config.target = self.divId;
+    
 		// external css and script files
 		self._loadedFiles = 0;
 		self.files = [

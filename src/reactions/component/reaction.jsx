@@ -1,23 +1,14 @@
-import merge from 'merge';
-import React from 'react';
-import ReactDOM from 'react-dom';
+'use strict';
 
 import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
-
 import OpenStadComponentReactionForm from './reaction-form.jsx';
-
-'use strict';
 
 export default class OpenStadComponentReaction extends OpenStadComponent {
 
   constructor(props) {
-    super(props);
 
-    let self = this;
-    self.id = props.id || `osc-reaction-${  parseInt( 1000000 * Math.random() )}`;
-
-    self.defaultConfig = {
+    super(props, {
       siteId: null,
       ideaId: null,
       title: null,
@@ -28,11 +19,9 @@ export default class OpenStadComponentReaction extends OpenStadComponent {
         headers: null,
       },
       requiredUserRole: 'member',
-    };
+    });
 
-    self.config = Object.assign(self.defaultConfig, props.config || {});
-
-    self.state = {
+    this.state = {
       user: props.user,
       isMenuActive: false,
       isReplyFromActive: false,

@@ -1,22 +1,15 @@
-import React from 'react';
-
 'use strict';
 
-export default class Search extends React.Component {
+import OpenStadComponent from '../../component/index.jsx';
+
+export default class Search extends OpenStadComponent {
 
   constructor(props) {
 
     super(props);
 
-		let defaultConfig = {
-		};
-		this.config = Object.assign(defaultConfig, this.props.config || {})
-    this.config.searchIn = props.config.searchIn || ['ideas', 'addresses'];
-    this.config.placeholder = props.config.placeholder || 'Zoek op trefwoord';
-
     this.config.doSearchFunction = this.config.doSearchFunction || this.doSearchx.bind(this);
-    this.updateSearchResult = this.updateSearchResult.bind(this);
-
+		
     this.state = {
 			searchValue: '',
 			searchResult: { locations: [], ideas: [] },

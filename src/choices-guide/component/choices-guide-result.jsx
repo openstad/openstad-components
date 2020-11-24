@@ -1,26 +1,19 @@
-import merge from 'merge';
+'use strict';
+
 import fingerprint from 'fingerprintjs2';
-
-import OpenStadComponentLibs from '../../libs/index.jsx';
-
 import OpenStadComponent from '../../component/index.jsx';
+import OpenStadComponentLibs from '../../libs/index.jsx';
 import OpenStadComponentChoices from './choices.jsx';
 import OpenStadComponentChoicePlane from './choice-plane.jsx';
-
 import OpenStadComponentForms from '../../forms/index.jsx';
 import OpenStadComponentPreviousNextButtonBlock from '../../previous-next-button-block/index.jsx';
-
 import fetchChoicesGuide from '../lib/fetch.js'
-
-'use strict';
 
 export default class OpenStadComponentChoicesGuideResult extends OpenStadComponent {
 
   constructor(props) {
 
-    super(props);
-
-    this.defaultConfig = {
+    super(props, {
       type: 'default',
       submission: {
         type: 'none',
@@ -35,10 +28,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
         minLabel: null,
         maxLabel: null,
       },
-    };
-		this.config = merge.recursive(this.defaultConfig, this.config, props.config || {})
-
-    this.config = merge.recursive(this.defaultConfig, this.config, props.config || {});
+    });
 
     let allValues = OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.values') || {};
     let allScores = OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.scores') || {};

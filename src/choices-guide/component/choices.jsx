@@ -1,27 +1,20 @@
-import merge from 'merge';
-
-import OpenStadComponentLibs from '../../libs/index.jsx';
+'use strict';
 
 import OpenStadComponent from '../../component/index.jsx';
+import OpenStadComponentLibs from '../../libs/index.jsx';
 import OpenStadComponentChoice from './choice.jsx';
-
-'use strict';
 
 export default class OpenStadComponentChoices extends OpenStadComponent {
 
   constructor(props) {
 
-    super(props);
-
-    this.defaultConfig = {
+    super(props, {
       type: 'default',
       sticky: null,
       withPercentage: false,
       minLabel: null,
       maxLabel: null,
-    };
-
-    this.config = merge.recursive(this.defaultConfig, this.config, props.config || {});
+    });
 
     this.choiceElements = [];
 

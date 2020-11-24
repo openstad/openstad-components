@@ -1,24 +1,18 @@
-import merge from 'merge';
-import React from 'react';
-import OpenStadComponentNLMap from '../../nlmap/index.jsx';
-
 'use strict';
+
+import OpenStadComponentNLMap from '../../nlmap/index.jsx';
 
 export default class Map extends OpenStadComponentNLMap {
 
   constructor(props) {
 
-    super(props);
-
-		// config
-		this.defaultConfig = {
+    super(props, {
       clustering: {
         maxClusterRadius: 100,
         showCoverageOnHover: false,
       },
       types: [],
-    };
-		this.config = merge.recursive(this.defaultConfig, this.config, props.config || {})
+    });
 
     // tmp fallback
     this.config.polygon = this.config.polygon;

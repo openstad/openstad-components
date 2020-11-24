@@ -1,6 +1,5 @@
-import merge from 'merge';
-import React from 'react';
-import ReactDOM from 'react-dom';
+'use strict';
+
 import Filterbar from './filterbar.jsx';
 import InfoBar from './infobar.jsx';
 import Preview from './preview.jsx';
@@ -21,12 +20,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
   constructor(props) {
 
-    super(props);
-
-		var self = this;
-
-		// config
-		self.defaultConfig = {
+    super(props, {
       display: {
         type: 'complete',
         width: null,
@@ -48,9 +42,11 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       },
       content: {
       },
-      search: {},
-		};
-		self.config = merge.recursive(self.defaultConfig, self.config, props.config || {})
+		});
+
+		var self = this;
+
+		// config
     self.config.ideaName = self.config.ideaName || 'Inzendingen';
 
     // defaults
@@ -88,7 +84,6 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       status: 'default', // default, idea-selected, location-selected, idea-details, idea-form
       mobileState: 'closed',
       // oud
-      currentIdea: null,
       editIdea: null,
       // new, maar nog niet overal gebruikt
       selectedIdea: null,
@@ -110,6 +105,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         if (match[1] == 'D') {
           self.showIdeaDetails(idea)
         } else {
+          // xxx
 					// self.setSelectedIdea(idea);
         }
       }
@@ -248,16 +244,13 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
           // return setTimeout(function(){ self.showIdeaForm() }, 500)
           if (typeof showIdeaSelected == 'object' && showIdeaSelected != null) {
 						self.setNewIdea(null);
-						self.setSelectedIdea(showIdeaSelected);
-            self.setState({ status: 'idea-selected', currentIdea: showIdeaSelected }, function() {
+						self.setSelectedIdea(showIdeaSelected, function() {
               // todo: dit zou hij zelf via state moeten doen
               self.map.map.invalidateSize();
               self.map.showMarkers({})
-              self.setSelectedIdea(self.state.currentIdea)
             });
           }
           if (typeof showIdeaDetails == 'object' && showIdeaDetails != null) {
-						self.setSelectedIdea(showIdeaDetails);
 						self.setNewIdea(null);
 					  self.showIdeaDetails(showIdeaDetails);
           }
@@ -290,11 +283,8 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   showIdeaDetails(idea) {
     let self = this;
     self.setSelectedIdea(idea);
-    // OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-details', idea && idea.id );
-    // OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-selected', null);
     if (self.infobar) self.infobar.setState({ mobileState: self.state.mobileState = 'opened' })
-    self.setState({ status: 'idea-details', currentIdea: idea }, function() {
-    // self.setState({ status: 'idea-details', currentIdea: idea, mobileState: self.state.mobileState = 'opened' }, function() {
+    self.setState({ status: 'idea-details' }, function() {
       self.map.map.invalidateSize();
       self.map.hideMarkers({ exception: { location: { lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] } } })
     });
@@ -302,13 +292,10 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
   hideIdeaDetails() {
     let self = this;
-    // OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-details', null );
-    // OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-selected', null);
     self.setState({ status: 'idea-selected' }, function() {
       // todo: dit zou hij zelf via state moeten doen
       self.map.map.invalidateSize();
       self.map.showMarkers({})
-      self.setSelectedIdea(self.state.currentIdea)
     });
   }
 
@@ -374,7 +361,6 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 				searchResult.ideas.push({
 					text: title,
 					onClick: function() {
-            //xxx
             self.onUpdateSelectedIdea(idea)
           },
 				})
@@ -458,7 +444,8 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       }
     } else {
       self.map && self.map.unfadeAllMarkers();
-      this.setState({ status: 'default', currentIdea: null, newIdea: null, editIdea: null }, function() {
+      self.setSelectedIdea(null);
+      this.setState({ status: 'default', newIdea: null, editIdea: null }, function() {
       });
     }
 
@@ -470,7 +457,6 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     self.setState({ editIdea: idea }, function() {
       if (idea) {
         self.map.fadeMarkers({exception: [idea.location]});
-        // xxx
         if (idea.location) self.setSelectedLocation({ lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] });  
         if (self.infobar) {
           self.setState({ editIdea: self.state.editIdea });
@@ -498,24 +484,27 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     });
   }
 
-  setSelectedIdea(idea) {
-    // OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-selected', idea && idea.id );
-    // OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-details', null);
-    this.selectedIdea = idea;
+  setSelectedIdea(idea, next) {
 
-    if (idea) {
-      this.map.fadeMarkers({exception: idea});
-      if (this.infobar) {
-        this.infobar.setSelectedIdea(idea);
-        this.infobar.updateIdeas({ ideas: this.state.ideas.filter( x => x.id != idea.id ), sortOrder: 'distance', hideSortButton: true, center: { lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] }, maxLength: 5 });
+    let self= this;
+
+    self.setState({ selectedIdea:idea }, () => {
+      if (idea) {
+        self.map.fadeMarkers({exception: idea});
+        if (self.infobar) {
+          self.infobar.setSelectedIdea(idea);
+          self.infobar.updateIdeas({ ideas: self.state.ideas.filter( x => x.id != idea.id ), sortOrder: 'distance', hideSortButton: true, center: { lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] }, maxLength: 5 });
+        }
+      } else {
+        self.map && self.map.unfadeAllMarkers();
+        if (self.infobar) {
+          self.infobar.setSelectedIdea(null);
+          self.infobar.updateIdeas({ ideas: self.getVisibleIdeas(), hideSortButton: false });
+        }
       }
-    } else {
-      this.map && this.map.unfadeAllMarkers();
-      if (this.infobar) {
-        this.infobar.setSelectedIdea(null);
-        this.infobar.updateIdeas({ ideas: this.getVisibleIdeas(), hideSortButton: false });
-      }
-    }
+      if (typeof next == 'function') return next();
+    })
+
   }
   
 	onMapClick(event, forceSelectLocation) {
@@ -539,17 +528,16 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         break;
 
       default:
-        if (( this.selectedIdea || this.map.selectedLocation ) && !forceSelectLocation) {
-          this.setState({ ...this.state, status: 'default', currentIdea: null });
+        this.setSelectedIdea(null);
+        if (( this.state.selectedIdea || this.map.selectedLocation ) && !forceSelectLocation) {
+          this.setState({ ...this.state, status: 'default' });
           document.location.href='#';
-          this.setSelectedIdea(null);
           this.setSelectedLocation(null);
           this.setNewIdea(null);
           this.infobar.updateIdeas({ ideas: this.getVisibleIdeas(), hideSortButton: false });
         } else {
           if (!this.config.canSelectLocation) break;
-          this.setState({ ...this.state, status: 'location-selected', currentIdea: null });
-          this.setSelectedIdea(null);
+          this.setState({ ...this.state, status: 'location-selected' });
           let newIdea = { id: 'New Idea', location: { coordinates: [ event.latlng.lat, event.latlng.lng ] } };
           this.setNewIdea(newIdea);
         }
@@ -578,13 +566,17 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
       default:
         if (this.state.editIdea) {
-          this.setState({ status: 'default', currentIdea: null });
+          this.setSelectedIdea(null);
+          this.setState({ status: 'default' });
           this.setNewIdea(null);
           this.onUpdateSelectedIdea(null);
         } else {
-          this.setState({ status: 'idea-selected', currentIdea: event.target.data });
-          this.setNewIdea(null);
-          this.onUpdateSelectedIdea(event.target.data);
+          this.setSelectedIdea(event.target.data, () => {
+            this.setState({ status: 'idea-selected' });
+            this.setNewIdea(null);
+            this.onUpdateSelectedIdea(event.target.data);
+          });
+
         }
         document.querySelector('#osc-ideas-on-map-info').scrollTo(0,0)
 
@@ -601,7 +593,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 			return;
 		}
 
-    this.setState({ ...this.state, status: 'default', currentIdea: null });
+    this.setState({ status: 'default' });
     this.setNewIdea(null);
     this.setSelectedIdea(null);
   }
@@ -621,8 +613,8 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       case 'idea-selected':
       case 'location-selected':
         if (self.infobar) {
-          let selectedIdea = self.state.currentIdea || self.selectedIdea || self.state.editIdea;
-          if (selectedIdea && selectedIdea) {
+          let selectedIdea = self.state.selectedIdea || self.state.editIdea;
+          if (selectedIdea) {
             self.infobar.updateIdeas({ ideas: self.state.ideas.filter( x => x.id != selectedIdea.id ), sortOrder: 'distance', hideSortButton: true, center: { lat: selectedIdea.location.coordinates[0], lng: selectedIdea.location.coordinates[1] }, maxLength: 5 });
           }
         }
@@ -637,19 +629,19 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   }
 
 	onUpdateEditIdea(idea) {
-    this.setState({ ...this.state, editIdea: { ...idea }, currentIdea: idea });
+    this.setSelectedIdea(idea);
+    this.setState({ editIdea: { ...idea } });
   }
 
 	onUpdateSelectedIdea(idea) {
     if (this.state.editIdea) this.setNewIdea(null);
     let status = idea ? 'idea-selected' : 'default';
     if (idea) {
-      // xxx
       document.location.href='#S'+idea.id;
     } else {
       document.location.href = "#";
     }
-    this.setState({ ...this.state, status, currentIdea: idea }, function() {
+    this.setState({ status }, function() {
       this.setSelectedIdea(idea);
     });
   }
@@ -657,12 +649,13 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   onIdeaClick(idea) {
     // let showDetails = this.state.status == 'location-selected' || this.state.status == 'idea-selected';
     if (this.state.editIdea) this.setNewIdea(null);
-    this.setState({ status: 'idea-selected', currentIdea: idea }, function() {
-      this.setSelectedIdea(idea);
-      // if (showDetails) this.showIdeaDetails(idea);
-      // this.showIdeaDetails(idea);
-      document.location.href = "#D" + idea.id;
+
+    this.setSelectedIdea(idea, () => {
+      this.setState({ status: 'idea-selected' }, function() {
+        document.location.href = "#D" + idea.id;
+      })
     });
+
   };
 
   onEditIdeaClick(idea) {
@@ -697,7 +690,6 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   };
 
   onSelectedIdeaClick({ idea }) {
-    // this.showIdeaDetails(idea);
     document.location.href = "#D" + idea.id
   };
   
@@ -759,8 +751,8 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
   onTileMouseOut(idea) {
     this.map.unfadeAllMarkers()
-    if (this.selectedIdea) {
-      this.map.fadeMarkers({exception: this.selectedIdea});
+    if (this.state.selectedIdea) {
+      this.map.fadeMarkers({exception: this.state.selectedIdea});
     }
     if (this.map.selectedLocation) {
       this.map.fadeMarkers({});
@@ -769,7 +761,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   }
 
   onClickBackToOverview(idea) {
-    document.location.href='#S'+this.state.currentIdea.id;
+    document.location.href='#S'+this.state.selectedIdea.id;
   }
   
   onClickMobileSwitcher() {
@@ -778,7 +770,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     self.setState({ mobileState: self.state.mobileState == 'closed' ? 'opened' : 'closed' }, function() {
       self.map.map.invalidateSize();
       if (this.state.status == 'location-selected' || this.state.status == 'idea-selected') {
-        let selectedIdea = self.state.currentIdea || self.selectedIdea || self.state.editIdea;
+        let selectedIdea = self.state.selectedIdea || self.state.editIdea;
         self.map.setBoundsAndCenter();
       }
     })
@@ -794,7 +786,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
       case 'idea-details':
         infoHTML = (
-			    <InfoBar config={this.config} displayType="details" idea={this.state.currentIdea} className="osc-ideas-on-map-info" ref={el => (this.infobar = el)}/>
+			    <InfoBar config={this.config} displayType="details" idea={this.state.selectedIdea} className="osc-ideas-on-map-info" ref={el => (this.infobar = el)}/>
         );
         filterHTML = (
 				  <div className="osc-ideas-filterbar"><div className="osc-backbutton" onClick={() => this.onClickBackToOverview() }>Terug naar overzicht</div></div>
@@ -820,9 +812,9 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
           }
         } else {
           mobilePopupHTML = (
-            <div className="ocs-mobile-popup ocs-clickable" onClick={ () =>  { this.setState({ mobileState: 'opened' }); this.infobar.setState({ mobileState: 'opened' }); document.location.href = "#D" + this.state.currentIdea.id; /* this.showIdeaDetails(this.state.currentIdea) */ } }>
-              <div className="osc-image" style={{ backgroundImage: `url(${this.state.currentIdea && this.state.currentIdea.image})` }}></div>
-              { eval(this.state.currentIdea && `this.state.currentIdea.${this.config.titleField}`) }
+            <div className="ocs-mobile-popup ocs-clickable" onClick={ () =>  { this.setState({ mobileState: 'opened' }); this.infobar.setState({ mobileState: 'opened' }); document.location.href = "#D" + this.state.selectedIdea.id; } }>
+              <div className="osc-image" style={{ backgroundImage: `url(${this.state.selectedIdea && this.state.selectedIdea.image})` }}></div>
+              { eval(this.state.selectedIdea && `this.state.selectedIdea.${this.config.titleField}`) }
             </div>
           );
         }
