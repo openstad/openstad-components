@@ -26,7 +26,8 @@ export default class OpenStadComponentForm extends OpenStadComponent {
 
   }
   
-	getValues() {
+
+  getValues() {
     return this.state.values;
 	}
 

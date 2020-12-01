@@ -192,9 +192,9 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     });
 
     // form changes
-		document.addEventListener('osc-new-idea-stored', function(event) {
+		document.addEventListener('osc-idea-stored', function(event) {
       document.location.href = "#";
-      self.onNewIdeaStored(event.detail.idea);
+      self.onIdeaStored(event.detail.idea);
     });
 		document.addEventListener('osc-update-edit-idea', function(event) {
       self.onUpdateEditIdea(event.detail.idea);
@@ -711,12 +711,10 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     });
   };
 
-
-  onNewIdeaStored(idea) {
+  onIdeaStored(idea) {
     let self = this;
     self.setNewIdea(null);
-		self.showIdeaDetails(idea);
-    self.fetchData({showIdeaSelected: idea.id});
+    self.fetchData({showIdeaDetails: idea.id});
   }
 
   onIdeaLiked(data) {

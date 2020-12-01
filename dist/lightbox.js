@@ -3985,11 +3985,18 @@ var OpenStadComponentLightbox = /*#__PURE__*/function (_OpenStadComponent) {
     value: function componentDidMount(prevProps, prevState) {
       var self = this; // start on event
 
-      document.addEventListener('osc-show-light-box', function (event) {
+      self.showLightBoxListener = function (event) {
         self.showLightbox(event.detail);
-      }); // move to root
+      };
+
+      document.addEventListener('osc-show-light-box', self.showLightBoxListener); // move to root
 
       document.body.appendChild(this.instance);
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      document.removeEventListener('osc-show-light-box', this.showLightBoxListener);
     }
   }, {
     key: "showLightbox",
@@ -4017,7 +4024,7 @@ var OpenStadComponentLightbox = /*#__PURE__*/function (_OpenStadComponent) {
     key: "hideLightbox",
     value: function hideLightbox() {
       this.instance.style.display = 'none';
-      window.removeEventListener('resize', self.recalcSizes);
+      window.removeEventListener('resize', this.recalcSizes);
     }
   }, {
     key: "showImage",

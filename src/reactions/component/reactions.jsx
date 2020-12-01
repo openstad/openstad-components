@@ -50,24 +50,27 @@ export default class OpenStadComponentReactions extends OpenStadComponent {
       self.fetchData();
     }
 
-    this.storedListener = document.addEventListener('osc-new-reaction-stored', function(event) {
+    self.newReactionStoredListener = function(event) {
       self.onNewReactionStored(event.detail);
-    });
+    };
+    document.addEventListener('osc-new-reaction-stored', self.newReactionStoredListener);
 
-    this.editedListener = document.addEventListener('osc-reaction-edited', function(event) {
+    self.reactionEditedListener = function(event) {
       self.onReactionEdited(event.detail);
-    });
+    };
+    document.addEventListener('osc-reaction-edited', self.reactionEditedListener);
 
-    this.deletedListener = document.addEventListener('osc-reaction-deleted', function(event) {
+    self.reactionDeletedListener = function(event) {
       self.onReactionDeleted(event.detail);
-    });
+    };
+    document.addEventListener('osc-reaction-deleted', self.reactionDeletedListener);
 
   }
 
   componentWillUnmount() {
-		document.removeEventListener('osc-new-reaction-stored', this.storedListener);
-		document.removeEventListener('osc-reaction-edited', this.editedListener);
-		document.removeEventListener('osc-reaction-deleted', this.deletedListener);
+    document.removeEventListener('osc-new-reaction-stored', this.newReactionStoredListener);
+    document.removeEventListener('osc-reaction-edited', this.reactionEditedListener);
+    document.removeEventListener('osc-reaction-deleted', this.reactionDeletedListener);
   }
 
   fetchData(next) {

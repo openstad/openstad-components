@@ -16,20 +16,20 @@ export default class IdeasForm extends OpenStadComponent {
     super(props, {
       user: {},
 			ideaId: null,
-      titleMinLength: 10,
-      titleMaxLength: 20,
-      summaryMinLength: 20,
-      summaryMaxLength: 140,
-      descriptionMinLength: 140,
-      descriptionMaxLength: 5000,
-      fields: [],
+      idea: {
+        titleMinLength: 10,
+        titleMaxLength: 20,
+        summaryMinLength: 20,
+        summaryMaxLength: 140,
+        descriptionMinLength: 140,
+        descriptionMaxLength: 5000,
+        fields: [],
+      },
     });
 
 		let self = this;
 
-    self.config.fields = [ ...self.config.fields ];
-
-    let fields = self.config.idea.fields || [];
+    let fields = self.config.idea.fields = [ ...self.config.idea.fields ];
 
     if (!self.props.idea.extraData) self.props.idea.extraData = {};
 
@@ -225,7 +225,7 @@ export default class IdeasForm extends OpenStadComponent {
         })
         .then( json => {
           self.setState({ isBusy: false }, () => {
-		        var event = new window.CustomEvent('osc-new-idea-stored', { detail: { idea: json } });
+		        var event = new window.CustomEvent('osc-idea-stored', { detail: { idea: json } });
 		        document.dispatchEvent(event);
           })
         })

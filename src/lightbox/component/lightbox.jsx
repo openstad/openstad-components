@@ -22,15 +22,20 @@ export default class OpenStadComponentLightbox extends OpenStadComponent {
     let self = this;
 
     // start on event
-		document.addEventListener('osc-show-light-box', function(event) {
+    self.showLightBoxListener = function(event) {
       self.showLightbox(event.detail);
-    });
+    };
+		document.addEventListener('osc-show-light-box', self.showLightBoxListener);
 
     // move to root
     document.body.appendChild(this.instance);
 
   }
-  
+
+  componentWillUnmount() {
+		document.removeEventListener('osc-show-light-box', this.showLightBoxListener);
+  }
+
   showLightbox(data) {
 
     let self = this;
@@ -57,7 +62,7 @@ export default class OpenStadComponentLightbox extends OpenStadComponent {
 
   hideLightbox() {
     this.instance.style.display = 'none'
-    window.removeEventListener('resize', self.recalcSizes);
+    window.removeEventListener('resize', this.recalcSizes);
   }
 
   showImage(e, src) {

@@ -34,19 +34,21 @@ export default class OpenStadComponentReaction extends OpenStadComponent {
 
     let self = this;
 
-    this.storedListener = document.addEventListener('osc-new-reaction-stored', function(event) {
+    self.newReactionStoredListener = function(event) {
       self.onNewReactionStored(event.detail);
-    });
+    };
+    document.addEventListener('osc-new-reaction-stored', self.newReactionStoredListener)
 
-    this.editedListener = document.addEventListener('osc-reaction-edited', function(event) {
+    self.reactionEditedListener = function(event) {
       self.onReactionEdited(event.detail);
-    });
+    };
+    document.addEventListener('osc-reaction-edited', self.reactionEditedListener)
 
   }
 
   componentWillUnmount() {
-		document.removeEventListener('osc-new-reaction-stored', this.storedListener);
-		document.removeEventListener('osc-reaction-edited', this.editedListener);
+		document.removeEventListener('osc-new-reaction-stored', this.newReactionStoredListener);
+		document.removeEventListener('osc-reaction-edited', this.reactionEditedListener);
   }
 
   showMenu() {

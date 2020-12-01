@@ -45,7 +45,7 @@ export default class Map extends OpenStadComponentNLMap {
 	}
 
   componentWillUnmount() {
-		document.removeEventListener('osc-map-cluster-animation-end', self.mapClusterAnimationEndListener);
+		document.removeEventListener('osc-map-cluster-animation-end', this.mapClusterAnimationEndListener);
     document.removeEventListener('osc-ideas-filter-onchange', this.ideasFilterOnchangeListener)
   }
   

@@ -5420,10 +5420,7 @@ var OpenStadComponentPoll = /*#__PURE__*/function (_OpenStadComponent) {
         });
       } else {
         if (!self.state.poll && self.config.ideaId) self.fetchData();
-      } // document.addEventListener('osc-new-reaction-stored', function(event) {
-      //   self.onNewPolltored(event.detail);
-      // });
-
+      }
     }
   }, {
     key: "fetchData",

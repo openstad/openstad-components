@@ -39,7 +39,6 @@ export default class OpenStadComponentReactionForm extends OpenStadComponent {
   }
 
   canSubmit() {
-    console.log(this.config.requiredUserRole, this.props.user, this.props.user.role);
     let requiredUserRole = this.config.requiredUserRole;
     let user = this.props.user || {};
     return OpenStadComponentLibs.user.hasRole(user, requiredUserRole)

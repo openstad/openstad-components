@@ -69,10 +69,6 @@ export default class OpenStadComponentPoll extends OpenStadComponent {
       if (!self.state.poll && self.config.ideaId) self.fetchData();
     }
 
-    // document.addEventListener('osc-new-reaction-stored', function(event) {
-    //   self.onNewPolltored(event.detail);
-    // });
-
   }
 
   fetchData(next) {
