@@ -31,7 +31,13 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
         url: null
       },
       sticky: null,
-      // result: {},
+      choices: {
+        title: {
+          noPreferenceYet: 'Je hebt nog geen keuze gemaakt',
+          preference: '<b>Jouw voorkeur:</b>{preferredChoice}',
+          inBetween: 'Je staat precies tussen meerdere voorkeuren in'
+        },
+      },
     };
 
     self.config = merge.recursive(self.defaultConfig, self.config, props.config || {});
@@ -39,9 +45,6 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
     // tmp
     if ( !self.config.aspectRatio && self.config.choices && self.config.choices.type && self.config.choices.type == 'plane' ) {
       self.config.aspectRatio = '10x7'
-    }
-    if ( typeof self.config.choiceTitleIncludesPreference == 'undefined' && self.config.choices && self.config.choices.type && self.config.choices.type == 'plane' ) {
-      self.config.choiceTitleIncludesPreference = true;
     }
 
     let allValues = OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.values') || {};
@@ -304,13 +307,11 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
 
         let choicesTitle = '<b>Je hebt nog geen keuze gemaakt</b>';
 
-        if (self.config.choiceTitleIncludesPreference) {
-          if ( self.state.firstAnswerGiven && self.choicesElement ) {
-            let choiceElement = self.choicesElement.getPreferedChoice();
-            choicesTitle = '<b>Jouw voorkeur: </b>' + choiceElement.getTitle(self.state.scores[choiceElement.config.divId]) || choicesTitle;
-          }
+        if ( self.state.firstAnswerGiven && self.choicesElement ) {
+          let choiceElement = self.choicesElement.getPreferedChoice();
+          choicesTitle = self.config.choices.title.preference.replace('\{preferredChoice\}', choiceElement.getTitle(self.state.scores[choiceElement.config.divId]) || choicesTitle);
         } else {
-          choicesTitle = '<b>Jouw voorkeur</b>';
+          choicesTitle = self.config.choices.title.noPreferenceYet;
         }
 
         choicesHTML = (

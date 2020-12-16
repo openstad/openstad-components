@@ -13,9 +13,16 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
 
     this.defaultConfig = {
       type: 'default',
+      barColor: {
+        default: '#bed200',
+        min: '#ff9100',
+        max: '#bed200'
+      }
     };
 
-    this.config = merge.recursive(this.defaultConfig, this.config, props.config || {});
+    this.config = merge.recursive('clone', this.defaultConfig, this.config, props.config || {});
+    if (this.config.barColor.min == null) this.config.barColor.min = '#ff9100';
+    if (this.config.barColor.max == null) this.config.barColor.max = '#bed200';
 
     this.answerDimensions = props.answerDimensions || 1;
     switch (props.answerDimensions) {
@@ -125,19 +132,63 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
         );
         break;
 
-      default:
-        let percentageHTML = null;
+      case 'minus-to-plus-100':
+        let valueHTML = null;
+        let percentage = parseInt(2 * ( score.x - 50 ));
         if (self.config.withPercentage) {
-          let percentage = parseInt(self.state.score.x);
-          percentageHTML = <div className="osc-percentage">{percentage}%</div>
+          valueHTML = <div className="osc-percentage">{percentage}%</div>
         }
+
+        let maxColorMatch = self.config.barColor.max.match(/#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})/i); // todo: rgb(a) colors
+        let minColorMatch = self.config.barColor.min.match(/#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})/i); // todo: rgb(a) colors
+        let r = parseInt( minColorMatch[1], 16 ) + ( parseInt( maxColorMatch[1], 16 ) - parseInt( minColorMatch[1], 16 ) ) * ( score.x / 100 );
+        let g = parseInt( minColorMatch[2], 16 ) + ( parseInt( maxColorMatch[2], 16 ) - parseInt( minColorMatch[2], 16 ) ) * ( score.x / 100 );
+        let b = parseInt( minColorMatch[3], 16 ) + ( parseInt( maxColorMatch[3], 16 ) - parseInt( minColorMatch[3], 16 ) ) * ( score.x / 100 );
+        let backgroundColor = `rgb(${r},${g},${b})`;
+
+        let style = {
+          backgroundColor,
+        };
+        if (percentage >= 0) {
+          style.width = ( percentage / 2 ) + '%';
+          style.left = '50%';
+          style.right = 'auto';
+        };
+        if (percentage < 0) {
+          style.width = ( -percentage / 2 ) + '%';
+          style.left = 'auto';
+          style.right = '50%';
+        };
         
         scoreHTML = (
           <div className="osc-choice-default">
             <h4>{self.props.data.title}</h4>
+            <div className={`osc-choice-bar osc-from-center${self.config.withPercentage ? ' osc-with-percentage' : ''}`}>
+              <div className="osc-choice-bar-progress" style={style}></div>
+            </div>
+            { valueHTML }
+          </div>
+        );
+        break;
+
+      case 'zero-to-100':
+      default:
+        let percentageHTML = null;
+        if (self.config.withPercentage) {
+          let percentage = parseInt(score.x);
+          percentageHTML = <div className="osc-percentage">{percentage}%</div>
+        }
+
+        style = {
+          width: ( score.x || 0 ) + '%',
+          backgroundColor: self.config.barColor.default
+        };
+
+        scoreHTML = (
+          <div className="osc-choice-default">
+            <h4>{self.props.data.title}</h4>
             <div className={`osc-choice-bar${self.config.withPercentage ? ' osc-with-percentage' : ''}`}>
-              <div className="osc-choice-bar-mask"></div>
-              <div className="osc-choice-bar-progress" style={{ width: ( self.state.score.x || 0 ) + '%' }}></div>
+              <div className="osc-choice-bar-progress" style={style}></div>
             </div>
             { percentageHTML }
           </div>

@@ -63,12 +63,22 @@
         overflow: hidden;
 
         .osc-choice-bar-progress {
-          position: relative;
+          position: absolute;
           top: 0;
           left: 0;
           height: 14px;
           background-color: #bed200;
           border-radius-top-left: 7px;
+        }
+
+        &.osc-from-center:after {
+          position: absolute;
+          top: -2px;
+          left: 50%;
+          width: 1px;
+          height: 18px;
+          background-color: #767676;
+          content: '';
         }
 
       }
