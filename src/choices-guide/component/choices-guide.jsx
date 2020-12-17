@@ -309,7 +309,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
 
         if ( self.state.firstAnswerGiven && self.choicesElement ) {
           let choiceElement = self.choicesElement.getPreferedChoice();
-          choicesTitle = self.config.choices.title.preference.replace('\{preferredChoice\}', choiceElement.getTitle(self.state.scores[choiceElement.config.divId]) || choicesTitle);
+          choicesTitle = self.config.choices.title.preference.replace('\{preferredChoice\}', choiceElement && choiceElement.getTitle(self.state.scores[choiceElement.config.divId]) || choicesTitle);
         } else {
           choicesTitle = self.config.choices.title.noPreferenceYet;
         }
