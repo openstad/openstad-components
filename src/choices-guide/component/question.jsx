@@ -1,4 +1,3 @@
-
 import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentForms from '../../forms/index.jsx';
 

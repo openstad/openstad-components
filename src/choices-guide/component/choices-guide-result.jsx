@@ -26,7 +26,14 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
         type: 'none',
       },
       choices: {
+        title: {
+          noPreferenceYet: 'Je hebt nog geen keuze gemaakt',
+          preference: 'Jouw voorkeur is {preferredChoice}',
+          inBetween: 'Je staat precies tussen meerdere voorkeuren in'
+        },
         withPercentage: true,
+        minLabel: null,
+        maxLabel: null,
       },
     };
 
@@ -66,7 +73,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
     let self = this;
     let scores = self.choicesElement && self.choicesElement.calculateScores(self.state.answers);
 
-    let choicesTitle = '...';
+    let choicesTitle = '';
     let name;
     let preferredChoiceId = -1;
     if ( self.choicesElement ) {
@@ -74,20 +81,25 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
       if (choiceElement) {
         name = choiceElement.getTitle(self.state.scores[choiceElement.config.divId], true);
         if (name) {
-          choicesTitle = 'Jouw voorkeur is ' + name;
+          choicesTitle = self.config.choices.title.preference.replace('\{preferredChoice\}', name);
           preferredChoiceId = choiceElement.divId
-          console.log(choiceElement);
         } else {
-          choicesTitle = 'Je staat precies tussen meerdere scenario\'s in';
+          choicesTitle = self.config.choices.title.noPreferenceYet;
         }
       }
       self.setState({ title: choicesTitle })
 
-		  var event = new window.CustomEvent('osc-choices-guide-result-is-ready', { detail: { preferredChoice: {
-        name,
-        title: choicesTitle,
-        preferredChoiceId
-      }}});
+		  var event = new window.CustomEvent('osc-choices-guide-result-is-ready', {
+        detail: {
+          preferredChoice: {
+            name,
+            title: choicesTitle,
+            preferredChoiceId
+          },
+          answers: self.state.answers,
+          scores: self.state.scores,
+        }
+      });
 		  document.dispatchEvent(event);
 
       if (self.config.submission.type == 'auto') {
@@ -182,7 +194,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
           break;
 
         default:
-          choicesHTML = <OpenStadComponentChoices config={{ ...self.config.choices, sticky: false, size: 630, withPercentage: self.config.choices.withPercentage, }} scores={self.state.scores} answerDimensions={answerDimensions} scores={{...self.state.scores}} choices={[...choices]} firstAnswerGiven={true} ref={function(el) { self.choicesElement = el; }} key='choices'/>;
+          choicesHTML = <OpenStadComponentChoices config={{ ...self.config.choices, sticky: false, size: 630 }} scores={self.state.scores} answerDimensions={answerDimensions} scores={{...self.state.scores}} choices={[...choices]} firstAnswerGiven={true} ref={function(el) { self.choicesElement = el; }} key='choices'/>;
 
       }
     }
@@ -225,6 +237,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
         <div className="osc-result">
           <div className="osc-result-content">
             <div className="osc-choices-container">
+              <h3 dangerouslySetInnerHTML={{ __html: self.state.title }}></h3>
               {choicesHTML}
             </div>
             {moreInfoHTML}

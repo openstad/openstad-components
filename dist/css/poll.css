@@ -13,6 +13,9 @@
 .osc-opacity-65 {
   opacity: 0.65;
 }
+.osc-hidden {
+  display: none;
+}
 .osc-button {
   position: relative;
   display: inline-block;
