@@ -25,7 +25,12 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
       submission: {
         type: 'none',
       },
+      choices: {
+        withPercentage: true,
+      },
     };
+
+    this.config = merge.recursive(this.defaultConfig, this.config, props.config || {});
 
     let allValues = OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.values') || {};
     let allScores = OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.scores') || {};
@@ -177,7 +182,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
           break;
 
         default:
-          choicesHTML = <OpenStadComponentChoices config={{ ...self.config.choices, sticky: false, size: 630, withPercentage: true, }} scores={self.state.scores} answerDimensions={answerDimensions} scores={{...self.state.scores}} choices={[...choices]} firstAnswerGiven={true} ref={function(el) { self.choicesElement = el; }} key='choices'/>;
+          choicesHTML = <OpenStadComponentChoices config={{ ...self.config.choices, sticky: false, size: 630, withPercentage: self.config.choices.withPercentage, }} scores={self.state.scores} answerDimensions={answerDimensions} scores={{...self.state.scores}} choices={[...choices]} firstAnswerGiven={true} ref={function(el) { self.choicesElement = el; }} key='choices'/>;
 
       }
     }
