@@ -16,7 +16,7 @@ export default class OpenStadComponentChoices extends OpenStadComponent {
     this.defaultConfig = {
       type: 'default',
       sticky: null,
-      withPercentage: true,
+      withPercentage: false,
       minLabel: null,
       maxLabel: null,
     };

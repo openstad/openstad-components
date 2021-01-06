@@ -37,7 +37,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
           preference: '<b>Jouw voorkeur:</b>{preferredChoice}',
           inBetween: 'Je staat precies tussen meerdere voorkeuren in'
         },
-        withPercentage: true,
+        withPercentage: false,
         minLabel: null,
         maxLabel: null,
       },

@@ -13,7 +13,7 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
 
     this.defaultConfig = {
       type: 'default',
-      withPercentage: true,
+      withPercentage: false,
       minLabel: null,
       maxLabel: null,
       barColor: {
