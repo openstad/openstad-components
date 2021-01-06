@@ -37,6 +37,9 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
           preference: '<b>Jouw voorkeur:</b>{preferredChoice}',
           inBetween: 'Je staat precies tussen meerdere voorkeuren in'
         },
+        withPercentage: false,
+        minLabel: null,
+        maxLabel: null,
       },
     };
 
@@ -315,7 +318,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
         }
 
         choicesHTML = (
-          <div id={'osc-choices-container-' + this.divId} className="osc-choices-container osc-accordeon osc-closed" ref={el => { self.choicesAccordeon = el; }}>
+          <div id={'osc-choices-container-' + this.divId} className={`osc-choices-container osc-accordeon osc-closed${ self.config.choices.type == 'hidden' ? ' osc-hidden' : '' }`} ref={el => { self.choicesAccordeon = el; }}>
             <div onClick={() => { if( this.choicesAccordeon.className.match(' osc-closed') ) { this.choicesAccordeon.className = this.choicesAccordeon.className.replace(' osc-closed', ' osc-open'); } else { this.choicesAccordeon.className = this.choicesAccordeon.className.replace(' osc-open', ' osc-closed'); } }} className="osc-accordeon-button" dangerouslySetInnerHTML={{ __html: choicesTitle }}></div>
             <div className="osc-accordeon-content">
               <OpenStadComponentChoices config={self.config.choices} choices={[...choices]} scores={{...self.state.scores}} answerDimensions={answerDimensions} firstAnswerGiven={ self.state.firstAnswerGiven ? true : false } ref={function(el) { self.choicesElement = el; }} key='choices'/>

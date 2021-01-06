@@ -31,9 +31,14 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
           preference: 'Jouw voorkeur is {preferredChoice}',
           inBetween: 'Je staat precies tussen meerdere voorkeuren in'
         },
+        withPercentage: true,
+        minLabel: null,
+        maxLabel: null,
       },
     };
 		this.config = merge.recursive(this.defaultConfig, this.config, props.config || {})
+
+    this.config = merge.recursive(this.defaultConfig, this.config, props.config || {});
 
     let allValues = OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.values') || {};
     let allScores = OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.scores') || {};
@@ -68,8 +73,6 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
   startGuide() {
     let self = this;
     let scores = self.choicesElement && self.choicesElement.calculateScores(self.state.answers);
-
-    console.log(self.choicesElement);
 
     let choicesTitle = '';
     let name;
@@ -193,7 +196,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
           break;
 
         default:
-          choicesHTML = <OpenStadComponentChoices config={{ ...self.config.choices, sticky: false, size: 630, withPercentage: true, }} scores={self.state.scores} answerDimensions={answerDimensions} scores={{...self.state.scores}} choices={[...choices]} firstAnswerGiven={true} ref={function(el) { self.choicesElement = el; }} key='choices'/>;
+          choicesHTML = <OpenStadComponentChoices config={{ ...self.config.choices, sticky: false, size: 630 }} scores={self.state.scores} answerDimensions={answerDimensions} scores={{...self.state.scores}} choices={[...choices]} firstAnswerGiven={true} ref={function(el) { self.choicesElement = el; }} key='choices'/>;
 
       }
     }

@@ -16,6 +16,9 @@ export default class OpenStadComponentChoices extends OpenStadComponent {
     this.defaultConfig = {
       type: 'default',
       sticky: null,
+      withPercentage: false,
+      minLabel: null,
+      maxLabel: null,
     };
 
     this.config = merge.recursive(this.defaultConfig, this.config, props.config || {});

@@ -13,6 +13,9 @@
 .osc-opacity-65 {
   opacity: 0.65;
 }
+.osc-hidden {
+  display: none;
+}
 .osc-button {
   position: relative;
   display: inline-block;
@@ -395,6 +398,19 @@
   margin: 0;
   padding: 12px 10px 15px 10px;
   border-bottom: 2px solid #e5e5e5;
+}
+.osc-choices-guide .osc-choices-container ul.osc-choices .osc-choice .osc-minmax-labels {
+  position: relative;
+  width: 100%;
+  margin-top: 3px;
+  font-weight: 500;
+  overflow: hidden;
+}
+.osc-choices-guide .osc-choices-container ul.osc-choices .osc-choice .osc-minmax-labels .osc-min-label {
+  float: left;
+}
+.osc-choices-guide .osc-choices-container ul.osc-choices .osc-choice .osc-minmax-labels .osc-max-label {
+  float: right;
 }
 .osc-choices-guide .osc-choices-container ul.osc-choices .osc-choice-default .osc-choice-bar {
   position: relative;
@@ -4715,6 +4731,9 @@ form.osc-form {
 .osc-opacity-65 {
   opacity: 0.65;
 }
+.osc-hidden {
+  display: none;
+}
 .osc-button {
   position: relative;
   display: inline-block;
@@ -5158,6 +5177,19 @@ form.osc-form {
   margin: 0;
   padding: 12px 10px 15px 10px;
   border-bottom: 2px solid #e5e5e5;
+}
+.osc-choices-guide .osc-choices-container ul.osc-choices .osc-choice .osc-minmax-labels {
+  position: relative;
+  width: 100%;
+  margin-top: 3px;
+  font-weight: 500;
+  overflow: hidden;
+}
+.osc-choices-guide .osc-choices-container ul.osc-choices .osc-choice .osc-minmax-labels .osc-min-label {
+  float: left;
+}
+.osc-choices-guide .osc-choices-container ul.osc-choices .osc-choice .osc-minmax-labels .osc-max-label {
+  float: right;
 }
 .osc-choices-guide .osc-choices-container ul.osc-choices .osc-choice-default .osc-choice-bar {
   position: relative;
@@ -6056,6 +6088,9 @@ form.osc-form {
 }
 .osc-opacity-65 {
   opacity: 0.65;
+}
+.osc-hidden {
+  display: none;
 }
 .osc-button {
   position: relative;
@@ -7581,6 +7616,9 @@ form.osc-form {
 .osc-opacity-65 {
   opacity: 0.65;
 }
+.osc-hidden {
+  display: none;
+}
 .osc-button {
   position: relative;
   display: inline-block;
@@ -8714,6 +8752,9 @@ form.osc-form {
 }
 .osc-opacity-65 {
   opacity: 0.65;
+}
+.osc-hidden {
+  display: none;
 }
 .osc-button {
   position: relative;

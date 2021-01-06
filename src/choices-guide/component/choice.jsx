@@ -13,6 +13,9 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
 
     this.defaultConfig = {
       type: 'default',
+      withPercentage: false,
+      minLabel: null,
+      maxLabel: null,
       barColor: {
         default: '#bed200',
         min: '#ff9100',
@@ -188,6 +191,7 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
           <div className="osc-choice-default">
             <h4>{self.props.data.title}</h4>
             <div className={`osc-choice-bar${self.config.withPercentage ? ' osc-with-percentage' : ''}`}>
+              <div className="osc-choice-bar-mask"></div>
               <div className="osc-choice-bar-progress" style={style}></div>
             </div>
             { percentageHTML }
@@ -195,10 +199,24 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
         );
 
     }
+
+    let minmaxLabelsHTML = null;
+    if (self.config.minLabel || self.config.maxLabel) {
+      minmaxLabelsHTML = (
+        <div className="osc-minmax-labels">
+          <div className="osc-min-label">
+            {self.config.minLabel}
+          </div>
+          <div className="osc-max-label">
+            {self.config.maxLabel}
+          </div>
+        </div>);
+    }
     
     return (
       <li className="osc-choice">
         {scoreHTML}
+        {minmaxLabelsHTML}
       </li>
     );
 
