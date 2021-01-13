@@ -14,7 +14,7 @@ module.exports = {
     "choices-guide": './src/choices-guide/index.jsx',
     "idea-details": './src/idea-details/index.jsx',
     "ideas-overview": './src/ideas-overview/index.jsx',
-    "idea-image": './src/idea-image/index.jsx',
+    "idea-image": './src/image/index.jsx',
     "ideas-on-map": './src/ideas-on-map/index.jsx',
     "lightbox": './src/lightbox/index.jsx',
     "nlmap": './src/nlmap/index.jsx',

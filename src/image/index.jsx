@@ -9,7 +9,8 @@ import ReactDOM from 'react-dom';
 import './css/default.less';
 
 // the module
-import OpenStadComponentIdeaImage from './component/idea-image.jsx';
+import OpenStadComponentImage from './component/image.jsx';
+import OpenStadComponentIdeaImage from './component/image.jsx';
 
 // render elements
 OpenStadComponentIdeaImage.renderElement = function renderElement( elem, config ) {
@@ -18,7 +19,8 @@ OpenStadComponentIdeaImage.renderElement = function renderElement( elem, config 
 }
 
 export {
-  OpenStadComponentIdeaImage as default,
+  OpenStadComponentImage as default,
+  OpenStadComponentImage as Image,
   OpenStadComponentIdeaImage as IdeaImage,
 };
 

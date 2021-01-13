@@ -21,7 +21,7 @@ import OpenStadComponentLightbox from './lightbox/index.jsx';
 import OpenStadComponentIdeasOnMap from './ideas-on-map/index.jsx';
 import OpenStadComponentIdeaDetails from './idea-details/index.jsx';
 import OpenStadComponentIdeasOverview from './ideas-overview/index.jsx';
-import OpenStadComponentIdeasImage from './idea-image/index.jsx';
+import OpenStadComponentIdeasImage from './image/index.jsx';
 import OpenStadComponentPreviousNextButtonBlock from './previous-next-button-block/index.jsx';
 import OpenStadComponentPoll from './poll/index.jsx';
 import OpenStadComponentReactions from './reactions/index.jsx';
