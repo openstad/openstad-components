@@ -3,7 +3,7 @@ import React from 'react';
 import IdeasList from './ideas-list.jsx';
 
 import OpenStadComponentLibs from '../../libs/index.jsx';
-import OpenStadComponentImage from '../../idea-image/index.jsx';
+import { IdeaImage as OpenStadComponentIdeaImage } from '../../image/index.jsx';
 
 // TODO: na verandering op verandering denk ik dat dit een status moet gaan krijgen ipv. de new en selected versie.
 // TODO: setNewIdea refactoren naar setSelectedLocation
@@ -216,7 +216,7 @@ export default class InfoBlock extends React.Component {
           <h3>Geselecteerd</h3>
           <div className="osc-info-block-selected-idea-idea">
             <div className="osc-idea-image-container">
-              <OpenStadComponentImage config={{}} idea={idea} key={'image-' + idea.id}/>
+              <OpenStadComponentIdeaImage config={{}} idea={idea} key={'image-' + idea.id}/>
             </div>
             <div className="osc-content">
               <h4>{ eval(`idea.${self.config.titleField}`) }</h4>

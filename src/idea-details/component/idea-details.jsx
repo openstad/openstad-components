@@ -5,7 +5,7 @@ import VoteButton from './vote-button.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
 import OpenStadComponentPoll from '../../poll/index.jsx';
 import OpenStadComponentReactions from '../../reactions/index.jsx';
-import OpenStadComponentImage from '../../idea-image/index.jsx';
+import { IdeaImage as OpenStadComponentIdeaImage } from '../../image/index.jsx';
 
 'use strict';
 
@@ -347,7 +347,7 @@ export default class IdeasDetails extends React.Component {
             <div className="osc-details-image-and-stats">
 
               <div className="osc-idea-image-container">
-                <OpenStadComponentImage config={{ allowMultipleImages: self.config.allowMultipleImages }} idea={idea}/>
+                <OpenStadComponentIdeaImage config={{ allowMultipleImages: self.config.allowMultipleImages }} idea={idea}/>
               </div>
 
               {labelHTML}
