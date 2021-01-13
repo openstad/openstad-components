@@ -104,26 +104,6 @@ export default class OpenStadComponentChoicePlane extends OpenStadComponent {
     //   bottomrightHTML = (<div style={{ backgroundImage: `url(${this.config.plane.bottomright.bgImage.src})` }} className="osc-choice-plane-background-image"/>)
     // }
 
-    let imageHTML = null;
-    let images = this.props.data && this.props.data.images;
-    if (images) {
-      if (!Array.isArray(images)) images = [images];
-      let image = images[0];
-      imageHTML = (
-        <img className="osc-choice-plane-background-image" src={image.src} style={{ width: 2 * baseSize, height: 2 * baseSize }}/>
-      );
-    }
-
-    // [{"src":"https://image-server2.openstadsdeel.nl/image/gran.canaria.01.jpg"},{"src":"https://image-server2.openstadsdeel.nl/image/gran.canaria.02.jpg"}]
-
-    return (
-      <div id={this.divId} className="osc-choice-plane-plane" ref={function(el) { self.planePlaneElement = el;}}>
-        {imageHTML}
-        <div className="osc-point" style={{ top, left }}></div>
-        <div style={{ clear: 'both' }}></div>
-      </div>
-    );
-
   }
 
 }

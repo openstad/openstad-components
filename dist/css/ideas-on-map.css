@@ -2333,6 +2333,9 @@
 .osc-opacity-65 {
   opacity: 0.65;
 }
+.osc-hidden {
+  display: none;
+}
 .osc-button {
   position: relative;
   display: inline-block;
@@ -3286,12 +3289,6 @@
 .osc-poll .osc-form .osc-form-error {
   color: #ea1d25;
 }
-<<<<<<< HEAD
-.osc-hidden {
-  display: none;
-}
-.osc-button {
-=======
 .osc-poll .osc-form .osc-add-choice-button {
   display: inline-block;
   margin-left: 20px;
@@ -3300,7 +3297,6 @@
   cursor: pointer;
 }
 .osc-poll .osc-form .osc-button-blue {
->>>>>>> Refactor ideas-on-map
   position: relative;
   display: inline-block;
   padding: 10px 13px;

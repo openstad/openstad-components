@@ -4,7 +4,6 @@ import fingerprint from 'fingerprintjs2';
 import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
 import OpenStadComponentChoices from './choices.jsx';
-import OpenStadComponentChoicePlane from './choice-plane.jsx';
 import OpenStadComponentForms from '../../forms/index.jsx';
 import OpenStadComponentPreviousNextButtonBlock from '../../previous-next-button-block/index.jsx';
 import fetchChoicesGuide from '../lib/fetch.js'
@@ -161,7 +160,6 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
     let data = self.props && self.props.data || {};
 
     let choices = self.state.choices;
-    let answerDimensions = 1;
     let questionGroup;
     if (self.state.questionGroups) {
       questionGroup = self.state.questionGroups.find( group => group.id == self.config.questionGroupId );
@@ -169,26 +167,13 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
         questionGroup.values = self.state.values || {};
         if (questionGroup && questionGroup.choices) {
           choices = questionGroup.choices;
-          answerDimensions = questionGroup.answerDimensions;
         }
       }
     }
 
     let choicesHTML = null;
     if (choices) {
-
-      switch (self.config.choices.type) {
-
-        case 'plane':
-          let images = choices && choices[0] && choices[0].images;
-          if ( images && images.length > 1 ) { choices[0].images = choices && choices[0] && choices[0].images[1]; }
-          choicesHTML = <OpenStadComponentChoices config={{ ...self.config.choices, sticky: false, size: 630, }} scores={self.state.scores} answerDimensions={answerDimensions} scores={{...self.state.scores}} choices={[...choices]} firstAnswerGiven={true} ref={function(el) { self.choicesElement = el; }} key='choices'/>;
-          break;
-
-        default:
-          choicesHTML = <OpenStadComponentChoices config={{ ...self.config.choices, sticky: false, size: 630 }} scores={self.state.scores} answerDimensions={answerDimensions} scores={{...self.state.scores}} choices={[...choices]} firstAnswerGiven={true} ref={function(el) { self.choicesElement = el; }} key='choices'/>;
-
-      }
+      choicesHTML = <OpenStadComponentChoices config={{ ...self.config.choices, sticky: false, size: 630 }} scores={self.state.scores} scores={{...self.state.scores}} choices={[...choices]} firstAnswerGiven={true} ref={function(el) { self.choicesElement = el; }} key='choices'/>;
     }
 
     let moreInfoHTML = null;
@@ -197,7 +182,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
         <div className="osc-more-info-link">
           <a href={self.config.moreInfoUrl}>{self.config.moreInfoLabel}</a>
         </div>
-    } 
+    }
 
     let formHTML = null;
     let previousNextButtonsHTML = null;

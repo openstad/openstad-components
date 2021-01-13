@@ -6,14 +6,7 @@ export default class OpenStadComponentPreviousNextButtonBlock extends OpenStadCo
 
   constructor(props) {
 
-    super(props, {
-      previousAction: props.previousAction,
-      nextAction: props.nextAction,
-      previousUrl: props.previousUrl,
-      nextUrl: props.nextUrl,
-      previousLabel: props.previousLabel || 'Vorige',
-      nextLabel: props.nextLabel || 'Volgende',
-		});
+    super(props, {});
 
   }
 
@@ -22,17 +15,17 @@ export default class OpenStadComponentPreviousNextButtonBlock extends OpenStadCo
 		let self = this;
 
     let previousButtonHTML;
-    let previousAction = this.config.previousAction;
-    if (this.config.previousUrl) previousAction = () => { document.location.href = `${this.config.previousUrl}` };
+    let previousAction = this.props.previousAction;
+    if (this.props.previousUrl) previousAction = () => { document.location.href = `${this.props.previousUrl}` };
     if ( previousAction ) {
-      previousButtonHTML = <div className="osc-previous-button" onClick={(args) => { previousAction(args) }}>{this.config.previousLabel}</div>
+      previousButtonHTML = <div className="osc-previous-button" onClick={(args) => { previousAction(args) }}>{this.props.previousLabel || 'Vorige'}</div>
     }
 
     let nextButtonHTML;
-    let nextAction = this.config.nextAction;
-    if (this.config.nextUrl) nextAction = () => { document.location.href = `${this.config.nextUrl}` };
+    let nextAction = this.props.nextAction;
+    if (this.props.nextUrl) nextAction = () => { document.location.href = `${this.props.nextUrl}` };
     if ( nextAction ) {
-      nextButtonHTML = <div className="osc-next-button" onClick={(args) => { nextAction(args) }}>{this.config.nextLabel}</div>
+      nextButtonHTML = <div className="osc-next-button" onClick={(args) => { nextAction(args) }}>{this.props.nextLabel || 'Volgende'}</div>
     }
 
     return (

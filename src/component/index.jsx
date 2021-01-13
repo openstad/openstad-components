@@ -25,7 +25,7 @@ export default class OpenStadComponent extends React.Component {
       } catch (err) {}
     }
     let propsConfig = props.config || {};
-    Object.keys(propsConfig).forEach(key => propsConfig[key] === undefined ? delete propsConfig[key] : {}); // remove undefined
+    propsConfig = removeUndefAndNull(propsConfig); // remove undefined and null
 		self.config = merge.recursive({
       siteId: null,
 			api: {
@@ -48,4 +48,13 @@ export default class OpenStadComponent extends React.Component {
     // self.instance.dispatchEvent(event);
   }
 
+}
+
+function removeUndefAndNull(obj) {
+  if (typeof obj != 'object') return obj;
+  Object.keys(obj).forEach((key) => {
+    if (typeof obj[key] == 'undefined' || obj[key] == null) delete obj[key];
+    if (typeof obj[key] == 'object') obj[key] = removeUndefAndNull(obj[key]);
+  });
+  return  obj;
 }

@@ -170,8 +170,6 @@ export default class OpenStadComponentReaction extends OpenStadComponent {
 
     if (data.isDeleted) return null;
 
-    console.log('--------------------');
-    console.log(data.user);
     let isAdmin = OpenStadComponentLibs.user.hasRole(data.user, 'editor') ? 'osc-is-admin' : '';
     let metadataHTML = <div className={`osc-reaction-user ${isAdmin}`}>{data.user.nickName || data.user.fullName || `${data.user.firstName } ${  data.user.lastName}`}</div>
 
