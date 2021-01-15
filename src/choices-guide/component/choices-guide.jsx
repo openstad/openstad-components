@@ -6,9 +6,9 @@ import OpenStadComponentLibs from '../../libs/index.jsx';
 import OpenStadComponentQuestionGroup from './question-group.jsx';
 import OpenStadComponentChoices from './choices.jsx';
 import OpenStadComponentChoicesGuideForm from './edit-form.jsx';
+import { Image as OpenStadComponentImage } from '../../image/index.jsx';
 import OpenStadComponentLightbox from '../../lightbox/index.jsx';
 import OpenStadComponentPreviousNextButtonBlock from '../../previous-next-button-block/index.jsx';
-import OpenStadComponentUserPreference from './user-preference.jsx';
 // import OpenStadComponentChoicesGuideResult from './result.jsx';
 
 import fetchChoicesGuide from '../lib/fetch.js'
@@ -238,9 +238,8 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
     let images = self.state.images;
     if (images) {
       if (!Array.isArray(images)) images = [images];
-      let image = images[0];
       imageHTML = (
-        <img className="osc-image" src={image.src}/>
+        <OpenStadComponentImage className="osc-top-image-spacer" width="100%" image={images[0]}/>
       );
     }
 
@@ -320,16 +319,11 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
         }
 
         // ----------------------------------------------------------------------------------------------------
-
-        let userPreferenceHTML = <OpenStadComponentUserPreference config={self.config} choices={self.state.choices} questionGroup={self.state.questionGroups[self.state.currentQuestionGroupIndex]} ref={function(el) { self.userPreference = el; }}/>
-        
-        // ----------------------------------------------------------------------------------------------------
         
         contentHTML =  (
           <div className="osc-choices-guide-content">
             {editButtonHTML}
             {choicesHTML}
-            {userPreferenceHTML}
             {questionGroupHTML}
             {previousNextButtonsHTML}
           </div>

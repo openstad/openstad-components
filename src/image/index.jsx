@@ -10,7 +10,7 @@ import './css/default.less';
 
 // the module
 import OpenStadComponentImage from './component/image.jsx';
-import OpenStadComponentIdeaImage from './component/image.jsx';
+import OpenStadComponentIdeaImage from './component/idea-image.jsx';
 
 // render elements
 OpenStadComponentIdeaImage.renderElement = function renderElement( elem, config ) {

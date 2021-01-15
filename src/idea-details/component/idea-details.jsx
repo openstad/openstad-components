@@ -330,7 +330,7 @@ export default class IdeasDetails extends OpenStadComponent {
       authorHTML = <a href={this.config.linkToUserPageUrl + '/' + idea.user.id} className="osc-author-link">{authorHTML}</a>
     }
 
-    let metaDataHTML = self.config.metaDataTemplate;
+    let metaDataHTML = self.config.idea.metaDataTemplate;
     metaDataHTML = metaDataHTML.replace(/\{createDate\}/, idea.createDateHumanized);
     metaDataHTML = metaDataHTML.replace(/\{theme\}/, idea.extraData.theme);
     metaDataHTML = OpenStadComponentLibs.reactTemplate({ html: metaDataHTML, username: authorHTML })

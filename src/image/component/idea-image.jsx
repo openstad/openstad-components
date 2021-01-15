@@ -7,5 +7,16 @@ import OpenStadComponentImage from './image.jsx';
 
 export default class OpenStadComponentIdeaImage extends OpenStadComponentImage {
 
+  getImagesFromProps() {
+
+    let idea = this.props.idea;
+    if (!idea) return [ '', [ '' ] ];
+
+    let images = (idea.extraData && idea.extraData.images) || [];
+    let image = (idea.posterImage && idea.posterImage.key) || (idea.extraData && idea.extraData.images && idea.extraData.images[this.state.currentImageIndex]);
+
+    return [image, images]
+
+  }
 
 }

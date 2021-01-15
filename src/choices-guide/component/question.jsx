@@ -1,6 +1,7 @@
 'use strict';
 
 import OpenStadComponent from '../../component/index.jsx';
+import { Image as OpenStadComponentImage } from '../../image/index.jsx';
 import OpenStadComponentForms from '../../forms/index.jsx';
 
 export default class OpenStadComponentQuestion extends OpenStadComponent {
@@ -21,6 +22,7 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
     };
 
     this.onChangeHandler = this.onChangeHandler.bind(this);
+    this.showLightbox = this.showLightbox.bind(this);
 
 
   }
@@ -72,7 +74,7 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
       if ( dimensions.includes('z') ) result.z = this.state.value.z;
     }
 
-    console.log('answer', data.title, result);
+    // console.log('answer', data.title, result);
 
     return result;
 
@@ -84,12 +86,14 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
 
   showLightbox(startWith) {
 
+    let data = this.props.data || {};
+
     let images = [
-      { src: this.questionImageA.src },
-      { src: this.questionImageB.src },
+      data.values && data.values.A && data.values.A.questionImage || '',
+      data.values && data.values.B && data.values.B.questionImage || '',
     ]
 
-    let startIndex = images.findIndex( img => img.src == startWith.src );
+    let startIndex = images.findIndex( img => img == startWith );
 
 		// dispatch an event
 		var event = new window.CustomEvent('osc-show-light-box', { detail: { images, startIndex, aspectRatio: this.config.aspectRatio } });
@@ -119,13 +123,9 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
     if (images) {
       if (!Array.isArray(images)) images = [images];
       let image = images[0];
-      let imageSrc = image;
-      if ( typeof image == 'object' ) imageSrc = image.src;
       imageHTML = (
-        <div className={`osc-question-image-container osc-question-image-aspect-${self.config.aspectRatio}`}>
-          <div className="osc-question-image-aspect-container">
-            <img className="osc-question-image" src={imageSrc}/>
-          </div>
+        <div className={`osc-question-image-container`}>
+          <OpenStadComponentImage config={{ aspectRatio: self.config.aspectRatio }} image={image}/>
         </div>
       );
     }
@@ -149,45 +149,48 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
         let labelB = data.values && data.values.B && data.values.B.label || 'B';
         let questionTextA = data.values && data.values.A && data.values.A.questionText;
         let questionTextB = data.values && data.values.B && data.values.B.questionText;
+        let questionAHTML = null, questionBHTML = null;
         if (questionTextA && questionTextB) {
-          questionHTML = (
-            <div className="osc-question-description">
-              <div className="osc-question-description-text" dangerouslySetInnerHTML={{ __html: data.description }}></div>
+          questionAHTML = (
               <div className="osc-question-description-text">
                 <div className="osc-question-description-label">{labelA}</div><div className="osc-question-description-labeled-text">{questionTextA}</div>
               </div>
+          );
+          questionBHTML = (
               <div className="osc-question-description-text">
                 <div className="osc-question-description-label">{labelB}</div><div className="osc-question-description-labeled-text">{questionTextB}</div>
               </div>
+          );
+          questionHTML = (
+            <div className="osc-question-description">
+              <div className="osc-question-description-text" dangerouslySetInnerHTML={{ __html: data.description }}></div>
+              {questionAHTML}
+              {questionBHTML}
             </div>
           );
         }
         let questionImageA = data.values && data.values.A && data.values.A.questionImage;
         let questionImageB = data.values && data.values.B && data.values.B.questionImage;
         if (questionImageA && questionImageB) {
-          let imageSrcA = questionImageA;
-          if ( typeof questionImageA == 'object' ) imageSrcA = questionImageA.src;
-          let imageSrcB = questionImageB;
-          if ( typeof questionImageB == 'object' ) imageSrcB = questionImageB.src;
           questionHTML = (
             <div className="osc-question-description">
               <div className="osc-question-description-text" dangerouslySetInnerHTML={{ __html: data.description }}></div>
               <div className="osc-question-description-image-container osc-question-description-image-container-a">
                 <div className="osc-question-description-label osc-question-description-label-a">{labelA}</div>
                 <div className={`osc-question-image-container osc-question-image-aspect-${self.config.aspectRatio}`}>
-                  <div className="osc-question-image-aspect-container">
-                    <img className="osc-question-description-image" src={imageSrcA} style={{ cursor: 'pointer' }} onClick={ () => self.showLightbox(self.questionImageA) }  ref={el => self.questionImageA = el}/>
-                  </div>
+                  <OpenStadComponentImage config={{ aspectRatio: self.config.aspectRatio }} image={questionImageA} onClick={ () => self.showLightbox(questionImageA) }/>
                 </div>
               </div>
               <div className="osc-question-description-image-container osc-question-description-image-container-b">
                 <div className="osc-question-description-label osc-question-description-label-b">{labelB}</div>
                 <div className={`osc-question-image-container osc-question-image-aspect-${self.config.aspectRatio}`}>
-                  <div className="osc-question-image-aspect-container">
-                    <img className="osc-question-description-image" src={imageSrcB} style={{ cursor: 'pointer' }} onClick={ () => self.showLightbox(self.questionImageB) }  ref={el => self.questionImageB = el}/>
-                  </div>
+                  <OpenStadComponentImage config={{ aspectRatio: self.config.aspectRatio }} image={questionImageB} onClick={ () => self.showLightbox(questionImageB) }/>
                 </div>
               </div>
+              <div style={{ clear: 'both' }}>
+              </div>
+              {questionAHTML}
+              {questionBHTML}
             </div>
           );
         }

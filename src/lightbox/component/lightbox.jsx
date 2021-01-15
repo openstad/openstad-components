@@ -116,6 +116,12 @@ export default class OpenStadComponentLightbox extends OpenStadComponent {
 
   }
 
+  getImageSrc(image) {
+    let imageSrc = image;
+    if ( typeof image == 'object' && image.src ) imageSrc = image.src;
+    return imageSrc;
+  }
+
 	render() {
 
 		let self = this;
@@ -125,15 +131,15 @@ export default class OpenStadComponentLightbox extends OpenStadComponent {
         <div className="osc-close-button" onClick={ (e) => self.hideLightbox(e) } ></div>
         <div className="osc-lightbox-main-container" ref={el => (self.mainContainer = el)}>
           <div className="osc-image-container" ref={el => (self.mainImageContainer = el)}>
-            <img src={ self.state.images[self.state.startIndex] && self.state.images[self.state.startIndex].src } ref={el => (self.mainImage = el)}/>
+            <img src={ self.state.images[self.state.startIndex] && self.getImageSrc(self.state.images[self.state.startIndex]) } ref={el => (self.mainImage = el)}/>
           </div>
         </div>
         <div className="osc-lightbox-navigation-container">
         <div className="osc-lightbox-navigation" ref={el => (self.navigationContainer = el)}>
           { self.state.images.map( ( image, i ) => {
             return (
-              <div className="osc-image-container" style={{ backgroundImage: `url(${image.src})`}} onClick={ (e) => self.showImage(e, image.src) } key={`lighbox-image-container-${i}`} ref={ el => self[`lighbox-image-container-${i}`] = el}>
-                <img src={ image.src } ref={ el => self[`lighbox-image-${i}`] = el}/>
+              <div className="osc-image-container" style={{ backgroundImage: `url(${self.getImageSrc(image)})`}} onClick={ (e) => self.showImage(e, self.getImageSrc(image)) } key={`lighbox-image-container-${i}`} ref={ el => self[`lighbox-image-container-${i}`] = el}>
+                <img src={ self.getImageSrc(image) } ref={ el => self[`lighbox-image-${i}`] = el}/>
               </div>
             )                                                   
           })
