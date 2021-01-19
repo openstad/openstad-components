@@ -1,3 +1,4 @@
+import merge from 'merge';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import OpenStadComponent from '../../component/index.jsx';
@@ -29,7 +30,7 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 			polygon : null,
 			autoZoomAndCenter: false,
 		};
-		self.config = Object.assign(defaultConfig, self.config || {})
+		self.config = merge.recursive(defaultConfig, this.config, props.config || {})
 
 		// external css and script files
 		self._loadedFiles = 0;
@@ -271,7 +272,7 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 		];
 
 		// polygon style
-		let polygonStyle = Object.assign({
+		let polygonStyle = merge({
 			"color": "#d00",
 			"fillColor": "#000",
 			"fillOpacity": 0.15

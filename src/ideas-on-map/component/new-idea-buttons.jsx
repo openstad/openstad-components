@@ -1,3 +1,4 @@
+import merge from 'merge';
 import React from 'react';
 
 'use strict';
@@ -10,7 +11,7 @@ export default class newIdeaButtons extends React.Component {
 
 		let defaultConfig = {
 		};
-		this.config = Object.assign(defaultConfig, this.props.config || {})
+		this.config = merge.recursive(defaultConfig, this.config, props.config || {})
 
     this.state = {
     }

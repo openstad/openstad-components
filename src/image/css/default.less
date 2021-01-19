@@ -1,0 +1,62 @@
+@import (reference) '../../component/css/default.less';
+
+.osc-image-spacer {
+
+  position: relative;
+  width: 100%;
+  height: auto;
+
+  @media @phone {
+    width: 100%;
+  }
+
+  .osc-image {
+
+    .osc-placeholder-idea-background();
+
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+  }
+
+}
+
+.osc-multiple-images {
+
+  position: relative;
+  width: 100%;
+  height: auto;
+  
+  .osc-image-spacer {
+  }
+
+  .osc-multiple-images-thumbs {
+
+    position: relative;
+
+    .osc-image-thumb-spacer {
+
+      position: absolute;
+      top: 10px;
+      left: 0;
+
+      .osc-image-thumb {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        border: 1px solid black;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        cursor: pointer;
+      }
+
+    }
+
+    
+  }
+
+}

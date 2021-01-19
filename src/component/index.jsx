@@ -1,4 +1,5 @@
 import React from 'react';
+import 'core-js/es/array/includes';
 
 'use strict';
 

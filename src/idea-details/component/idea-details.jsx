@@ -245,7 +245,7 @@ export default class IdeasDetails extends React.Component {
         if (idea.can && idea.can.edit) {
           addPollButtonHTML = (
             <div className="osc-editbuttons-container">
-              <button className="osc-idea-details-editbutton osc-edit" onClick={(event) => self.dispatchAddPollClick(event)}>Add poll</button>
+              <button className="osc-idea-details-editbutton osc-edit" onClick={(event) => self.dispatchAddPollClick(event)}>Poll toevoegen</button>
             </div>
           )
         }
