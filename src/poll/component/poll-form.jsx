@@ -147,12 +147,13 @@ export default class OpenStadComponentPollForm extends OpenStadComponent {
       return this.state.poll.can.edit;
     } else {
       let requiredUserRole = this.config.requiredUserRole;
-      let userRole = this.props.user && this.props.user.role;
+      let userRole = 'moderator' || this.props.user && this.props.user.role;
       // todo: owner; dus dit moet anders
-      // todo: nieuwe rollen structuur
-      return  requiredUserRole == 'anonymous' && userRole  ||
-        requiredUserRole == 'member' && ( userRole == 'member' || userRole == 'admin' )  ||
-        requiredUserRole == 'admin' && userRole == 'admin';
+      return ( requiredUserRole == 'anonymous' && userRole )  ||
+        ( requiredUserRole == 'member' && ( userRole == 'member' || userRole == 'editor' || userRole == 'moderator' || userRole == 'admin' ) )  ||
+        ( requiredUserRole == 'editor' && ( userRole == 'editor' || userRole == 'moderator' || userRole == 'admin' ) )  ||
+        ( requiredUserRole == 'moderator' && ( userRole == 'moderator' || userRole == 'admin' ) )  ||
+        ( requiredUserRole == 'admin' && userRole == 'admin' );
     }
   }
 

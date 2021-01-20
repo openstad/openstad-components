@@ -1,5 +1,8 @@
 'use strict';
 
+import merge from 'merge';
+import React from 'react';
+
 import OpenStadComponent from '../../component/index.jsx';
 
 export default class Search extends OpenStadComponent {

@@ -1,5 +1,6 @@
 'use strict';
 
+import merge from 'merge';
 import OpenStadComponent from '../../component/index.jsx';
 import amapsCreateClusterIcon from '../lib/amaps-cluster-icon.js';
 
@@ -265,7 +266,7 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 		];
 
 		// polygon style
-		let polygonStyle = Object.assign({
+		let polygonStyle = merge({
 			"color": "#d00",
 			"fillColor": "#000",
 			"fillOpacity": 0.15

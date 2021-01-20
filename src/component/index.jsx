@@ -1,5 +1,6 @@
 import merge from 'merge';
 import React from 'react';
+import 'core-js/es/array/includes';
 
 'use strict';
 

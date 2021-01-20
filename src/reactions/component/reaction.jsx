@@ -75,9 +75,11 @@ export default class OpenStadComponentReaction extends OpenStadComponent {
     if (this.config.isClosed) return false;
     let requiredUserRole = this.config.requiredUserRole;
     let userRole = this.props.user && this.props.user.role;
-    return (( requiredUserRole == 'anonymous' && userRole ) ||
-            ( requiredUserRole == 'member' && ( userRole == 'member' || userRole == 'admin' ) ) ||
-            ( requiredUserRole == 'admin' && userRole == 'admin'));
+      return ( requiredUserRole == 'anonymous' && userRole )  ||
+        ( requiredUserRole == 'member' && ( userRole == 'member' || userRole == 'editor' || userRole == 'moderator' || userRole == 'admin' ) )  ||
+        ( requiredUserRole == 'editor' && ( userRole == 'editor' || userRole == 'moderator' || userRole == 'admin' ) )  ||
+        ( requiredUserRole == 'moderator' && ( userRole == 'moderator' || userRole == 'admin' ) )  ||
+        ( requiredUserRole == 'admin' && userRole == 'admin' );
   }
 
   canReply() {
