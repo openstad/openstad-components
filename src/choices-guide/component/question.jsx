@@ -14,7 +14,6 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
     this.config.aspectRatio = this.config.aspectRatio || '16x9';
 
     this.questionId = props.data.id;
-    this.onLiveUpdates = this.config.liveUpdatesFunction;
 
     this.state = {
       value: 50,
@@ -54,9 +53,9 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
     let data = this.props.data || {};
     let values = data.values || {};
 
-    let dimensions;
+    let dimensions = data.dimensions;
     try {
-      dimensions = JSON.stringify(data.dimensions)
+      dimensions = JSON.parse(dimensions)
     } catch (err) {}
     dimensions = dimensions || ['x'];
 
@@ -81,7 +80,8 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
   }
 
   liveUpdates() {
-    if (this.onLiveUpdates) this.onLiveUpdates();
+		var event = new window.CustomEvent('osc-live-updates');
+		document.dispatchEvent(event);
   }
 
   showLightbox(startWith) {
@@ -187,7 +187,7 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
                   <OpenStadComponentImage config={{ aspectRatio: self.config.aspectRatio }} image={questionImageB} onClick={ () => self.showLightbox(questionImageB) }/>
                 </div>
               </div>
-              <div style={{ clear: 'both' }}>
+              <div style={{ clear: 'both', height: 15 }}>
               </div>
               {questionAHTML}
               {questionBHTML}

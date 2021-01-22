@@ -2,12 +2,6 @@
 
   @phone: ~'only screen and (max-width: 940px)';
 
-  @import 'choices';
-  @import 'questions';
-  @import 'question-group';
-  @import 'form';
-  @import 'user-preference';
-
   .osc-accordeon {
     .osc-accordeon();
     .osc-open {
@@ -90,6 +84,16 @@
 
   }
 
+  .osc-type-hidden {
+    display: none;
+  }
+  
+  @import 'choices';
+  @import 'choice-plane';
+  @import 'questions';
+  @import 'question-group';
+  @import 'form';
+  @import 'user-preference';
   @import 'result';
 
 }

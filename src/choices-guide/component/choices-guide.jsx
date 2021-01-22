@@ -24,7 +24,6 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
       api: {
         url: null
       },
-      sticky: null,
       choices: {
         title: {
           noPreferenceYet: 'Je hebt nog geen keuze gemaakt',
@@ -65,9 +64,18 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
   componentDidMount(prevProps, prevState) {
 
     let self = this;
-    
+
+    self.liveUpdateListener = function(event) {
+      self.liveUpdates(event.detail);
+    }
+		document.addEventListener('osc-live-updates', self.liveUpdateListener);
+
     self.fetchData();
 
+  }
+
+  componentWillUnmount() {
+		document.removeEventListener('osc-live-updates', self.liveUpdateListener);
   }
 
   fetchData() {
@@ -218,6 +226,18 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
     })
   }
 
+  onChoicesClick(e) {
+    if( this.choicesAccordeon.className.match(' osc-closed') ) {
+      this.choicesAccordeon.className = this.choicesAccordeon.className.replace(' osc-closed', ' osc-open');
+    } else {
+      this.choicesAccordeon.className = this.choicesAccordeon.className.replace(' osc-open', ' osc-closed');
+    }
+
+		var event = new window.CustomEvent('osc-choices-click', { detail: {} });
+		document.dispatchEvent(event);
+    
+  }
+
   render() {
 
     let self = this;
@@ -264,21 +284,20 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
 
         let choicesHTML = null;
 
-
-        console.log(self.state);
-
-        let choicesTitle = '<b>Je hebt nog geen keuze gemaakt</b>';
-
-        if ( self.state.firstAnswerGiven && self.choicesElement ) {
-          let choiceElement = self.choicesElement.getPreferedChoice();
-          choicesTitle = self.config.choices.title.preference.replace('\{preferredChoice\}', choiceElement && choiceElement.getTitle(self.state.scores[choiceElement.config.divId]) || choicesTitle);
-        } else {
-          choicesTitle = self.config.choices.title.noPreferenceYet;
+        let choicesTitle = self.config.choices.title.noPreferenceYet;
+        let choiceElement = self.choicesElement && self.choicesElement.getPreferedChoice();
+        console.log(choiceElement);
+        if ( self.state.firstAnswerGiven ) {
+          if ( choiceElement ) {
+            choicesTitle = self.config.choices.title.preference.replace('\{preferredChoice\}', choiceElement && choiceElement.getTitle(self.state.scores[choiceElement.config.divId]) || choicesTitle);
+          } else {
+            choicesTitle = self.config.choices.title.inBetween;
+          }
         }
 
         choicesHTML = (
-          <div id={'osc-choices-container-' + this.divId} className={`osc-choices-container osc-accordeon osc-closed${ self.config.choices.type == 'hidden' ? ' osc-hidden' : '' }`} ref={el => { self.choicesAccordeon = el; }}>
-            <div onClick={() => { if( this.choicesAccordeon.className.match(' osc-closed') ) { this.choicesAccordeon.className = this.choicesAccordeon.className.replace(' osc-closed', ' osc-open'); } else { this.choicesAccordeon.className = this.choicesAccordeon.className.replace(' osc-open', ' osc-closed'); } }} className="osc-accordeon-button" dangerouslySetInnerHTML={{ __html: choicesTitle }}></div>
+          <div id={'osc-choices-container-' + this.divId} className={`osc-choices-container osc-accordeon osc-closed ${'osc-type-' + self.config.choices.type}`} ref={el => { self.choicesAccordeon = el; }}>
+            <div onClick={e => self.onChoicesClick(e)} className="osc-accordeon-button" dangerouslySetInnerHTML={{ __html: choicesTitle }}></div>
             <div className="osc-accordeon-content">
               <OpenStadComponentChoices config={{ ...self.config.choices, startWithAllQuestionsAnswered: this.config.startWithAllQuestionsAnswered }} choices={[...choices]} scores={{...self.state.scores}} firstAnswerGiven={ self.state.firstAnswerGiven ? true : false } ref={function(el) { self.choicesElement = el; }} key='choices'/>
             </div>
@@ -286,7 +305,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
         );
 
         let questionGroupHTML = (
-          <OpenStadComponentQuestionGroup config={ { ...self.config, liveUpdatesFunction: self.liveUpdates } } data={ questionGroup } ref={function(el) { self.questionGroupElement = el; }} key={`group${self.state.currentQuestionsGroupIndex}`}/>
+          <OpenStadComponentQuestionGroup config={self.config} data={ questionGroup } ref={function(el) { self.questionGroupElement = el; }} key={`group${self.state.currentQuestionsGroupIndex}`}/>
         );
 
         let editButtonHTML = null;
@@ -314,11 +333,8 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
         
         let previousNextButtonsHTML = null;
         if ( previousLabel || nextLabel ) {
-          console.log(previousLabel, previousAction);
           previousNextButtonsHTML = <OpenStadComponentPreviousNextButtonBlock previousAction={previousAction} previousUrl={previousUrl} previousLabel={previousLabel} nextAction={nextAction} nextUrl={nextUrl} nextLabel={nextLabel}/>
         }
-
-        // ----------------------------------------------------------------------------------------------------
         
         contentHTML =  (
           <div className="osc-choices-guide-content">

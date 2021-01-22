@@ -92,7 +92,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
   }
 
-	componentDidMount(prevProps, prevState) {
+	componentDidMount() {
 
     let self = this;
 

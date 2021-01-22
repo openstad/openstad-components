@@ -67,6 +67,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
     let name;
     let preferredChoiceId = -1;
     if ( self.choicesElement ) {
+
       let choiceElement = self.choicesElement.getPreferedChoice();
       
       if (choiceElement) {
@@ -173,7 +174,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
 
     let choicesHTML = null;
     if (choices) {
-      choicesHTML = <OpenStadComponentChoices config={{ ...self.config.choices, sticky: false }} scores={{...self.state.scores}} choices={[...choices]} firstAnswerGiven={true} ref={function(el) { self.choicesElement = el; }} key='choices'/>;
+      choicesHTML = <OpenStadComponentChoices config={{ ...self.config.choices }} scores={{...self.state.scores}} choices={[...choices]} firstAnswerGiven={true} ref={function(el) { self.choicesElement = el; }} key='choices'/>;
     }
 
     let moreInfoHTML = null;
@@ -213,7 +214,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
       <div className="osc-choices-guide">
         <div className="osc-result">
           <div className="osc-result-content">
-            <div className="osc-choices-container">
+            <div className={`osc-choices-container ${'osc-type-' + self.config.choices.type}`}>
               <h3 dangerouslySetInnerHTML={{ __html: self.state.title }}></h3>
               {choicesHTML}
             </div>

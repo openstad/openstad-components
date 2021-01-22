@@ -10,7 +10,6 @@ export default class OpenStadComponentChoices extends OpenStadComponent {
 
     super(props, {
       type: 'default',
-      sticky: null,
       withPercentage: false,
       minLabel: null,
       maxLabel: null,
@@ -22,6 +21,7 @@ export default class OpenStadComponentChoices extends OpenStadComponent {
       title: 'Je hebt nog geen keuze gemaakt',
       scores: props.scores,
       answers: {},
+      averageScore: { x: 51, y: 50 },
     };
 
   }
@@ -30,6 +30,15 @@ export default class OpenStadComponentChoices extends OpenStadComponent {
 
     let self = this;
 
+    self.choicesClickListener = function(event) {
+      self.setState({ random: Math.random() }); // force redraw
+    }
+		document.addEventListener('osc-choices-click', self.choicesClickListener);
+
+  }
+
+  componentWillUnmount() {
+		document.removeEventListener('osc-choices-click', self.choicesClickListener);
   }
 
   calculateScores(answers) {
@@ -51,8 +60,15 @@ export default class OpenStadComponentChoices extends OpenStadComponent {
     let scores = self.state.scores;
     switch (self.config.type) {
       case 'plane':
-        // dan zou er maar 1 choice moeten zijn
-        return self.choiceElements[0];
+        // hardcoded voor nu, maar kan dit niet generiek over alle typen?
+        console.log('==', self.state.averageScore);
+        console.log('==', self.choiceElements);
+        if ( self.state.averageScore.x < 50 && self.state.averageScore.y < 50 ) return self.choiceElements[0];
+        if ( self.state.averageScore.x > 50 && self.state.averageScore.y < 50 ) return self.choiceElements[1];
+        if ( self.state.averageScore.x < 50 && self.state.averageScore.y > 50 ) return self.choiceElements[2];
+        if ( self.state.averageScore.x > 50 && self.state.averageScore.y > 50 ) return self.choiceElements[3];
+        return;
+        break;
         break;
 
       default:
@@ -87,23 +103,20 @@ export default class OpenStadComponentChoices extends OpenStadComponent {
               }
             });        
           });
-          console.log('?1', score, lengths);
-          score.x = parseInt(score.x / lengths.x);
-          score.y = parseInt(score.y / lengths.y);
+          score.x = lengths.x ? parseInt(score.x / lengths.x) : undefined;
+          score.y = lengths.y ? parseInt(score.y / lengths.y) : undefined;
         }
 
-        console.log('?2',score);
-
-        let baseSize = document.querySelector(`#${this.divId}`) && ( document.querySelector(`#${this.divId}`).offsetWidth ) || 180;
-        let top = ( typeof score.y == 'undefined' ? 0 : score.y ) * ( baseSize / 100 );
-        let left = ( typeof score.x == 'undefined' ? 0 : score.x ) * ( baseSize / 100 );
+        let baseSize = document.querySelector(`#${this.divId}`) && document.querySelector(`#${this.divId}`).offsetWidth - 1 || 180;
+        let top = ( typeof score.y == 'undefined' ? 50 : score.y ) * ( baseSize / 100 );
+        let left = ( typeof score.x == 'undefined' ? 50 : score.x ) * ( baseSize / 100 );
 
         return (
-          <div className="osc-choices osc-choice-plane-plane" ref={function(el) { self.planePlaneElement = el;}}>
+          <div id={this.divId} className="osc-choices osc-choice-plane-plane" ref={function(el) { self.planePlaneElement = el;}}>
 
             { Object.keys(self.props.choices).map((key, i) => {
               let choice = self.props.choices[key];
-              return (<OpenStadComponentChoice config={{ divId:`choice-${choice.id}`,  ...self.config, baseSize }} data={choice} score={ self.props.scores && self.props.scores[`choice-${choice.id}`] } key={`choice-${choice.id}`} ref={function(el) { self.choiceElements[i] = el;}}/>);
+              return (<OpenStadComponentChoice config={{ divId:`choice-${choice.id}`,  ...self.config }} data={choice} score={ self.props.scores && self.props.scores[`choice-${choice.id}`] } key={`choice-${choice.id}`} baseSize={baseSize} ref={function(el) { self.choiceElements[i] = el;}}/>);
             })}
             
             <div className="osc-point" style={{ top, left }}></div>

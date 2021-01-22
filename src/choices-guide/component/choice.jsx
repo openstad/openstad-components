@@ -34,15 +34,8 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
 
   }
 
-  getScore() {
-    let score = this.planeElement ? 0 : this.state.score;
-    return score;
-  }
-
   getTitle(score, nameOnly) {
-    return this.planeElement ?
-      this.planeElement.getTitle(score,nameOnly) :
-      this.props.data && this.props.data.title;
+    return this.props.data && this.props.data.title;
   }
   
   calculateScore(answers) {
@@ -86,7 +79,7 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
       scores[dimension] = scores[dimension].score.length ? scores[dimension].score.reduce(function (accumulator, currentValue){return accumulator + currentValue;}) / scores[dimension].noOfAnswers : undefined;
     });
 
-    console.log('scores', scores);
+    // console.log('scores', scores);
 
     self.setState({score: scores});
     return scores;
@@ -112,12 +105,12 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
           let imageSrc = image;
           if ( typeof image == 'object' ) imageSrc = image.src;
           imageHTML = (
-            <img className="osc-choice-plane-background-image" src={imageSrc} style={{ width: this.config.baseSize / 2, height: this.config.baseSize / 2 }}/>
+            <img className="osc-choice-plane-background-image" src={imageSrc} style={{ width: this.props.baseSize / 2, height: this.props.baseSize / 2 }}/>
           );
         }
 
         return (
-          <div className="osc-choice-plane">{imageHTML}</div>
+          <div className="osc-choice-plane" style={{ width: this.props.baseSize / 2, height: this.props.baseSize / 2 }}>{imageHTML}</div>
         );
         break;
 

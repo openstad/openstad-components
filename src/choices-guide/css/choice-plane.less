@@ -1,55 +1,43 @@
-&.osc-choice-plane-plane {
-
-  position: relative;
-  width: 180px;
-  height: 180px;
-
-  .osc-point {
-    position: absolute;
-    top: 50px;
-    left: 50px;
-    margin: -11px 0 0 -11px;
-    width: 20px;
-    height: 20px;
-    border: 10px solid #bed200;
-    border-radius: 10px;
+.osc-type-plane {
+  .osc-accordeon-content {
+    margin: 18px;
+    @media @phone {
+      margin: 18px 25%;
+    }
   }
+}
 
-  .osc-choice-plane {
+.osc-choices-container {
+  .osc-choice-plane-plane {
+
     position: relative;
-    float: left;
-    width: 89px;
-    height: 89px;
-
-    &.osc-bg-1 {
-      padding-right: 9px;
-      padding-bottom: 9px;
-    }
-
-    &.osc-bg-2 {
-      padding-left: 9px; 
-      padding-bottom: 9px;
-    }
-
-    &.osc-bg-3 {
-      padding-right: 9px; 
-      padding-top: 9px;
-    }
-
-    &.osc-bg-4 {
-      padding-left: 9px; 
-      padding-top: 9px;
-    }
-
-  }
-
-  .osc-choice-plane-background-image {
-    position: relative;
-    // top: 0;
-    // left: 0;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+    height: auto;
 
+    .osc-point {
+      position: absolute;
+      top: 50px;
+      left: 50px;
+      margin: -11px 0 0 -11px;
+      width: 20px;
+      height: 20px;
+      border: 10px solid #bed200;
+      border-radius: 10px;
+    }
+
+    .osc-choice-plane {
+      position: relative;
+      width: 100%;
+      height: auto;
+      float: left;
+    }
+
+    .osc-choice-plane-background-image {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+  }
 }
