@@ -937,14 +937,14 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
             contentHTML = OpenStadComponentLibs.reactTemplate({ html: contentHTML, addButton, loginButton })
 
             mobilePopupHTML = (
-							<div className="ocs-mobile-popup">
+							<div className="osc-mobile-popup">
 								{contentHTML}
 							</div>
 						);
           }
         } else {
           mobilePopupHTML = (
-            <div className="ocs-mobile-popup ocs-clickable" onClick={ () =>  { this.setState({ mobileState: 'opened' }); this.infoblock.setState({ mobileState: 'opened' }); document.location.href = "#D" + this.state.currentIdea.id; /* this.showIdeaDetails(this.state.currentIdea) */ } }>
+            <div className="osc-mobile-popup osc-clickable" onClick={ () =>  { this.setState({ mobileState: 'opened' }); this.infoblock.setState({ mobileState: 'opened' }); document.location.href = "#D" + this.state.currentIdea.id; /* this.showIdeaDetails(this.state.currentIdea) */ } }>
               <div className="osc-image" style={{ backgroundImage: `url(${this.state.currentIdea && this.state.currentIdea.image})` }}></div>
               { eval(this.state.currentIdea && `this.state.currentIdea.${this.config.titleField}`) }
             </div>

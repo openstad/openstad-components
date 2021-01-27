@@ -29,6 +29,13 @@
 .osc-previous-next-button-block .osc-previous-button:hover {
   text-decoration: underline;
 }
+.osc-previous-next-button-block .osc-previous-button.osc-disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.osc-previous-next-button-block .osc-previous-button.osc-disabled:hover {
+  text-decoration: none;
+}
 .osc-previous-next-button-block .osc-next-button {
   position: relative;
   margin-right: 17px;
@@ -58,6 +65,16 @@
 }
 .osc-previous-next-button-block .osc-next-button:hover:before {
   border-left: 17px solid #003066;
+}
+.osc-previous-next-button-block .osc-next-button.osc-disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.osc-previous-next-button-block .osc-next-button.osc-disabled:hover {
+  background-color: #164995;
+}
+.osc-previous-next-button-block .osc-next-button.osc-disabled:hover:before {
+  border-left-color: #164995;
 }
 
 

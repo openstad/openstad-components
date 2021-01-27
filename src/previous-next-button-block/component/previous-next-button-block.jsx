@@ -30,14 +30,14 @@ export default class OpenStadComponentPreviousNextButtonBlock extends React.Comp
     let previousAction = this.config.previousAction;
     if (this.config.previousUrl) previousAction = () => { document.location.href = `${this.config.previousUrl}` };
     if ( previousAction ) {
-      previousButtonHTML = <div className="osc-previous-button" onClick={(args) => { previousAction(args) }}>{this.config.previousLabel}</div>
+      previousButtonHTML = <div className={`osc-previous-button${this.props.previousIsDisabled ? ' osc-disabled' : ''}`} onClick={(args) => { this.props.previousIsDisabled ? null : previousAction(args) }}>{this.config.previousLabel}</div>
     }
 
     let nextButtonHTML;
     let nextAction = this.config.nextAction;
     if (this.config.nextUrl) nextAction = () => { document.location.href = `${this.config.nextUrl}` };
     if ( nextAction ) {
-      nextButtonHTML = <div className="osc-next-button" onClick={(args) => { nextAction(args) }}>{this.config.nextLabel}</div>
+      nextButtonHTML = <div className={`osc-next-button${this.props.nextIsDisabled ? ' osc-disabled' : ''}`} onClick={(args) => { this.props.nextIsDisabled ? null : nextAction(args) }}>{this.config.nextLabel}</div>
     }
 
     return (

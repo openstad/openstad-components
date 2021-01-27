@@ -9,11 +9,14 @@ function fetchChoicesGuide({ config }) {
       .then((response) => {
         return response.json();
       })
-      .then((json) => {
+    .then((json) => {
+
+      console.log(json);
 
         let data = {
           choicesGuideId: json.id,
           images: json.images,
+          choicesGuideConfig: json.config,
           title: json.title,
           description: json.description,
           choices: json.choices || [],
