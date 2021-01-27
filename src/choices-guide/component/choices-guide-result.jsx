@@ -1,5 +1,5 @@
 import merge from 'merge';
-import fingerprint from 'fingerprintjs2';
+import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
 import OpenStadComponentLibs from '../../libs/index.jsx';
 
@@ -132,65 +132,55 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
       if (!isValid) return;
     }
 
-    // return self.setState({
-    //   'submissionError': {
-    //     type: 'alreadySubmitted',
-    //     message: 'Niels is gek',
-    //   }
-    // })
+    FingerprintJS.load().then(fp => {
+      fp.get().then(result => {
+        const visitorId = result.visitorId;
 
-    fingerprint.get(fingerprintComponents => {
+        let url = `${self.config.api && self.config.api.url }/api/site/${  self.config.siteId  }/choicesguide/${  self.config.choicesGuideId  }/result`;
+        let headers = OpenStadComponentLibs.api.getHeaders(self.config);
+        let body = {
+          result: {
+            answers: self.state.answers,
+            scores: self.state.scores,
+          },
+          extraData: formValues,
+          userFingerprint: visitorId,
+        };
 
-      let fingerprintData;
-      try {
-        fingerprintData = JSON.stringify(fingerprintComponents);
-      } catch (err) {}
-      
-      let url = `${self.config.api && self.config.api.url }/api/site/${  self.config.siteId  }/choicesguide/${  self.config.choicesGuideId  }/result`;
-      let headers = OpenStadComponentLibs.api.getHeaders(self.config);
-      let body = {
-        result: {
-          answers: self.state.answers,
-          scores: self.state.scores,
-        },
-        extraData: formValues,
-        userFingerprint: btoa(fingerprintData),
-      };
-
-      fetch(url, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify(body),
-      })
-        .then( function(response) {
-          if (response.ok) {
-            return response.json();
-          }
-          throw response.text();
+        fetch(url, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(body),
         })
-        .then(function(json) {
-          if (self.config.submission.type == 'form') {
-            document.location.href = self.config.afterUrl
-          }
-        })
-        .catch(function(error) {
-          error.then(function(messages) {
-            try {
-              messages = JSON.parse(messages)
-            } catch (err) {}
-            let message = ( Array.isArray(messages) && messages[0] && messages[0].message || messages[0] ) || ( messages.message || messages );
-            self.setState({
-              submissionError: {
-                message,
-                type: message == 'Je hebt je mening al ingestuurd' ? 'alreadySubmitted' : 'unknown'
-              }
-            }, () => {
-              return console.log(messages);
+          .then( function(response) {
+            if (response.ok) {
+              return response.json();
+            }
+            throw response.text();
+          })
+          .then(function(json) {
+            if (self.config.submission.type == 'form') {
+              document.location.href = self.config.afterUrl
+            }
+          })
+          .catch(function(error) {
+            error.then(function(messages) {
+              try {
+                messages = JSON.parse(messages)
+              } catch (err) {}
+              let message = ( Array.isArray(messages) && messages[0] && messages[0].message || messages[0] ) || ( messages.message || messages );
+              self.setState({
+                submissionError: {
+                  message,
+                  type: message == 'Je hebt je mening al ingestuurd' ? 'alreadySubmitted' : 'unknown'
+                }
+              }, () => {
+                return console.log(messages);
+              });
             });
           });
-        });
-
-    })
+      });
+    });
 
   }
 
