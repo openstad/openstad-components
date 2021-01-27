@@ -252,9 +252,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
         <OpenStadComponentForms.Form config={ self.config.submission.form }  ref={function(el) { self.form = el; }}/>
       );
 
-      console.log(1);
       if (requireLogin) {
-      console.log(2);
         if (self.isUserLoggedIn()) {
           let className = 'osc-success';
           let buttonText = self.config.submission.requireLoginSettings.buttonTextLoggedIn;
