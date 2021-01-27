@@ -160,5 +160,68 @@
     margin-top: 40px;
   }
 
+  .osc-require-login {
+
+    margin-bottom: 40px;
+
+    h2 {
+      margin-bottom: 10px;
+    }
+
+    .osc-gray-block {
+      background-color: #f6f7f7;
+    }
+
+    .osc-button-white {
+      .osc-button-white();
+    }
+
+    &.osc-not-yet-logged-in {
+      
+    }
+
+    &.osc-logged-in {
+
+      .osc-button-white {
+        border-width: 2px;
+      }
+
+      .change-login-link-text {
+        margin-top: 10px;
+        margin-bottom: 20px;
+        font-size: smaller;
+        a { text-decoration: underline; }
+      }
+
+      &.osc-success {
+
+        .osc-message {
+          padding: 10px;
+          color: #00a03c;
+          border: solid 2px #00a03c;
+        }
+
+      }
+
+      &.osc-error {
+
+        .osc-button-white {
+          color: black;
+          border-width: 2px;
+          border-color: black;
+        }
+
+        .osc-message {
+          padding: 10px;
+          color: #ea1d25;
+          border: solid 2px #ea1d25;
+        }
+
+      }
+
+    }
+
+  }
+
 }
 
