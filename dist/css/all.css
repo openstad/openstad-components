@@ -904,6 +904,9 @@
   font-size: 16px;
   background-color: white;
 }
+.osc-choices-guide .osc-form-intro {
+  margin-bottom: 40px;
+}
 .osc-choices-guide .osc-accordeon {
   max-width: 100%;
   margin-top: 20px;
@@ -5768,6 +5771,9 @@ form.osc-form {
   width: 100%;
   font-size: 16px;
   background-color: white;
+}
+.osc-choices-guide .osc-form-intro {
+  margin-bottom: 40px;
 }
 .osc-choices-guide .osc-accordeon {
   max-width: 100%;
