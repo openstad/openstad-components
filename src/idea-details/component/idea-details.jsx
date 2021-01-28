@@ -40,7 +40,7 @@ export default class IdeasDetails extends React.Component {
 
 		this.config = merge.recursive(defaultConfig, this.config, this.props.config || {})
     if (!this.config.shareChannelsSelection) this.config.shareChannelsSelection = ["facebook","twitter","mail","whatsapp"];
-    if (typeof this.config.metaDataTemplate == 'undefined') this.config.metaDataTemplate = '<span class="ocs-gray-text">Door </span>{username} <span class="ocs-gray-text"> op </span>{createDate} <span class="ocs-gray-text">&nbsp;&nbsp;|&nbsp;&nbsp;</span> <span class="ocs-gray-text">Thema: </span>{theme}';
+    if (typeof this.config.metaDataTemplate == 'undefined') this.config.metaDataTemplate = '<span class="osc-gray-text">Door </span>{username} <span class="osc-gray-text"> op </span>{createDate} <span class="osc-gray-text">&nbsp;&nbsp;|&nbsp;&nbsp;</span> <span class="osc-gray-text">Thema: </span>{theme}';
     
     this.state = {
       idea: this.props.idea,

@@ -58,8 +58,12 @@
 .osc-close-button-black:focus {
   outline: 0;
 }
-.ocs-gray-text {
+.osc-gray-text {
   color: #9a9a9a;
+}
+.osc-gray-block {
+  padding: 30px;
+  background-color: #f6f7f7;
 }
 .osc-not-logged-in-button {
   background-position: center left 10px;
@@ -336,6 +340,13 @@
 .osc-previous-next-button-block .osc-previous-button:hover {
   text-decoration: underline;
 }
+.osc-previous-next-button-block .osc-previous-button.osc-disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.osc-previous-next-button-block .osc-previous-button.osc-disabled:hover {
+  text-decoration: none;
+}
 .osc-previous-next-button-block .osc-next-button {
   position: relative;
   margin-right: 17px;
@@ -365,6 +376,16 @@
 }
 .osc-previous-next-button-block .osc-next-button:hover:before {
   border-left: 17px solid #003066;
+}
+.osc-previous-next-button-block .osc-next-button.osc-disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.osc-previous-next-button-block .osc-next-button.osc-disabled:hover {
+  background-color: #164995;
+}
+.osc-previous-next-button-block .osc-next-button.osc-disabled:hover:before {
+  border-left-color: #164995;
 }
 .osc-choices-guide {
   position: relative;
@@ -1104,6 +1125,11 @@
     display: none;
   }
 }
+.osc-choices-guide .osc-error {
+  padding: 10px;
+  color: #ea1d25;
+  border: solid 2px #ea1d25;
+}
 .osc-choices-guide .osc-result {
   position: relative;
   width: 100%;
@@ -1227,6 +1253,67 @@
 }
 .osc-choices-guide .osc-result .osc-sharebuttons {
   margin-top: 40px;
+}
+.osc-choices-guide .osc-result .osc-require-login {
+  margin-bottom: 40px;
+}
+.osc-choices-guide .osc-result .osc-require-login h2 {
+  margin-bottom: 10px;
+}
+.osc-choices-guide .osc-result .osc-require-login .osc-gray-block {
+  background-color: #f6f7f7;
+}
+.osc-choices-guide .osc-result .osc-require-login .osc-button-white {
+  position: relative;
+  display: inline-block;
+  padding: 10px 13px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 20px;
+  border: 1px solid black;
+  cursor: pointer;
+  color: #164995;
+  border-color: #164995;
+  background-color: white;
+}
+.osc-choices-guide .osc-result .osc-require-login .osc-button-white:active,
+.osc-choices-guide .osc-result .osc-require-login .osc-button-white:focus {
+  outline: 0;
+}
+.osc-choices-guide .osc-result .osc-require-login .osc-button-white.osc-disabled {
+  opacity: 0.3;
+}
+.osc-choices-guide .osc-result .osc-require-login .osc-button-white:hover {
+  text-decoration: underline;
+  color: #003066;
+  border-color: #003066;
+  background-color: white;
+}
+.osc-choices-guide .osc-result .osc-require-login.osc-logged-in .osc-button-white {
+  border-width: 2px;
+}
+.osc-choices-guide .osc-result .osc-require-login.osc-logged-in .change-login-link-text {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-size: smaller;
+}
+.osc-choices-guide .osc-result .osc-require-login.osc-logged-in .change-login-link-text a {
+  text-decoration: underline;
+}
+.osc-choices-guide .osc-result .osc-require-login.osc-logged-in.osc-success .osc-message {
+  padding: 10px;
+  color: #00a03c;
+  border: solid 2px #00a03c;
+}
+.osc-choices-guide .osc-result .osc-require-login.osc-logged-in.osc-error .osc-button-white {
+  color: black;
+  border-width: 2px;
+  border-color: black;
+}
+.osc-choices-guide .osc-result .osc-require-login.osc-logged-in.osc-error .osc-message {
+  padding: 10px;
+  color: #ea1d25;
+  border: solid 2px #ea1d25;
 }
 
 
@@ -1923,6 +2010,13 @@
 .osc-previous-next-button-block .osc-previous-button:hover {
   text-decoration: underline;
 }
+.osc-previous-next-button-block .osc-previous-button.osc-disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.osc-previous-next-button-block .osc-previous-button.osc-disabled:hover {
+  text-decoration: none;
+}
 .osc-previous-next-button-block .osc-next-button {
   position: relative;
   margin-right: 17px;
@@ -1952,6 +2046,16 @@
 }
 .osc-previous-next-button-block .osc-next-button:hover:before {
   border-left: 17px solid #003066;
+}
+.osc-previous-next-button-block .osc-next-button.osc-disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.osc-previous-next-button-block .osc-next-button.osc-disabled:hover {
+  background-color: #164995;
+}
+.osc-previous-next-button-block .osc-next-button.osc-disabled:hover:before {
+  border-left-color: #164995;
 }
 
 .osc-lightbox {

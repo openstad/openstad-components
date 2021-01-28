@@ -15,12 +15,39 @@
   .osc-previous-button {
     .osc-previous-button();
     float: left;
+
+
+    &.osc-disabled {
+      opacity: .3;
+      cursor: default;
+
+      &:hover {
+        text-decoration: none;
+      }
+
+    }
+
   }
 
   .osc-next-button {
     .osc-next-button();
     float: right;
-  }
 
+
+    &.osc-disabled {
+      opacity: .3;
+      cursor: default;
+
+      &:hover {
+        background-color: #164995;
+
+      &:before {
+        border-left-color: #164995;
+      }
+      }
+
+    }
+
+  }
 
 }
