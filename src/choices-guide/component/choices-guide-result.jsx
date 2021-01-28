@@ -171,7 +171,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
               let message = ( Array.isArray(messages) && messages[0] && messages[0].message || messages[0] ) || ( messages.message || messages );
               self.setState({
                 submissionError: {
-                  message,
+                  message: message.toString(),
                   type: message == 'Je hebt je mening al ingestuurd' ? 'alreadySubmitted' : 'unknown'
                 }
               }, () => {
@@ -256,6 +256,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
               message = self.state.submissionError.message;
             }
           }
+          console.log('===', message);
           requireLoginHTML = (
             <div className={`osc-require-login osc-logged-in osc-logged-in ${className}`}>
               <h2>{self.config.submission.requireLoginSettings.title}</h2>
@@ -305,8 +306,8 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
     let errorMessageHTML = null;
     if (self.state.submissionError && !requireLogin) {
       errorMessageHTML = (
-        <div className="osc-message">
-          {self.config.submission.submissionError.message};
+        <div className="osc-message osc-error">
+          {self.state.submissionError.message};
         </div>);
     }
     
