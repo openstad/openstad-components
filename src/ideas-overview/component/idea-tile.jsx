@@ -2,7 +2,7 @@
 
 import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
-import OpenStadComponentImage from '../../idea-image/index.jsx';
+import { IdeaImage as OpenStadComponentIdeaImage } from '../../image/index.jsx';
 
 // TODO: gridder display type
 // TODO: show ranking
@@ -190,7 +190,7 @@ export default class IdeasOverview extends OpenStadComponent {
     return (
 			<div id={self.divId} className={`osc-idea-tile osc-displaytype-${self.config.display.type} ${self.props.className || ''}`} onClick={event => self.dispatchIdeaTileClick(event, idea)} onMouseOver={event => self.dispatchIdeaTileMouseOver(event, idea)} onMouseOut={event => self.dispatchIdeaTileMouseOut(event, idea)}>
         <div className="osc-idea-image-container">
-          <OpenStadComponentImage config={{}} idea={idea} key={'image-' + idea.id}/>
+          <OpenStadComponentIdeaImage config={{}} idea={idea} key={'image-' + idea.id}/>
         </div>
         <div className="osc-idea-tile-content">
           {statusLabelHTML}

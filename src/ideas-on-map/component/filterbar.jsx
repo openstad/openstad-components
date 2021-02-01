@@ -1,146 +1,68 @@
-import merge from 'merge';
-import React from 'react';
-import Search from './search.jsx';
-
 'use strict';
 
-export default class Filterbar extends React.Component {
+import OpenStadComponent from '../../component/index.jsx';
+import { IdeasFilterbar, IdeasFilter, IdeasSearch } from '../../ideas-overview/index.jsx';
+import Search from './search.jsx';
 
-  constructor(props) {
-
-    super(props);
-
-		let defaultConfig = {
-      types: ( props.config && props.config.types ) || [],
-      typesFilterLabel: 'Alle thema\'s',
-      areas: ( props.config && props.config.areas ) || [],
-      search: {},
-		};
-		this.config = merge.recursive(this.defaultConfig, this.config, props.config || {})
-
-    this.config.searchIn = typeof props.config.search.searchIn == 'object' && props.config.search.searchIn || ['ideas', 'addresses'];
-
-    this.state = {
-      selectedType: undefined,
-      types: this.config.types,
-      typesFilterLabel: this.config.typesFilterLabel,
-      selectedArea: undefined,
-      areas: this.config.areas,
-      mobileActiveSelector: null,
-    }
-
-  }
-
-	componentDidMount(prevProps, prevState) {
-	}
-
-  handleTypeChange(value) {
-
-    this.setState({ selectedType: value });
-    this.hideMobileActiveSelector()
-
-		// dispatch an event
-		var event = new window.CustomEvent('typeFilterUpdate', { detail: { value: value } });
-		document.dispatchEvent(event);
-
-  }
-
-  setAreaValue(value) {
-    this.setState({ selectedArea: value });
-  }
-
-  handleAreaChange(value) {
-
-    this.setState({ selectedArea: value });
-    this.hideMobileActiveSelector()
-
-		// dispatch an event
-		var event = new window.CustomEvent('areaFilterUpdate', { detail: { value: this.state.areas.find(area => value == area.value) } });
-		document.dispatchEvent(event);
-
-  }
-
-  resetTypeAndArea() {
-    this.handleTypeChange(0)
-    this.handleAreaChange(0)
-    this.hideMobileActiveSelector()
-  }
-
-  toggleMobileActiveSelector(which) {
-    if (this.state.mobileActiveSelector != which) {
-      this.showMobileActiveSelector(which);
-    } else {
-      this.hideMobileActiveSelector();
-    }
-  }
-
-  showMobileActiveSelector(which) {
-    this.setState({ mobileActiveSelector: which });
-  }
-
-  hideMobileActiveSelector() {
-    this.setState({ mobileActiveSelector: null });
-  }
+export default class Filterbar extends IdeasFilterbar {
 
 	render() {
 
     let self = this;
 
-    let areasHTML = null;
-    let areasButtonHTML = null;
-    // TODO: niet state maar config
-    if (self.state.areas && self.state.areas.length) {
-      areasButtonHTML = (
-        <div className="osc-area-selector-button" onClick={() => self.toggleMobileActiveSelector('area')}></div>
-      );
-      areasHTML = (
-          <div className={`osc-area-selector-container${self.state.mobileActiveSelector == 'area' ? ' osc-is-active' : ''}`}>
-            <select value={self.state.selectedArea} onChange={() => self.handleAreaChange( self.areaSelector.value )} className="osc-default-select osc-margin-right osc-area-selector" ref={el => (self.areaSelector = el)}>
-              <option value="0">Alle gebieden</option>;
-              { self.state.areas.map((area, i) => {
-                return <option key={'area-option-' + i}>{ area.name }</option>;
-              })}
-            </select>
-          </div>
-      );
-    }
-
     let searchHTML = null;
-    console.log(self.config);
-    if ( self.config.searchIn && self.config.searchIn.length && self.config.doSearchFunction) {
+		if (self.config.search) {
+			// searchHTML = (
+			//   <div className={`osc-ideas-search-container`}>
+			//   	<div className="osc-ideas-search-button" onClick={() => self.toggleMobileActiveSelector('search')}></div>
+			//   	<IdeasSearch config={ self.config.search } className={`${self.state.mobileActiveSelector == 'search' ? ' osc-is-active' : ''}`} ref={el => self.search = el}/>
+			//   </div>
+			// );
+
       searchHTML = (
         <div className="osc-search-container">
           <div className="osc-search-button" onClick={() => self.toggleMobileActiveSelector('search')}></div>
-			    <Search config={{ searchIn: this.config.search.searchIn, placeholder: this.config.search.placeholder, doSearchFunction: this.config.doSearchFunction, ideaName: this.config.ideaName }} className={`osc-search${self.state.mobileActiveSelector == 'search' ? ' osc-is-active' : ''}`}/>
+				  <Search config={{ ...this.config }} className={`osc-search${self.state.mobileActiveSelector == 'search' ? ' osc-is-active' : ''}`}/>
+        </div>);
+		}
+
+    // TODO: configurable?
+    let resetButtonHTML = null;
+    resetButtonHTML = (
+      <button value="reset" onClick={() => self.resetAll()} className="osc-button osc-reset-button">Alles tonen</button>
+    );
+
+    let filterHTML = null;
+    if (self.config.filter.length) {
+      let isActive = self.filters && self.filters.find( filter => filter.state.currentValue );
+      self.filters = [];
+      filterHTML = (
+        <div className="osc-ideas-filters-and-button-container">
+          <div className={`osc-ideas-filter-button${ isActive ? ' osc-active' : '' }`} onClick={() => self.toggleMobileActiveSelector('filters')}></div>
+          <div className={`osc-ideas-filters-container${self.state.mobileActiveSelector == 'filters' ? ' osc-is-active' : ''}`}>
+            { self.config.filter.map(( filterConfig, i ) => {
+              return (
+                <IdeasFilter config={filterConfig} className="osc-align-right-container" key={`osc-ideas-filter-${i}`} ref={el => self.filters[i] = el}/>
+              );
+            })}
+          </div>
+        {resetButtonHTML}
         </div>
       );
     }
 
+    let filtersAndButtonsHTML = null;
+    filtersAndButtonsHTML = (
+      <div className="osc-ideas-filters-and-reset-button-container">
+        {filterHTML}
+      </div>
+    )
 
     return (
-			<div id={self.id} className={self.props.className || 'osc-filterbar'} ref={el => (self.instance = el)}>
-
+      <div className={`osc-ideas-filterbar ${self.props.className || ''}`}>
         {searchHTML}
-        
-        <div className="osc-selectors-container osc-align-right-container">
-
-          <div className={`osc-type-selector-button${ self.state.selectedType && self.state.selectedType != '0'  ? ' osc-active' : '' }`} onClick={() => self.toggleMobileActiveSelector('type')}></div>
-          <div className={`osc-type-selector-container${self.state.mobileActiveSelector == 'type' ? ' osc-is-active' : ''}`}>
-            <select value={self.state.selectedType} onChange={() => self.handleTypeChange( self.typeSelector.value )} className="osc-default-select osc-margin-right osc-type-selector" ref={el => (self.typeSelector = el)}>
-              <option value="0">{self.state.typesFilterLabel}</option>;
-              { self.state.types.map((type, i) => {
-                return <option key={'type-option-' + i} value={ type.id || type.name }>{ type.name }</option>;
-              })}
-            </select>
-          </div>
-
-          {areasButtonHTML}
-          {areasHTML}
-
-          <button value="reset" onClick={() => self.resetTypeAndArea()} className="osc-button osc-reset-button" ref={el => (self.resetButton = el)}>Alles tonen</button>
-          
-			  </div>
-			</div>
+        {filtersAndButtonsHTML}
+      </div>
     );
 
   }

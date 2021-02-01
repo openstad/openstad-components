@@ -5,7 +5,7 @@ import OpenStadComponent from '../../component/index.jsx';
 
 'use strict';
 
-export default class OpenStadComponentIdeaImage extends OpenStadComponent {
+export default class OpenStadComponentImage extends OpenStadComponent {
 
   constructor(props) {
 
@@ -56,7 +56,7 @@ export default class OpenStadComponentIdeaImage extends OpenStadComponent {
 
   getWidthHeight() {
     let width = this.props.width || this.state.width;
-    let height = this.props.height || width * ( 1 / this.getAspectRatioFactor() );
+    let height = this.props.height || width * ( 1 / this.getAspectRatioFactor() ) || undefined;
     return [ width, height ]
   }
 

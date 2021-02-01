@@ -6,8 +6,6 @@ import IdeaDetails from '../../idea-details/index.jsx';
 import IdeaForm from './idea-form.jsx';
 import Preview from './preview.jsx';
 
-'use strict';
-
 // details en form worden nu langs hier getekend, maar de rest moet nog heel erg opgeschoond
 // ook hier woren nog funcies meegetuurd die via events moeten lopen
 

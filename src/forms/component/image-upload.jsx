@@ -1,7 +1,3 @@
-import merge from 'merge';
-import React from 'react';
-import ReactDOM from 'react-dom';
-
 'use strict';
 
 import OpenStadComponentDefaultInput from './default-input.jsx';
@@ -10,16 +6,13 @@ export default class OpenStadComponentSelect extends OpenStadComponentDefaultInp
 
   constructor(props) {
 
-    super(props);
-
-		let defaultConfig = {
+    super(props, {
       allowMultiple: false,
 			imageserver: {
 				process: '',
 				fetch: ''
 			},
-    };
-		this.config = merge.recursive(defaultConfig, this.props.config, this.config || {});
+    });
 
     var uploadedFiles = [];
     let value = props.value || [];

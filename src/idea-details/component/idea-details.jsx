@@ -1,47 +1,45 @@
-import merge from 'merge';
-import React from 'react';
-import VoteButton from './vote-button.jsx';
+'use strict';
 
+import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
 import OpenStadComponentPoll from '../../poll/index.jsx';
 import OpenStadComponentReactions from '../../reactions/index.jsx';
+
+import VoteButton from './vote-button.jsx';
 import { IdeaImage as OpenStadComponentIdeaImage } from '../../image/index.jsx';
 
 'use strict';
 
-export default class IdeasDetails extends React.Component {
+// todo: een error op fetch wordt niet goed afgevangen
+
+export default class IdeasDetails extends OpenStadComponent {
 
   constructor(props) {
 
-    super(props);
-
-		// config
-		let defaultConfig = {
+    super(props, {
       siteId: null,
       ideaId: null,
-      user: {},
-			api: {
-        url: null,
-        headers: null,
-        isUserLoggedIn: false,
+      idea: {
+        showVoteButtons: true,
+        showLabels: false,
+        allowMultipleImages: false,
+        shareChannelsSelection: ["facebook","twitter","mail","whatsapp"],
       },
       argument: {
         isActive: true,
+        formIntro: 'Mijn reactie op deze inzending is ...',
+        ignoreReactionsForIdeaIds: '',
+        closeReactionsForIdeaIds: '',
       },
       poll: {
         canAddPolls: false,
       },
-      showVoteButtons: true,
-      showLabels: false,
       labels: {},
       types: null,
-      allowMultipleImages: false,
-		};
+      typeField: 'typeId',
+      typeLabel: 'Thema',
+		});
 
-		this.config = merge.recursive(defaultConfig, this.config, this.props.config || {})
-    if (!this.config.shareChannelsSelection) this.config.shareChannelsSelection = ["facebook","twitter","mail","whatsapp"];
-    if (typeof this.config.metaDataTemplate == 'undefined') this.config.metaDataTemplate = '<span class="osc-gray-text">Door </span>{username} <span class="osc-gray-text"> op </span>{createDate} <span class="osc-gray-text">&nbsp;&nbsp;|&nbsp;&nbsp;</span> <span class="osc-gray-text">Thema: </span>{theme}';
-    
     this.state = {
       idea: this.props.idea,
       ideaId: ( props.idea && props.idea.id ) || this.config.ideaId,
@@ -217,16 +215,15 @@ export default class IdeasDetails extends React.Component {
 
     let labelHTML = null;
 
-    if (self.config.showLabels) {
-      // TODO: idea.extraData.type is tmp voor Gerard Dou
-      let typeId = idea.typeId || idea.extraData.type;
+    if (self.config.idea.showLabels) {
+      let typeId = eval(`idea.${self.config.typeField}`);
       let typeDef = self.config.types && self.config.types.find(def => def.id == typeId || def.value == typeId);
       if (typeDef) {
         let labelText = typeDef.label;
         let backgroundColor = typeDef.backgroundColor;
         let textColor = typeDef.textColor;
         labelHTML = (
-          <div className="ocs-idea-label" style={{ color: textColor, backgroundColor }}>{labelText}</div>
+          <div className="osc-idea-label" style={{ color: textColor, backgroundColor }}>{labelText}</div>
         );
       }
     }
@@ -253,7 +250,7 @@ export default class IdeasDetails extends React.Component {
     }
 
     let voteButtonsHTML = null;
-    if (self.config.showVoteButtons) {
+    if (self.config.idea.showVoteButtons) {
       voteButtonsHTML = (
         <div className="osc-details-vote-buttons-container">
           <h3>Likes</h3>
@@ -296,6 +293,10 @@ export default class IdeasDetails extends React.Component {
 
     let reactionsHTML = null;
     if ( self.config.argument.isActive ) {
+      // todo: refactor config zodat hij in reactions ook gewoon argument: {} heet, en dan deze regels naar daar
+      let config = {...self.config}
+      config.argument.isActive = this.config.argument.isActive && !this.config.argument.ignoreReactionsForIdeaIds.match(new RegExp(`(?:^|\\D)${idea.id}(?:\\D|$)`));
+      config.argument.isClosed = this.config.argument.isClosed || this.config.argument.closeReactionsForIdeaIds.match(new RegExp(`(?:^|\\D)${idea.id}(?:\\D|$)`));
       reactionsHTML = (
         <div>
 			    <div id="reactions" className="osc-reactions-header"><h3>{self.config.argument.title || 'Reacties'}</h3></div>
@@ -305,11 +306,11 @@ export default class IdeasDetails extends React.Component {
     }
 
     let shareButtonsHTML = null;
-    if (self.config.shareChannelsSelection.length) {
-      let facebookButtonHTML = self.config.shareChannelsSelection.includes('facebook') ? (<li><a className="osc-share-facebook" target="_blank" href={ 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(document.location.href) }>Facebook</a></li>) : null;
-      let twitterButtonHTML = self.config.shareChannelsSelection.includes('twitter') ? (<li><a className="osc-share-twitter" target="_blank" href={ 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(document.location.href) }>Twitter</a></li>) : null;
-      let mailButtonHTML = self.config.shareChannelsSelection.includes('mail') ? (<li><a className="osc-share-email" target="_blank" href={ 'mailto:?subject=' + encodeURIComponent(eval(`idea.${self.config.titleField}`)) + '&body=' + encodeURIComponent(document.location.href)}>Email</a></li>) : null;
-      let whatsappButtonHTML = self.config.shareChannelsSelection.includes('whatsapp') ? (<li><a className="osc-share-whatsapp" target="_blank" href={ 'https://wa.me/?text=' + encodeURIComponent(document.location.href) }>WhatsApp</a></li>) : null;
+    if (self.config.idea.shareChannelsSelection.length) {
+      let facebookButtonHTML = self.config.idea.shareChannelsSelection.includes('facebook') ? (<li><a className="osc-share-facebook" target="_blank" href={ 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(document.location.href) }>Facebook</a></li>) : null;
+      let twitterButtonHTML = self.config.idea.shareChannelsSelection.includes('twitter') ? (<li><a className="osc-share-twitter" target="_blank" href={ 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(document.location.href) }>Twitter</a></li>) : null;
+      let mailButtonHTML = self.config.idea.shareChannelsSelection.includes('mail') ? (<li><a className="osc-share-email" target="_blank" href={ 'mailto:?subject=' + encodeURIComponent(eval(`idea.${self.config.titleField}`)) + '&body=' + encodeURIComponent(document.location.href)}>Email</a></li>) : null;
+      let whatsappButtonHTML = self.config.idea.shareChannelsSelection.includes('whatsapp') ? (<li><a className="osc-share-whatsapp" target="_blank" href={ 'https://wa.me/?text=' + encodeURIComponent(document.location.href) }>WhatsApp</a></li>) : null;
 
       shareButtonsHTML = (
       <div className="osc-details-sharebuttons">
@@ -329,7 +330,7 @@ export default class IdeasDetails extends React.Component {
       authorHTML = <a href={this.config.linkToUserPageUrl + '/' + idea.user.id} className="osc-author-link">{authorHTML}</a>
     }
 
-    let metaDataHTML = self.config.metaDataTemplate;
+    let metaDataHTML = self.config.idea.metaDataTemplate;
     metaDataHTML = metaDataHTML.replace(/\{createDate\}/, idea.createDateHumanized);
     metaDataHTML = metaDataHTML.replace(/\{theme\}/, idea.extraData.theme);
     metaDataHTML = OpenStadComponentLibs.reactTemplate({ html: metaDataHTML, username: authorHTML })
@@ -347,7 +348,7 @@ export default class IdeasDetails extends React.Component {
             <div className="osc-details-image-and-stats">
 
               <div className="osc-idea-image-container">
-                <OpenStadComponentIdeaImage config={{ allowMultipleImages: self.config.allowMultipleImages }} idea={idea}/>
+                <OpenStadComponentIdeaImage config={{ allowMultipleImages: self.config.idea.allowMultipleImages }} idea={idea}/>
               </div>
 
               {labelHTML}

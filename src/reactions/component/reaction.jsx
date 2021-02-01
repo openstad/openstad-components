@@ -1,23 +1,14 @@
-import merge from 'merge';
-import React from 'react';
-import ReactDOM from 'react-dom';
+'use strict';
 
 import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
-
 import OpenStadComponentReactionForm from './reaction-form.jsx';
-
-'use strict';
 
 export default class OpenStadComponentReaction extends OpenStadComponent {
 
   constructor(props) {
-    super(props);
 
-    let self = this;
-    self.id = props.id || `osc-reaction-${  parseInt( 1000000 * Math.random() )}`;
-
-    self.defaultConfig = {
+    super(props, {
       siteId: null,
       ideaId: null,
       title: null,
@@ -28,11 +19,9 @@ export default class OpenStadComponentReaction extends OpenStadComponent {
         headers: null,
       },
       requiredUserRole: 'member',
-    };
+    });
 
-		self.config = merge.recursive(self.defaultConfig, this.config, props.config || {})
-
-    self.state = {
+    this.state = {
       user: props.user,
       isMenuActive: false,
       isReplyFromActive: false,
@@ -45,19 +34,21 @@ export default class OpenStadComponentReaction extends OpenStadComponent {
 
     let self = this;
 
-    this.storedListener = document.addEventListener('osc-new-reaction-stored', function(event) {
+    self.newReactionStoredListener = function(event) {
       self.onNewReactionStored(event.detail);
-    });
+    };
+    document.addEventListener('osc-new-reaction-stored', self.newReactionStoredListener)
 
-    this.editedListener = document.addEventListener('osc-reaction-edited', function(event) {
+    self.reactionEditedListener = function(event) {
       self.onReactionEdited(event.detail);
-    });
+    };
+    document.addEventListener('osc-reaction-edited', self.reactionEditedListener)
 
   }
 
   componentWillUnmount() {
-		document.removeEventListener('osc-new-reaction-stored', this.storedListener);
-		document.removeEventListener('osc-reaction-edited', this.editedListener);
+		document.removeEventListener('osc-new-reaction-stored', this.newReactionStoredListener);
+		document.removeEventListener('osc-reaction-edited', this.reactionEditedListener);
   }
 
   showMenu() {
@@ -181,8 +172,6 @@ export default class OpenStadComponentReaction extends OpenStadComponent {
 
     if (data.isDeleted) return null;
 
-    console.log('--------------------');
-    console.log(data.user);
     let isAdmin = OpenStadComponentLibs.user.hasRole(data.user, 'editor') ? 'osc-is-admin' : '';
     let metadataHTML = <div className={`osc-reaction-user ${isAdmin}`}>{data.user.nickName || data.user.fullName || `${data.user.firstName } ${  data.user.lastName}`}</div>
 

@@ -1,42 +1,32 @@
-// todo: het is nu 1 form met switches; uit elkaar trekken in losse forms is netter
+'use strict';
 
-import merge from 'merge';
-
-import OpenStadComponentLibs from '../../libs/index.jsx';
 import OpenStadComponent from '../../component/index.jsx';
+import OpenStadComponentLibs from '../../libs/index.jsx';
 import OpenStadComponentForms from '../../forms/index.jsx';
 
-'use strict';
+// todo: het is nu 1 form met switches; uit elkaar trekken in losse forms is netter
 
 export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent {
 
   constructor(props) {
 
-    super(props);
-
-    let self = this;
-
-    self.id = props.id || `osc-choices-guide-${  parseInt( 1000000 * Math.random() )}`;
-
-    self.defaultConfig = {
+    super(props, {
       siteId: null,
       loginUrl: null,
       noOfQuestionsToShow: 1,
       api: {
         url: null
       },
-    };
+    });
 
-    self.config = merge.recursive(self.defaultConfig, self.config, props.config || {});
-
-    self.state = {
-      choicesGuideId: self.props.data.choicesGuideId,
+    this.state = {
+      choicesGuideId: this.props.data.choicesGuideId,
       currentTarget: {
       },
       busy: false,
     };
 
-    self.onFinished = self.props.onFinished;
+    this.onFinished = this.props.onFinished;
 
   }
 
@@ -115,7 +105,6 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
 
       case 'question-group':
         questionGroup = this.state.questionGroups.find(group => group.id == currentTarget.questionGroupId) || {};
-        currentTarget.answerDimensions = questionGroup.answerDimensions;
         currentTarget.title = questionGroup.title;
         currentTarget.description = questionGroup.description;
         currentTarget.images = questionGroup.images ? JSON.stringify(questionGroup.images) : '';
@@ -131,6 +120,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
         currentTarget.minLabel = question.minLabel;
         currentTarget.maxLabel = question.maxLabel;
         currentTarget.type = question.type;
+        currentTarget.dimensions = question.dimensions;
         currentTarget.values = question.values ? JSON.stringify(question.values) : '';
         currentTarget.seqnr = question.seqnr || 0;
         break;
@@ -188,7 +178,6 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
           targetId = self.state.currentTarget.questionGroupId;
           url = `${self.config.api && self.config.api.url   }/api/site/${  self.config.siteId  }/choicesguide/${  self.state.choicesGuideId  }/questiongroup`;
           body = {
-            answerDimensions: self.state.currentTarget.answerDimensions,
             title: self.state.currentTarget.title,
             description: self.state.currentTarget.description,
             images: self.state.currentTarget.images,
@@ -206,6 +195,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
             minLabel: self.state.currentTarget.minLabel,
             maxLabel: self.state.currentTarget.maxLabel,
             type: self.state.currentTarget.type,
+            dimensions: self.state.currentTarget.dimensions,
             values: self.state.currentTarget.values ? JSON.parse(self.state.currentTarget.values) : '',
             seqnr: self.state.currentTarget.seqnr,
           };
@@ -422,12 +412,6 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
             <OpenStadComponentForms.InputWithCounter config={{ inputType: 'textarea', minLength: 1, maxLength: 1000 }} value={self.state.currentTarget.description} onChange={ data => self.handleFieldChange({ description: data.value }) } ref={el => self.descriptionField = el}/>
             <h3>Afbeeldingen</h3>
             <OpenStadComponentForms.Textarea key="i3" config={{}} value={self.state.currentTarget.images} onChange={ data => self.handleFieldChange({ images: data.value }) } ref={el => self.imagesField = el}/>
-            <h3>Aantal dimensies in antwoorden</h3>
-            <select key={`dezemoetnogweg2${  self.state.currentTarget.questionGroupId}`} value={self.state.currentTarget.answerDimensions} onChange={ () => self.handleFieldChange({ answerDimensions: self.answerDimensionsField.value }) } ref={el => self.answerDimensionsField = el}>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-            </select>
             <h3>Volgorde nummer</h3>
             <OpenStadComponentForms.Text config={{}} value={self.state.currentTarget.seqnr} onChange={ data => self.handleFieldChange({ seqnr: data.value }) } ref={el => self.seqnrField = el}/>
           </div>
@@ -447,7 +431,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
             <h3>Label minimale waarde</h3>
             <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 1, maxLength: 1000 }} value={self.state.currentTarget.minLabel} onChange={ data => self.handleFieldChange({ minLabel: data.value }) } ref={el => self.minLabelField = el}/>
             <h3>Label maximale waarde</h3>
-            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', maxLength: 1, maxLength: 1000 }} value={self.state.currentTarget.maxLabel} onChange={ data => self.handleFieldChange({ maxLabel: data.value }) } ref={el => self.maxLabelField = el}/>
+            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 1, maxLength: 1000 }} value={self.state.currentTarget.maxLabel} onChange={ data => self.handleFieldChange({ maxLabel: data.value }) } ref={el => self.maxLabelField = el}/>
             <h3>Type</h3>
             <select key={`dezemoetnogweg${  self.state.currentTarget.questionGroupId}`} value={self.state.currentTarget.type} onChange={ () => self.handleFieldChange({ type: self.typeField.value }) } ref={el => self.typeField = el}>
               <option value="continuous">continue</option>
@@ -455,6 +439,8 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
               <option value="enum-buttons">multiple choice - buttons</option>
               <option value="enum-radio">multiple choice - radio</option>
             </select>
+            <h3>Dimensions</h3>
+            <OpenStadComponentForms.Text config={{}} value={self.state.currentTarget.dimensions} onChange={ data => self.handleFieldChange({ dimensions: data.value }) } ref={el => self.dimensionsField = el}/>
             <h3>Waarden</h3>
             <OpenStadComponentForms.Textarea config={{}} value={self.state.currentTarget.values} onChange={ data => self.handleFieldChange({ values: data.value }) } ref={el => self.valuesField = el}/>
             <h3>Volgorde nummer</h3>

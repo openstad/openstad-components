@@ -1,24 +1,14 @@
-import merge from 'merge';
-import React from 'react';
-import ReactDOM from 'react-dom';
-
 'use strict';
 
-export default class OpenStadComponentPreviousNextButtonBlock extends React.Component {
+import OpenStadComponent from '../../component/index.jsx';
+
+export default class OpenStadComponentPreviousNextButtonBlock extends OpenStadComponent {
 
   constructor(props) {
 
-    super(props);
+    console.log(props);
 
-		this.defaultConfig = {
-      previousAction: props.previousAction,
-      nextAction: props.nextAction,
-      previousUrl: props.previousUrl,
-      nextUrl: props.nextUrl,
-      previousLabel: props.previousLabel || 'Vorige',
-      nextLabel: props.nextLabel || 'Volgende',
-		};
-		this.config = merge.recursive(this.defaultConfig, this.config, props.config || {})
+    super(props, {});
 
   }
 
@@ -27,17 +17,17 @@ export default class OpenStadComponentPreviousNextButtonBlock extends React.Comp
 		let self = this;
 
     let previousButtonHTML;
-    let previousAction = this.config.previousAction;
-    if (this.config.previousUrl) previousAction = () => { document.location.href = `${this.config.previousUrl}` };
+    let previousAction = this.props.previousAction;
+    if (this.props.previousUrl) previousAction = () => { document.location.href = `${this.props.previousUrl}` };
     if ( previousAction ) {
-      previousButtonHTML = <div className={`osc-previous-button${this.props.previousIsDisabled ? ' osc-disabled' : ''}`} onClick={(args) => { this.props.previousIsDisabled ? null : previousAction(args) }}>{this.config.previousLabel}</div>
+      previousButtonHTML = <div className={`osc-previous-button${this.props.previousIsDisabled ? ' osc-disabled' : ''}`} onClick={(args) => { this.props.previousIsDisabled ? null : previousAction(args) }}>{this.props.previousLabel}</div>
     }
 
     let nextButtonHTML;
-    let nextAction = this.config.nextAction;
-    if (this.config.nextUrl) nextAction = () => { document.location.href = `${this.config.nextUrl}` };
+    let nextAction = this.props.nextAction;
+    if (this.props.nextUrl) nextAction = () => { document.location.href = `${this.props.nextUrl}` };
     if ( nextAction ) {
-      nextButtonHTML = <div className={`osc-next-button${this.props.nextIsDisabled ? ' osc-disabled' : ''}`} onClick={(args) => { this.props.nextIsDisabled ? null : nextAction(args) }}>{this.config.nextLabel}</div>
+      nextButtonHTML = <div className={`osc-next-button${this.props.nextIsDisabled ? ' osc-disabled' : ''}`} onClick={(args) => { this.props.nextIsDisabled ? null : nextAction(args) }}>{this.props.nextLabel}</div>
     }
 
     return (

@@ -3,7 +3,7 @@
 import OpenStadComponent from '../../component/index.jsx';
 
 import OpenStadComponentLibs from '../../libs/index.jsx';
-import OpenStadComponentImage from '../../idea-image/index.jsx';
+import { IdeaImage as OpenStadComponentIdeaImage } from '../../image/index.jsx';
 
 // todo: dit moet nog heel erg opgeschoond
 // todo: selectedidea weergave kan met idea-overview.tile gaan werken
@@ -107,7 +107,7 @@ export default class Preview extends OpenStadComponent {
       contentHTML = OpenStadComponentLibs.reactTemplate({ html: contentHTML, addButton, loginButton })
 
       return (
-				<div className="ocs-mobile-popup">
+				<div className="osc-mobile-popup">
 					{contentHTML}
 				</div>
 			);
@@ -215,7 +215,7 @@ export default class Preview extends OpenStadComponent {
           <h3>Geselecteerd</h3>
           <div className="osc-infobar-selected-idea-idea">
             <div className="osc-idea-image-container">
-              <OpenStadComponentImage config={{}} idea={idea} key={'image-' + idea.id}/>
+              <OpenStadComponentIdeaImage config={{}} idea={idea} key={'image-' + idea.id}/>
             </div>
             <div className="osc-content">
               <h4>{ eval(`idea.${self.config.titleField}`) }</h4>

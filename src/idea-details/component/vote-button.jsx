@@ -1,24 +1,21 @@
-import merge from 'merge';
-import React from 'react';
+'use strict';
 
+import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
 
 'use strict';
 
-export default class VoteButton extends React.Component {
+export default class VoteButton extends OpenStadComponent {
 
   constructor(props) {
 
-    super(props);
-
-		let defaultConfig = {
+    super(props, {
       name: 'likebutton',
       backgroundColor: '#164995',
       color: '#fff',
       text: 'like',
       opinion: 'yes',
-		};
-		this.config = merge.recursive(defaultConfig, this.config, this.props.config || {})
+		});
 
     this.state = {
       value: this.props.value,

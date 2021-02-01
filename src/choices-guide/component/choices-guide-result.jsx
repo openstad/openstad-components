@@ -1,26 +1,18 @@
-import merge from 'merge';
+'use strict';
+
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
-
-import OpenStadComponentLibs from '../../libs/index.jsx';
-
 import OpenStadComponent from '../../component/index.jsx';
+import OpenStadComponentLibs from '../../libs/index.jsx';
 import OpenStadComponentChoices from './choices.jsx';
-import OpenStadComponentChoicePlane from './choice-plane.jsx';
-
 import OpenStadComponentForms from '../../forms/index.jsx';
 import OpenStadComponentPreviousNextButtonBlock from '../../previous-next-button-block/index.jsx';
-
 import fetchChoicesGuide from '../lib/fetch.js'
-
-'use strict';
 
 export default class OpenStadComponentChoicesGuideResult extends OpenStadComponent {
 
   constructor(props) {
 
-    super(props);
-
-    this.defaultConfig = {
+    super(props, {
       type: 'default',
       submission: {
         type: 'none',
@@ -45,9 +37,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
         minLabel: null,
         maxLabel: null,
       },
-    };
-		this.config = merge.recursive(this.defaultConfig, this.config, props.config || {})
-    this.config.loginUrl = this.config.loginUrl || '/oauth/login?returnTo=' + encodeURIComponent(document.location.href);
+    });
 
     let allValues = OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.values') || {};
     let allScores = OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.scores') || {};
@@ -81,23 +71,22 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
 
   startGuide() {
     let self = this;
-    let scores = self.choicesElement && self.choicesElement.calculateScores(self.state.answers);
+    let scores, planePos;
+    ( {scores, planePos} = self.choicesElement && self.choicesElement.calculateScores(self.state.answers) );
 
     let choicesTitle = '';
     let name;
     let preferredChoiceId = -1;
     if ( self.choicesElement ) {
-      let choiceElement = self.choicesElement.getPreferedChoice();
-      
-      if (choiceElement) {
-        name = choiceElement.getTitle(self.state.scores[choiceElement.config.divId], true);
-        if (name) {
-          choicesTitle = self.config.choices.title.preference.replace('\{preferredChoice\}', name);
-          preferredChoiceId = choiceElement.divId
-        } else {
-          choicesTitle = self.config.choices.title.noPreferenceYet;
-        }
+
+      let choiceElement = self.choicesElement.getPreferedChoice({planePos});
+      if ( choiceElement ) {
+        choicesTitle = self.config.choices.title.preference.replace('\{preferredChoice\}', choiceElement && choiceElement.getTitle(self.state.scores[choiceElement.config.divId]) || choicesTitle);
+        preferredChoiceId = choiceElement.divId
+      } else {
+        choicesTitle = self.config.choices.title.inBetween;
       }
+
       self.setState({ title: choicesTitle })
 
 		  var event = new window.CustomEvent('osc-choices-guide-result-is-ready', {
@@ -194,7 +183,6 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
     let data = self.props && self.props.data || {};
 
     let choices = self.state.choices;
-    let answerDimensions = 1;
     let questionGroup;
     if (self.state.questionGroups) {
       questionGroup = self.state.questionGroups.find( group => group.id == self.config.questionGroupId );
@@ -202,7 +190,6 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
         questionGroup.values = self.state.values || {};
         if (questionGroup && questionGroup.choices) {
           choices = questionGroup.choices;
-          answerDimensions = questionGroup.answerDimensions;
         }
       }
     }
@@ -211,19 +198,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
 
     let choicesHTML = null;
     if (choices) {
-
-      switch (self.config.choices.type) {
-
-        case 'plane':
-          let images = choices && choices[0] && choices[0].images;
-          if ( images && images.length > 1 ) { choices[0].images = choices && choices[0] && choices[0].images[1]; }
-          choicesHTML = <OpenStadComponentChoices config={{ ...self.config.choices, sticky: false, size: 630, }} scores={self.state.scores} answerDimensions={answerDimensions} scores={{...self.state.scores}} choices={[...choices]} firstAnswerGiven={true} ref={function(el) { self.choicesElement = el; }} key='choices'/>;
-          break;
-
-        default:
-          choicesHTML = <OpenStadComponentChoices config={{ ...self.config.choices, sticky: false, size: 630 }} scores={self.state.scores} answerDimensions={answerDimensions} scores={{...self.state.scores}} choices={[...choices]} firstAnswerGiven={true} ref={function(el) { self.choicesElement = el; }} key='choices'/>;
-
-      }
+      choicesHTML = <OpenStadComponentChoices config={{ ...self.config.choices }} scores={{...self.state.scores}} choices={[...choices]} firstAnswerGiven={true} ref={function(el) { self.choicesElement = el; }} key='choices'/>;
     }
 
     let moreInfoHTML = null;
@@ -232,7 +207,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
         <div className="osc-more-info-link">
           <a href={self.config.moreInfoUrl}>{self.config.moreInfoLabel}</a>
         </div>
-    } 
+    }
 
     let formHTML = null;
     let requireLoginHTML = null;
@@ -315,8 +290,8 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
       <div className="osc-choices-guide">
         <div className="osc-result">
           <div className="osc-result-content">
-            <div className="osc-choices-container">
-              <h2 dangerouslySetInnerHTML={{ __html: self.state.title }}></h2>
+            <div className={`osc-choices-container ${'osc-type-' + self.config.choices.type}`}>
+              <h3 dangerouslySetInnerHTML={{ __html: self.state.title }}></h3>
               {choicesHTML}
             </div>
             {moreInfoHTML}

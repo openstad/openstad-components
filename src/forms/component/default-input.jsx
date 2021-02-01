@@ -1,27 +1,20 @@
-import merge from 'merge';
-import React from 'react';
-import ReactDOM from 'react-dom';
+'use strict';
 
 import OpenStadComponent from '../../component/index.jsx';
 
-'use strict';
-
 export default class OpenStadComponentDefaultInput extends OpenStadComponent {
 
-  constructor(props) {
+  constructor(props, defaultConfig = {}) {
 
-    super(props);
-
-		let self = this;
-
-		self.defaultConfig = {
+    super(props, {
       choices: [],
 			name: '',
       placeholder: '',
       disabled: false,
       required: false,
-		};
-		self.config = merge.recursive(self.defaultConfig, self.config, props.config || {})
+		}, defaultConfig);
+
+		let self = this;
 
     self.state = {
       value: props.value,

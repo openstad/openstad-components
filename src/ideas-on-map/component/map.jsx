@@ -1,30 +1,28 @@
-import merge from 'merge';
-import React from 'react';
-import OpenStadComponentNLMap from '../../nlmap/index.jsx';
-
 'use strict';
+
+import OpenStadComponentNLMap from '../../nlmap/index.jsx';
 
 export default class Map extends OpenStadComponentNLMap {
 
   constructor(props) {
 
-    super(props);
-
-		// config
-		this.defaultConfig = {
+    super(props, {
       clustering: {
         maxClusterRadius: 100,
         showCoverageOnHover: false,
       },
       types: [],
-    };
-		this.config = merge.recursive(this.defaultConfig, this.config, props.config || {})
+    });
 
     // tmp fallback
     this.config.polygon = this.config.polygon;
     this.config.autoZoomAndCenter = this.config.autoZoomAndCenter || 'polygon'
     
     this.ideas = [];
+
+    this.state = {
+      filters: {},
+    }
 
   }
 
@@ -33,10 +31,22 @@ export default class Map extends OpenStadComponentNLMap {
     super.componentDidMount(prevProps, prevState);
 
     let self = this;
-		document.addEventListener('osc-map-cluster-animation-end', function(event) {
-      self.onMapClusterAnimationEnd(event.detail);
-    });
 
+    self.mapClusterAnimationEndListener = function(event) {
+      self.onMapClusterAnimationEnd(event.detail);
+    }
+		document.addEventListener('osc-map-cluster-animation-end', self.mapClusterAnimationEndListener);
+
+    self.ideasFilterOnchangeListener = function(event) {
+      self.onChangeFilter(event.detail)
+    }      
+	  document.addEventListener('osc-ideas-filter-onchange', self.ideasFilterOnchangeListener);
+    
+	}
+
+  componentWillUnmount() {
+		document.removeEventListener('osc-map-cluster-animation-end', this.mapClusterAnimationEndListener);
+    document.removeEventListener('osc-ideas-filter-onchange', this.ideasFilterOnchangeListener)
   }
   
   addIdea(idea) {
@@ -142,6 +152,25 @@ export default class Map extends OpenStadComponentNLMap {
 
   onMapClusterAnimationEnd() {
     this.updateFading();
+  }
+
+  onChangeFilter(filter) {
+    // TODO: areas update zou ook met polygons moeten werken
+    let self = this;
+    let filters = self.state.filters;
+    filters[filter.fieldName] = filter;
+    self.setState({ filters }, () => {
+	    self.setFilter(function(marker) {
+        let result = true;
+        Object.keys(self.state.filters).forEach((fieldName) => {
+          let filter = self.state.filters[fieldName]
+		      if (filter.value && filter.value !== '0') {
+			      if (marker.data && !eval(`marker.data.${filter.fieldName}`) || eval(`marker.data.${filter.fieldName}`) != filter.value) result = false;
+		      }
+        });
+        return result;
+	    })
+    });
   }
 
 }

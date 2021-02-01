@@ -1,17 +1,12 @@
-import merge from 'merge';
+'use strict';
 
 import OpenStadComponent from '../../component/index.jsx';
-import OpenStadComponentChoicePlane from './choice-plane.jsx';
-
-'use strict';
 
 export default class OpenStadComponentChoice extends OpenStadComponent {
 
   constructor(props) {
 
-    super(props);
-
-    this.defaultConfig = {
+    super(props, {
       type: 'default',
       withPercentage: false,
       minLabel: null,
@@ -21,23 +16,10 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
         min: '#ff9100',
         max: '#bed200'
       }
-    };
+    });
 
-    this.config = merge.recursive('clone', this.defaultConfig, this.config, props.config || {});
     if (this.config.barColor.min == null) this.config.barColor.min = '#ff9100';
     if (this.config.barColor.max == null) this.config.barColor.max = '#bed200';
-
-    this.answerDimensions = props.answerDimensions || 1;
-    switch (props.answerDimensions) {
-      case 2:
-        this.dimensions = ['x', 'y'];
-        break;
-      case 3:
-        this.dimensions = ['x', 'y', 'z'];
-        break;
-      default:
-        this.dimensions = ['x'];
-    }
 
     this.answers = props.data && props.data.answers || {};
     Object.keys(this.answers).forEach((id) => {
@@ -52,61 +34,43 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
 
   }
 
-  getScore() {
-    let score = this.planeElement ? 0 : this.state.score;
-    return score;
-  }
-
   getTitle(score, nameOnly) {
-    return this.planeElement ?
-      this.planeElement.getTitle(score,nameOnly) :
-      this.props.data && this.props.data.title;
+    return this.props.data && this.props.data.title;
   }
   
   calculateScore(answers) {
 
     let self = this;
 
-    let myAnswers = self.answers;
-    let givenAnswers = answers || {};
+    let choiceAnswers = self.answers;
+    let userAnswers = answers || {};
 
-    let noOfAnswers = Object.keys(myAnswers).length;
+    let noOfAnswers = Object.keys(choiceAnswers).length;
     let results = {};
 
-    Object.keys(myAnswers).forEach((id) => {
+    Object.keys(choiceAnswers).forEach((id) => {
 
-      let myAnswer = myAnswers[id] || {};
-      let givenAnswer = givenAnswers[id] || ( this.config.startWithAllQuestionsAnswered ? { x: 50, y: 50, z: 50 } : {} );
+      let choiceAnswer = choiceAnswers[id] || {};
+      let userAnswer = userAnswers[id] || ( this.config.startWithAllQuestionsAnswered ? { x: 50, y: 50, z: 50 } : {} );
 
       let result = results[id] = {};
 
-      this.dimensions.forEach((dimension) => {
-        if (typeof myAnswer[dimension] == 'undefined') return;
-        if (typeof givenAnswer[dimension] == 'undefined') return;
-        let def = typeof myAnswer[dimension] != 'undefined' ? myAnswer[dimension] : [0,100];
-        if ( Array.isArray(def) ) {
-          // percentage of range
-          var range = def[1] - def[0];
-          return result[dimension] = def[0] + range * ( givenAnswer[dimension] / 100 );
-        }
-        if ( def == parseInt(def) ) {
-          // defined value
-          return result[dimension] = 100 - Math.abs(parseInt(def) - givenAnswer[dimension]);
-        }
-        // default: percentage
-        return result[dimension] = givenAnswer[dimension];
+      ['x','y','z'].forEach((dimension) => {
+        if (typeof choiceAnswer[dimension] == 'undefined') return;
+        if (typeof userAnswer[dimension] == 'undefined') return;
+        return result[dimension] = 100 - Math.abs(choiceAnswer[dimension] - userAnswer[dimension]);
       });
 
     });
 
     let scores = {};
-    Object.keys(myAnswers).forEach((id) => {
-      this.dimensions.forEach((dimension) => {
+    Object.keys(choiceAnswers).forEach((id) => {
+      ['x','y','z'].forEach((dimension) => {
         scores[dimension] = scores[dimension] || {score: [], noOfAnswers: 0};
         if (typeof results[id][dimension] != 'undefined') {
           scores[dimension].score.push(results[id][dimension]);
         }
-        if (myAnswers[id] && typeof myAnswers[id][dimension] != 'undefined') {
+        if (choiceAnswers[id] && typeof choiceAnswers[id][dimension] != 'undefined') {
           scores[dimension].noOfAnswers++;
         }
       });
@@ -114,6 +78,8 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
     Object.keys(scores).forEach((dimension) => {
       scores[dimension] = scores[dimension].score.length ? scores[dimension].score.reduce(function (accumulator, currentValue){return accumulator + currentValue;}) / scores[dimension].noOfAnswers : undefined;
     });
+
+    // console.log('scores', scores);
 
     self.setState({score: scores});
     return scores;
@@ -130,8 +96,21 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
     switch (this.config.type) {
 
       case 'plane':
-        scoreHTML = (
-          <OpenStadComponentChoicePlane config={{ ...self.config }} data={{ ...self.props.data }} score={score}  ref={function(el) { self.planeElement = el;}}/>
+
+        let imageHTML = null;
+        let images = this.props.data && this.props.data.images;
+        if (images) {
+          if (!Array.isArray(images)) images = [images];
+          let image = images[0];
+          let imageSrc = image;
+          if ( typeof image == 'object' ) imageSrc = image.src;
+          imageHTML = (
+            <img className="osc-choice-plane-background-image" src={imageSrc} style={{ width: this.props.baseSize / 2, height: this.props.baseSize / 2 }}/>
+          );
+        }
+
+        return (
+          <div className="osc-choice-plane" style={{ width: this.props.baseSize / 2, height: this.props.baseSize / 2 }}>{imageHTML}</div>
         );
         break;
 

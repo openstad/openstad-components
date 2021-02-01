@@ -2,11 +2,6 @@
 
   @phone: ~'only screen and (max-width: 940px)';
 
-  @import 'choices';
-  @import 'questions';
-  @import 'question-group';
-  @import 'form';
-
   .osc-accordeon {
     .osc-accordeon();
     .osc-open {
@@ -43,7 +38,7 @@
 
   }
 
-  .osc-image {
+  .osc-top-image-spacer {
     width: 100%;
     height: 250px;
     margin-bottom: -60px;
@@ -95,6 +90,16 @@
     border: solid 2px #ea1d25;
   }
 
+  .osc-type-hidden {
+    display: none;
+  }
+  
+  @import 'choices';
+  @import 'choice-plane';
+  @import 'questions';
+  @import 'question-group';
+  @import 'form';
+  @import 'user-preference';
   @import 'result';
 
 }
