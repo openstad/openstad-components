@@ -5822,23 +5822,26 @@ var OpenStadComponentChoicesGuideResult = /*#__PURE__*/function (_OpenStadCompon
     key: "startGuide",
     value: function startGuide() {
       var self = this;
-      var scores = self.choicesElement && self.choicesElement.calculateScores(self.state.answers);
+      var scores, planePos;
+
+      var _ref = self.choicesElement && self.choicesElement.calculateScores(self.state.answers);
+
+      scores = _ref.scores;
+      planePos = _ref.planePos;
       var choicesTitle = '';
       var name;
       var preferredChoiceId = -1;
 
       if (self.choicesElement) {
-        var choiceElement = self.choicesElement.getPreferedChoice();
+        var choiceElement = self.choicesElement.getPreferedChoice({
+          planePos: planePos
+        });
 
         if (choiceElement) {
-          name = choiceElement.getTitle(self.state.scores[choiceElement.config.divId], true);
-
-          if (name) {
-            choicesTitle = self.config.choices.title.preference.replace('\{preferredChoice\}', name);
-            preferredChoiceId = choiceElement.divId;
-          } else {
-            choicesTitle = self.config.choices.title.noPreferenceYet;
-          }
+          choicesTitle = self.config.choices.title.preference.replace('\{preferredChoice\}', choiceElement && choiceElement.getTitle(self.state.scores[choiceElement.config.divId]) || choicesTitle);
+          preferredChoiceId = choiceElement.divId;
+        } else {
+          choicesTitle = self.config.choices.title.inBetween;
         }
 
         self.setState({
@@ -6160,13 +6163,13 @@ var OpenStadComponentChoicesGuide = /*#__PURE__*/function (_OpenStadComponent) {
         self.liveUpdates(event.detail);
       };
 
-      document.addEventListener('osc-live-updates', self.liveUpdateListener);
+      document.addEventListener('osc-choices-guide-live-updates', self.liveUpdateListener);
       self.fetchData();
     }
   }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
-      document.removeEventListener('osc-live-updates', self.liveUpdateListener);
+      document.removeEventListener('osc-choices-guide-live-updates', self.liveUpdateListener);
     }
   }, {
     key: "fetchData",
@@ -6317,22 +6320,45 @@ var OpenStadComponentChoicesGuide = /*#__PURE__*/function (_OpenStadComponent) {
   }, {
     key: "liveUpdates",
     value: function liveUpdates() {
-      var _this5 = this;
+      var self = this;
+      var answers = merge__WEBPACK_IMPORTED_MODULE_0___default()(self.state.values || {}, self.questionGroupElement.getAnswers());
+      var scores;
 
-      var answers = merge__WEBPACK_IMPORTED_MODULE_0___default()(this.state.values || {}, this.questionGroupElement.getAnswers());
-      var scores = this.choicesElement.calculateScores(answers);
-      this.userPreference && this.userPreference.calculateScores(answers); //xxx
+      var _self$choicesElement$ = self.choicesElement.calculateScores(answers);
 
-      this.setState({
+      scores = _self$choicesElement$.scores;
+      self.userPreference && self.userPreference.calculateScores(answers); //xxx
+
+      self.setState({
         scores: scores,
         firstAnswerGiven: Object.keys(answers).length > 0
       }, function () {
         var allValues = _libs_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].sessionStorage.get('osc-choices-guide.values') || {};
-        allValues[_this5.config.choicesGuideId] = answers;
+        allValues[self.config.choicesGuideId] = answers;
         _libs_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].sessionStorage.set('osc-choices-guide.values', allValues);
         var allScores = _libs_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].sessionStorage.get('osc-choices-guide.scores') || {};
-        allScores[_this5.config.choicesGuideId] = scores;
+        allScores[self.config.choicesGuideId] = scores;
         _libs_index_jsx__WEBPACK_IMPORTED_MODULE_2__["default"].sessionStorage.set('osc-choices-guide.scores', allScores);
+        self.updateChoicesTitle();
+      });
+    }
+  }, {
+    key: "updateChoicesTitle",
+    value: function updateChoicesTitle() {
+      var self = this;
+      var choicesTitle = self.config.choices.title.noPreferenceYet;
+      var choiceElement = self.choicesElement && self.choicesElement.getPreferedChoice({});
+
+      if (self.state.firstAnswerGiven) {
+        if (choiceElement) {
+          choicesTitle = self.config.choices.title.preference.replace('\{preferredChoice\}', choiceElement && choiceElement.getTitle(self.state.scores[choiceElement.config.divId]) || choicesTitle);
+        } else {
+          choicesTitle = self.config.choices.title.inBetween;
+        }
+      }
+
+      self.setState({
+        choicesTitle: choicesTitle
       });
     }
   }, {
@@ -6400,20 +6426,7 @@ var OpenStadComponentChoicesGuide = /*#__PURE__*/function (_OpenStadComponent) {
             className: "osc-intro"
           }, "Laden..."));
         } else {
-          var choicesHTML = null;
-          var choicesTitle = self.config.choices.title.noPreferenceYet;
-          var choiceElement = self.choicesElement && self.choicesElement.getPreferedChoice();
-          console.log(choiceElement);
-
-          if (self.state.firstAnswerGiven) {
-            if (choiceElement) {
-              choicesTitle = self.config.choices.title.preference.replace('\{preferredChoice\}', choiceElement && choiceElement.getTitle(self.state.scores[choiceElement.config.divId]) || choicesTitle);
-            } else {
-              choicesTitle = self.config.choices.title.inBetween;
-            }
-          }
-
-          choicesHTML = /*#__PURE__*/React.createElement("div", {
+          var choicesHTML = /*#__PURE__*/React.createElement("div", {
             id: 'osc-choices-container-' + this.divId,
             className: "osc-choices-container osc-accordeon osc-closed ".concat('osc-type-' + self.config.choices.type),
             ref: function ref(el) {
@@ -6425,7 +6438,7 @@ var OpenStadComponentChoicesGuide = /*#__PURE__*/function (_OpenStadComponent) {
             },
             className: "osc-accordeon-button",
             dangerouslySetInnerHTML: {
-              __html: choicesTitle
+              __html: self.state.choicesTitle
             }
           }), /*#__PURE__*/React.createElement("div", {
             className: "osc-accordeon-content"
@@ -6590,9 +6603,8 @@ var OpenStadComponentChoices = /*#__PURE__*/function (_OpenStadComponent) {
     _this.state = {
       title: 'Je hebt nog geen keuze gemaakt',
       scores: props.scores,
-      answers: {},
-      averageScore: {
-        x: 51,
+      planePos: {
+        x: 50,
         y: 50
       }
     };
@@ -6624,30 +6636,69 @@ var OpenStadComponentChoices = /*#__PURE__*/function (_OpenStadComponent) {
       var scores = {};
       self.choiceElements.forEach(function (choiceElement) {
         scores[choiceElement.config.divId] = choiceElement.calculateScore(answers);
-      });
+      }); // for plane: calculate position
+
+      var planePos = {
+        x: 50,
+        y: 50
+      };
+
+      if (self.config.type) {
+        // the position of the dot is the average of the given answers
+        var keys = Object.keys(answers);
+
+        if (keys.length) {
+          planePos = {
+            x: 0,
+            y: 0
+          };
+          var lengths = {
+            x: 0,
+            y: 0,
+            z: 0
+          };
+          keys.forEach(function (key) {
+            var entry = answers[key];
+            ['x', 'y', 'z'].forEach(function (dimension) {
+              if (typeof entry[dimension] != 'undefined') {
+                planePos[dimension] += parseInt(entry[dimension]) || 0;
+                lengths[dimension]++;
+              }
+            });
+          });
+          planePos.x = lengths.x ? parseInt(planePos.x / lengths.x) : undefined;
+          planePos.y = lengths.y ? parseInt(planePos.y / lengths.y) : undefined;
+        }
+      }
+
       self.setState({
         answers: answers,
-        scores: scores
+        scores: scores,
+        planePos: planePos
       });
-      return scores;
+      return {
+        answers: answers,
+        scores: scores,
+        planePos: planePos
+      };
     }
   }, {
     key: "getPreferedChoice",
-    value: function getPreferedChoice() {
+    value: function getPreferedChoice(_ref) {
+      var scores = _ref.scores,
+          planePos = _ref.planePos;
       var self = this;
-      var scores = self.state.scores;
+      scores = scores || self.state.scores;
 
       switch (self.config.type) {
         case 'plane':
-          // hardcoded voor nu, maar kan dit niet generiek over alle typen?
-          console.log('==', self.state.averageScore);
-          console.log('==', self.choiceElements);
-          if (self.state.averageScore.x < 50 && self.state.averageScore.y < 50) return self.choiceElements[0];
-          if (self.state.averageScore.x > 50 && self.state.averageScore.y < 50) return self.choiceElements[1];
-          if (self.state.averageScore.x < 50 && self.state.averageScore.y > 50) return self.choiceElements[2];
-          if (self.state.averageScore.x > 50 && self.state.averageScore.y > 50) return self.choiceElements[3];
-          return;
-          break;
+          planePos = planePos || self.state.planePos; // hardcoded voor nu, maar kan dit niet generiek over alle typen?
+
+          if (planePos.x < 50 && planePos.y < 50) return self.choiceElements[0];
+          if (planePos.x > 50 && planePos.y < 50) return self.choiceElements[1];
+          if (planePos.x < 50 && planePos.y > 50) return self.choiceElements[2];
+          if (planePos.x > 50 && planePos.y > 50) return self.choiceElements[3];
+          return null;
           break;
 
         default:
@@ -6667,39 +6718,9 @@ var OpenStadComponentChoices = /*#__PURE__*/function (_OpenStadComponent) {
 
       switch (this.config.type) {
         case 'plane':
-          // the position of the dot is the average of the given answers
-          var score = {
-            x: 50,
-            y: 50
-          };
-          var keys = Object.keys(self.state.answers);
-
-          if (keys.length) {
-            score = {
-              x: 0,
-              y: 0
-            };
-            var lengths = {
-              x: 0,
-              y: 0,
-              z: 0
-            };
-            keys.forEach(function (key) {
-              var entry = self.state.answers[key];
-              ['x', 'y', 'z'].forEach(function (dimension) {
-                if (typeof entry[dimension] != 'undefined') {
-                  score[dimension] += parseInt(entry[dimension]) || 0;
-                  lengths[dimension]++;
-                }
-              });
-            });
-            score.x = lengths.x ? parseInt(score.x / lengths.x) : undefined;
-            score.y = lengths.y ? parseInt(score.y / lengths.y) : undefined;
-          }
-
           var baseSize = document.querySelector("#".concat(this.divId)) && document.querySelector("#".concat(this.divId)).offsetWidth - 1 || 180;
-          var top = (typeof score.y == 'undefined' ? 50 : score.y) * (baseSize / 100);
-          var left = (typeof score.x == 'undefined' ? 50 : score.x) * (baseSize / 100);
+          var top = (typeof self.state.planePos.y == 'undefined' ? 50 : self.state.planePos.y) * (baseSize / 100);
+          var left = (typeof self.state.planePos.x == 'undefined' ? 50 : self.state.planePos.x) * (baseSize / 100);
           return /*#__PURE__*/React.createElement("div", {
             id: this.divId,
             className: "osc-choices osc-choice-plane-plane",
@@ -7901,7 +7922,7 @@ var OpenStadComponentQuestion = /*#__PURE__*/function (_OpenStadComponent) {
   }, {
     key: "liveUpdates",
     value: function liveUpdates() {
-      var event = new window.CustomEvent('osc-live-updates');
+      var event = new window.CustomEvent('osc-choices-guide-live-updates');
       document.dispatchEvent(event);
     }
   }, {

@@ -61,24 +61,22 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
 
   startGuide() {
     let self = this;
-    let scores = self.choicesElement && self.choicesElement.calculateScores(self.state.answers);
+    let scores, planePos;
+    ( {scores, planePos} = self.choicesElement && self.choicesElement.calculateScores(self.state.answers) );
 
     let choicesTitle = '';
     let name;
     let preferredChoiceId = -1;
     if ( self.choicesElement ) {
 
-      let choiceElement = self.choicesElement.getPreferedChoice();
-      
-      if (choiceElement) {
-        name = choiceElement.getTitle(self.state.scores[choiceElement.config.divId], true);
-        if (name) {
-          choicesTitle = self.config.choices.title.preference.replace('\{preferredChoice\}', name);
-          preferredChoiceId = choiceElement.divId
-        } else {
-          choicesTitle = self.config.choices.title.noPreferenceYet;
-        }
+      let choiceElement = self.choicesElement.getPreferedChoice({planePos});
+      if ( choiceElement ) {
+        choicesTitle = self.config.choices.title.preference.replace('\{preferredChoice\}', choiceElement && choiceElement.getTitle(self.state.scores[choiceElement.config.divId]) || choicesTitle);
+        preferredChoiceId = choiceElement.divId
+      } else {
+        choicesTitle = self.config.choices.title.inBetween;
       }
+
       self.setState({ title: choicesTitle })
 
 		  var event = new window.CustomEvent('osc-choices-guide-result-is-ready', {

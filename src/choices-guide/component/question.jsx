@@ -80,7 +80,7 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
   }
 
   liveUpdates() {
-		var event = new window.CustomEvent('osc-live-updates');
+		var event = new window.CustomEvent('osc-choices-guide-live-updates');
 		document.dispatchEvent(event);
   }
 

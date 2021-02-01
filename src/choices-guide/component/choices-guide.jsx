@@ -68,14 +68,14 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
     self.liveUpdateListener = function(event) {
       self.liveUpdates(event.detail);
     }
-		document.addEventListener('osc-live-updates', self.liveUpdateListener);
+		document.addEventListener('osc-choices-guide-live-updates', self.liveUpdateListener);
 
     self.fetchData();
 
   }
 
   componentWillUnmount() {
-		document.removeEventListener('osc-live-updates', self.liveUpdateListener);
+		document.removeEventListener('osc-choices-guide-live-updates', self.liveUpdateListener);
   }
 
   fetchData() {
@@ -213,17 +213,36 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
   }
 
   liveUpdates() {
-    let answers = merge(this.state.values || {}, this.questionGroupElement.getAnswers());
-    let scores = this.choicesElement.calculateScores(answers);
-    this.userPreference && this.userPreference.calculateScores(answers); //xxx
-    this.setState({ scores, firstAnswerGiven: Object.keys(answers).length > 0 }, () => {
+    let self = this;
+    let answers = merge(self.state.values || {}, self.questionGroupElement.getAnswers());
+    let scores;
+    ( {scores} = self.choicesElement.calculateScores(answers) );
+    self.userPreference && self.userPreference.calculateScores(answers); //xxx
+    self.setState({ scores, firstAnswerGiven: Object.keys(answers).length > 0 }, () => {
       let allValues = OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.values') || {};
-      allValues[this.config.choicesGuideId] = answers;
+      allValues[self.config.choicesGuideId] = answers;
       OpenStadComponentLibs.sessionStorage.set('osc-choices-guide.values', allValues);
       let allScores = OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.scores') || {};
-      allScores[this.config.choicesGuideId] = scores;
+      allScores[self.config.choicesGuideId] = scores;
       OpenStadComponentLibs.sessionStorage.set('osc-choices-guide.scores', allScores);
+      self.updateChoicesTitle()
     })
+  }
+
+  updateChoicesTitle() {
+    let self = this;
+
+    let choicesTitle = self.config.choices.title.noPreferenceYet;
+    let choiceElement = self.choicesElement && self.choicesElement.getPreferedChoice({});
+    if ( self.state.firstAnswerGiven ) {
+      if ( choiceElement ) {
+        choicesTitle = self.config.choices.title.preference.replace('\{preferredChoice\}', choiceElement && choiceElement.getTitle(self.state.scores[choiceElement.config.divId]) || choicesTitle);
+      } else {
+        choicesTitle = self.config.choices.title.inBetween;
+      }
+    }
+
+    self.setState({ choicesTitle })
   }
 
   onChoicesClick(e) {
@@ -274,6 +293,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
     } else {
 
       let introHTML = null;
+
       if (self.state.status == 'init') {
         contentHTML = (
           <div className="osc-choices-guide-content">
@@ -282,22 +302,9 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
         );
       } else {
 
-        let choicesHTML = null;
-
-        let choicesTitle = self.config.choices.title.noPreferenceYet;
-        let choiceElement = self.choicesElement && self.choicesElement.getPreferedChoice();
-        console.log(choiceElement);
-        if ( self.state.firstAnswerGiven ) {
-          if ( choiceElement ) {
-            choicesTitle = self.config.choices.title.preference.replace('\{preferredChoice\}', choiceElement && choiceElement.getTitle(self.state.scores[choiceElement.config.divId]) || choicesTitle);
-          } else {
-            choicesTitle = self.config.choices.title.inBetween;
-          }
-        }
-
-        choicesHTML = (
+        let choicesHTML = (
           <div id={'osc-choices-container-' + this.divId} className={`osc-choices-container osc-accordeon osc-closed ${'osc-type-' + self.config.choices.type}`} ref={el => { self.choicesAccordeon = el; }}>
-            <div onClick={e => self.onChoicesClick(e)} className="osc-accordeon-button" dangerouslySetInnerHTML={{ __html: choicesTitle }}></div>
+            <div onClick={e => self.onChoicesClick(e)} className="osc-accordeon-button" dangerouslySetInnerHTML={{ __html: self.state.choicesTitle }}></div>
             <div className="osc-accordeon-content">
               <OpenStadComponentChoices config={{ ...self.config.choices, startWithAllQuestionsAnswered: this.config.startWithAllQuestionsAnswered }} choices={[...choices]} scores={{...self.state.scores}} firstAnswerGiven={ self.state.firstAnswerGiven ? true : false } ref={function(el) { self.choicesElement = el; }} key='choices'/>
             </div>
