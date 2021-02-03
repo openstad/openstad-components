@@ -31,7 +31,7 @@ export default class OpenStadComponentForm extends OpenStadComponent {
     return this.state.values;
 	}
 
-	validate({ showErrors }) {
+	validate({ showErrors, scrollTo }) {
     let self= this;
     let isValid = true;
     let firstInvalid = null
@@ -42,8 +42,7 @@ export default class OpenStadComponentForm extends OpenStadComponent {
       }
     });
 
-    if (firstInvalid && firstInvalid.instance && firstInvalid.instance.scrollIntoView) firstInvalid.instance.scrollIntoView({behavior: 'smooth'});
-    // console.log(isValid);
+    if (scrollTo && firstInvalid && firstInvalid.instance && firstInvalid.instance.scrollIntoView) firstInvalid.instance.scrollIntoView({behavior: 'smooth'});
     return isValid;    
 
 	}

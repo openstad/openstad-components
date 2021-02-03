@@ -538,7 +538,7 @@
     display: none;
   }
 }
-.osc-choices-guide .osc-error {
+.osc-choices-guide .osc-message.osc-error {
   padding: 10px;
   color: #ea1d25;
   border: solid 2px #ea1d25;

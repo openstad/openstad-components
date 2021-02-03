@@ -39,8 +39,10 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
       },
     });
 
-    let allValues = OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.values') || {};
-    let allScores = OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.scores') || {};
+    this.config.loginUrl = this.config.loginUrl || '/oauth/login?returnTo=' + encodeURIComponent(document.location.href);
+
+    let allValues = OpenStadComponentLibs.localStorage.get('osc-choices-guide.values') || {};
+    let allScores = OpenStadComponentLibs.localStorage.get('osc-choices-guide.scores') || {};
     this.state = {
       title: '',
       answers: allValues[ this.config.choicesGuideId ],
@@ -117,8 +119,15 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
     let formValues;
     if (self.config.submission.type == 'form') {
       formValues = self.form.getValues();
-      let isValid = self.form.validate({ showErrors: true });
+      let isValid = self.form.validate({ showErrors: true, scrollTo: true });
       if (!isValid) return;
+    }
+
+    let requireLogin = !!(self.state.choicesGuideConfig && self.state.choicesGuideConfig.requiredUserRole);
+    if ( requireLogin && !self.isUserLoggedIn() ) {
+      let element = document.querySelector('.osc-require-login');
+      if (element) element.scrollIntoView({behavior: 'smooth'});
+      return;
     }
 
     FingerprintJS.load().then(fp => {
@@ -231,7 +240,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
               message = self.state.submissionError.message;
             }
           }
-          console.log('===', message);
+
           requireLoginHTML = (
             <div className={`osc-require-login osc-logged-in osc-logged-in ${className}`}>
               <h2>{self.config.submission.requireLoginSettings.title}</h2>
@@ -270,7 +279,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
       let nextAction = () => { self.submitResult(); }
       let nextLabel = self.config.afterLabel || 'Opslaan'
 
-      let nextIsDisabled = requireLogin && !self.isUserLoggedIn();
+      let nextIsDisabled = ( self.config.submission.type == 'form' && self.form && !self.form.validate({}) ) || ( requireLogin && !self.isUserLoggedIn() );
       
       if ( previousLabel || nextLabel ) {
         previousNextButtonsHTML = <OpenStadComponentPreviousNextButtonBlock previousAction={previousAction} previousUrl={previousUrl} previousLabel={previousLabel} nextAction={nextAction} nextUrl={nextUrl} nextLabel={nextLabel} nextIsDisabled={nextIsDisabled}/>

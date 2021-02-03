@@ -43,8 +43,8 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
       self.config.aspectRatio = '10x7'
     }
 
-    let allValues = OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.values') || {};
-    let allScores = OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.scores') || {};
+    let allValues = OpenStadComponentLibs.localStorage.get('osc-choices-guide.values') || {};
+    let allScores = OpenStadComponentLibs.localStorage.get('osc-choices-guide.scores') || {};
     self.state = {
       title: 'Loading....',
       questionGroups: [],
@@ -115,8 +115,8 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
   }
 
   hideEditForm() {
-    let allValues = OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.values') || {};
-    let allScores = OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.scores') || {};
+    let allValues = OpenStadComponentLibs.localStorage.get('osc-choices-guide.values') || {};
+    let allScores = OpenStadComponentLibs.localStorage.get('osc-choices-guide.scores') || {};
     this.setState({
       title: 'Loading....',
       questionGroups: [],
@@ -219,12 +219,12 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
     ( {scores} = self.choicesElement.calculateScores(answers) );
     self.userPreference && self.userPreference.calculateScores(answers); //xxx
     self.setState({ scores, firstAnswerGiven: Object.keys(answers).length > 0 }, () => {
-      let allValues = OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.values') || {};
+      let allValues = OpenStadComponentLibs.localStorage.get('osc-choices-guide.values') || {};
       allValues[self.config.choicesGuideId] = answers;
-      OpenStadComponentLibs.sessionStorage.set('osc-choices-guide.values', allValues);
-      let allScores = OpenStadComponentLibs.sessionStorage.get('osc-choices-guide.scores') || {};
+      OpenStadComponentLibs.localStorage.set('osc-choices-guide.values', allValues);
+      let allScores = OpenStadComponentLibs.localStorage.get('osc-choices-guide.scores') || {};
       allScores[self.config.choicesGuideId] = scores;
-      OpenStadComponentLibs.sessionStorage.set('osc-choices-guide.scores', allScores);
+      OpenStadComponentLibs.localStorage.set('osc-choices-guide.scores', allScores);
       self.updateChoicesTitle()
     })
   }

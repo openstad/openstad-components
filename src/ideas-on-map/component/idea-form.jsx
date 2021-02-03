@@ -174,7 +174,7 @@ export default class IdeasForm extends OpenStadComponent {
 
       let formValues = self.form.getValues();
 
-      let isValid = self.form.validate({ showErrors: true });
+      let isValid = self.form.validate({ showErrors: true, scrollTo: true });
 
 	    if ( !self.validateIdea() || !isValid ) { // validateIdea doet nog locatie en images
         self.setState({ isBusy: false, showFormErrorsWarning: true });
