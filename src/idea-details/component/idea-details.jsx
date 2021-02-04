@@ -24,6 +24,7 @@ export default class IdeasDetails extends OpenStadComponent {
         showLabels: false,
         allowMultipleImages: false,
         shareChannelsSelection: ["facebook","twitter","mail","whatsapp"],
+        metaDataTemplate: null,
       },
       argument: {
         isActive: true,
@@ -331,9 +332,14 @@ export default class IdeasDetails extends OpenStadComponent {
     }
 
     let metaDataHTML = self.config.idea.metaDataTemplate;
-    metaDataHTML = metaDataHTML.replace(/\{createDate\}/, idea.createDateHumanized);
-    metaDataHTML = metaDataHTML.replace(/\{theme\}/, idea.extraData.theme);
-    metaDataHTML = OpenStadComponentLibs.reactTemplate({ html: metaDataHTML, username: authorHTML })
+    if (metaDataHTML) {
+      metaDataHTML = metaDataHTML.replace(/\{createDate\}/, idea.createDateHumanized);
+      metaDataHTML = metaDataHTML.replace(/\{theme\}/, idea.extraData.theme);
+      console.log('xx');
+      console.log(metaDataHTML);
+      metaDataHTML = OpenStadComponentLibs.reactTemplate({ html: metaDataHTML, username: authorHTML })
+      console.log(metaDataHTML);
+    }
 
     return (
 			<div id={self.id} className={self.props.className || 'osc-info-block-idea-details'} ref={el => (self.instance = el)}>

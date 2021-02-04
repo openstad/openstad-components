@@ -9,7 +9,9 @@ export default class Search extends OpenStadComponent {
 
   constructor(props) {
 
-    super(props);
+    super(props, {
+      searchIn: ['ideas', 'addresses'],
+    });
 
     this.config.doSearchFunction = this.config.doSearchFunction || this.doSearchx.bind(this);
 		
@@ -18,6 +20,8 @@ export default class Search extends OpenStadComponent {
 			searchResult: { locations: [], ideas: [] },
 			showSuggestions: false,
     }
+
+    this.updateSearchResult = this.updateSearchResult.bind(this);
 
   }
 

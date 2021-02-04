@@ -72,6 +72,9 @@ export default class InfoBar extends OpenStadComponent {
   
   updateIdeas({ ideas = this.state.ideas, sortOrder = this.state.currentSortOrder, hideSortButton, center = { lat: 52.37104644463586, lng: 4.900402911007405 }, maxLength }) {
     ideas = this.list ? this.list.sorter.doSort({ ideas, sortOrder, center }) : [];
+    if (maxLength) {
+      ideas = ideas.splice(0, maxLength)
+    }
     this.setState({ ideas });
   }
 

@@ -64,6 +64,8 @@ export default class IdeasFilterbar extends OpenStadComponent {
     self.filters && self.filters.forEach((filter) => {
       self.state.pendingResetActions.push(filter.setFilter);
     });
+    let event = new window.CustomEvent('osc-ideas-filter-reset-all', { detail: {} });
+		document.dispatchEvent(event);
     self.doNextPendingResetAction();
   }
 

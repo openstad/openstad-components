@@ -41,12 +41,18 @@ export default class Map extends OpenStadComponentNLMap {
       self.onChangeFilter(event.detail)
     }      
 	  document.addEventListener('osc-ideas-filter-onchange', self.ideasFilterOnchangeListener);
+
+    self.ideasFilterResetAllListener = function(event) {
+      self.onResetFilters(event.detail)
+    }      
+	  document.addEventListener('osc-ideas-filter-reset-all', self.ideasFilterResetAllListener);
     
 	}
 
   componentWillUnmount() {
 		document.removeEventListener('osc-map-cluster-animation-end', this.mapClusterAnimationEndListener);
     document.removeEventListener('osc-ideas-filter-onchange', this.ideasFilterOnchangeListener)
+    document.removeEventListener('osc-ideas-filter-reset-all', this.ideasFilterResetAllListener)
   }
   
   addIdea(idea) {
@@ -64,6 +70,7 @@ export default class Map extends OpenStadComponentNLMap {
 
   getVisibleIdeas() {
     let self = this;
+    console.log('??');
     let visibleIdeas = self.markers
         .filter( marker => marker.visible && marker.data && self.map.getBounds().contains(marker.getLatLng()))
         .map( marker => marker.data );
@@ -171,6 +178,10 @@ export default class Map extends OpenStadComponentNLMap {
         return result;
 	    })
     });
+  }
+
+  onResetFilters(filter) {
+    this.setBoundsAndCenter()
   }
 
 }

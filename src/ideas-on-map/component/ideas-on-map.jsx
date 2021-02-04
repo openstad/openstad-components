@@ -239,13 +239,14 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         self.map.setBoundsAndCenter();
 
         self.setState({ ideas }, function () {
-          self.setState({ mobileState: self.config.startWithListOpenOnMobile ? 'opened' : 'closed' })
+          // self.setState({ mobileState: self.config.startWithListOpenOnMobile ? 'opened' : 'closed' })
           // self.setSelectedLocation({ lat: 52.37104644463586, lng: 4.900402911007405 })
           // return setTimeout(function(){ self.showIdeaForm() }, 500)
           if (typeof showIdeaSelected == 'object' && showIdeaSelected != null) {
 						self.setNewIdea(null);
 						self.setSelectedIdea(showIdeaSelected, function() {
               // todo: dit zou hij zelf via state moeten doen
+              self.setState({ status: 'idea-selected' });
               self.map.map.invalidateSize();
               self.map.showMarkers({})
             });
@@ -283,7 +284,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   showIdeaDetails(idea) {
     let self = this;
     self.setSelectedIdea(idea);
-    if (self.infobar) self.infobar.setState({ mobileState: self.state.mobileState = 'opened' })
+    // if (self.infobar) self.infobar.setState({ mobileState: 'opened' })
     self.setState({ status: 'idea-details' }, function() {
       self.map.map.invalidateSize();
       self.map.hideMarkers({ exception: { location: { lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] } } })
@@ -419,8 +420,10 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
   getVisibleIdeas() {
 		if ( this.state.mobileState == 'opened' ) { // werkt omdat hij alleen op mobiel opend kan zijn
+      console.log(1);
       return this.state.visibleIdeas;
     } else {
+      console.log(2);
       let visibleIdeas = this.map.getVisibleIdeas()
       this.setState({ visibleIdeas });
       return visibleIdeas;
@@ -600,6 +603,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
   onChangeMapBoundaries() {
     let self = this;
+    console.log('change', self.state.status, self.map);
     if (!self.map) return;
     self.map.updateFading();
     switch (self.state.status) {
@@ -735,6 +739,8 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   }
   
   onChangeFilter(filter) {
+    console.log(filter);
+    
     this.setSelectedIdea(null);
 		this.setNewIdea(null);
 		this.setSelectedLocation(null);
