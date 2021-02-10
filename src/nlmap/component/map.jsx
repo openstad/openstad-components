@@ -6,9 +6,9 @@ import amapsCreateClusterIcon from '../lib/amaps-cluster-icon.js';
 
 export default class OpenStadComponentNLMap extends OpenStadComponent {
 
-  constructor(props) {
+  constructor(props, defaultConfig) {
 
-    super(props, {
+    super(props, defaultConfig, {
 			style: 'standaard',
 			marker: false,
 			search: false,

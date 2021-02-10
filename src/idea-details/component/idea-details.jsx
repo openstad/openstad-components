@@ -335,10 +335,7 @@ export default class IdeasDetails extends OpenStadComponent {
     if (metaDataHTML) {
       metaDataHTML = metaDataHTML.replace(/\{createDate\}/, idea.createDateHumanized);
       metaDataHTML = metaDataHTML.replace(/\{theme\}/, idea.extraData.theme);
-      console.log('xx');
-      console.log(metaDataHTML);
       metaDataHTML = OpenStadComponentLibs.reactTemplate({ html: metaDataHTML, username: authorHTML })
-      console.log(metaDataHTML);
     }
 
     return (

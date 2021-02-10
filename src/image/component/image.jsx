@@ -84,9 +84,7 @@ export default class OpenStadComponentImage extends OpenStadComponent {
 
             {images.map(( thumb, i ) => {
               let thumbheight = 0.1 * width;
-              console.log(thumbheight);
               let thumbwidth = thumbheight * self.getAspectRatioFactor();
-              console.log(thumbwidth);
               let thumbleft = ( thumbwidth *  1.05 ) * i;
               return (
                 <div className="osc-image-thumb-spacer" key={`osc-image-thumb-${i}`} style={{ left: thumbleft, width: thumbwidth, height: thumbheight }}>

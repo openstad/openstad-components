@@ -44,7 +44,7 @@ export default class InfoBar extends OpenStadComponent {
       selectedIdea: undefined,
       newIdea: undefined,
       ideas: [],
-      mobileState: props.mobileState || 'closed',
+      infobarOnMobileIsOpen: props.infobarOnMobileIsOpen || false,
     };
 
   }
@@ -151,7 +151,7 @@ export default class InfoBar extends OpenStadComponent {
       mobileTitle = `${config.ideaName} in dit gebied (${self.state.ideas && self.state.ideas.length || 0})`;
     }
 
-    if (self.state.mobileState == 'opened') {
+    if (self.state.infobarOnMobileIsOpen) {
       mobileTitle = 'Terug naar de kaart';
     }
 

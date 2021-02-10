@@ -1,9 +1,13 @@
 'use strict';
 
+// import { isMobile } from "react-device-detect";
+let isMobile = true
+
 import Filterbar from './filterbar.jsx';
 import InfoBar from './infobar.jsx';
 import Preview from './preview.jsx';
 import Map from './map.jsx';
+
 
 import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
@@ -42,6 +46,9 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       },
       content: {
       },
+      search: {
+        addresssesMunicipality: 'amsterdam',
+      }
 		});
 
 		var self = this;
@@ -82,7 +89,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       visibleIdeas: [],
       listedIdeas: [],
       status: 'default', // default, idea-selected, location-selected, idea-details, idea-form
-      mobileState: 'closed',
+      infobarOnMobileIsOpen: false,
       // oud
       editIdea: null,
       // new, maar nog niet overal gebruikt
@@ -97,16 +104,14 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     let self = this;
 
     window.addEventListener( 'hashchange', e => {
-      self.hideIdeaDetails();
       let match = window.location.hash.match(/(\w)(\d+)/);
       if (match) {
         let ideaId = match[2];
         let idea = self.state.ideas && self.state.ideas.find(idea => idea.id == ideaId);
         if (match[1] == 'D') {
           self.showIdeaDetails(idea)
-        } else {
-          // xxx
-					// self.setSelectedIdea(idea);
+        }
+        if (match[1] == 'S') {
         }
       }
     }, false );
@@ -239,18 +244,17 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         self.map.setBoundsAndCenter();
 
         self.setState({ ideas }, function () {
-          // self.setState({ mobileState: self.config.startWithListOpenOnMobile ? 'opened' : 'closed' })
-          // self.setSelectedLocation({ lat: 52.37104644463586, lng: 4.900402911007405 })
-          // return setTimeout(function(){ self.showIdeaForm() }, 500)
+          self.setInfobarOnMobileIsOpen(self.config.startWithListOpenOnMobile)
           if (typeof showIdeaSelected == 'object' && showIdeaSelected != null) {
 						self.setNewIdea(null);
 						self.setSelectedIdea(showIdeaSelected, function() {
               // todo: dit zou hij zelf via state moeten doen
               self.setState({ status: 'idea-selected' });
-              self.map.map.invalidateSize();
+              // self.map.map.invalidateSize();
               self.map.showMarkers({})
             });
           }
+
           if (typeof showIdeaDetails == 'object' && showIdeaDetails != null) {
 						self.setNewIdea(null);
 					  self.showIdeaDetails(showIdeaDetails);
@@ -284,9 +288,9 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   showIdeaDetails(idea) {
     let self = this;
     self.setSelectedIdea(idea);
-    // if (self.infobar) self.infobar.setState({ mobileState: 'opened' })
+    self.openInfobarOnMobile();
     self.setState({ status: 'idea-details' }, function() {
-      self.map.map.invalidateSize();
+      // self.map.map.invalidateSize();
       self.map.hideMarkers({ exception: { location: { lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] } } })
     });
   }
@@ -295,7 +299,11 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     let self = this;
     self.setState({ status: 'idea-selected' }, function() {
       // todo: dit zou hij zelf via state moeten doen
-      self.map.map.invalidateSize();
+      // self.map.map.invalidateSize();
+      let selectedIdea = self.state.selectedIdea;
+      if (selectedIdea) {
+        self.infobar.updateIdeas({ ideas: self.state.ideas.filter( x => x.id != selectedIdea.id ), sortOrder: 'distance', hideSortButton: true, center: { lat: selectedIdea.location.coordinates[0], lng: selectedIdea.location.coordinates[1] }, maxLength: 5 });
+      }
       self.map.showMarkers({})
     });
   }
@@ -331,18 +339,33 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       if (self.state.editIdea && self.state.editIdea.location) {
         self.setState({ status: 'location-selected' }, function() {
           // todo: dit zou hij zelf via state moeten doen
-          self.map.map.invalidateSize();
+          // self.map.map.invalidateSize();
           self.map.showMarkers({})
           self.setNewIdea(self.state.editIdea)
         });
       } else {
         self.setState({ status: 'default' }, function() {
-          self.map.map.invalidateSize();
+          // self.map.map.invalidateSize();
           self.map.showMarkers({})
           self.setNewIdea(null)
         });
       }
     }
+  }
+
+  setInfobarOnMobileIsOpen(what, callback) {
+    this.setState({ infobarOnMobileIsOpen: what })
+    if (callback) eval(callback())
+  }
+
+  openInfobarOnMobile(callback) {
+    this.setState({ infobarOnMobileIsOpen: true })
+    if (callback) eval(callback())
+  }
+
+  closeInfobarOnMobile(callback) {
+    this.setState({ infobarOnMobileIsOpen: false })
+    if (callback) eval(callback())
   }
 
 	doSearch(searchValue, callback) {
@@ -369,7 +392,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 		});
 
     // search for addresses
-    fetch('https://geodata.nationaalgeoregister.nl/locatieserver/v3/suggest?rows=5&fq=gemeentenaam:amsterdam&fq=*:*&q=' + searchValueLc, {
+    fetch(`https://geodata.nationaalgeoregister.nl/locatieserver/v3/suggest?rows=5&fq=gemeentenaam:${self.config.search.addresssesMunicipality}&fq=*:*&q=${searchValueLc}`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -393,7 +416,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
 
     function onClickAddress(id) {
-      fetch('https://geodata.nationaalgeoregister.nl/locatieserver/v3/lookup?fq=gemeentenaam:amsterdam&&id=' + id, {
+      fetch(`https://geodata.nationaalgeoregister.nl/locatieserver/v3/lookup?fq=gemeentenaam:${self.config.search.addresssesMunicipality}&&id=${id}`, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -419,15 +442,9 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 	}
 
   getVisibleIdeas() {
-		if ( this.state.mobileState == 'opened' ) { // werkt omdat hij alleen op mobiel opend kan zijn
-      console.log(1);
-      return this.state.visibleIdeas;
-    } else {
-      console.log(2);
-      let visibleIdeas = this.map.getVisibleIdeas()
-      this.setState({ visibleIdeas });
-      return visibleIdeas;
-    }
+    let visibleIdeas = this.map.getVisibleIdeas()
+    this.setState({ visibleIdeas });
+    return visibleIdeas;
   }
 
   setSelectedLocation(location) {
@@ -512,11 +529,10 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   
 	onMapClick(event, forceSelectLocation) {
 
-		if ( this.state.mobileState == 'opened' ) { // werkt omdat hij alleen op mobiel opend kan zijn
-			this.infobar.setState({ mobileState: 'closed' })
-			this.setState({ mobileState: 'closed' }, function() {
-				this.map.map.invalidateSize();
-			})
+		if ( this.state.infobarOnMobileIsOpen == true && isMobile) {
+      this.closeInfobarOnMobile( result => {
+				// this.map.map.invalidateSize();
+      })
 			return;
 		}
 
@@ -547,15 +563,15 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         this.map.updateFading();
         document.querySelector('#osc-ideas-on-map-info').scrollTo(0,0)
     }
+
   }
 
 	onMarkerClick(event) {
 
-		if ( this.state.mobileState == 'opened' ) { // werkt omdat hij alleen op mobiel opend kan zijn
-			this.infobar.setState({ mobileState: 'closed' })
-			this.setState({ mobileState: 'closed' }, function() {
-				this.map.map.invalidateSize();
-			})
+		if ( this.state.infobarOnMobileIsOpen == true && isMobile ) {
+      this.closeInfobarOnMobile( result => {
+				// this.map.map.invalidateSize();
+      })
 			return;
 		}
 
@@ -588,11 +604,10 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
 	onClusterClick(event) {
 
-		if ( this.state.mobileState == 'opened' ) { // werkt omdat hij alleen op mobiel opend kan zijn
-			this.infobar.setState({ mobileState: 'closed' })
-			this.setState({ mobileState: 'closed' }, function() {
-				this.map.map.invalidateSize();
-			})
+		if ( this.state.infobarOnMobileIsOpen == true && isMobile ) {
+      this.closeInfobarOnMobile( result => {
+				// this.map.map.invalidateSize();
+      })
 			return;
 		}
 
@@ -603,7 +618,6 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
   onChangeMapBoundaries() {
     let self = this;
-    console.log('change', self.state.status, self.map);
     if (!self.map) return;
     self.map.updateFading();
     switch (self.state.status) {
@@ -653,13 +667,11 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   onIdeaClick(idea) {
     // let showDetails = this.state.status == 'location-selected' || this.state.status == 'idea-selected';
     if (this.state.editIdea) this.setNewIdea(null);
-
     this.setSelectedIdea(idea, () => {
       this.setState({ status: 'idea-selected' }, function() {
         document.location.href = "#D" + idea.id;
       })
     });
-
   };
 
   onEditIdeaClick(idea) {
@@ -682,7 +694,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     self.setSelectedIdea(null);
     self.setSelectedLocation(null);
     self.setState({ status: 'default' }, function() {
-      self.map.map.invalidateSize();
+      // self.map.map.invalidateSize();
       self.map.setBoundsAndCenter();
       self.fetchData({});
     });
@@ -690,7 +702,6 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
   onDeleteIdeaClick(idea) {
     console.log('Delete idea', idea.id);
-    alert('TODO')
   };
 
   onSelectedIdeaClick({ idea }) {
@@ -739,8 +750,6 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   }
   
   onChangeFilter(filter) {
-    console.log(filter);
-    
     this.setSelectedIdea(null);
 		this.setNewIdea(null);
 		this.setSelectedLocation(null);
@@ -765,15 +774,16 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   }
 
   onClickBackToOverview(idea) {
+    this.hideIdeaDetails();
     document.location.href='#S'+this.state.selectedIdea.id;
   }
   
   onClickMobileSwitcher() {
     let self = this;
-    if (self.infobar) self.infobar.setState({ mobileState: self.state.mobileState == 'closed' ? 'opened' : 'closed' })
-    self.setState({ mobileState: self.state.mobileState == 'closed' ? 'opened' : 'closed' }, function() {
-      self.map.map.invalidateSize();
-      if (this.state.status == 'location-selected' || this.state.status == 'idea-selected') {
+    self.setInfobarOnMobileIsOpen( !this.state.infobarOnMobileIsOpen, result => {
+      //xxx
+      //self.map.map.invalidateSize();
+      if (self.state.status == 'location-selected' || this.state.status == 'idea-selected') {
         let selectedIdea = self.state.selectedIdea || self.state.editIdea;
         self.map.setBoundsAndCenter();
       }
@@ -816,14 +826,14 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
           }
         } else {
           mobilePopupHTML = (
-            <div className="osc-mobile-popup osc-clickable" onClick={ () =>  { this.setState({ mobileState: 'opened' }); this.infobar.setState({ mobileState: 'opened' }); document.location.href = "#D" + this.state.selectedIdea.id; } }>
+            <div className="osc-mobile-popup osc-clickable" onClick={ () =>  { this.openInfobarOnMobile(); document.location.href = "#D" + this.state.selectedIdea.id; } }>
               <div className="osc-image" style={{ backgroundImage: `url(${this.state.selectedIdea && this.state.selectedIdea.image})` }}></div>
               { eval(this.state.selectedIdea && `this.state.selectedIdea.${this.config.titleField}`) }
             </div>
           );
         }
         infoHTML = (
-			    <InfoBar config={this.config} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.infobar = el)}/>
+			    <InfoBar config={this.config} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" infobarOnMobileIsOpen={this.state.infobarOnMobileIsOpen} ref={el => (this.infobar = el)}/>
         );
         filterHTML = (
           <Filterbar config={this.config} className="osc-ideas-filterbar"/>
@@ -832,7 +842,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
       default:
         infoHTML = (
-			    <InfoBar config={this.config} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.infobar = el)}/>
+			    <InfoBar config={this.config} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" infobarOnMobileIsOpen={this.state.infobarOnMobileIsOpen} ref={el => (this.infobar = el)}/>
         );
         filterHTML = (
           <Filterbar config={this.config} className="osc-ideas-filterbar"/>
@@ -859,7 +869,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     }
 
     return (
-			<div id={this.divId} className={`osc-ideas-on-map osc-ideas-on-map-${this.state.status} osc-mobile-${this.state.mobileState}`} style={divStyle} ref={el => (this.instance = el)}>
+			<div id={this.divId} className={`osc-ideas-on-map osc-ideas-on-map-${this.state.status} osc-mobile-${this.state.infobarOnMobileIsOpen ? 'opened' : 'closed'}`} style={divStyle} ref={el => (this.instance = el)}>
         {filterHTML}
         {infoHTML}
         <div className={`osc-ideas-on-map-map osc-ideas-on-map-map-${this.config.display.type}`}>

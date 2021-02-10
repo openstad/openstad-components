@@ -19,8 +19,11 @@ export default class Preview extends OpenStadComponent {
       api: {
       },
       content: {
-        noSelectionLoggedInHTML: '<div class=\"osc-infobar-default-block\"><div class=\"osc-infobar-default-block-line osc-line-1\">Klik op een plek op de kaart om een nieuw punt toe te voegen.</div><div class=\"osc-infobar-default-block-line osc-line-2\">Selecteer een inzending op de kaart om meer informatie over de inzending te bekijken.</div><div class=\"osc-infobar-default-block-line osc-line-3\">Bekijk hieronder de inzendingen die nu zichtbaar zijn op de kaart.</div></div>',
-        noSelectionNotLoggedInHTML: '<div class=\"osc-infobar-default-block\"><div class=\"osc-infobar-default-block-line osc-line-1\">Klik op een plek op de kaart om een nieuw punt toe te voegen.</div><div class=\"osc-infobar-default-block-line osc-line-2\">Selecteer een inzending op de kaart om meer informatie over de inzending te bekijken.</div><div class=\"osc-infobar-default-block-line osc-line-3\">Bekijk hieronder de inzendingen die nu zichtbaar zijn op de kaart.</div></div>',
+        // noSelectionLoggedInHTML: '<div class=\"osc-infobar-default-block\"><div class=\"osc-infobar-default-block-line osc-line-1\">Klik op een plek op de kaart om een nieuw punt toe te voegen.</div><div class=\"osc-infobar-default-block-line osc-line-2\">Selecteer een inzending op de kaart om meer informatie over de inzending te bekijken.</div><div class=\"osc-infobar-default-block-line osc-line-3\">Bekijk hieronder de inzendingen die nu zichtbaar zijn op de kaart.</div></div>',
+        // noSelectionNotLoggedInHTML: '<div class=\"osc-infobar-default-block\"><div class=\"osc-infobar-default-block-line osc-line-1\">Klik op een plek op de kaart om een nieuw punt toe te voegen.</div><div class=\"osc-infobar-default-block-line osc-line-2\">Selecteer een inzending op de kaart om meer informatie over de inzending te bekijken.</div><div class=\"osc-infobar-default-block-line osc-line-3\">Bekijk hieronder de inzendingen die nu zichtbaar zijn op de kaart.</div></div>',
+        // default now is: show nothing
+        noSelectionLoggedInHTML: '',
+        noSelectionNotLoggedInHTML: '',
         selectionActiveLoggedInHTML: 'Ingelogd: er is een punt geselecteerd binnen de polygon, met een adres: {address} en {addButton}.',
         selectionInactiveLoggedInHTML: 'Ingelogd: er is een punt geselecteerd buiten de polygon, met een {address}',
         selectionActiveNotLoggedInHTML: 'Niet ingelogd: er is een punt geselecteerd binnen de polygon, met een adres: {address} en {loginButton} of <a href="{loginLink}">login link</a>.',
@@ -168,9 +171,13 @@ export default class Preview extends OpenStadComponent {
         }
       }
 
+      console.log(contentHTML);
+
       contentHTML = contentHTML.replace(/\{address\}/g, self.props.selectedLocation.address || '');
       contentHTML = contentHTML.replace(/\{loginLink\}/g, loginLink);
       contentHTML = OpenStadComponentLibs.reactTemplate({ html: contentHTML, addButton, loginButton })
+
+      console.log(contentHTML);
 
       selectedLocationHTML = (
 			  <div className="osc-infobar-new-idea">
@@ -240,17 +247,23 @@ export default class Preview extends OpenStadComponent {
 
     let defaultBlockHTML = null;
     if (!selectedLocationHTML && !selectedIdeaHTML) {
-      let noSelectionHTML = self.config.content.noSelectionNotLoggedInHTML;
-      if (self.config.api.isUserLoggedIn) noSelectionHTML = self.config.content.noSelectionLoggedInHTML;
-      noSelectionHTML = noSelectionHTML.replace(/\{loginLink\}/g, loginLink);
-      noSelectionHTML = OpenStadComponentLibs.reactTemplate({ html: noSelectionHTML, addButton, loginButton })
-      defaultBlockHTML = (
-			  <div className={`osc-infobar-default-block${ self.config.content.showNoSelectionOnMobile ? ' osc-visible-on-mobile' : '' }`}>{noSelectionHTML}</div>
-      );
+      let noSelectionHTML = self.config.api.isUserLoggedIn ? self.config.content.noSelectionLoggedInHTML : self.config.content.noSelectionNotLoggedInHTML
+      noSelectionHTML = noSelectionHTML || null;
+      if (noSelectionHTML) {
+        noSelectionHTML = noSelectionHTML.replace(/\{loginLink\}/g, loginLink);
+        noSelectionHTML = OpenStadComponentLibs.reactTemplate({ html: noSelectionHTML, addButton, loginButton })
+        defaultBlockHTML = (
+			    <div className={`osc-infobar-default-block${ self.config.content.showNoSelectionOnMobile ? ' osc-visible-on-mobile' : '' }`}>{noSelectionHTML}</div>
+        );
+      }
       mobileTitle = `${self.config.ideaName} in dit gebied (${self.state.ideas && self.state.ideas.length || 0})`;
 
     }
 
+    if (!selectedLocationHTML && !selectedIdeaHTML && !defaultBlockHTML) {
+      return null;
+    }
+    
     // TODO: kan de key weg uit IdeasList
     return (
 			<div className="osc-selection-block">
