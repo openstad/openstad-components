@@ -1,7 +1,6 @@
 'use strict';
 
-// import { isMobile } from "react-device-detect";
-let isMobile = true
+import { isMobile } from "react-device-detect";
 
 import Filterbar from './filterbar.jsx';
 import InfoBar from './infobar.jsx';
