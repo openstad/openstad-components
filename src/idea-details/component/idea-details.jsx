@@ -90,12 +90,12 @@ export default class IdeasDetails extends OpenStadComponent {
 		document.removeEventListener('osc-poll-deleted', this.pollDeletedListener);
   }
 
-  dispatchEditIdeaClick(e) {
+  dispatchEditIdeaButtonClick(e) {
     e.stopPropagation();
     if ( this.config.editIdeaLink ) {
       document.location.href = this.config.editIdeaLink;
     } else {
-		  var event = new window.CustomEvent('osc-edit-idea-click', { detail: this.state.idea });
+		  var event = new window.CustomEvent('osc-edit-idea-button-click', { detail: this.state.idea });
 		  document.dispatchEvent(event);
     }
   };
@@ -264,7 +264,7 @@ export default class IdeasDetails extends OpenStadComponent {
     if ( idea.can && idea.can.edit ) {
       editButtonsHTML = (
         <div className="osc-editbuttons-container">
-          <button className="osc-idea-details-editbutton osc-edit" onClick={(event) => self.dispatchEditIdeaClick(event)}>Bewerk idee</button>
+          <button className="osc-idea-details-editbutton osc-edit" onClick={(event) => self.dispatchEditIdeaButtonClick(event)}>Bewerk idee</button>
           <button className="osc-idea-details-editbutton osc-delete" onClick={(event) => { if ( confirm('Weet je het zeker') ) self.deleteIdea(event) }}>Verwijder idee</button>
         </div>
       );

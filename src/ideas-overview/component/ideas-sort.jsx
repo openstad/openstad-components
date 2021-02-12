@@ -1,6 +1,7 @@
 'use strict';
 
 import OpenStadComponent from '../../component/index.jsx';
+import OpenStadComponentLibs from '../../libs/index.jsx';
 
 export default class IdeasSort extends OpenStadComponent {
 
@@ -24,48 +25,9 @@ export default class IdeasSort extends OpenStadComponent {
   }
 
   doSort({ ideas, sortOrder, center }) {
-
     sortOrder = sortOrder || this.state.currentValue;
-
-		switch(sortOrder){
-			case 'title':
-				ideas = ideas.sort( function(a,b) { if (a.title.toLowerCase() < b.title.toLowerCase()) { return -1; } if (b.title.toLowerCase() < a.title.toLowerCase()) { return 1; } return 0; });
-				break;
-			case 'ranking,asc':
-				ideas = ideas.sort( function(a,b) { return a.ranking - b.ranking });
-				break;
-			case 'likes,asc':
-				ideas = ideas.sort( function(a,b) { return a.yes - b.yes });
-				break;
-			case 'likes,desc':
-				ideas = ideas.sort( function(a,b) { return b.yes - a.yes });
-				break;
-			case 'createdtime,desc':
-				ideas = ideas.sort( function(a,b) { return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime() });
-				break;
-			case 'createdtime,asc':
-				ideas = ideas.sort( function(a,b) { return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime() });
-				break;
-			case 'distance':
-        center = center || this.config.center;
-				ideas = ideas
-          .map( idea => { idea._distance = Math.sqrt( Math.pow( idea.location.coordinates[0] - center.lat, 2 ) + Math.pow( idea.location.coordinates[1] - center.lng, 2 ) ); return idea; } )
-          .sort( function(a,b) { return a._distance - b._distance })
-				break;
-			case 'args,desc':
-				ideas = ideas.sort( function(a,b) { return b.argCount - a.argCount })
-				break;
-			case 'args,asc':
-				ideas = ideas.sort( function(a,b) { return a.argCount - b.argCount })
-				break;
-			case 'random':
-			default:
-				ideas = ideas.sort( function(a,b) { return Math.random() - 0.5 });
-				break;
-		}
-
-    return ideas;
-    
+    center = center || this.config.center;
+    return OpenStadComponentLibs.ideasSort({ ideas, sortOrder, center });
   }
 
   setSortOrder({ sortOrder }) {

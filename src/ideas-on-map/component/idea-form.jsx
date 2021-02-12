@@ -123,21 +123,34 @@ export default class IdeasForm extends OpenStadComponent {
   }
 
 	componentDidMount(prevProps, prevState) {
+
+    let self = this;
+
+		self.updateLocationListener = function(event) {
+      self.updateLocation(event.detail && event.detail.location);
+    }
+    document.addEventListener('osc-update-location', self.updateLocationListener);
+
   }
 
-  // todo: als hanlefieldchange met meerder waarden in een { key: value } formaat gaat werken dan kan deze weg
-  handleLocationChange({location, address}) {
+  componentWillUnmount() {
+    document.removeEventListener('osc-update-location', this.updateLocationListener);
+  }
+
+  updateLocation(location) {
+    if (!location) return;
     let state = { ...this.state };
     state.formfields['location'] = { coordinates: [ location.lat, location.lng ] };
-    state.formfields['address'] = address;
+    state.formfields['address'] = location.address;
     this.setState(state)
-    this.dispatchUpdateEditIdea(state.formfields)
+    // this.dispatchUpdateEditIdea(state.formfields)
   }
 
-  dispatchUpdateEditIdea(idea) {
-		var event = new window.CustomEvent('osc-update-edit-idea', { detail: { idea } });
-		document.dispatchEvent(event);
-  }
+  // ik denk dat dit oud is
+  // dispatchUpdateEditIdea(idea) {
+	//   var event = new window.CustomEvent('osc-update-edit-idea', { detail: { idea } });
+	//   document.dispatchEvent(event);
+  // }
 
   validateIdea() {
 
@@ -282,7 +295,7 @@ export default class IdeasForm extends OpenStadComponent {
 					  <h2>
             Een locatie vlakbij
 					  </h2>
-            {self.state.formfields.address || 'Geen adres gevonden'}
+            {self.state.formfields.address || 'Adres wordt gezocht...'}
 						<div className="osc-form-warning" style={{ display: 'none' }} ref={ el => this['form-warning-location'] = el  }>Geen locatie geselecteerd</div>
           </div>
 

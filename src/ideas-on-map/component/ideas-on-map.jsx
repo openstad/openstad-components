@@ -1,21 +1,15 @@
 'use strict';
 
-import { isMobile } from "react-device-detect";
+import merge from 'merge';
+import { isMobile } from 'react-device-detect';
 
 import Filterbar from './filterbar.jsx';
 import InfoBar from './infobar.jsx';
 import Preview from './preview.jsx';
 import Map from './map.jsx';
 
-
 import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
-
-// TODO: clean up; ik gebruikte eerst setNewIdea en setSelected, maar nu onNewIdeaClick en onSelectedIdeaClick; trek dat gelijk
-// TODO: editIdea vs newIdea opschonen
-// TODO: vervang handle functies door events, bijvoorbeeld bij opzoeken adres
-// TODO: events renamen naar osc-xxx
-// TODO: remove event listener is nog niet overal consequent doorgevoerd
 
 'use strict';
 
@@ -84,16 +78,18 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     }
 
     self.state = {
-      ideas: [],
-      visibleIdeas: [],
-      listedIdeas: [],
+
       status: 'default', // default, idea-selected, location-selected, idea-details, idea-form
       infobarOnMobileIsOpen: false,
-      // oud
-      editIdea: null,
-      // new, maar nog niet overal gebruikt
+
+      ideas: [],
+      visibleIdeas: [], // todo: dit wordt niet gebruikt; het gaat steeds via getVisibleIdeas maar deze state zou dus beter zijn
+      listedIdeas: [],
+
       selectedIdea: null,
       selectedLocation: null,
+      currentEditIdea: null,
+      
     }
 
   }
@@ -122,10 +118,10 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       self.fetchData({});
 
       // handle map changes
-      self.map.map.on('zoomend', function() {
+      self.map.map.on('zoomend', () => {
         self.onChangeMapBoundaries();
       });
-      self.map.map.on('moveend', function() {
+      self.map.map.on('moveend', () => {
         self.onChangeMapBoundaries();
       });
 
@@ -152,7 +148,8 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       self.onUpdateSelectedIdea(event.detail);
     });
 		document.addEventListener('osc-set-selected-location', function(event) {
-      self.setSelectedLocation(event.detail);
+      // wordt gebruikt door close preview
+      self.setSelectedLocation(null);
     });
 		document.addEventListener('osc-new-idea-click', function(event) {
       self.onNewIdeaClick({ idea: event.detail.idea });
@@ -188,7 +185,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 		document.addEventListener('osc-reaction-deleted', function(event) {
       self.onReactionDeleted(event.detail);
     });
-		document.addEventListener('osc-edit-idea-click', function(event) {
+		document.addEventListener('osc-edit-idea-button-click', function(event) {
       self.onEditIdeaClick(event.detail);
     });
 		document.addEventListener('osc-idea-deleted', function(event) {
@@ -199,9 +196,6 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 		document.addEventListener('osc-idea-stored', function(event) {
       document.location.href = "#";
       self.onIdeaStored(event.detail.idea);
-    });
-		document.addEventListener('osc-update-edit-idea', function(event) {
-      self.onUpdateEditIdea(event.detail.idea);
     });
     
 	}
@@ -231,6 +225,8 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         showIdeaDetails = showIdeaDetails || ( window.location.hash.match(/^#D(\d+)/) && window.location.hash.match(/^#D(\d+)/)[1] );
         showIdeaSelected = showIdeaSelected || ( window.location.hash.match(/^#S(\d+)/) && window.location.hash.match(/^#S(\d+)/)[1] );
         let ideas = json.filter( idea => idea.location )
+        self.updateListedIdeas({ ideas, sortOrder: self.config.sort.defaultValue });
+
         ideas.map( idea => {
           if ( idea.id == showIdeaDetails) {
             showIdeaDetails = idea;
@@ -245,33 +241,35 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         self.setState({ ideas }, function () {
           self.setInfobarOnMobileIsOpen(self.config.startWithListOpenOnMobile)
           if (typeof showIdeaSelected == 'object' && showIdeaSelected != null) {
-						self.setNewIdea(null);
-						self.setSelectedIdea(showIdeaSelected, function() {
-              // todo: dit zou hij zelf via state moeten doen
-              self.setState({ status: 'idea-selected' });
-              // self.map.map.invalidateSize();
-              self.map.showMarkers({})
+						self.setCurrentEditIdea(null);
+						self.setSelectedIdea(showIdeaSelected, () => {
+              // ??
+              // self.map.showMarkers({})
             });
           }
 
           if (typeof showIdeaDetails == 'object' && showIdeaDetails != null) {
-						self.setNewIdea(null);
 					  self.showIdeaDetails(showIdeaDetails);
           }
           if (window.location.hash.match(/^#newidea/)) {
             // TODO: dit moet ook bestaande ideeen gaan werken
             let hash = window.location.hash;
             let match = hash.match(/&([^&]+)=([^&]+)/g);
-            let newIdea = {  };
+            let idea = {};
             if (match) {
               match.forEach((entry) => {
                 let [key, val] = entry.split('=');
                 key = key.substring(1, key.length);
-                newIdea[key] = decodeURIComponent(val);
+                idea[key] = decodeURIComponent(val);
+                try {
+                  idea[key] = JSON.parse(idea[key])
+                } catch (err) {}
               });
             }
-					  self.setNewIdea(newIdea);
-				    self.showIdeaForm(newIdea);
+            self.setCurrentEditIdea(idea, currentEditIdea => {
+              if (currentEditIdea.location) self.setSelectedLocation(currentEditIdea.location)
+				      self.showIdeaForm();
+            })
           }
           self.onChangeMapBoundaries();
 				});
@@ -284,11 +282,101 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
   }
 
+  updateListedIdeas({ ideas = this.getVisibleIdeas(), sortOrder = this.state.currentSortOrder, center = { lat: 52.37104644463586, lng: 4.900402911007405 }, maxLength }) {
+    if (sortOrder) {
+      ideas = OpenStadComponentLibs.ideasSort({ ideas, sortOrder, center })
+    }
+    if (maxLength) {
+      ideas = ideas.splice(0, maxLength)
+    }
+    this.setState({ listedIdeas : ideas });
+  }
+
+  setSelectedIdea(idea, next) {
+    let self= this;
+    self.setCurrentEditIdea(null);
+    self.setSelectedLocation(null);
+    let status = idea ? 'idea-selected' : self.state.status;
+    self.setState({ selectedIdea: idea, status }, () => {
+      if (idea) {
+        self.map.fadeMarkers({exception: idea});
+        self.updateListedIdeas({ ideas: self.state.ideas.filter( i => i.id != idea.id ), sortOrder: 'distance',  center: { lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] }, maxLength: 5 });
+      } else {
+        self.map && self.map.unfadeAllMarkers();
+        self.updateListedIdeas({ ideas: self.getVisibleIdeas() });
+      }
+      if (next) return next(idea);
+    })
+
+  }
+
+  setSelectedLocation(location, next) {
+
+    let self = this;
+
+    if (location && location.coordinates) {
+      location.lat = location.coordinates[0];
+      location.lng = location.coordinates[1];
+    }
+
+    self.map && self.map.setSelectedLocation(location)
+
+    if (location) {
+      location.isPointInPolygon = self.map.isPointInPolygon(location, self.config.map.polygon )
+
+      self.map.fadeMarkers({});
+      let id = self.state.selectedIdea && self.state.selectedIdea.id;
+      self.updateListedIdeas({ ideas: self.state.ideas.filter( idea => idea.id != id ), sortOrder: 'distance',  center: location, maxLength: 5 });
+
+      self.setState({ selectedLocation: location }, () => {
+        if (self.state.currentEditIdea) {
+          self.updateCurrentEditIdea({ location }, idea => {
+            self.updateLocationAddress(idea.location)
+          });
+        }
+        if (next) next(self.state.selectedLocation)
+      })
+
+	    var event = new window.CustomEvent('osc-update-location', { detail: { location } });
+	    document.dispatchEvent(event);
+
+    } else {
+      self.setState({ selectedLocation: null }, () => {
+        self.map.unfadeAllMarkers();
+        self.updateListedIdeas({ ideas: self.getVisibleIdeas() });
+	      var event = new window.CustomEvent('osc-update-location', { detail: { location } });
+	      document.dispatchEvent(event);
+        if (next) next(self.state.selectedLocation)
+      });
+    }
+
+  }
+  
+
+  updateLocationAddress(location) {
+
+    let self = this;
+
+    if (!location) return;
+
+    if (location.coordinates) {
+      location.lat = location.coordinates[0];
+      location.lng = location.coordinates[1];
+    }
+
+  	self.map.getPointInfo(location, null, function(json, marker) {
+      location.address = json && json._display || 'Geen adres gevonden';
+	    var event = new window.CustomEvent('osc-update-location', { detail: { location } });
+	    document.dispatchEvent(event);
+    });
+        
+  }
+  
   showIdeaDetails(idea) {
     let self = this;
     self.setSelectedIdea(idea);
     self.openInfobarOnMobile();
-    self.setState({ status: 'idea-details' }, function() {
+    self.setState({ status: 'idea-details' }, () => {
       // self.map.map.invalidateSize();
       self.map.hideMarkers({ exception: { location: { lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] } } })
     });
@@ -296,57 +384,80 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
   hideIdeaDetails() {
     let self = this;
-    self.setState({ status: 'idea-selected' }, function() {
+    self.setState({ status: 'idea-selected' }, () => {
       // todo: dit zou hij zelf via state moeten doen
       // self.map.map.invalidateSize();
       let selectedIdea = self.state.selectedIdea;
       if (selectedIdea) {
-        self.infobar.updateIdeas({ ideas: self.state.ideas.filter( x => x.id != selectedIdea.id ), sortOrder: 'distance', hideSortButton: true, center: { lat: selectedIdea.location.coordinates[0], lng: selectedIdea.location.coordinates[1] }, maxLength: 5 });
+        self.updateListedIdeas({ ideas: self.state.ideas.filter( idea => idea.id != selectedIdea.id ), sortOrder: 'distance',  center: { lat: selectedIdea.location.coordinates[0], lng: selectedIdea.location.coordinates[1] }, maxLength: 5 });
       }
       self.map.showMarkers({})
     });
   }
 
-  showIdeaForm(idea, next) {
+  setCurrentEditIdea(idea, next) {
     let self = this;
+    let currentEditIdea = idea;
+    return self.setState({ currentEditIdea }, () => {
+      let location = currentEditIdea && location || null;
+      // if (idea == null) self.setSelectedLocation(location)
+      if (next) return next(currentEditIdea);
+    })
+  }
+
+  updateCurrentEditIdea(data, next) {
+    let currentEditIdea = this.state.currentEditIdea;
+    currentEditIdea = merge.recursive(currentEditIdea, data);
+    return this.setCurrentEditIdea(currentEditIdea, next);
+  }
+
+  showIdeaForm() {
+
+    let self = this;
+    let idea = self.state.currentEditIdea;
 
     if (self.config.idea.formUrl) {
+
+      // external form: add data and ignore the rest
       let url = self.config.idea.formUrl;
       url = url.replace(/:ideaId/, typeof idea.id == 'number' ? idea.id : '');
       url = url.replace(/:location/, idea.location ? JSON.stringify({ lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] }) : '');
       url = url.replace(/:typeId/, idea.typeId);
       url = url.replace(/:address/, idea.address);
       document.location.href = url;
+
     } else {
-      self.setState({ status: 'idea-form', editIdea: idea }, function() {
+
+      // internal form
+      self.setState({ status: 'idea-form' }, () => {
         self.map.map.invalidateSize();
         self.map.hideMarkers({ exception: { location: idea && idea.location && { lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] } || self.map.selectedLocation } })
-        if (next) next();
+        let location = idea.location || self.state.selectedLocation;
+        // todo: deze doet het nu dus niet
+        self.updateLocationAddress(location);
       });
     }
 
+    
   }
 
   hideIdeaForm() {
     let self = this;
-    if (this.state.editIdea && typeof this.state.editIdea.id == 'number') {
-      let idea = self.state.ideas.find(idea => idea.id == self.state.editIdea.id)
+    if (this.state.currentEditIdea && typeof this.state.currentEditIdea.id == 'number') {
+      let idea = self.state.ideas.find(idea => idea.id == self.state.currentEditIdea.id)
       self.showIdeaDetails(idea)
       document.location.href = "#D" + idea.id
     } else {
-      document.location.href='#';
-      if (self.state.editIdea && self.state.editIdea.location) {
-        self.setState({ status: 'location-selected' }, function() {
-          // todo: dit zou hij zelf via state moeten doen
-          // self.map.map.invalidateSize();
+      let location = self.state.currentEditIdea && self.state.currentEditIdea.location || self.state.selectedLocation;
+      if (location) {
+        location.isPointInPolygon = this.map.isPointInPolygon(location, this.config.map.polygon )
+        self.setState({ status: 'location-selected' }, () => {
           self.map.showMarkers({})
-          self.setNewIdea(self.state.editIdea)
         });
       } else {
-        self.setState({ status: 'default' }, function() {
-          // self.map.map.invalidateSize();
+        self.setState({ status: 'default' }, () => {
           self.map.showMarkers({})
-          self.setNewIdea(null)
+          self.setCurrentEditIdea(null)
         });
       }
     }
@@ -354,17 +465,17 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
   setInfobarOnMobileIsOpen(what, callback) {
     this.setState({ infobarOnMobileIsOpen: what })
-    if (callback) eval(callback())
+    if (callback) callback()
   }
 
   openInfobarOnMobile(callback) {
     this.setState({ infobarOnMobileIsOpen: true })
-    if (callback) eval(callback())
+    if (callback) callback()
   }
 
   closeInfobarOnMobile(callback) {
     this.setState({ infobarOnMobileIsOpen: false })
-    if (callback) eval(callback())
+    if (callback) callback()
   }
 
 	doSearch(searchValue, callback) {
@@ -383,7 +494,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 			if (titlelLc.match(searchValueLc) || summaryLc.match(searchValueLc)) {
 				searchResult.ideas.push({
 					text: title,
-					onClick: function() {
+					onClick: () => {
             self.onUpdateSelectedIdea(idea)
           },
 				})
@@ -403,7 +514,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         if (json && json.response && json.response.docs && json.response.docs.length) {
           searchResult.locations = json.response.docs.map( found => { return {
 						text: found.weergavenaam,
-						onClick: function() { onClickAddress(found.id) },
+						onClick: () => { onClickAddress(found.id) },
 					}});
         }
         callback(searchValue, searchResult)
@@ -445,93 +556,12 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     this.setState({ visibleIdeas });
     return visibleIdeas;
   }
-
-  setSelectedLocation(location) {
-
-    let self = this;
-
-    self.map && self.map.setSelectedLocation(location)
-
-    if (location)  {
-      if (self.infobar.ideaform) {
-        self.infobar.ideaform.handleLocationChange({ location, address: 'Bezig met adresgegevens ophalen...' });
-			  self.map.getPointInfo(location, null, function(json, marker) {
-				  let address = json && json._display || 'Geen adres gevonden';
-				  self.state.editIdea.address = address;
-				  self.infobar.ideaform.handleLocationChange({ location, address: address });
-			  })
-      }
-    } else {
-      self.map && self.map.unfadeAllMarkers();
-      self.setSelectedIdea(null);
-      this.setState({ status: 'default', newIdea: null, editIdea: null }, function() {
-      });
-    }
-
-  }
-
-  setNewIdea(idea) {
-    let self = this;
-    if (idea) idea.isPointInPolygon = idea.location && self.map.isPointInPolygon( { lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] }, self.config.map.polygon )
-    self.setState({ editIdea: idea }, function() {
-      if (idea) {
-        self.map.fadeMarkers({exception: [idea.location]});
-        if (idea.location) self.setSelectedLocation({ lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] });  
-        if (self.infobar) {
-          self.setState({ editIdea: self.state.editIdea });
-          if (idea.location) {
-            self.infobar.setNewIdea({ ...self.state.editIdea, address: 'Bezig met adresgegevens ophalen...' });
-            self.map.getPointInfo({ lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] }, null, function(json, marker) {
-              let address = json && json._display || 'Geen adres gevonden';
-              let editIdea = self.state.editIdea;
-              editIdea.address = address;
-              self.setState({ editIdea });
-              self.infobar.setNewIdea({ ...self.state.editIdea, address });
-            })
-          } else {
-            self.infobar.setNewIdea({ ...self.state.editIdea, address: 'Geen locatie geselecteerd...' });
-          }
-          self.infobar.updateIdeas({ ideas: self.state.ideas.filter( x => x.id != idea.id ), sortOrder: 'distance', hideSortButton: true, center: { lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] }, maxLength: 5 });
-        }
-      } else {
-        self.map.unfadeAllMarkers();
-        if (self.infobar) {
-          self.infobar.setNewIdea(null);
-          self.infobar.updateIdeas({ ideas: self.getVisibleIdeas(), hideSortButton: false });
-        }
-      }
-    });
-  }
-
-  setSelectedIdea(idea, next) {
-
-    let self= this;
-
-    self.setState({ selectedIdea:idea }, () => {
-      if (idea) {
-        self.map.fadeMarkers({exception: idea});
-        if (self.infobar) {
-          self.infobar.setSelectedIdea(idea);
-          self.infobar.updateIdeas({ ideas: self.state.ideas.filter( x => x.id != idea.id ), sortOrder: 'distance', hideSortButton: true, center: { lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] }, maxLength: 5 });
-        }
-      } else {
-        self.map && self.map.unfadeAllMarkers();
-        if (self.infobar) {
-          self.infobar.setSelectedIdea(null);
-          self.infobar.updateIdeas({ ideas: self.getVisibleIdeas(), hideSortButton: false });
-        }
-      }
-      if (typeof next == 'function') return next();
-    })
-
-  }
   
 	onMapClick(event, forceSelectLocation) {
 
+
 		if ( this.state.infobarOnMobileIsOpen == true && isMobile) {
-      this.closeInfobarOnMobile( result => {
-				// this.map.map.invalidateSize();
-      })
+      this.closeInfobarOnMobile()
 			return;
 		}
 
@@ -546,18 +576,17 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         break;
 
       default:
-        this.setSelectedIdea(null);
-        if (( this.state.selectedIdea || this.map.selectedLocation ) && !forceSelectLocation) {
-          this.setState({ ...this.state, status: 'default' });
+        if (( this.state.selectedIdea || this.state.selectedLocation ) && !forceSelectLocation) {
+          this.setState({ status: 'default' });
           document.location.href='#';
-          this.setSelectedLocation(null);
-          this.setNewIdea(null);
-          this.infobar.updateIdeas({ ideas: this.getVisibleIdeas(), hideSortButton: false });
+          this.setSelectedIdea(null);
+          this.updateListedIdeas({ ideas: this.getVisibleIdeas(),  });
         } else {
           if (!this.config.canSelectLocation) break;
-          this.setState({ ...this.state, status: 'location-selected' });
-          let newIdea = { id: 'New Idea', location: { coordinates: [ event.latlng.lat, event.latlng.lng ] } };
-          this.setNewIdea(newIdea);
+          this.setSelectedLocation(event.latlng, location => {
+            this.setState({ status: 'location-selected' });
+            this.updateLocationAddress(location)
+          });
         }
         this.map.updateFading();
         document.querySelector('#osc-ideas-on-map-info').scrollTo(0,0)
@@ -568,9 +597,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 	onMarkerClick(event) {
 
 		if ( this.state.infobarOnMobileIsOpen == true && isMobile ) {
-      this.closeInfobarOnMobile( result => {
-				// this.map.map.invalidateSize();
-      })
+      this.closeInfobarOnMobile()
 			return;
 		}
 
@@ -583,18 +610,13 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         break;
 
       default:
-        if (this.state.editIdea) {
+        if (this.state.currentEditIdea || this.state.selectedLocation) {
           this.setSelectedIdea(null);
           this.setState({ status: 'default' });
-          this.setNewIdea(null);
+          this.setCurrentEditIdea(null);
           this.onUpdateSelectedIdea(null);
         } else {
-          this.setSelectedIdea(event.target.data, () => {
-            this.setState({ status: 'idea-selected' });
-            this.setNewIdea(null);
-            this.onUpdateSelectedIdea(event.target.data);
-          });
-
+          this.onUpdateSelectedIdea(event.target.data);
         }
         document.querySelector('#osc-ideas-on-map-info').scrollTo(0,0)
 
@@ -604,14 +626,12 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 	onClusterClick(event) {
 
 		if ( this.state.infobarOnMobileIsOpen == true && isMobile ) {
-      this.closeInfobarOnMobile( result => {
-				// this.map.map.invalidateSize();
-      })
+      this.closeInfobarOnMobile()
 			return;
 		}
 
     this.setState({ status: 'default' });
-    this.setNewIdea(null);
+    this.setCurrentEditIdea(null);
     this.setSelectedIdea(null);
   }
 
@@ -630,69 +650,50 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       case 'idea-selected':
       case 'location-selected':
         if (self.infobar) {
-          let selectedIdea = self.state.selectedIdea || self.state.editIdea;
+          let selectedIdea = self.state.selectedIdea || self.state.currentEditIdea;
           if (selectedIdea) {
-            self.infobar.updateIdeas({ ideas: self.state.ideas.filter( x => x.id != selectedIdea.id ), sortOrder: 'distance', hideSortButton: true, center: { lat: selectedIdea.location.coordinates[0], lng: selectedIdea.location.coordinates[1] }, maxLength: 5 });
+            self.updateListedIdeas({ ideas: self.state.ideas.filter( idea => idea.id != selectedIdea.id ), sortOrder: 'distance',  center: { lat: selectedIdea.location.coordinates[0], lng: selectedIdea.location.coordinates[1] }, maxLength: 5 });
           }
         }
         break;
 
       default:
         if (self.infobar) {
-          self.infobar.updateIdeas({ ideas: self.getVisibleIdeas(), hideSortButton: false });
+          self.updateListedIdeas({ ideas: self.getVisibleIdeas() });
         }
 
     }
   }
 
-	onUpdateEditIdea(idea) {
-    this.setSelectedIdea(idea);
-    this.setState({ editIdea: { ...idea } });
-  }
-
 	onUpdateSelectedIdea(idea) {
-    if (this.state.editIdea) this.setNewIdea(null);
     let status = idea ? 'idea-selected' : 'default';
     if (idea) {
       document.location.href='#S'+idea.id;
     } else {
       document.location.href = "#";
     }
-    this.setState({ status }, function() {
+    this.setState({ status }, () => {
       this.setSelectedIdea(idea);
     });
   }
 
   onIdeaClick(idea) {
-    // let showDetails = this.state.status == 'location-selected' || this.state.status == 'idea-selected';
-    if (this.state.editIdea) this.setNewIdea(null);
-    this.setSelectedIdea(idea, () => {
-      this.setState({ status: 'idea-selected' }, function() {
-        document.location.href = "#D" + idea.id;
-      })
-    });
+    document.location.href = "#D" + idea.id;
   };
 
   onEditIdeaClick(idea) {
     let self = this;
-    let location = { lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] };
-    self.showIdeaForm(idea, () => {
-      // todo: dit werkt niet meer nu self.infobar.ideaform in de infobar zit
-      self.infobar.ideaform.handleLocationChange({ location, address: 'Bezig met adresgegevens ophalen...' });
-		  self.map.getPointInfo(location, null, function(json, marker) {
-			  let address = json && json._display || 'Geen adres gevonden';
-			  self.state.editIdea.address = address;
-			  self.infobar.ideaform.handleLocationChange({ location, address: address });
-		  })
+    self.setCurrentEditIdea(idea, currentEditIdea => {
+      self.showIdeaForm()
     });
   };
 
   onIdeaDeleted(ideaId) {
     let self = this;
-    self.setNewIdea(null);
+    self.setCurrentEditIdea(null);
     self.setSelectedIdea(null);
     self.setSelectedLocation(null);
-    self.setState({ status: 'default' }, function() {
+    self.setState({ status: 'default' }, () => {
       // self.map.map.invalidateSize();
       self.map.setBoundsAndCenter();
       self.fetchData({});
@@ -701,34 +702,24 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
   onDeleteIdeaClick(idea) {
     console.log('Delete idea', idea.id);
-  };
+  }
 
   onSelectedIdeaClick({ idea }) {
     document.location.href = "#D" + idea.id
-  };
+  }
   
   onNewIdeaClick({ idea }) {
     let self = this;
-    let editIdea = this.state.editIdea || {};
+    let editIdea = merge.recursive(this.state.currentEditIdea || {}, this.state.selectedLocation);
     editIdea.typeId = idea.typeId;
-    self.showIdeaForm(editIdea, () => {
-      if (this.state.editIdea && this.state.editIdea.location) {
-        let location = { lat: this.state.editIdea.location.coordinates[0], lng: this.state.editIdea.location.coordinates[1] };
-      // todo: dit werkt niet meer nu self.infobar.ideaform in de infobar zit
-        self.infobar.ideaform.handleLocationChange({ location, address: 'Bezig met adresgegevens ophalen...' });
-		    self.map.getPointInfo(location, null, function(json, marker) {
-			    let address = json && json._display || 'Geen adres gevonden';
-			    self.state.editIdea.address = address;
-			    self.infobar.ideaform.handleLocationChange({ location, address: address });
-		    })
-      }
+    self.setCurrentEditIdea(editIdea, currentEditIdea => {
+      self.showIdeaForm()
     });
-  };
+  }
 
   onIdeaStored(idea) {
-    let self = this;
-    self.setNewIdea(null);
-    self.fetchData({showIdeaDetails: idea.id});
+    this.setCurrentEditIdea(null);
+    this.fetchData({showIdeaDetails: idea.id});
   }
 
   onIdeaLiked(data) {
@@ -750,7 +741,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   
   onChangeFilter(filter) {
     this.setSelectedIdea(null);
-		this.setNewIdea(null);
+    this.setCurrentEditIdea(null);
 		this.setSelectedLocation(null);
 		this.setState({ status: 'default' })
 		this.onChangeMapBoundaries(); // todo: rename
@@ -780,10 +771,8 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   onClickMobileSwitcher() {
     let self = this;
     self.setInfobarOnMobileIsOpen( !this.state.infobarOnMobileIsOpen, result => {
-      //xxx
-      //self.map.map.invalidateSize();
       if (self.state.status == 'location-selected' || this.state.status == 'idea-selected') {
-        let selectedIdea = self.state.selectedIdea || self.state.editIdea;
+        let selectedIdea = self.state.selectedIdea || self.state.currentEditIdea;
         self.map.setBoundsAndCenter();
       }
     })
@@ -799,7 +788,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
       case 'idea-details':
         infoHTML = (
-			    <InfoBar config={this.config} displayType="details" idea={this.state.selectedIdea} className="osc-ideas-on-map-info" ref={el => (this.infobar = el)}/>
+			    <InfoBar config={this.config} displayType="details" selectedIdea={this.state.selectedIdea} idea={this.state.selectedIdea} className="osc-ideas-on-map-info" ref={el => (this.infobar = el)}/>
         );
         filterHTML = (
 				  <div className="osc-ideas-filterbar"><div className="osc-backbutton" onClick={() => this.onClickBackToOverview() }>Terug naar overzicht</div></div>
@@ -808,19 +797,21 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
       case 'idea-form':
         infoHTML = (
-			    <InfoBar config={this.config} displayType="form" idea={{ ...this.state.editIdea, user: this.state.editIdea && this.state.editIdea.user || this.config.user }} className="osc-ideas-on-map-info" ref={el => (this.infobar = el)}/>
+			    <InfoBar config={this.config} displayType="form" selectedIdea={this.state.selectedIdea} idea={{ ...this.state.currentEditIdea, user: this.state.currentEditIdea && this.state.currentEditIdea.user || this.config.user }} className="osc-ideas-on-map-info" ref={el => (this.infobar = el)}/>
         );
         filterHTML = (
-				  <div className="osc-ideas-filterbar"><div className="osc-backbutton" onClick={() => this.hideIdeaForm()}>Terug naar {this.state.editIdea && typeof this.state.editIdea.id == 'number' ? 'idee' : 'overzicht'}</div></div>
+				  <div className="osc-ideas-filterbar"><div className="osc-backbutton" onClick={() => this.hideIdeaForm()}>Terug naar {this.state.currentEditIdea && typeof this.state.currentEditIdea.id == 'number' ? 'idee' : 'overzicht'}</div></div>
         );
         break;
 
       case 'location-selected':
       case 'idea-selected':
         if (this.state.status == 'location-selected') {
-          if (this.state.editIdea && this.state.editIdea.isPointInPolygon) {
+          let location = this.state.selectedLocation || this.state.currentEditIdea && this.state.currentEditIdea.location || {};
+          location.isPointInPolygon = this.map.isPointInPolygon(location, this.config.map.polygon )
+          if (location.isPointInPolygon) {
             mobilePopupHTML = (
-              <Preview config={{ ...this.config, display: { type: 'mobilePreview' } }} selectedLocation={this.state.editIdea} />
+              <Preview config={{ ...this.config, display: { type: 'mobilePreview' } }} selectedLocation={location} />
 						);
           }
         } else {
@@ -832,7 +823,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
           );
         }
         infoHTML = (
-			    <InfoBar config={this.config} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" infobarOnMobileIsOpen={this.state.infobarOnMobileIsOpen} ref={el => (this.infobar = el)}/>
+			    <InfoBar config={this.config} selectedIdea={this.state.selectedIdea} selectedLocation={this.state.selectedLocation} currentEditIdea={this.state.currentEditIdea} ideas={this.state.listedIdeas} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" infobarOnMobileIsOpen={this.state.infobarOnMobileIsOpen} ref={el => (this.infobar = el)}/>
         );
         filterHTML = (
           <Filterbar config={this.config} className="osc-ideas-filterbar"/>
@@ -841,7 +832,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
       default:
         infoHTML = (
-			    <InfoBar config={this.config} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" infobarOnMobileIsOpen={this.state.infobarOnMobileIsOpen} ref={el => (this.infobar = el)}/>
+			    <InfoBar config={this.config} selectedIdea={this.state.selectedIdea} ideas={this.state.listedIdeas} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" infobarOnMobileIsOpen={this.state.infobarOnMobileIsOpen} ref={el => (this.infobar = el)}/>
         );
         filterHTML = (
           <Filterbar config={this.config} className="osc-ideas-filterbar"/>

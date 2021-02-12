@@ -122,6 +122,8 @@ export default class Map extends OpenStadComponentNLMap {
     self.markers.forEach((marker) => {
       if (exception && marker.data && marker.data.id && exception.id == marker.data.id) {
         if (marker.data) marker.data.isFaded = false;
+      } else if (this.selectedLocationMarker && this.selectedLocationMarker == marker) {
+        if (marker.data) marker.data.isFaded = false;
       } else {
         if (marker.data) marker.data.isFaded = true;
         let visibleParent = self.markerClusterGroup && self.markerClusterGroup.getVisibleParent(marker);

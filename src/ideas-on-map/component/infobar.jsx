@@ -11,6 +11,11 @@ import Preview from './preview.jsx';
 
 export default class InfoBar extends OpenStadComponent {
 
+  updateIdeas({ }) {
+    // xxx
+    console.log('updateIdeas moet weg');
+  }
+
   constructor(props) {
 
     super(props, {
@@ -41,9 +46,6 @@ export default class InfoBar extends OpenStadComponent {
 
     this.state = {
       currentSortOrder: this.config.defaultValue,
-      selectedIdea: undefined,
-      newIdea: undefined,
-      ideas: [],
       infobarOnMobileIsOpen: props.infobarOnMobileIsOpen || false,
     };
 
@@ -53,11 +55,6 @@ export default class InfoBar extends OpenStadComponent {
 
     let self = this;
 
-    self.setSelectedIdeaListener = function(event) {
-      self.setSelectedIdea(event.detail);
-    }
-		document.addEventListener('osc-set-selected-idea', self.setSelectedIdeaListener);
-
     self.setSelectedLocationListener = function(event) {
       self.setNewIdea(event.detail);
     }
@@ -66,25 +63,13 @@ export default class InfoBar extends OpenStadComponent {
   }
 
   componentWillUnmount() {
-		document.removeEventListener('osc-set-selected-idea', this.setSelectedIdeaListener);
 		document.removeEventListener('osc-set-selected-location', this.setSelectedLocationListener);
-  }
-  
-  updateIdeas({ ideas = this.state.ideas, sortOrder = this.state.currentSortOrder, hideSortButton, center = { lat: 52.37104644463586, lng: 4.900402911007405 }, maxLength }) {
-    ideas = this.list ? this.list.sorter.doSort({ ideas, sortOrder, center }) : [];
-    if (maxLength) {
-      ideas = ideas.splice(0, maxLength)
-    }
-    this.setState({ ideas });
   }
 
   // todo: dit moet helemaal weg; hij moet controlled worden
-  setSelectedIdea(idea) {
-    this.setState({ ...this.state, selectedIdea: idea, newIdea: null });
-  }
-
   setNewIdea(idea) {
-    this.setState({ ...this.state, newIdea: idea, selectedIdea: null });
+    console.log('DEZE MOET WEG');
+    this.setState({ ...this.state, selectedIdea: null });
   }
   
   dispatchClickMobileSwitcher(e) {
@@ -120,35 +105,31 @@ export default class InfoBar extends OpenStadComponent {
     }
 
     // ideas in list
-    let ideas = self.state.ideas;
+    let ideas = self.props.ideas;
 
     let titleAddition = '';
     let mobileSwitcherHTML = null;
     let mobileTitle = '';
-    let maxLength = null;
     let hideSortButton = false;
 
     // new idea
-    if (self.state.newIdea) {
+    if (self.props.currentEditIdea || self.props.selectedLocation) {
       titleAddition = 'in de buurt';
       mobileTitle = 'Meer details en acties';
-      maxLength = 5;
       hideSortButton = true;
     }
 
     // selected idea
-    if (self.state.selectedIdea) {
+    if (self.props.selectedIdea) {
       titleAddition = 'in de buurt';
       mobileTitle = 'Meer details';
-      maxLength = 5;
       hideSortButton = true;
     }
 
     if (!titleAddition) titleAddition = 'in dit gebied';
 
-    // wat doet dit? het was was if (!newIdeaHTML && !selectedIdeaHTML) {
-    if (!self.state.newIdea && !self.state.selectedIdea) {
-      mobileTitle = `${config.ideaName} in dit gebied (${self.state.ideas && self.state.ideas.length || 0})`;
+    if (!self.props.currentEditIdea && !self.props.selectedIdea) {
+      mobileTitle = `${config.ideaName} in dit gebied (${ideas && ideas.length || 0})`;
     }
 
     if (self.state.infobarOnMobileIsOpen) {
@@ -169,8 +150,8 @@ export default class InfoBar extends OpenStadComponent {
 			<div id={self.props.id} className={self.props.className || 'osc-infobar'} ref={el => (self.instance = el)}>
         {mobileSwitcherHTML}
 			  <div className="osc-info-content">
-          <Preview config={config} selectedIdea={self.state.selectedIdea} selectedLocation={self.state.newIdea}/>
-			    <IdeasOverview config={config} ideas={self.state.ideas} maxLength={maxLength} hideSortButton={hideSortButton} title={title} ref={el => (self.list = el)}/>
+          <Preview config={config} selectedIdea={self.props.selectedIdea} selectedLocation={self.props.currentEditIdea || self.props.selectedLocation}/>
+			    <IdeasOverview config={config} ideas={ideas} hideSortButton={hideSortButton} title={title} ref={el => (self.list = el)}/>
 			  </div>
 			</div>
 

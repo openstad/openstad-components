@@ -56,6 +56,26 @@ export default class Preview extends OpenStadComponent {
 
   }
 
+	componentDidMount(prevProps, prevState) {
+
+    let self = this;
+
+		self.updateLocationListener = function(event) {
+      self.updateLocation(event.detail && event.detail.location);
+    }
+    document.addEventListener('osc-update-location', self.updateLocationListener);
+
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('osc-update-location', this.updateLocationListener);
+  }
+
+  updateLocation(location) {
+    if (!location) return;
+    this.setState({ location, address: location.address })
+  }
+
   dispatchOnButtonIdeaClick(e, idea) {
 		var event = new window.CustomEvent('osc-selection-button-click', { detail: { idea } });
 		document.dispatchEvent(event);
@@ -103,8 +123,9 @@ export default class Preview extends OpenStadComponent {
           loginLink = "javascript: document.location.href = '/oauth/login?returnTo=' + encodeURIComponent(document.location.href)";
         }
       }
-      
-      contentHTML = contentHTML.replace(/\{address\}/g, this.props.selectedLocation.address || '');
+
+      let address = this.state.address || this.props.selectedLocation.address || '[adres wordt gezocht...]';
+      contentHTML = contentHTML.replace(/\{address\}/g, address || '');
       contentHTML = contentHTML.replace(/\{loginLink\}/g, loginLink);
       
       contentHTML = OpenStadComponentLibs.reactTemplate({ html: contentHTML, addButton, loginButton })
@@ -171,13 +192,10 @@ export default class Preview extends OpenStadComponent {
         }
       }
 
-      console.log(contentHTML);
-
-      contentHTML = contentHTML.replace(/\{address\}/g, self.props.selectedLocation.address || '');
+      let address = this.state.address || this.props.selectedLocation.address || '[adres wordt gezocht...]';
+      contentHTML = contentHTML.replace(/\{address\}/g, address || '');
       contentHTML = contentHTML.replace(/\{loginLink\}/g, loginLink);
       contentHTML = OpenStadComponentLibs.reactTemplate({ html: contentHTML, addButton, loginButton })
-
-      console.log(contentHTML);
 
       selectedLocationHTML = (
 			  <div className="osc-infobar-new-idea">
