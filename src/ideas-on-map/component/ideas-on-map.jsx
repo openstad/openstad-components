@@ -8,6 +8,12 @@ import Map from './map.jsx';
 import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
 
+import {addIdea, fetchIdeas} from '../../store/src/features/ideas/ideasSlice'
+import {connect} from "react-redux";
+import {getIdeas} from "../../store/src/features/ideas/selector";
+import {bindActionCreators} from "redux";
+var mapDispatch = { addIdea }
+
 // TODO: clean up; ik gebruikte eerst setNewIdea en setSelected, maar nu onNewIdeaClick en onSelectedIdeaClick; trek dat gelijk
 // TODO: editIdea vs newIdea opschonen
 // TODO: vervang handle functies door events, bijvoorbeeld bij opzoeken adres
@@ -16,10 +22,9 @@ import OpenStadComponentLibs from '../../libs/index.jsx';
 
 'use strict';
 
-export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
+class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
   constructor(props) {
-
     super(props, {
       display: {
         type: 'complete',
@@ -873,3 +878,16 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   }
 
 }
+
+const mapStateToProps = (state) => {
+  return {
+    ideas: getIdeas(state),
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({ addIdea, fetchIdeas }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true })(OpenStadComponentIdeasOnMap)
+

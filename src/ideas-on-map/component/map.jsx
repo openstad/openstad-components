@@ -1,8 +1,12 @@
 'use strict';
 
 import OpenStadComponentNLMap from '../../nlmap/index.jsx';
+import {getIdeas} from "../../store/src/features/ideas/selector";
+import {bindActionCreators} from "redux";
+import {addIdea, fetchIdeas} from "../../store/src/features/ideas/ideasSlice";
+import {connect} from "react-redux";
 
-export default class Map extends OpenStadComponentNLMap {
+class Map extends OpenStadComponentNLMap {
 
   constructor(props) {
 
@@ -185,3 +189,15 @@ export default class Map extends OpenStadComponentNLMap {
   }
 
 }
+
+const mapStateToProps = (state) => {
+  return {
+    ideas: getIdeas(state),
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({ addIdea, fetchIdeas }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true })(Map)

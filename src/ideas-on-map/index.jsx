@@ -6,20 +6,26 @@ import 'custom-event-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+// react redux
+import { Provider } from 'react-redux'
+
 // import css to make sure it is generated in the result
 import './css/default.less';
+import store from '../store';
 
 // the module
 import OpenStadComponentIdeasOnMap from './component/ideas-on-map.jsx';
 
+
 // render elements
-OpenStadComponentIdeasOnMap.renderElement = function renderElement( elem, config ) {
+OpenStadComponentIdeasOnMap.renderElement = function renderElement( elem, config, store ) {
   let attributes = elem.attributes;
-	ReactDOM.render( <OpenStadComponentIdeasOnMap attributes={attributes} config={config}/>, elem)
+  ReactDOM.render( <Provider store={store}> <OpenStadComponentIdeasOnMap attributes={attributes} config={config}/> </Provider>, elem)
 }
 
 export {
   OpenStadComponentIdeasOnMap as default,
   OpenStadComponentIdeasOnMap as IdeasOnMap,
+  store as OpenstadStore
 };
 
