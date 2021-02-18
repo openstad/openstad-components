@@ -84,7 +84,7 @@ export default class Map extends OpenStadComponentNLMap {
       if (this.selectedLocationMarker) {
         this.updateMarker(this.selectedLocationMarker, { location });
       } else {
-		    let icon = L.divIcon({ html: this.config.locationIcon.html, className: 'osc-ideas-on-map-icon', iconSize: L.point(this.config.locationIcon.width, this.config.locationIcon.height), iconAnchor: this.config.locationIcon.anchor });
+		    let icon = L.divIcon({ html: this.config.locationIcon.html, className: 'osc-ideas-on-map-icon', iconSize: L.point(this.config.locationIcon.width, this.config.locationIcon.height), iconAnchor: this.config.locationIcon.iconAnchor });
         this.selectedLocationMarker = this.addMarker({ ...location, icon, doNotCluster: true });
       }
     } else {

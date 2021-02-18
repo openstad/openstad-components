@@ -36,7 +36,7 @@ export default class OpenStadComponentForm extends OpenStadComponent {
     let isValid = true;
     let firstInvalid = null
     self.fields.forEach((field) => {
-      if (!field.validate({ showErrors })) {
+      if (!field.validate({ showErrors })) { 
         isValid = false;
         if (!firstInvalid) firstInvalid = field;
       }
@@ -48,11 +48,12 @@ export default class OpenStadComponentForm extends OpenStadComponent {
 	}
 
 	handleOnChange(data) {
-    // console.log("formchange", data);
     let self = this;
     let values = { ...this.state.values };
     values[data.name] = data.value;
-		this.setState({ values });
+		this.setState({ values }, () => {
+      if (typeof this.props.onChange == 'function') this.props.onChange(data)
+    });
 	}
 
 	render() {
@@ -74,7 +75,7 @@ export default class OpenStadComponentForm extends OpenStadComponent {
       fieldsHTML =
         <div className="osc-form-fields">
           { self.config.fields.map((fieldConfig, i) => {
-            return <OpenStadComponentFormField config={fieldConfig} onChange={self.handleOnChange} ref={el => (self.input = el)} key={`osc-form-field-${i}`}  ref={el => { self.fields[i] = el; }}/>
+            return <OpenStadComponentFormField config={fieldConfig} value={fieldConfig.value} onChange={self.handleOnChange} ref={el => (self.input = el)} key={`osc-form-field-${i}`} ref={el => { self.fields[i] = el; }}/>
           })}
         </div>
     }

@@ -43,6 +43,19 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
 
     let allValues = OpenStadComponentLibs.localStorage.get('osc-choices-guide.values') || {};
     let allScores = OpenStadComponentLibs.localStorage.get('osc-choices-guide.scores') || {};
+    
+    if (this.config.submission.type == 'form') {
+      // TODO: title? really?
+      this.onFormChange = this.onFormChange.bind(this);
+      let allFormvalues = OpenStadComponentLibs.localStorage.get('osc-choices-guide.formvalues') || {};
+      let formvalues = allFormvalues[ this.config.choicesGuideId ] || {};
+      console.log(formvalues);
+      this.config.submission.form.fields.forEach(field => {
+        if (typeof formvalues[field.title.toLowerCase()] != 'undefined') { console.log('+', field.title); field.value = formvalues[field.title.toLowerCase()]; }
+      });
+      console.log(this.config.submission.form.fields);
+    }
+
     this.state = {
       title: '',
       answers: allValues[ this.config.choicesGuideId ],
@@ -116,18 +129,24 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
 
     let self = this;
 
+    let requireLogin = !!(self.state.choicesGuideConfig && self.state.choicesGuideConfig.requiredUserRole);
+    if ( requireLogin && !self.isUserLoggedIn() ) {
+      let element = document.querySelector('.osc-require-login');
+      if (element) element.scrollIntoView({behavior: 'smooth'});
+      self.setState({
+        submissionError: {
+          message: 'Klik hierboven om je stem te valideren.',
+          type: 'unknown'
+        }
+      });
+      return;
+    }
+
     let formValues;
     if (self.config.submission.type == 'form') {
       formValues = self.form.getValues();
       let isValid = self.form.validate({ showErrors: true, scrollTo: true });
       if (!isValid) return;
-    }
-
-    let requireLogin = !!(self.state.choicesGuideConfig && self.state.choicesGuideConfig.requiredUserRole);
-    if ( requireLogin && !self.isUserLoggedIn() ) {
-      let element = document.querySelector('.osc-require-login');
-      if (element) element.scrollIntoView({behavior: 'smooth'});
-      return;
     }
 
     FingerprintJS.load().then(fp => {
@@ -186,6 +205,19 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
     return this.config.user && this.config.user.role && this.config.user.role != 'anonymous';
   }
 
+  onFormChange() {
+
+    let self = this;
+
+    let formIsValid = self.form && self.form.validate({});
+    self.setState({ formIsValid });
+
+    let allFormvalues = OpenStadComponentLibs.localStorage.get('osc-choices-guide.formvalues') || {};
+    allFormvalues[self.config.choicesGuideId] = self.form.getValues();
+    OpenStadComponentLibs.localStorage.set('osc-choices-guide.formvalues', allFormvalues);
+
+  }
+  
   render() {
 
     let self = this;
@@ -223,7 +255,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
     let previousNextButtonsHTML = null;
     if (self.config.submission.type == 'form') {
       formHTML = (
-        <OpenStadComponentForms.Form config={ self.config.submission.form }  ref={function(el) { self.form = el; }}/>
+        <OpenStadComponentForms.Form config={ self.config.submission.form } onChange={self.onFormChange} ref={function(el) { self.form = el; }}/>
       );
 
       if (requireLogin) {
@@ -240,7 +272,6 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
               message = self.state.submissionError.message;
             }
           }
-
           requireLoginHTML = (
             <div className={`osc-require-login osc-logged-in osc-logged-in ${className}`}>
               <h2>{self.config.submission.requireLoginSettings.title}</h2>
@@ -256,12 +287,21 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
             </div>
           )
         } else {
+          let className = '';
+          let message = '';
+          if (self.state.submissionError) {
+            className = 'osc-error';
+            message = self.state.submissionError.message;
+          }
           requireLoginHTML = (
-            <div className="osc-require-login osc-not-yet-logged-in">
+            <div className={`osc-require-login osc-not-yet-logged-in ${className}`}>
               <h2>{self.config.submission.requireLoginSettings.title}</h2>
               <div className="osc-gray-block">
                 {self.config.submission.requireLoginSettings.description}<br/><br/>
                 <button onClick={e => document.location.href = self.config.loginUrl} className="osc-button osc-button-white">{self.config.submission.requireLoginSettings.buttonTextLogin}</button>
+                <div className="osc-message">
+                  {message}
+                </div>
               </div>
             </div>
           )

@@ -146,7 +146,23 @@
     }
 
     &.osc-not-yet-logged-in {
-      
+
+      &.osc-error {
+
+        .osc-button-white {
+          border-width: 2px;
+          border-color: #ea1d25;
+        }
+
+        .osc-message {
+          margin-top: 20px;
+          padding: 10px;
+          color: #ea1d25;
+          border: solid 2px #ea1d25;
+        }
+
+      }
+
     }
 
     &.osc-logged-in {

@@ -711,7 +711,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   onNewIdeaClick({ idea }) {
     let self = this;
     let editIdea = merge.recursive(this.state.currentEditIdea || {}, this.state.selectedLocation);
-    editIdea.typeId = idea.typeId;
+    editIdea.typeId = idea && idea.typeId;
     self.setCurrentEditIdea(editIdea, currentEditIdea => {
       self.showIdeaForm()
     });

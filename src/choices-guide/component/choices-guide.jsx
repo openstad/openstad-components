@@ -275,7 +275,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
 
     let imageHTML = null;
     let images = self.state.images;
-    if (images) {
+    if (images && images.length) {
       if (!Array.isArray(images)) images = [images];
       imageHTML = (
         <OpenStadComponentImage className="osc-top-image-spacer" width="100%" image={images[0]}/>
