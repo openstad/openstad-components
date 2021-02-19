@@ -5,7 +5,7 @@ import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
 import OpenStadComponentQuestionGroup from './question-group.jsx';
 import OpenStadComponentChoices from './choices.jsx';
-import OpenStadComponentChoicesGuideForm from './edit-form.jsx';
+import OpenStadComponentChoicesGuideForm from './edit/form.jsx';
 import { Image as OpenStadComponentImage } from '../../image/index.jsx';
 import OpenStadComponentLightbox from '../../lightbox/index.jsx';
 import OpenStadComponentPreviousNextButtonBlock from '../../previous-next-button-block/index.jsx';
@@ -105,6 +105,9 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
       self.liveUpdates();
 		  var event = new window.CustomEvent('osc-choices-guide-is-ready');
 		  document.dispatchEvent(event);
+
+      // TMP xxx
+      self.showEditForm()
     });
 
 
@@ -275,7 +278,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
 
     let imageHTML = null;
     let images = self.state.images;
-    if (images) {
+    if (images && images.length) {
       if (!Array.isArray(images)) images = [images];
       imageHTML = (
         <OpenStadComponentImage className="osc-top-image-spacer" width="100%" image={images[0]}/>

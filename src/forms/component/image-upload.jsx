@@ -9,26 +9,29 @@ export default class OpenStadComponentSelect extends OpenStadComponentDefaultInp
     super(props, {
       allowMultiple: false,
 			imageserver: {
-				process: '',
-				fetch: ''
+				process: '/image',
+				fetch: '/image'
 			},
     });
 
+    console.log(this.config);
+    console.log(this.props.config);
+
     var uploadedFiles = [];
     let value = props.value || [];
+
+    if (!Array.isArray(value)) value = [value];
     value.forEach((image) => {
+      let src = typeof image == 'object' ? image.src : image;
       uploadedFiles.push({
-        source: { url: image },
+        source: { url: src },
         options : {
           type: 'local',
-          // mock file information
           file: {
-            name: image,
-            //		 size: 3001025,
-            //	 type: 'image/png'
+            name: src,
           },
           metadata: {
-            poster: image,
+            poster: src,
           }
         }
       })
@@ -186,10 +189,11 @@ export default class OpenStadComponentSelect extends OpenStadComponentDefaultInp
 		self.state.value = [];
 		if ( this.imageuploader && this.imageuploader.getFiles ) {
 			var images = this.imageuploader.getFiles();
+      var asJson = self.config.as && self.config.as == 'json';
 			images.forEach((image) => {
 				try {
 					var serverId = typeof image.serverId == 'string' ? JSON.parse(image.serverId) : image.serverId;
-					self.state.value.push(serverId.url)
+					self.state.value.push( asJson ? { "src": serverId.url } : serverId.url  )
 				} catch(err) { console.log(err) }
 			});
 		}

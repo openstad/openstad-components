@@ -35,7 +35,7 @@ export default class OpenStadComponentImage extends OpenStadComponent {
   }
 
   getImagesFromProps() {
-    let images = this.props.images;
+    let images = this.props.images || [];
     let image = this.props.image || images[this.state.currentImageIndex];
     return [this.props.image, images];
   }

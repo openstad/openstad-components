@@ -1,10 +1,13 @@
 'use strict';
 
-import OpenStadComponent from '../../component/index.jsx';
-import OpenStadComponentLibs from '../../libs/index.jsx';
-import OpenStadComponentForms from '../../forms/index.jsx';
+import OpenStadComponent from '../../../component/index.jsx';
+import OpenStadComponentLibs from '../../../libs/index.jsx';
 
-// todo: het is nu 1 form met switches; uit elkaar trekken in losse forms is netter
+import ChoiceForm from './choice-form.jsx';
+import ChoicesGuideForm from './choices-guide-form.jsx';
+import QuestionForm from './question-form.jsx';
+import QuestionGroupForm from './question-group-form.jsx';
+import Overview from './overview.jsx';
 
 export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent {
 
@@ -18,6 +21,10 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
         url: null
       },
     });
+
+    this.handleFieldChange = this.handleFieldChange.bind(this)
+    this.setCurrentForm = this.setCurrentForm.bind(this)
+    this.deleteElement = this.deleteElement.bind(this)
 
     this.state = {
       choicesGuideId: this.props.data.choicesGuideId,
@@ -86,7 +93,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
       case 'choices-guide':
         currentTarget.title = this.state.title;
         currentTarget.description = this.state.description;
-        currentTarget.images = this.state.images ? JSON.stringify(this.state.images) : '';
+        currentTarget.images = this.state.images ? this.state.images : '';
         break;
 
       case 'choice':
@@ -139,6 +146,8 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
 
       let isValid = true; // todo
       if (!isValid) return;
+
+      console.log(JSON.stringify(self.state.currentTarget, null, 2));
 
       if (!(self.config.user && self.config.user.role && self.config.user.role == 'admin')) return alert('Je mag dit niet');
 
@@ -303,82 +312,8 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
 
       case 'choices-guide':
         title = 'Bewerk keuzewijzer';
-        formfieldsHTML =
-          <div className="openstad-form">
-            <h3>Titel</h3>
-            <OpenStadComponentForms.InputWithCounter key="x1" config={{ inputType: 'input', minLength: 1, maxLength: 1000 }} value={self.state.currentTarget.title} onChange={ data => self.handleFieldChange({ title: data.value }) } ref={el => { self.titleField = el; }}/>
-            <h3>Beschrijving</h3>
-            <OpenStadComponentForms.InputWithCounter key="x2" config={{ inputType: 'textarea', minLength: 1, maxLength: 1000 }} value={self.state.currentTarget.description} onChange={ data => self.handleFieldChange({ description: data.value }) } ref={el => self.descriptionField = el}/>
-            <h3>Afbeeldingen</h3>
-            <OpenStadComponentForms.Textarea key="i1" config={{}} value={self.state.currentTarget.images} onChange={ data => self.handleFieldChange({ images: data.value }) } ref={el => self.imagesField = el}/>
-          </div>
-        ;
-        overviewHTML =
-          <div className="openstad-form">
-            <h4>Vraaggroepen</h4>
-            { Object.keys(self.state.questionGroups).map((key, i) => {
-
-              let questionGroup = self.state.questionGroups[key];
-
-              let questionsHTML =
-                  <ul>
-                    { Object.keys(questionGroup.questions).map((key, i) => {
-                      let question = questionGroup.questions[key];
-                      return (
-                        <li>
-                          ({question.id}) - {question.title} - {question.seqnr}
-                          -
-                          <a href="#" onClick={event => self.setCurrentForm({ what: 'question', questionGroupId: questionGroup.id, questionId: question.id })}>
-                            Bewerk
-                          </a>
-                          -
-                          <a href="#" onClick={event => self.deleteElement({ what: 'question', questionGroupId: questionGroup.id, questionId: question.id, title: question.title})}>
-                            Verwijder
-                          </a>
-                        </li>
-                      );
-                    })}
-                    <li>
-                      <a href="#" onClick={event => self.setCurrentForm({ what: 'question', questionGroupId: questionGroup.id })}>
-                        Nieuwe vraag
-                      </a>
-                    </li>
-                  </ul>
-                  ;
-
-              let choicesHTML =
-                  <ul>
-                    { Object.keys(questionGroup.choices).map((key, i) => {
-                      let choice = questionGroup.choices[key];
-                      return (
-                        <li>{choice.title} - {choice.seqnr}
-                          - <a href="#" onClick={event => self.setCurrentForm({ what: 'choice', questionGroupId: questionGroup.id, choiceId: choice.id })}>Bewerk</a>
-                          - <a href="#" onClick={event => self.deleteElement({ what: 'choice', questionGroupId: questionGroup.id, choiceId: choice.id, title: choice.title})}>Verwijder</a>
-                        </li>
-                      );
-                    })}
-                    <li><a href="#" onClick={event => self.setCurrentForm({ what: 'choice', questionGroupId: questionGroup.id })}>Nieuwe keuze</a></li>
-                  </ul>;
-
-
-              let deleteButton;
-              if (Object.keys(questionGroup.choices).length == 0 && Object.keys(questionGroup.questions).length == 0) {
-                deleteButton = (<a href="#" onClick={event => self.deleteElement({ what: 'question-group', questionGroupId: questionGroup.id, title: questionGroup.title})}>Verwijder</a>);
-              }
-
-              return (
-                <div>
-                  {questionGroup.title} - {questionGroup.seqnr}
-                  - <a href="#" onClick={event => self.setCurrentForm({ what: 'question-group', questionGroupId: questionGroup.id })}>Bewerk</a>
-                  - {deleteButton}
-                  {questionsHTML}
-                  {choicesHTML}
-                </div>
-              );
-            })}
-            <a href="#" onClick={event => self.setCurrentForm({ what: 'question-group' })}>Nieuwe groep</a>
-          </div>
-        ;
+        formfieldsHTML = (<ChoicesGuideForm config={this.config} currentTarget={self.state.currentTarget} onChange={self.handleFieldChange} ref={el => { self.formfields = el; }}/>);
+        overviewHTML = (<Overview questionGroups={self.state.questionGroups} setCurrentForm={self.setCurrentForm} deleteElement={self.deleteElement} ref={el => { self.formfields = el; }}/>);
         backButtonHTML =
           <button onClick={() => { if (self.onFinished) self.onFinished(); }}>Terug</button>
         ;
@@ -386,67 +321,17 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
 
       case 'choice':
         title = 'Bewerk Keuze';
-        formfieldsHTML =
-          <div>
-            <h3>Titel</h3>
-            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 1, maxLength: 1000 }} value={self.state.currentTarget.title} onChange={ data => self.handleFieldChange({ title: data.value }) } ref={el => self.titleField = el}/>
-            <h3>Beschrijving</h3>
-            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'textarea', minLength: 1, maxLength: 1000 }} value={self.state.currentTarget.description} onChange={ data => self.handleFieldChange({ description: data.value }) } ref={el => self.descriptionField = el}/>
-            <h3>Afbeeldingen</h3>
-            <OpenStadComponentForms.Textarea key="i2" config={{}} value={self.state.currentTarget.images} onChange={ data => self.handleFieldChange({ images: data.value }) } ref={el => self.imagesField = el}/>
-            <h3>Antwoorden</h3>
-            <OpenStadComponentForms.Text config={{}} value={self.state.currentTarget.answers} onChange={ data => self.handleFieldChange({ answers: data.value }) } ref={el => self.answersField = el}/>
-            <h3>Volgorde nummer</h3>
-            <OpenStadComponentForms.Text config={{}} value={self.state.currentTarget.seqnr} onChange={ data => self.handleFieldChange({ seqnr: data.value }) } ref={el => self.seqnrField = el}/>
-          </div>
-        ;
+        formfieldsHTML = (<ChoiceForm config={this.config} currentTarget={self.state.currentTarget} onChange={self.handleFieldChange} ref={el => { self.formfields = el; }}/>);
         break;
 
       case 'question-group':
         title = 'Bewerk Vragengroep';
-        formfieldsHTML =
-          <div className="openstad-form">
-            <h3>Titel</h3>
-            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 1, maxLength: 1000 }} value={self.state.currentTarget.title} onChange={ data => self.handleFieldChange({ title: data.value }) } ref={el => self.titleField = el}/>
-            <h3>Beschrijving</h3>
-            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'textarea', minLength: 1, maxLength: 1000 }} value={self.state.currentTarget.description} onChange={ data => self.handleFieldChange({ description: data.value }) } ref={el => self.descriptionField = el}/>
-            <h3>Afbeeldingen</h3>
-            <OpenStadComponentForms.Textarea key="i3" config={{}} value={self.state.currentTarget.images} onChange={ data => self.handleFieldChange({ images: data.value }) } ref={el => self.imagesField = el}/>
-            <h3>Volgorde nummer</h3>
-            <OpenStadComponentForms.Text config={{}} value={self.state.currentTarget.seqnr} onChange={ data => self.handleFieldChange({ seqnr: data.value }) } ref={el => self.seqnrField = el}/>
-          </div>
-        ;
+        formfieldsHTML = (<QuestionGroupForm config={this.config} currentTarget={self.state.currentTarget} onChange={self.handleFieldChange} ref={el => { self.formfields = el; }}/>);
         break;
 
       case 'question':
         title = `Bewerk Vraag ${  self.state.currentTarget.questionId}`;
-        formfieldsHTML =
-          <div className="openstad-form">
-            <h3>Titel</h3>
-            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 1, maxLength: 1000 }} value={self.state.currentTarget.title} onChange={ data => self.handleFieldChange({ title: data.value }) } ref={el => self.titleField = el}/>
-            <h3>Beschrijving</h3>
-            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'textarea', minLength: 1, maxLength: 1000 }} value={self.state.currentTarget.description} onChange={ data => self.handleFieldChange({ description: data.value }) } ref={el => self.descriptionField = el}/>
-            <h3>Afbeeldingen</h3>
-            <OpenStadComponentForms.Textarea key="i4" config={{}} value={self.state.currentTarget.images} onChange={ data => self.handleFieldChange({ images: data.value }) } ref={el => self.imagesField = el}/>
-            <h3>Label minimale waarde</h3>
-            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 1, maxLength: 1000 }} value={self.state.currentTarget.minLabel} onChange={ data => self.handleFieldChange({ minLabel: data.value }) } ref={el => self.minLabelField = el}/>
-            <h3>Label maximale waarde</h3>
-            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 1, maxLength: 1000 }} value={self.state.currentTarget.maxLabel} onChange={ data => self.handleFieldChange({ maxLabel: data.value }) } ref={el => self.maxLabelField = el}/>
-            <h3>Type</h3>
-            <select key={`dezemoetnogweg${  self.state.currentTarget.questionGroupId}`} value={self.state.currentTarget.type} onChange={ () => self.handleFieldChange({ type: self.typeField.value }) } ref={el => self.typeField = el}>
-              <option value="continuous">continue</option>
-              <option value="a-to-b">van a naar b</option>
-              <option value="enum-buttons">multiple choice - buttons</option>
-              <option value="enum-radio">multiple choice - radio</option>
-            </select>
-            <h3>Dimensions</h3>
-            <OpenStadComponentForms.Text config={{}} value={self.state.currentTarget.dimensions} onChange={ data => self.handleFieldChange({ dimensions: data.value }) } ref={el => self.dimensionsField = el}/>
-            <h3>Waarden</h3>
-            <OpenStadComponentForms.Textarea config={{}} value={self.state.currentTarget.values} onChange={ data => self.handleFieldChange({ values: data.value }) } ref={el => self.valuesField = el}/>
-            <h3>Volgorde nummer</h3>
-            <OpenStadComponentForms.Text config={{}} value={self.state.currentTarget.seqnr} onChange={ data => self.handleFieldChange({ seqnr: data.value }) } ref={el => self.seqnrField = el}/>
-          </div>
-        ;
+        formfieldsHTML = (<QuestionForm config={this.config} currentTarget={self.state.currentTarget} onChange={self.handleFieldChange} ref={el => { self.formfields = el; }}/>);
         break;
 
       default:
@@ -461,12 +346,12 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
         <h2>{title}</h2>
 
         {formfieldsHTML}
-        <br/>
-        <br/>
+        {overviewHTML}
+
+        <br/><br/>
+
         {backButtonHTML}
         {submitButtonHTML}
-
-        {overviewHTML}
 
       </div>
     );

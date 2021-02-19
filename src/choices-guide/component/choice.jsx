@@ -99,7 +99,7 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
 
         let imageHTML = null;
         let images = this.props.data && this.props.data.images;
-        if (images) {
+        if (images && images.length) {
           if (!Array.isArray(images)) images = [images];
           let image = images[0];
           let imageSrc = image;

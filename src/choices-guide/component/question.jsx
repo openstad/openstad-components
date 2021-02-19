@@ -120,7 +120,7 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
 
     let imageHTML = null;
     let images = data.images;
-    if (images) {
+    if (images && images.length) {
       if (!Array.isArray(images)) images = [images];
       let image = images[0];
       imageHTML = (
