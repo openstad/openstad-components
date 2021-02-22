@@ -40,15 +40,40 @@
 
       .osc-overview-line-content {
         flex-grow: 100;
+        min-width: 120px;
         height: 33px;
-        margin: 3px 0 0 0;
+        margin: 3px 15px 0 0;
         padding: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        input {
+          height: 30px;
+          line-height: 30px;
+          padding: 0 5px;
+        }
       }
 
+      .osc-overview-line-field {
+        flex-grow: 1;
+        max-width: 50px;
+        margin-right: 15px;
+
+        input {
+          height: 30px;
+          line-height: 30px;
+          padding: 0 5px;
+        }
+        
+      }
+      
       .osc-overview-line-buttons {
+        flex-grow: 1;
         height: 33px;
         margin: 3px 0 0 0;
         padding: 0;
+        white-space: nowrap;
       }
 
     }
@@ -83,13 +108,40 @@
     .osc-overview-choices {
       margin-top: 40px;
     }
+
+    .osc-overview-question-options{
+      margin-top: 20px;
+    }
     
   }
 
   &.osc-busy {
     opacity: .4;
   }
-  
+
+  .osc-input-with-counter {
+    .osc-input-with-counter();
+    input {
+      width: 100%;
+	    font-size: 14px;;
+	    font-weight: normal;
+      
+    }
+  }
+
+  .osc-textinput {
+    .osc-textinput();
+    input {
+      width: 100%;
+	    font-size: 14px;;
+	    font-weight: normal;
+    }
+  }
+
+  .osc-select {
+    .osc-select();
+  }
+
 }
 
 .osc-form-intro {

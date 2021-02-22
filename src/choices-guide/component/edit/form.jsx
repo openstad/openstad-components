@@ -53,7 +53,6 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
         return response.json();
       })
       .then((json) => {
-
         let state = {};
         state.choicesGuideId = json.id;
         state.title = json.title;
@@ -81,6 +80,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
     });
 
     this.setState({ currentTarget });
+
   }
 
   setCurrentForm(currentTarget) {
@@ -103,10 +103,11 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
         } else {
           choice = this.state.choices.find(choices => choices.id == currentTarget.choicesId) || {};
         }
+        currentTarget.questionGroup = questionGroup;
         currentTarget.title = choice.title;
         currentTarget.description = choice.description;
-        currentTarget.images = choice.images ? JSON.stringify(choice.images) : '';
-        currentTarget.answers = choice.answers ? JSON.stringify(choice.answers) : '';
+        currentTarget.images = choice.images;
+        currentTarget.answers = choice.answers;
         currentTarget.seqnr = choice.seqnr || 0;
         break;
 
@@ -114,21 +115,22 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
         questionGroup = this.state.questionGroups.find(group => group.id == currentTarget.questionGroupId) || {};
         currentTarget.title = questionGroup.title;
         currentTarget.description = questionGroup.description;
-        currentTarget.images = questionGroup.images ? JSON.stringify(questionGroup.images) : '';
+        currentTarget.answerDimensions = questionGroup.answerDimensions;
         currentTarget.seqnr = questionGroup.seqnr || 0;
         break;
 
       case 'question':
         questionGroup = this.state.questionGroups.find(group => group.id == currentTarget.questionGroupId) || {};
         question = questionGroup.questions && questionGroup.questions.find(question => question.id == currentTarget.questionId) || {};
+        currentTarget.questionGroup = questionGroup;
         currentTarget.title = question.title;
         currentTarget.description = question.description;
-        currentTarget.images = question.images ? JSON.stringify(question.images) : '';
+        currentTarget.images = question.images;
         currentTarget.minLabel = question.minLabel;
         currentTarget.maxLabel = question.maxLabel;
         currentTarget.type = question.type;
         currentTarget.dimensions = question.dimensions;
-        currentTarget.values = question.values ? JSON.stringify(question.values) : '';
+        currentTarget.values = question.values;
         currentTarget.seqnr = question.seqnr || 0;
         break;
 
@@ -146,8 +148,6 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
 
       let isValid = true; // todo
       if (!isValid) return;
-
-      console.log(JSON.stringify(self.state.currentTarget, null, 2));
 
       if (!(self.config.user && self.config.user.role && self.config.user.role == 'admin')) return alert('Je mag dit niet');
 
@@ -178,9 +178,12 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
             title: self.state.currentTarget.title,
             description: self.state.currentTarget.description,
             images: self.state.currentTarget.images,
-            answers: self.state.currentTarget.answers ? JSON.parse(self.state.currentTarget.answers) : '',
+            answers: self.state.currentTarget.answers,
             seqnr: self.state.currentTarget.seqnr,
           };
+          try {
+            body.answers = JSON.parse(body.answers)
+          } catch (err) {}
           break;
 
         case 'question-group':
@@ -189,7 +192,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
           body = {
             title: self.state.currentTarget.title,
             description: self.state.currentTarget.description,
-            images: self.state.currentTarget.images,
+            answerDimensions: self.state.currentTarget.answerDimensions,
             seqnr: self.state.currentTarget.seqnr,
           };
           break;
@@ -205,9 +208,12 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
             maxLabel: self.state.currentTarget.maxLabel,
             type: self.state.currentTarget.type,
             dimensions: self.state.currentTarget.dimensions,
-            values: self.state.currentTarget.values ? JSON.parse(self.state.currentTarget.values) : '',
+            values: self.state.currentTarget.values,
             seqnr: self.state.currentTarget.seqnr,
           };
+          try {
+            body.values = JSON.parse(body.values)
+          } catch (err) {}
           break;
 
         default:
@@ -216,6 +222,8 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
 
       let headers = OpenStadComponentLibs.api.getHeaders(self.config);
       let method = targetId ? 'PUT' : 'POST';
+
+      console.log(body);
 
       fetch(url, {
         method,

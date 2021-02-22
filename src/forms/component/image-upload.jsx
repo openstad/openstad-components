@@ -14,9 +14,6 @@ export default class OpenStadComponentSelect extends OpenStadComponentDefaultInp
 			},
     });
 
-    console.log(this.config);
-    console.log(this.props.config);
-
     var uploadedFiles = [];
     let value = props.value || [];
 

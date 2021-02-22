@@ -7,6 +7,7 @@
 * ideas-on-map: fix first click on map bug
 * Add login required to choices-guide results
 * Refactor
+* Update choices-guide forms
 
 ## v0.14.0 (2021-01-25)
 * Start of using version numbers and changelog

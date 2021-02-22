@@ -30,6 +30,11 @@ export default class ChoiceForm extends OpenStadComponent {
                           <div className="osc-overview-line-content">
                             {question.title}
                           </div>
+                          {/*
+                          <div className="osc-overview-line-content">
+                            {question.description}
+                          </div>
+                          */}
                           <div className="osc-overview-line-buttons">
                             <a className="osc-edit-button" onClick={event => self.props.setCurrentForm({ what: 'question', questionGroupId: questionGroup.id, questionId: question.id })}></a>
                             <a className="osc-delete-button" onClick={event => self.props.deleteElement({ what: 'question', questionGroupId: questionGroup.id, questionId: question.id, title: question.title})}></a>
