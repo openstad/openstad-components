@@ -15,7 +15,7 @@ export default class OpenStadComponentText extends OpenStadComponentDefaultInput
     
     return (
 			<div className="osc-textinput">
-			  <input type="text" value={this.props.value} disabled={this.props.disabled} placeholder={this.config.placeholder} onChange={e => self.handleOnChange({ value: self.input.value })} ref={el => (self.input = el)}/>
+			  <input type="text" value={this.state.value} disabled={this.props.disabled} placeholder={this.config.placeholder} onChange={e => self.handleOnChange({ value: self.input.value })} ref={el => (self.input = el)}/>
         {errorHTML}
 		  </div>
     );

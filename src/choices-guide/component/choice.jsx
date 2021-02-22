@@ -98,7 +98,7 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
       case 'plane':
 
         let imageHTML = null;
-        let images = this.props.data && this.props.data.images;
+        let images = this.props.data && this.props.data.images || [];
         if (images && images.length) {
           if (!Array.isArray(images)) images = [images];
           let image = images[0];
