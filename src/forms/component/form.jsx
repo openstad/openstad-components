@@ -75,7 +75,7 @@ export default class OpenStadComponentForm extends OpenStadComponent {
       fieldsHTML =
         <div className="osc-form-fields">
           { self.config.fields.map((fieldConfig, i) => {
-            return <OpenStadComponentFormField config={fieldConfig} value={fieldConfig.value} onChange={self.handleOnChange} ref={el => (self.input = el)} key={`osc-form-field-${i}`} ref={el => { self.fields[i] = el; }}/>
+            return <OpenStadComponentFormField config={fieldConfig} initValue={fieldConfig.value} onChange={self.handleOnChange} ref={el => (self.input = el)} key={`osc-form-field-${i}`} ref={el => { self.fields[i] = el; }}/>
           })}
         </div>
     }

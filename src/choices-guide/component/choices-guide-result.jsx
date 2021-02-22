@@ -49,11 +49,9 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
       this.onFormChange = this.onFormChange.bind(this);
       let allFormvalues = OpenStadComponentLibs.localStorage.get('osc-choices-guide.formvalues') || {};
       let formvalues = allFormvalues[ this.config.choicesGuideId ] || {};
-      console.log(formvalues);
       this.config.submission.form.fields.forEach(field => {
-        if (typeof formvalues[field.title.toLowerCase()] != 'undefined') { console.log('+', field.title); field.value = formvalues[field.title.toLowerCase()]; }
+        if (typeof formvalues[field.title.toLowerCase()] != 'undefined') { field.value = formvalues[field.title.toLowerCase()]; }
       });
-      console.log(this.config.submission.form.fields);
     }
 
     this.state = {
@@ -129,26 +127,33 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
 
     let self = this;
 
+    let formValues;
+
+    let errorState1;
     let requireLogin = !!(self.state.choicesGuideConfig && self.state.choicesGuideConfig.requiredUserRole);
     if ( requireLogin && !self.isUserLoggedIn() ) {
       let element = document.querySelector('.osc-require-login');
       if (element) element.scrollIntoView({behavior: 'smooth'});
-      self.setState({
+      errorState1 = {
         submissionError: {
           message: 'Klik hierboven om je stem te valideren.',
           type: 'unknown'
         }
-      });
-      return;
+      };
     }
 
-    let formValues;
+    let errorState2;
     if (self.config.submission.type == 'form') {
       formValues = self.form.getValues();
       let isValid = self.form.validate({ showErrors: true, scrollTo: true });
-      if (!isValid) return;
+      if (!isValid) errorState2 = {};
     }
 
+    if (errorState1 || errorState2) {
+      self.setState(Object.assign(errorState1, errorState2))
+      return;
+    };
+    
     FingerprintJS.load().then(fp => {
       fp.get().then(result => {
         const visitorId = result.visitorId;
@@ -177,6 +182,9 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
           })
           .then(function(json) {
             if (self.config.submission.type == 'form') {
+              OpenStadComponentLibs.localStorage.remove('osc-choices-guide.values');
+              OpenStadComponentLibs.localStorage.remove('osc-choices-guide.scores');
+              OpenStadComponentLibs.localStorage.remove('osc-choices-guide.formvalues');
               document.location.href = self.config.afterUrl
             }
           })
@@ -208,9 +216,6 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
   onFormChange() {
 
     let self = this;
-
-    let formIsValid = self.form && self.form.validate({});
-    self.setState({ formIsValid });
 
     let allFormvalues = OpenStadComponentLibs.localStorage.get('osc-choices-guide.formvalues') || {};
     allFormvalues[self.config.choicesGuideId] = self.form.getValues();
