@@ -146,11 +146,14 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
     if (self.config.submission.type == 'form') {
       formValues = self.form.getValues();
       let isValid = self.form.validate({ showErrors: true, scrollTo: true });
-      if (!isValid) errorState2 = {};
+      if (!isValid) errorState2 = true;
     }
 
     if (errorState1 || errorState2) {
-      self.setState(Object.assign(errorState1, errorState2))
+      self.setState(errorState1, () => {
+        // TODO: de error wordt overschreven; dat moet nog opgelost. Tot dan staat dit hier extra
+        self.form.validate({ showErrors: true, scrollTo: true });
+      })
       return;
     };
     
