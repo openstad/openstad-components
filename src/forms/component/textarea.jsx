@@ -2,7 +2,7 @@
 
 import OpenStadComponentDefaultInput from './default-input.jsx';
 
-export default class OpenStadComponentSelect extends OpenStadComponentDefaultInput {
+export default class OpenStadComponentTextArea extends OpenStadComponentDefaultInput {
 
 	render() {
 
@@ -15,7 +15,7 @@ export default class OpenStadComponentSelect extends OpenStadComponentDefaultInp
     
     return (
 			<div className="osc-textarea">
-			  <textarea value={this.props.value} disabled={this.props.disabled} placeholder={this.config.placeholder} onChange={e => self.handleOnChange({ value: self.input.value })} ref={el => (self.input = el)}>{this.state.value}</textarea>
+			  <textarea value={this.state.value} disabled={this.props.disabled} placeholder={this.config.placeholder} onChange={e => self.handleOnChange({ value: self.input.value })} ref={el => (self.input = el)}>{this.state.value}</textarea>
         {errorHTML}
 		  </div>
     );
