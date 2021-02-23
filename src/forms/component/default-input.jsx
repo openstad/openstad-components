@@ -30,7 +30,6 @@ export default class OpenStadComponentDefaultInput extends OpenStadComponent {
     let error = '';
     if (!isValid && showErrors) error = true;
     this.setState({ isValid, error })
-    console.log('xx', isValid, error);
 		return isValid;
 	}
 
@@ -38,7 +37,7 @@ export default class OpenStadComponentDefaultInput extends OpenStadComponent {
 		let self = this;
     data = data || {};
 		self.setState(data, () => {
-      // self.validate({});
+      self.validate({});
     })
 		if (typeof self.onChange == 'function') {
 			self.onChange({ name: self.config.name, value: data.value });
