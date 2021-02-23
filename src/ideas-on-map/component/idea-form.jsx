@@ -1,8 +1,7 @@
-import merge from 'merge';
-import React from 'react';
+'use strict';
 
+import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
-
 import OpenStadComponentForms from '../../forms/index.jsx';
 
 // import OpenStadComponentImageUpload from './openstad-component-formelements/image-upload.jsx';
@@ -10,29 +9,27 @@ import OpenStadComponentForms from '../../forms/index.jsx';
 
 'use strict';
 
-export default class IdeasForm extends React.Component {
+export default class IdeasForm extends OpenStadComponent {
 
   constructor(props) {
 
-    super(props);
+    super(props, {
+      user: {},
+			ideaId: null,
+      idea: {
+        titleMinLength: 10,
+        titleMaxLength: 20,
+        summaryMinLength: 20,
+        summaryMaxLength: 140,
+        descriptionMinLength: 140,
+        descriptionMaxLength: 5000,
+        fields: [],
+      },
+    });
 
 		let self = this;
 
-		self.defaultConfig = {
-      user: {},
-			ideaId: null,
-      titleMinLength: 10,
-      titleMaxLength: 20,
-      summaryMinLength: 20,
-      summaryMaxLength: 140,
-      descriptionMinLength: 140,
-      descriptionMaxLength: 5000,
-      fields: [],
-    };
-		self.config = merge.recursive(self.defaultConfig, self.config, props.config || {})
-    self.config.fields = [ ...self.config.fields ];
-
-    let fields = self.config.fields || [];
+    let fields = self.config.idea.fields = [ ...self.config.idea.fields ];
 
     if (!self.props.idea.extraData) self.props.idea.extraData = {};
 
@@ -54,20 +51,20 @@ export default class IdeasForm extends React.Component {
 
     let titleField = fields.find(field => field.name == 'title');
     if (titleField) {
-		  titleField.minLength = self.config.titleMinLength;
-		  titleField.maxLength = self.config.titleMaxLength;
+		  titleField.minLength = self.config.idea.titleMinLength;
+		  titleField.maxLength = self.config.idea.titleMaxLength;
     }
 
     let summaryField = fields.find(field => field.name == 'summary');
     if (summaryField) {
-		  summaryField.minLength = self.config.summaryMinLength;
-		  summaryField.maxLength = self.config.summaryMaxLength;
+		  summaryField.minLength = self.config.idea.summaryMinLength;
+		  summaryField.maxLength = self.config.idea.summaryMaxLength;
     }
 
     let descriptionField = fields.find(field => field.name == 'description');
     if (descriptionField) {
-		  descriptionField.minLength = self.config.descriptionMinLength;
-		  descriptionField.maxLength = self.config.descriptionMaxLength;
+		  descriptionField.minLength = self.config.idea.descriptionMinLength;
+		  descriptionField.maxLength = self.config.idea.descriptionMaxLength;
     }
 
     let imageField = fields.find(field => field.inputType == 'image-upload'); // TODO: multiple images?
@@ -86,7 +83,7 @@ export default class IdeasForm extends React.Component {
             choices.push({ title: typeDef.name, value: typeDef.id || typeDef.value})
           }
         });
-        self.config.fields.push({
+        self.config.idea.fields.push({
 				  name: "typeId",
 				  title: "Type inzending",
 				  value: self.props.idea.typeId,
@@ -97,7 +94,7 @@ export default class IdeasForm extends React.Component {
       }
 
       // moderator
-      self.config.fields.push({
+      self.config.idea.fields.push({
 				name: "modBreak",
 				title: "Moderator reactie",
 				value: self.props.idea.modBreak,
@@ -111,7 +108,7 @@ export default class IdeasForm extends React.Component {
 
       // hidden: typeId
       if (self.config.types && self.config.typeField == 'typeId') {
-        self.config.fields.push({
+        self.config.idea.fields.push({
 				  name: "typeId",
 				  value: self.props.idea.typeId,
 				  inputType: "hidden",
@@ -126,21 +123,34 @@ export default class IdeasForm extends React.Component {
   }
 
 	componentDidMount(prevProps, prevState) {
+
+    let self = this;
+
+		self.updateLocationListener = function(event) {
+      self.updateLocation(event.detail && event.detail.location);
+    }
+    document.addEventListener('osc-update-location', self.updateLocationListener);
+
   }
 
-  // todo: als hanlefieldchange met meerder waarden in een { key: value } formaat gaat werken dan kan deze weg
-  handleLocationChange({location, address}) {
+  componentWillUnmount() {
+    document.removeEventListener('osc-update-location', this.updateLocationListener);
+  }
+
+  updateLocation(location) {
+    if (!location) return;
     let state = { ...this.state };
     state.formfields['location'] = { coordinates: [ location.lat, location.lng ] };
-    state.formfields['address'] = address;
+    state.formfields['address'] = location.address;
     this.setState(state)
-    this.dispatchUpdateEditIdea(state.formfields)
+    // this.dispatchUpdateEditIdea(state.formfields)
   }
 
-  dispatchUpdateEditIdea(idea) {
-		var event = new window.CustomEvent('updateEditIdea', { detail: { idea } });
-		document.dispatchEvent(event);
-  }
+  // ik denk dat dit oud is
+  // dispatchUpdateEditIdea(idea) {
+	//   var event = new window.CustomEvent('osc-update-edit-idea', { detail: { idea } });
+	//   document.dispatchEvent(event);
+  // }
 
   validateIdea() {
 
@@ -177,7 +187,7 @@ export default class IdeasForm extends React.Component {
 
       let formValues = self.form.getValues();
 
-      let isValid = self.form.validate({ showErrors: true });
+      let isValid = self.form.validate({ showErrors: true, scrollTo: true });
 
 	    if ( !self.validateIdea() || !isValid ) { // validateIdea doet nog locatie en images
         self.setState({ isBusy: false, showFormErrorsWarning: true });
@@ -228,7 +238,7 @@ export default class IdeasForm extends React.Component {
         })
         .then( json => {
           self.setState({ isBusy: false }, () => {
-		        var event = new window.CustomEvent('newIdeaStored', { detail: { idea: json } });
+		        var event = new window.CustomEvent('osc-idea-stored', { detail: { idea: json } });
 		        document.dispatchEvent(event);
           })
         })
@@ -262,11 +272,11 @@ export default class IdeasForm extends React.Component {
 
     let formHTML = null;
     formHTML = (
-      <OpenStadComponentForms.Form config={ self.config } values={{ typeId: self.state.formfields.typeId /* typeId is hidden */ }} ref={(el) => { self.form = el;}}/>
+      <OpenStadComponentForms.Form config={{ fields: self.config.idea.fields }} values={{ typeId: self.state.formfields.typeId /* typeId is hidden */ }} ref={(el) => { self.form = el;}}/>
     )
 
     return (
-			<div id={self.id} className={self.props.className || 'osc-info-block-idea-form'} ref={el => (self.instance = el)}>
+			<div id={self.id} className={self.props.className || 'osc-infobar-idea-form'} ref={el => (self.instance = el)}>
 
 			  <div className="osc-spacer"></div>
 
@@ -285,7 +295,7 @@ export default class IdeasForm extends React.Component {
 					  <h2>
             Een locatie vlakbij
 					  </h2>
-            {self.state.formfields.address || 'Geen adres gevonden'}
+            {self.state.formfields.address || 'Adres wordt gezocht...'}
 						<div className="osc-form-warning" style={{ display: 'none' }} ref={ el => this['form-warning-location'] = el  }>Geen locatie geselecteerd</div>
           </div>
 

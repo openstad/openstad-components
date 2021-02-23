@@ -1,6 +1,5 @@
-import merge from 'merge';
-import React from 'react';
-import ReactDOM from 'react-dom';
+'use strict';
+
 import { FilePond, File, registerPlugin } from 'react-filepond'
 
 import FilepondPluginFileValidateType from 'filepond-plugin-file-validate-type'
@@ -22,15 +21,12 @@ export default class OpenStadComponentSelect extends OpenStadComponentDefaultInp
 
   constructor(props) {
 
-    super(props);
-
-		let defaultConfig = {
+    super(props, {
 			imageserver: {
 				process: '',
 				fetch: ''
 			},
-    };
-		this.config = merge.recursive(defaultConfig, this.props.config, this.config || {});
+    });
 
     this.fileUploaderUpdateCurrentInput = this.fileUploaderUpdateCurrentInput.bind(this);
 

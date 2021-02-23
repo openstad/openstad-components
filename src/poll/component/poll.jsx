@@ -1,23 +1,15 @@
-import React from 'react';
-import merge from 'merge';
+'use strict';
 
 import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
-
 import OpenStadComponentForms from '../../forms/index.jsx';
 import OpenStadComponentPollForm from './poll-form.jsx';
-
-'use strict';
 
 export default class OpenStadComponentPoll extends OpenStadComponent {
 
   constructor(props) {
-    super(props);
 
-    let self = this;
-    self.id = props.id || `osc-poll-${  parseInt( 1000000 * Math.random() )}`;
-
-    self.defaultConfig = {
+    super(props, {
       siteId: null,
       ideaId: null,
       title: null, // hoort niet hier
@@ -35,9 +27,10 @@ export default class OpenStadComponentPoll extends OpenStadComponent {
       withPercentage: true,
       allowChoiceTitles: true,
       allowShowResultsIfNotVoted: false,
-    };
+    });
 
-    self.config = merge.recursive(self.defaultConfig, self.config, props.config || {});
+    let self = this;
+
     self.config.loginUrl = self.config.loginUrl || '/oauth/login?returnTo=' + encodeURIComponent(document.location.href);
     self.hideEditForm = self.hideEditForm.bind(self);
 
@@ -75,10 +68,6 @@ export default class OpenStadComponentPoll extends OpenStadComponent {
     } else {
       if (!self.state.poll && self.config.ideaId) self.fetchData();
     }
-
-    // document.addEventListener('osc-new-reaction-stored', function(event) {
-    //   self.onNewPolltored(event.detail);
-    // });
 
   }
 

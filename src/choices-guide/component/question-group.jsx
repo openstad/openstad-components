@@ -1,8 +1,10 @@
+'use strict';
+
 import merge from 'merge';
 import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentQuestion from './question.jsx';
 
-'use strict';
+// TPODO: remove answerDimensions form the API and DB
 
 export default class OpenStadComponentQuestionGroup extends OpenStadComponent {
 
@@ -11,15 +13,12 @@ export default class OpenStadComponentQuestionGroup extends OpenStadComponent {
     super(props);
 
     this.noOfQuestionsToShow = this.config.noOfQuestionsToShow || 1;
-    this.onLiveUpdates = this.config.liveUpdatesFunction;
     this.questionElements = [];
 
     this.state = {
       currentQuestion: 0,
       values: {},
     };
-
-    this.liveUpdates = this.liveUpdates.bind(this);
 
   }
 
@@ -93,10 +92,6 @@ export default class OpenStadComponentQuestionGroup extends OpenStadComponent {
     }
   }
 
-  liveUpdates() {
-    if (this.onLiveUpdates) this.onLiveUpdates();
-  }
-
   render() {
 
     let self = this;
@@ -112,7 +107,7 @@ export default class OpenStadComponentQuestionGroup extends OpenStadComponent {
     questionsHTML =
       <div className="osc-questions">
         { shownQuestions.map((question, i) => {
-          return <OpenStadComponentQuestion config={ { liveUpdatesFunction: self.liveUpdates, divId: `osc-question-${question.id}`, aspectRatio: self.config.aspectRatio } } data={{ ...question, value: values[question.id] }} answerDimensions={data.answerDimensions} key={`question-${question.id}`} ref={function(el) { self.questionElements[i] = el; }}/>;
+          return <OpenStadComponentQuestion config={ { ...self.config, divId: `osc-question-${question.id}` } } data={{ ...question, value: values[question.id] }} key={`question-${question.id}`} ref={function(el) { self.questionElements[i] = el; }}/>;
         })}
       </div>;
 

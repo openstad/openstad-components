@@ -1,22 +1,14 @@
+'use strict';
+
 import merge from 'merge';
-import React from 'react';
-import ReactDOM from 'react-dom';
 import OpenStadComponent from '../../component/index.jsx';
 import amapsCreateClusterIcon from '../lib/amaps-cluster-icon.js';
 
-'use strict';
-
 export default class OpenStadComponentNLMap extends OpenStadComponent {
 
-  constructor(props) {
+  constructor(props, defaultConfig) {
 
-    super(props);
-
-		var self = this;
-
-		// config
-		let defaultConfig = {
-			target: self.divId,
+    super(props, defaultConfig, {
 			style: 'standaard',
 			marker: false,
 			search: false,
@@ -29,9 +21,11 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 			disableDefaultUI : true,
 			polygon : null,
 			autoZoomAndCenter: false,
-		};
-		self.config = merge.recursive(defaultConfig, this.config, props.config || {})
+		});
 
+		var self = this;
+    self.config.target = self.divId;
+    
 		// external css and script files
 		self._loadedFiles = 0;
 		self.files = [
@@ -405,42 +399,82 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 
   getPointInfo(latlng, marker, next) {
 
-    // TODO: configurabel
-    var bagApiUrl1 = 'https://api.data.amsterdam.nl/bag/nummeraanduiding/?format=json&locatie=[[lat]],[[lng]],50';
-    var bagApiUrl2 = 'https://api.data.amsterdam.nl/bag/nummeraanduiding/[[id]]/?format=json';
+    // TODO: de uitgecommente versie hieronder kan generiek werken op de PDOK versie, maar die is/wordt betaald en daarvoor heb je dan een API key nodig
+    // Daarom heb ik nu deze gratis service gebruikt; even kijken hoe dat loopt
+    // eerste indruk: veel te traag
 
 	  var self = this;
+    var locatieApiUrl = 'https://geodata.nationaalgeoregister.nl/locatieserver/v3/free?lat=[[lat]]5&lon=[[lng]]&fq=type:adres&rows=1';
 
 	  latlng = latlng || {};
 
-	  var url = bagApiUrl1
+	  var url = locatieApiUrl
 			  .replace(/\[\[lat\]\]/, latlng.lat)
 			  .replace(/\[\[lng\]\]/, latlng.lng);
 
-
 	  fetch(url)
       .then((response) => {
+        if (!response.ok) throw Error(response);
         return response.json();
       })
       .then( json => {
-			  var id = json && json.results && json.results[0] && json.results[0].landelijk_id;
-			  var url = bagApiUrl2
-					  .replace(/\[\[id\]\]/, id)
-	      fetch(url)
-          .then((response) => {
-            return response.json();
-          })
-          .then( json => {
-					  json.lat = latlng.lat;
-					  json.lng = latlng.lng;
-					  if (next) next(json, marker);
-          })
+
+        let doc = json.response && json.response.docs && json.response.docs[0];
+        
+        if (!doc) throw new Error ('Niets gevonden');
+
+        let result = {
+          _display: `${doc.straatnaam} ${doc.huisnummer}`
+        }
+
+				result.lat = latlng.lat;
+				result.lng = latlng.lng;
+				if (next) return next(result, marker);
+        return result;
+
       })
       .catch((err) => {
         console.log('Zoek adres: niet goed');
         console.log(err);
 			  if (next) next({}, marker);
       });
+
+
+    // var bagApiUrl1 = 'https://api.data.amsterdam.nl/bag/nummeraanduiding/?format=json&locatie=[[lat]],[[lng]],50';
+    // var bagApiUrl2 = 'https://api.data.amsterdam.nl/bag/nummeraanduiding/[[id]]/?format=json';
+    // 
+	  // var self = this;
+    // 
+	  // latlng = latlng || {};
+    // 
+	  // var url = bagApiUrl1
+		// 	  .replace(/\[\[lat\]\]/, latlng.lat)
+		// 	  .replace(/\[\[lng\]\]/, latlng.lng);
+    // 
+    // 
+	  // fetch(url)
+    //   .then((response) => {
+    //     return response.json();
+    //   })
+    //   .then( json => {
+		// 	  var id = json && json.results && json.results[0] && json.results[0].landelijk_id;
+		// 	  var url = bagApiUrl2
+		// 			  .replace(/\[\[id\]\]/, id)
+	  //     fetch(url)
+    //       .then((response) => {
+    //         return response.json();
+    //       })
+    //       .then( json => {
+		// 			  json.lat = latlng.lat;
+		// 			  json.lng = latlng.lng;
+		// 			  if (next) next(json, marker);
+    //       })
+    //   })
+    //   .catch((err) => {
+    //     console.log('Zoek adres: niet goed');
+    //     console.log(err);
+		// 	  if (next) next({}, marker);
+    //   });
 
   }
 

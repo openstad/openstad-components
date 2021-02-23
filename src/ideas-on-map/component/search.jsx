@@ -1,28 +1,27 @@
+'use strict';
+
 import merge from 'merge';
 import React from 'react';
 
-'use strict';
+import OpenStadComponent from '../../component/index.jsx';
 
-export default class Search extends React.Component {
+export default class Search extends OpenStadComponent {
 
   constructor(props) {
 
-    super(props);
-
-		let defaultConfig = {
-		};
-		this.config = merge.recursive(defaultConfig, this.config, props.config || {})
-    this.config.searchIn = props.config.searchIn || ['ideas', 'addresses'];
-    this.config.placeholder = props.config.placeholder || 'Zoek op trefwoord';
+    super(props, {
+      searchIn: ['ideas', 'addresses'],
+    });
 
     this.config.doSearchFunction = this.config.doSearchFunction || this.doSearchx.bind(this);
-    this.updateSearchResult = this.updateSearchResult.bind(this);
-
+		
     this.state = {
 			searchValue: '',
 			searchResult: { locations: [], ideas: [] },
 			showSuggestions: false,
     }
+
+    this.updateSearchResult = this.updateSearchResult.bind(this);
 
   }
 

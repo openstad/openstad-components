@@ -1,5 +1,3 @@
-import merge from 'merge';
-
 'use strict';
 
 import OpenStadComponent from '../../component/index.jsx';
@@ -16,11 +14,8 @@ import OpenStadComponentTextArea from './textarea.jsx';
 export default class OpenStadComponentFormField extends OpenStadComponent {
 
   constructor(props) {
-    super(props);
 
-		let self = this;
-
-		self.defaultConfig = {
+    super(props, {
       inputType: null,
 
       validateAction: null,
@@ -30,12 +25,14 @@ export default class OpenStadComponentFormField extends OpenStadComponent {
       title: null,
       description: null,
       choices: [],
-		};
-		self.config = merge.recursive(self.defaultConfig, self.config, props.config || {})
+		});
+
+		let self = this;
+
     self.config.name = self.config.name || self.config.title.toLowerCase();
 
     self.state = {
-      value: props.value || undefined,
+      value: props.initValue || undefined,
 		};
 
     self.handleOnChange = self.handleOnChange.bind(self);
@@ -74,21 +71,21 @@ export default class OpenStadComponentFormField extends OpenStadComponent {
     switch (self.config.inputType) {
 
       case 'hidden':
-        fieldHTML = <OpenStadComponentHidden config={self.config} value={ this.props.value || this.config.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
+        fieldHTML = <OpenStadComponentHidden config={self.config} value={ this.state.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
         break;
 
       case 'html-with-counter':
       case 'htmlarea-with-counter':
-        fieldHTML = <OpenStadComponentInputWithCounter config={{ ...self.config, inputType: 'htmlarea' }} value={ this.props.value || this.config.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
+        fieldHTML = <OpenStadComponentInputWithCounter config={{ ...self.config, inputType: 'htmlarea' }} value={ this.state.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
         break;
 
       case 'image-upload':
-        fieldHTML = <OpenStadComponentImageUpload config={self.config} value={ this.props.value || this.config.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
+        fieldHTML = <OpenStadComponentImageUpload config={self.config} value={ this.state.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
         break;
 
       case 'input-with-counter':
       case 'text-with-counter':
-        fieldHTML = <OpenStadComponentInputWithCounter config={{ inputType: 'input', ...self.config }} value={ this.props.value || this.config.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
+        fieldHTML = <OpenStadComponentInputWithCounter config={{ inputType: 'input', ...self.config }} value={ this.state.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
         break;
 
       case 'postcode':
@@ -96,24 +93,24 @@ export default class OpenStadComponentFormField extends OpenStadComponent {
         break;
 
       case 'radios':
-        fieldHTML = <OpenStadComponentRadios config={self.config} value={ this.props.value || this.config.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
+        fieldHTML = <OpenStadComponentRadios config={self.config} value={ this.state.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
         break;
 
       case 'select':
       case 'multiple-choice':
-        fieldHTML = <OpenStadComponentSelect config={self.config} value={ this.props.value || this.config.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
+        fieldHTML = <OpenStadComponentSelect config={self.config} value={ this.state.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
         break;
 
       case 'text':
-        fieldHTML = <OpenStadComponentText config={self.config} value={ this.props.value || this.config.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
+        fieldHTML = <OpenStadComponentText config={self.config} value={ this.state.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
         break;
 
       case 'textarea':
-        fieldHTML = <OpenStadComponentTextArea config={self.config} value={ this.props.value || this.config.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
+        fieldHTML = <OpenStadComponentTextArea config={self.config} value={ this.state.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
         break;
 
       case 'textarea-with-counter':
-        fieldHTML = <OpenStadComponentInputWithCounter config={{ ...self.config, inputType: 'textarea' }} value={ this.props.value || this.config.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
+        fieldHTML = <OpenStadComponentInputWithCounter config={{ ...self.config, inputType: 'textarea' }} value={ this.state.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
         break;
 
       default:

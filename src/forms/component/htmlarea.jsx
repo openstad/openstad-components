@@ -1,12 +1,12 @@
-import merge from 'merge';
-import React from 'react';
-import ReactDOM from 'react-dom';
+'use strict';
+
+import OpenStadComponent from '../../component/index.jsx';
 
 // TODO: it is probably not ok to write your own html editor, but after intergrating ckeditor or react-rte the build was (more than) twice as large; a bettter solution must be possible
 
 'use strict';
 
-export default class OpenStadComponentHTMLArea extends React.Component  {
+export default class OpenStadComponentHTMLArea extends OpenStadComponent  {
 
   constructor(props) {
     super(props);

@@ -5,7 +5,7 @@ import OpenStadComponent from '../../component/index.jsx';
 
 'use strict';
 
-export default class OpenStadComponentIdeaImage extends OpenStadComponent {
+export default class OpenStadComponentImage extends OpenStadComponent {
 
   constructor(props) {
 
@@ -35,7 +35,7 @@ export default class OpenStadComponentIdeaImage extends OpenStadComponent {
   }
 
   getImagesFromProps() {
-    let images = this.props.images;
+    let images = this.props.images || [];
     let image = this.props.image || images[this.state.currentImageIndex];
     return [this.props.image, images];
   }
@@ -56,7 +56,7 @@ export default class OpenStadComponentIdeaImage extends OpenStadComponent {
 
   getWidthHeight() {
     let width = this.props.width || this.state.width;
-    let height = this.props.height || width * ( 1 / this.getAspectRatioFactor() );
+    let height = this.props.height || width * ( 1 / this.getAspectRatioFactor() ) || undefined;
     return [ width, height ]
   }
 
@@ -84,9 +84,7 @@ export default class OpenStadComponentIdeaImage extends OpenStadComponent {
 
             {images.map(( thumb, i ) => {
               let thumbheight = 0.1 * width;
-              console.log(thumbheight);
               let thumbwidth = thumbheight * self.getAspectRatioFactor();
-              console.log(thumbwidth);
               let thumbleft = ( thumbwidth *  1.05 ) * i;
               return (
                 <div className="osc-image-thumb-spacer" key={`osc-image-thumb-${i}`} style={{ left: thumbleft, width: thumbwidth, height: thumbheight }}>

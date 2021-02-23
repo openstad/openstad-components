@@ -1,3 +1,175 @@
+.osc-ideas-filterbar {
+
+  padding: 10px 20px 10px 20px;
+  background-color: #e6e6e6;
+
+  @media @phone {
+    padding: 0;
+  }
+
+  .osc-backbutton {
+    .osc-arrow-left-black-background;
+		margin-left: 10px;
+		padding: 5px 15px 5px 20px;
+    line-height: 34px;
+    cursor: pointer;
+
+    @media @phone {
+		  padding: 5px 15px 5px 20px;
+    }
+
+  }
+
+	.osc-search-container {
+
+		flex-grow: 2;
+
+    .osc-search-button {
+
+      display: block;
+
+      @media @phone {
+        .osc-search-black-background();
+        background-position: 12px 12px;
+        position: relative;
+        display: inline-block;
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        cursor: pointer;
+      }
+
+    }
+      
+	  .osc-search {
+
+      display: inline-block;
+      position: relative;
+      font-size: 16px;
+      background-color: #e6e6e6;
+
+      @media @phone {
+        display: none;
+        padding: 0;
+      }
+
+      &.osc-is-active {
+        @media @phone {
+          position: absolute;
+          display: block;
+          left: 0;
+          right: 0;
+          height: 64px;
+          top: 44px;
+          left: 0;
+          z-index: 500;
+        }
+      }
+
+      .osc-search-input {
+        width: 290px;
+        margin: 0px 20px 0px 0px;
+        padding-right: 44px;
+
+        @media @phone {
+          width: calc(100% - 30px);
+          margin: 10px 15px;
+        }
+
+      }
+
+      .osc-search-button {
+        .osc-magnifying-glass-background;
+        position: absolute;
+        top: 12px;
+        right: 32px;
+        width: 20px;
+        height: 20px;
+        background-color: transparent;
+        border: 0 none;
+        cursor: pointer;
+        z-index: 20;
+
+        &.osc-active {
+          .osc-close-button-black-background;
+          top: 14px;
+          right: 34px;
+          width: 16px;
+          height: 16px;
+
+          @media @phone {
+            top: 24px;
+          }
+
+        }
+
+        &:active, &:focus {
+          outline: 0;
+        }
+
+        @media @phone {
+          top: 22px;
+          background-position: 0 0;
+        }
+
+      }
+
+	  }
+
+		.osc-search-suggestions {
+
+			position: absolute;
+			top: 43px;
+			left: 0px;
+			width: 400px;
+			padding: 10px;
+			font-size: 14px;
+			line-height: 1.5em;
+			color: #666;
+			background-color: white;
+			border: solid 1px #434343;
+			z-index: 30;
+
+      @media @phone {
+        top: 54px;
+        left: 0;
+        width: calc(100% - 30px);
+        margin: 0 15px;
+      }
+
+			strong {
+				font-weight: 800;
+			}
+
+			.osc-search-suggestions-hr {
+				width: 100%;
+				height: 1px;
+				margin: 10px 0;
+				border-top: 1px solid #434343;
+			}
+
+			.osc-search-suggestion {
+				.osc-arrow-right-black-background;
+				padding-left: 15px;
+				color: black;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				cursor: pointer;
+			}
+
+			.osc-search-suggestion-idea {
+			}
+			
+		}
+
+	}
+
+  
+}
+
+/* oud
+
 .osc-ideas-on-map-filterbar {
 
 	display: flex;
@@ -328,3 +500,5 @@
   }
 
 }
+
+*/

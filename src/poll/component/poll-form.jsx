@@ -1,22 +1,14 @@
-import merge from 'merge';
-import React from 'react';
+'use strict';
 
 import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
-
 import OpenStadComponentForms from '../../forms/index.jsx';
-
-'use strict';
 
 export default class OpenStadComponentPollForm extends OpenStadComponent {
 
   constructor(props) {
 
-    super(props);
-
-    let self = this;
-
-    self.defaultConfig = {
+    super(props, {
       user: {},
       questionMinLength: 30,
       questionMaxLength: 500,
@@ -25,11 +17,9 @@ export default class OpenStadComponentPollForm extends OpenStadComponent {
       descriptionMinLength: 30,
       descriptionMaxLength: 500,
       allowChoiceTitles: true,
-    };
+    });
 
-    self.config = merge.recursive(self.defaultConfig, props.config || {});
-
-    self.state = {
+    this.state = {
       user: props.user,
       pollId: props.pollId,
       poll: props.poll,

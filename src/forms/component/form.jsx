@@ -1,5 +1,3 @@
-import merge from 'merge';
-
 'use strict';
 
 import OpenStadComponent from '../../component/index.jsx';
@@ -9,18 +7,14 @@ import OpenStadComponentFormField from './form-field.jsx';
 export default class OpenStadComponentForm extends OpenStadComponent {
 
   constructor(props) {
-    super(props);
 
-		let self = this;
-
-		self.defaultConfig = {
-      // validateAction: null,
-      // submitAction: null,
+    super(props, {
       title: null,
       intro: null,
       fields: [],
-		};
-		self.config = merge.recursive(self.defaultConfig, self.config, props.config || {})
+		});
+
+		let self = this;
 
     self.state = {
       values: props.values|| {},
@@ -32,33 +26,34 @@ export default class OpenStadComponentForm extends OpenStadComponent {
 
   }
   
-	getValues() {
+
+  getValues() {
     return this.state.values;
 	}
 
-	validate({ showErrors }) {
+	validate({ showErrors, scrollTo }) {
     let self= this;
     let isValid = true;
     let firstInvalid = null
     self.fields.forEach((field) => {
-      if (!field.validate({ showErrors })) {
+      if (!field.validate({ showErrors })) { 
         isValid = false;
         if (!firstInvalid) firstInvalid = field;
       }
     });
 
-    if (firstInvalid && firstInvalid.instance && firstInvalid.instance.scrollIntoView) firstInvalid.instance.scrollIntoView({behavior: 'smooth'});
-    // console.log(isValid);
+    if (scrollTo && firstInvalid && firstInvalid.instance && firstInvalid.instance.scrollIntoView) firstInvalid.instance.scrollIntoView({behavior: 'smooth'});
     return isValid;    
 
 	}
 
 	handleOnChange(data) {
-    // console.log("formchange", data);
     let self = this;
     let values = { ...this.state.values };
     values[data.name] = data.value;
-		this.setState({ values });
+		this.setState({ values }, () => {
+      if (typeof this.props.onChange == 'function') this.props.onChange(data)
+    });
 	}
 
 	render() {
@@ -80,7 +75,7 @@ export default class OpenStadComponentForm extends OpenStadComponent {
       fieldsHTML =
         <div className="osc-form-fields">
           { self.config.fields.map((fieldConfig, i) => {
-            return <OpenStadComponentFormField config={fieldConfig} onChange={self.handleOnChange} ref={el => (self.input = el)} key={`osc-form-field-${i}`}  ref={el => { self.fields[i] = el; }}/>
+            return <OpenStadComponentFormField config={fieldConfig} initValue={fieldConfig.value} onChange={self.handleOnChange} ref={el => (self.input = el)} key={`osc-form-field-${i}`} ref={el => { self.fields[i] = el; }}/>
           })}
         </div>
     }

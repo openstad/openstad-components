@@ -1,28 +1,25 @@
-import merge from 'merge';
-import React from 'react';
-import ReactDOM from 'react-dom';
+'use strict';
+
 //import CKEditor from '@ckeditor/ckeditor5-react';
 //import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import HTMLArea from './htmlarea.jsx';
 
-'use strict';
+import OpenStadComponent from '../../component/index.jsx';
 
-export default class FormfieldInputWithCounter extends React.Component {
+export default class FormfieldInputWithCounter extends OpenStadComponent {
 
   constructor(props) {
-    super(props);
 
-		let self = this;
-		self.id = props.id || 'osc-formfields-plaintext-with-counter-' + parseInt( 1000000 * Math.random() )
-
-		self.defaultConfig = {
+    super(props, {
 			name: 'tekst',
 			inputType: 'input',
 			minLength: 5,
-			maxLength: 10,
+			maxLength: 1024,
       placeholder: '',
-		};
-		self.config = merge.recursive(self.defaultConfig, self.config, props.config || {})
+		});
+
+		let self = this;
+		self.id = props.id || 'osc-formfields-plaintext-with-counter-' + parseInt( 1000000 * Math.random() )
 
     self.state = {
 			focused: false,

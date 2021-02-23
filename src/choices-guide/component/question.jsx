@@ -1,7 +1,8 @@
-import OpenStadComponent from '../../component/index.jsx';
-import OpenStadComponentForms from '../../forms/index.jsx';
-
 'use strict';
+
+import OpenStadComponent from '../../component/index.jsx';
+import { Image as OpenStadComponentImage } from '../../image/index.jsx';
+import OpenStadComponentForms from '../../forms/index.jsx';
 
 export default class OpenStadComponentQuestion extends OpenStadComponent {
 
@@ -13,8 +14,6 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
     this.config.aspectRatio = this.config.aspectRatio || '16x9';
 
     this.questionId = props.data.id;
-    this.answerDimensions = props.answerDimensions || 1;
-    this.onLiveUpdates = this.config.liveUpdatesFunction;
 
     this.state = {
       value: 50,
@@ -22,6 +21,7 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
     };
 
     this.onChangeHandler = this.onChangeHandler.bind(this);
+    this.showLightbox = this.showLightbox.bind(this);
 
 
   }
@@ -50,38 +50,50 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
 
     if (!this.state.isAnswered) return; // null
 
-    // TODO: mutliple dimension anwser methodes
-
     let data = this.props.data || {};
     let values = data.values || {};
 
+    let dimensions = data.dimensions;
+    try {
+      dimensions = JSON.parse(dimensions)
+    } catch (err) {}
+    dimensions = dimensions || ['x'];
+
+    // get a number between 0 and 100
     let result;
     if (typeof this.state.value == 'number' || typeof this.state.value == 'string') {
-      result = { x: this.state.value };
-      if ( this.answerDimensions > 1 ) result.y = this.state.value;
-      if ( this.answerDimensions > 2 ) result.z = this.state.value;
+      result = {};
+      if ( dimensions.includes('x') ) result.x = this.state.value;
+      if ( dimensions.includes('y') ) result.y = this.state.value;
+      if ( dimensions.includes('z') ) result.z = this.state.value;
     } else {
-      result = { x: this.state.value.x };
-      if ( this.answerDimensions > 1 ) result.y = this.state.value.y;
-      if ( this.answerDimensions > 2 ) result.z = this.state.value.z;
+      result = {};
+      if ( dimensions.includes('x') ) result.x = this.state.value.x;
+      if ( dimensions.includes('y') ) result.y = this.state.value.y;
+      if ( dimensions.includes('z') ) result.z = this.state.value.z;
     }
+
+    // console.log('answer', data.title, result);
 
     return result;
 
   }
 
   liveUpdates() {
-    if (this.onLiveUpdates) this.onLiveUpdates();
+		var event = new window.CustomEvent('osc-choices-guide-live-updates');
+		document.dispatchEvent(event);
   }
 
   showLightbox(startWith) {
 
+    let data = this.props.data || {};
+
     let images = [
-      { src: this.questionImageA.src },
-      { src: this.questionImageB.src },
+      data.values && data.values.A && data.values.A.questionImage || '',
+      data.values && data.values.B && data.values.B.questionImage || '',
     ]
 
-    let startIndex = images.findIndex( img => img.src == startWith.src );
+    let startIndex = images.findIndex( img => img == startWith );
 
 		// dispatch an event
 		var event = new window.CustomEvent('osc-show-light-box', { detail: { images, startIndex, aspectRatio: this.config.aspectRatio } });
@@ -107,15 +119,13 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
 
 
     let imageHTML = null;
-    let images = data.images;
-    if (images) {
+    let images = data.images || [];
+    if (images && images.length) {
       if (!Array.isArray(images)) images = [images];
       let image = images[0];
       imageHTML = (
-        <div className={`osc-question-image-container osc-question-image-aspect-${self.config.aspectRatio}`}>
-          <div className="osc-question-image-aspect-container">
-            <img className="osc-question-image" src={image.src}/>
-          </div>
+        <div className={`osc-question-image-container`}>
+          <OpenStadComponentImage config={{ aspectRatio: self.config.aspectRatio }} image={image}/>
         </div>
       );
     }
@@ -139,16 +149,23 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
         let labelB = data.values && data.values.B && data.values.B.label || 'B';
         let questionTextA = data.values && data.values.A && data.values.A.questionText;
         let questionTextB = data.values && data.values.B && data.values.B.questionText;
+        let questionAHTML = null, questionBHTML = null;
         if (questionTextA && questionTextB) {
-          questionHTML = (
-            <div className="osc-question-description">
-              <div className="osc-question-description-text" dangerouslySetInnerHTML={{ __html: data.description }}></div>
+          questionAHTML = (
               <div className="osc-question-description-text">
                 <div className="osc-question-description-label">{labelA}</div><div className="osc-question-description-labeled-text">{questionTextA}</div>
               </div>
+          );
+          questionBHTML = (
               <div className="osc-question-description-text">
                 <div className="osc-question-description-label">{labelB}</div><div className="osc-question-description-labeled-text">{questionTextB}</div>
               </div>
+          );
+          questionHTML = (
+            <div className="osc-question-description">
+              <div className="osc-question-description-text" dangerouslySetInnerHTML={{ __html: data.description }}></div>
+              {questionAHTML}
+              {questionBHTML}
             </div>
           );
         }
@@ -161,19 +178,19 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
               <div className="osc-question-description-image-container osc-question-description-image-container-a">
                 <div className="osc-question-description-label osc-question-description-label-a">{labelA}</div>
                 <div className={`osc-question-image-container osc-question-image-aspect-${self.config.aspectRatio}`}>
-                  <div className="osc-question-image-aspect-container">
-                    <img className="osc-question-description-image" src={questionImageA.src} style={{ cursor: 'pointer' }} onClick={ () => self.showLightbox(self.questionImageA) }  ref={el => self.questionImageA = el}/>
-                  </div>
+                  <OpenStadComponentImage config={{ aspectRatio: self.config.aspectRatio }} image={questionImageA} onClick={ () => self.showLightbox(questionImageA) }/>
                 </div>
               </div>
               <div className="osc-question-description-image-container osc-question-description-image-container-b">
                 <div className="osc-question-description-label osc-question-description-label-b">{labelB}</div>
                 <div className={`osc-question-image-container osc-question-image-aspect-${self.config.aspectRatio}`}>
-                  <div className="osc-question-image-aspect-container">
-                    <img className="osc-question-description-image" src={questionImageB.src} style={{ cursor: 'pointer' }} onClick={ () => self.showLightbox(self.questionImageB) }  ref={el => self.questionImageB = el}/>
-                  </div>
+                  <OpenStadComponentImage config={{ aspectRatio: self.config.aspectRatio }} image={questionImageB} onClick={ () => self.showLightbox(questionImageB) }/>
                 </div>
               </div>
+              <div style={{ clear: 'both', height: 15 }}>
+              </div>
+              {questionAHTML}
+              {questionBHTML}
             </div>
           );
         }
@@ -220,7 +237,7 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
         selectorHTML =
           <div className="osc-question-selector">
             { data.values && data.values.map((entry, i) => {
-              return <button onClick={() => self.onChangeHandler(entry.value)} key={`button-value-${entry.value}`}>{entry.text}</button>;
+              return <button onClick={() => self.onChangeHandler(entry.value)} key={`button-value-${i}`}>{entry.text}</button>;
             })}
           </div>;
         break;
