@@ -306,7 +306,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
           <div id={'osc-choices-container-' + this.divId} className={`osc-choices-container osc-accordeon osc-closed ${'osc-type-' + self.config.choices.type}`} ref={el => { self.choicesAccordeon = el; }}>
             <div onClick={e => self.onChoicesClick(e)} className="osc-accordeon-button" dangerouslySetInnerHTML={{ __html: self.state.choicesTitle }}></div>
             <div className="osc-accordeon-content">
-              <OpenStadComponentChoices config={{ ...self.config.choices, startWithAllQuestionsAnswered: this.config.startWithAllQuestionsAnswered }} choices={[...choices]} scores={{...self.state.scores}} firstAnswerGiven={ self.state.firstAnswerGiven ? true : false } ref={function(el) { self.choicesElement = el; }} key='choices'/>
+              <OpenStadComponentChoices config={{ ...self.config.choices }} choices={[...choices]} scores={{...self.state.scores}} firstAnswerGiven={ self.state.firstAnswerGiven ? true : false } ref={function(el) { self.choicesElement = el; }} key='choices'/>
             </div>
           </div>
         );
