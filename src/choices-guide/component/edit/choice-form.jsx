@@ -51,14 +51,15 @@ export default class ChoiceForm extends OpenStadComponent {
           let question = self.props.currentTarget.questionGroup.questions[key];
 
           let dimensions = [];
-          if (question.dimensions.indexOf('x') != -1 || (self.props.currentTarget.questionGroup && self.props.currentTarget.questionGroup.answerDimensions == 1)) dimensions.push('x');
-          if (question.dimensions.indexOf('y') != -1 && self.props.currentTarget.questionGroup && self.props.currentTarget.questionGroup.answerDimensions == 2) dimensions.push('y');
-          if (question.dimensions.indexOf('z') != -1 && self.props.currentTarget.questionGroup && self.props.currentTarget.questionGroup.answerDimensions == 3) dimensions.push('z');
+          let questionDimensions = question.dimensions || ['x'];
+          if (questionDimensions.indexOf('x') != -1 || (self.props.currentTarget.questionGroup && self.props.currentTarget.questionGroup.answerDimensions == 1)) dimensions.push('x');
+          if (questionDimensions.indexOf('y') != -1 && self.props.currentTarget.questionGroup && self.props.currentTarget.questionGroup.answerDimensions == 2) dimensions.push('y');
+          if (questionDimensions.indexOf('z') != -1 && self.props.currentTarget.questionGroup && self.props.currentTarget.questionGroup.answerDimensions == 3) dimensions.push('z');
 
           return (
             <div className="osc-overview-line" key={`question-${question.id}`}>
               <div className="osc-overview-line-content">
-                {question.title}
+                {question.title} ({question.id})
               </div>
               {/* 
               <div className="osc-overview-line-content">
@@ -66,16 +67,17 @@ export default class ChoiceForm extends OpenStadComponent {
               </div>
               */}
               { dimensions.map((dimension, j) => {
+                let answerValue = self.props.currentTarget.answers && self.props.currentTarget.answers[question.id] && ( typeof self.props.currentTarget.answers[question.id] == 'object' ? self.props.currentTarget.answers[question.id][dimension] : self.props.currentTarget.answers[question.id] )
                 if (self.state.questionEditModeIndex == i) {
-                return (
-                  <div className="osc-overview-line-content osc-overview-line-field">
-                    <OpenStadComponentForms.Text config={{}} value={self.props.currentTarget.answers && self.props.currentTarget.answers[question.id]  && self.props.currentTarget.answers[question.id][dimension]} onChange={ data => self.handleFieldChange({ questionId: question.id, dimension, value: data.value }) } ref={el => self.questionImageBField = el}/>
-                  </div>);
+                  return (
+                    <div className="osc-overview-line-content osc-overview-line-field" key={`field-${j}`}>
+                      <OpenStadComponentForms.Text config={{}} value={answerValue} onChange={ data => self.handleFieldChange({ questionId: question.id, dimension, value: data.value }) } ref={el => self.questionImageBField = el}/>
+                    </div>);
                 } else {
-                return (
-                  <div className="osc-overview-line-content osc-overview-line-field">
-                    {self.props.currentTarget.answers && self.props.currentTarget.answers[question.id]  && self.props.currentTarget.answers[question.id][dimension]}
-                  </div>);
+                  return (
+                    <div className="osc-overview-line-content osc-overview-line-field" key={`field-${j}`}>
+                      {answerValue}
+                    </div>);
                 }
               })}
 

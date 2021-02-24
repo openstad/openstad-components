@@ -17,7 +17,7 @@ export default class OpenStadComponentDefaultInput extends OpenStadComponent {
 		let self = this;
 
     self.state = {
-      value: props.value || '',
+      value: typeof props.value != undefined ? props.value : '',
       error: null,
 		};
 

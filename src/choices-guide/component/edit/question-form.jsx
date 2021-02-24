@@ -92,7 +92,7 @@ export default class QuestionForm extends OpenStadComponent {
         <div>
 
           <h3>Label bij A</h3>
-          <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 1, maxLength: 140 }} value={self.props.currentTarget.minLabel} onChange={ data => self.props.onChange({ minLabel: data.value }) } ref={el => self.minLabelField = el}/>
+          <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 1, maxLength: 250 }} value={self.props.currentTarget.minLabel} onChange={ data => self.props.onChange({ minLabel: data.value }) } ref={el => self.minLabelField = el}/>
           <h3>Tekst bij A</h3>
           <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 1, maxLength: 1000 }} value={self.props.currentTarget.values && self.props.currentTarget.values.A && self.props.currentTarget.values.A.questionText} onChange={ data => self.handleFieldChange({ questionTextA: data.value }) } ref={el => self.minLabelField = el}/>
           <h3>Afbeelding bij A</h3>
@@ -101,7 +101,7 @@ export default class QuestionForm extends OpenStadComponent {
           <OpenStadComponentForms.Text config={{}} value={self.props.currentTarget.values && self.props.currentTarget.values.A && ( typeof self.props.currentTarget.values.A.questionImage == 'object' ? JSON.stringify(self.props.currentTarget.values.A.questionImage) : self.props.currentTarget.values.A.questionImage )} onChange={ data => self.handleFieldChange({ questionImageA: data.value }) } ref={el => self.questionImageAField = el}/>
 
           <h3>Label bij B</h3>
-          <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 1, maxLength: 140 }} value={self.props.currentTarget.maxLabel} onChange={ data => self.props.onChange({ maxLabel: data.value }) } ref={el => self.maxLabelField = el}/>
+          <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 1, maxLength: 250 }} value={self.props.currentTarget.maxLabel} onChange={ data => self.props.onChange({ maxLabel: data.value }) } ref={el => self.maxLabelField = el}/>
           <h3>Tekst bij B</h3>
           <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 1, maxLength: 1000 }} value={self.props.currentTarget.values && self.props.currentTarget.values.B && self.props.currentTarget.values.B.questionText} onChange={ data => self.handleFieldChange({ questionTextB: data.value }) } ref={el => self.minLabelField = el}/>
           <h3>Afbeelding bij B</h3>
