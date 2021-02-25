@@ -16,8 +16,16 @@ export default class OpenStadComponentForm extends OpenStadComponent {
 
 		let self = this;
 
+    let initValues = props.values;
+    if ( !initValues && self.config.fields && self.config.fields.length) {
+      initValues = {};
+      self.config.fields.map((fieldConfig, i) => {
+        initValues[fieldConfig.title] = fieldConfig.value;
+      });
+    }
+    
     self.state = {
-      values: props.values|| {},
+      values: initValues || {},
 		};
 
     self.handleOnChange = self.handleOnChange.bind(this);

@@ -115,6 +115,11 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
       });
 		  document.dispatchEvent(event);
 
+      if (window.location.search.match('scroll-to-login')) {
+        let element = document.querySelector('.osc-require-login');
+        if (element) element.scrollIntoView({behavior: 'smooth'});
+      }
+
       if (self.config.submission.type == 'auto') {
         self.submitResult()
       }
