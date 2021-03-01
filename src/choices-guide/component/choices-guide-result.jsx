@@ -24,6 +24,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
           buttonTextAlreadySubmitted: "Ongeldige stemcode",
           changeLoginLinkText: "Vul een andere stemcode in",
           loggedInMessage: "Het controleren van je stemcode is gelukt! Klik op onderstaande knop om je keuze in te sturen.",
+          notYetLoggedInError: "Klik hierboven om je stem te valideren xxx",
           alreadySubmittedMessage: "Deze stemcode is al gebruikt om te stemmen. Een stemcode kan maar één keer gebruikt worden.",
         },
       },
@@ -141,7 +142,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
       if (element) element.scrollIntoView({behavior: 'smooth'});
       errorState1 = {
         submissionError: {
-          message: 'Klik hierboven om je stem te valideren.',
+          message: self.config.submission.requireLoginSettings.notYetLoggedInError,
           type: 'unknown'
         }
       };
