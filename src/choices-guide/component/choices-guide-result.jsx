@@ -24,7 +24,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
           buttonTextAlreadySubmitted: "Ongeldige stemcode",
           changeLoginLinkText: "Vul een andere stemcode in",
           loggedInMessage: "Het controleren van je stemcode is gelukt! Klik op onderstaande knop om je keuze in te sturen.",
-          notYetLoggedInError: "Klik hierboven om je stem te valideren xxx",
+          notYetLoggedInError: "Klik hierboven om je stem te valideren.",
           alreadySubmittedMessage: "Deze stemcode is al gebruikt om te stemmen. Een stemcode kan maar één keer gebruikt worden.",
         },
       },
@@ -43,22 +43,40 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
     this.config.loginUrl = this.config.loginUrl || '/oauth/login?returnTo=' + encodeURIComponent(document.location.href);
 
     let allValues = OpenStadComponentLibs.localStorage.get('osc-choices-guide.values') || {};
+    allValues = allValues[ this.config.choicesGuideId ] || {};
     let allScores = OpenStadComponentLibs.localStorage.get('osc-choices-guide.scores') || {};
+    allScores = allScores[ this.config.choicesGuideId ] || {};
+    let allFormvalues = OpenStadComponentLibs.localStorage.get('osc-choices-guide.formvalues') || {};
+    allFormvalues = allFormvalues[ this.config.choicesGuideId ] || {};
+    let scrollToLogin;
+
+    // TODO: bouw dit om naar iets dat de resultaten al opslaat in de API en dan na login bevestigd
+    let match = window.location.search.match(/(\?|\&)resultdata=([^\?\&]+)/);
+    if (match) {
+      let resultdata = window.atob(match[2]);
+      try {
+        resultdata = JSON.parse(resultdata);
+      } catch (err) {}
+      scrollToLogin = resultdata.result.scrollToLogin;
+      allFormvalues = resultdata.formValues;
+      allValues = resultdata.result.answers;
+      allScores = resultdata.result.scores;
+    }
     
     if (this.config.submission.type == 'form') {
-      // TODO: title? really?
       this.onFormChange = this.onFormChange.bind(this);
-      let allFormvalues = OpenStadComponentLibs.localStorage.get('osc-choices-guide.formvalues') || {};
-      let formvalues = allFormvalues[ this.config.choicesGuideId ] || {};
+      let formvalues = allFormvalues || {};
       this.config.submission.form.fields.forEach(field => {
-        if (typeof formvalues[field.title.toLowerCase()] != 'undefined') { field.value = formvalues[field.title.toLowerCase()]; }
+        let name = field.name || field.title.toLowerCase();
+        if (typeof allFormvalues[name] != 'undefined') { field.value = allFormvalues[name]; }
       });
     }
 
     this.state = {
       title: '',
-      answers: allValues[ this.config.choicesGuideId ],
-      scores: allScores[ this.config.choicesGuideId ],
+      answers: allValues,
+      scores: allScores,
+      scrollToLogin,
     };
 
   }
@@ -73,6 +91,8 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
     fetchChoicesGuide({ config: self.config })
       .then((data) => {
         self.setState(data, () => {
+          // override config settings
+          self.config.submission.type = data.choicesGuideConfig.submissionType || self.config.submission.type;
           self.startGuide();
         });
       })
@@ -84,8 +104,10 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
   }
 
   startGuide() {
+
     let self = this;
     let scores, planePos;
+
     ( {scores, planePos} = self.choicesElement && self.choicesElement.calculateScores(self.state.answers) );
 
     let choicesTitle = '';
@@ -115,8 +137,8 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
         }
       });
 		  document.dispatchEvent(event);
-
-      if (window.location.search.match('scroll-to-login')) {
+      
+      if (self.state.scrollToLogin) {
         let element = document.querySelector('.osc-require-login');
         if (element) element.scrollIntoView({behavior: 'smooth'});
       }
@@ -222,6 +244,35 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
     return this.config.user && this.config.user.role && this.config.user.role != 'anonymous';
   }
 
+  gotoLoginUrl() {
+
+    let url = this.config.loginUrl;
+    let data = {
+      scrollToLogin: true,
+      formValues: this.form.getValues(),
+      result: {
+        answers: this.state.answers,
+        scores: this.state.scores,
+      }
+    };
+
+    let match = url.match(/returnTo=([^\?\&]+)/);
+    if (match) {
+      let returnTo = decodeURIComponent(match[1]);
+      returnTo += returnTo.match(/\?/) ? '&' : '?';
+      returnTo += 'resultdata=' + window.btoa( JSON.stringify(data).replace(/=+$/, '') );
+      returnTo = encodeURIComponent(returnTo);
+      url = url.replace(/returnTo=[^\?\&]+/, 'returnTo=' + returnTo)
+    } else {
+      url += url.match(/\?/) ? '&' : '?';
+      url += 'resultdata=' + window.btoa( JSON.stringify(data) ).replace(/=+$/, '');
+    }
+
+    console.log(url);
+
+    document.location.href = url;
+  }
+
   onFormChange() {
 
     let self = this;
@@ -290,9 +341,9 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
             <div className={`osc-require-login osc-logged-in osc-logged-in ${className}`}>
               <h2>{self.config.submission.requireLoginSettings.title}</h2>
               <div className="osc-gray-block">
-                <button onClick={e => document.location.href = self.config.loginUrl} className="osc-button osc-button-white">{buttonText}</button>
+                <button onClick={e => self.gotoLoginUrl()} className="osc-button osc-button-white">{buttonText}</button>
                 <div className="change-login-link-text">
-                  <a href={`javascript: document.location.href = '${self.config.loginUrl}'`}>{self.config.submission.requireLoginSettings.changeLoginLinkText}</a>
+                  <a onClick={e => self.gotoLoginUrl()}>{self.config.submission.requireLoginSettings.changeLoginLinkText}</a>
                 </div>
                 <div className="osc-message">
                   {message}
@@ -312,7 +363,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
               <h2>{self.config.submission.requireLoginSettings.title}</h2>
               <div className="osc-gray-block">
                 {self.config.submission.requireLoginSettings.description}<br/><br/>
-                <button onClick={e => document.location.href = self.config.loginUrl} className="osc-button osc-button-white">{self.config.submission.requireLoginSettings.buttonTextLogin}</button>
+                <button onClick={e => self.gotoLoginUrl()} className="osc-button osc-button-white">{self.config.submission.requireLoginSettings.buttonTextLogin}</button>
                 <div className="osc-message">
                   {message}
                 </div>
@@ -345,7 +396,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
     if (self.state.submissionError && !requireLogin) {
       errorMessageHTML = (
         <div className="osc-message osc-error">
-          {self.state.submissionError.message};
+          {self.state.submissionError.message}
         </div>);
     }
     

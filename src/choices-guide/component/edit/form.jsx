@@ -9,6 +9,8 @@ import QuestionForm from './question-form.jsx';
 import QuestionGroupForm from './question-group-form.jsx';
 import Overview from './overview.jsx';
 
+import fetchChoicesGuide from '../../lib/fetch.js'
+
 export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent {
 
   constructor(props) {
@@ -42,26 +44,10 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
   }
 
   fetchData() {
-
     let self = this;
-
-    let url = `${self.config.api && self.config.api.url   }/api/site/${  self.config.siteId  }/choicesguide/${  self.config.choicesGuideId}?includeChoices=1&includeQuestions=1`;
-    let headers = OpenStadComponentLibs.api.getHeaders();
-
-    fetch(url, { headers })
-      .then((response) => {
-        return response.json();
-      })
-      .then((json) => {
-        let state = {};
-        state.choicesGuideId = json.id;
-        state.title = json.title;
-        state.description = json.description;
-        state.images = json.images;
-        state.choices = json.choices || [];
-        state.questionGroups = json.questiongroups || [];
-        state.busy = false;
-        self.setState(state, () => {
+    fetchChoicesGuide({ config: self.config })
+      .then((data) => {
+        self.setState({ ...data, busy: false }, () => {
           self.setCurrentForm({ what: 'choices-guide' });
         });
       })
@@ -69,7 +55,6 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
         console.log('Niet goed');
         console.log(err);
       });
-
   }
 
   handleFieldChange(data) {
@@ -94,6 +79,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
         currentTarget.title = this.state.title;
         currentTarget.description = this.state.description;
         currentTarget.images = this.state.images ? this.state.images : '';
+        currentTarget.choicesGuideConfig = this.state.choicesGuideConfig ? this.state.choicesGuideConfig : {};
         break;
 
       case 'choice':
@@ -108,7 +94,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
         currentTarget.description = choice.description;
         currentTarget.images = choice.images;
         currentTarget.answers = choice.answers;
-        currentTarget.seqnr = choice.seqnr || 0;
+        currentTarget.seqnr = typeof choice.seqnr != 'undefined' ? choice.seqnr : 10;
         break;
 
       case 'question-group':
@@ -116,7 +102,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
         currentTarget.title = questionGroup.title;
         currentTarget.description = questionGroup.description;
         currentTarget.answerDimensions = questionGroup.answerDimensions;
-        currentTarget.seqnr = questionGroup.seqnr || 0;
+        currentTarget.seqnr = typeof questionGroup.seqnr != 'undefined' ? questionGroup.seqnr : 10;
         break;
 
       case 'question':
@@ -131,7 +117,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
         currentTarget.type = question.type;
         currentTarget.dimensions = question.dimensions;
         currentTarget.values = question.values;
-        currentTarget.seqnr = question.seqnr || 0;
+        currentTarget.seqnr = typeof question.seqnr != 'undefined' ? question.seqnr : 10;
         break;
 
       default:
@@ -140,16 +126,22 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
     this.setState({ currentTarget });
   }
 
+  canSubmit() {
+    let requiredUserRole = 'moderator';
+    let user = this.config.user || {};
+    return OpenStadComponentLibs.user.hasRole(user, requiredUserRole)
+  }
+
   submitForm() {
 
     let self = this;
 
-    self.setState({ busy: true }, () => {
+    self.setState({ busy: true, submitError: null }, () => {
 
       let isValid = true; // todo
       if (!isValid) return;
 
-      if (!(self.config.user && self.config.user.role && self.config.user.role == 'admin')) return alert('Je mag dit niet');
+      if (!(self.canSubmit())) return alert('Je mag dit niet');
 
       let url;
       let body;
@@ -164,6 +156,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
             title: self.state.currentTarget.title,
             description: self.state.currentTarget.description,
             images: self.state.currentTarget.images,
+            config: self.state.currentTarget.choicesGuideConfig,
           };
           break;
 
@@ -223,8 +216,6 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
       let headers = OpenStadComponentLibs.api.getHeaders(self.config);
       let method = targetId ? 'PUT' : 'POST';
 
-      console.log(body);
-
       fetch(url, {
         method,
         headers,
@@ -237,26 +228,18 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
           throw response.text();
         })
         .then(function(json) {
-
-          // if (typeof self.config.onSubmit == 'function') {
-          //   self.config.onSubmit({ description: self.state.description });
-          // }
-          //
-          // self.setState({ description: '' }, () => {
-          //   if (self.config.argumentId) {
-          //     var event = new window.CustomEvent('reactionEdited', { detail: json });
-          //     document.dispatchEvent(event);
-          //   } else {
-          //     var event = new window.CustomEvent('newReactionStored', { detail: json });
-          //     document.dispatchEvent(event);
-          //   }
-          // });
-
           self.fetchData();
-
         })
         .catch(function(error) {
-          error.then(function(messages) { return console.log(messages);} );
+          error.then(function(messages) {
+            try {
+              messages = JSON.parse(messages);
+              if ( typeof messages == 'object' ) messages = messages.message;
+            } catch (err) {}
+            console.log(messages);
+            self.setState({ submitError: { message: messages } })
+            return console.log(messages);
+          });
           self.setState({ busy: false });
         });
 
@@ -266,6 +249,9 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
   deleteElement({what, questionGroupId, choiceId, questionId, title}) {
 
     let self = this;
+
+    self.setState({ submitError: null })
+    
     if (!confirm("Je gaat " + what + " " + title + " verwijderen. Weet je het zeker?")) return;
 
     let url;
@@ -301,7 +287,14 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
         self.fetchData();
       })
       .catch(function(error) {
-        error.then(function(messages) { return console.log(messages);} );
+        error.then(function(messages) {
+          try {
+            messages = JSON.parse(messages);
+            if ( typeof messages == 'object' ) messages = messages.message;
+          } catch (err) {}
+          self.setState({ submitError: { message: messages } })
+          return console.log(messages);
+        });
         self.setState({ busy: false });
       });
     
@@ -314,8 +307,8 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
     let title = null;
     let formfieldsHTML = null;
     let overviewHTML = null;
-    let backButtonHTML = <button onClick={() => { self.setCurrentForm({ what: 'choices-guide' }); }}>Terug</button>;
-    let submitButtonHTML = <button onClick={event => self.submitForm()}>Submit</button>;
+    let backButtonHTML = <button className="osc-button-white" onClick={() => { self.setCurrentForm({ what: 'choices-guide' }); }}>Terug</button>;
+    let submitButtonHTML = <button className="osc-button-blue" onClick={event => self.submitForm()}>Verstuur</button>;
     switch (self.state.currentTarget.what) {
 
       case 'choices-guide':
@@ -323,7 +316,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
         formfieldsHTML = (<ChoicesGuideForm config={this.config} currentTarget={self.state.currentTarget} onChange={self.handleFieldChange} ref={el => { self.formfields = el; }}/>);
         overviewHTML = (<Overview questionGroups={self.state.questionGroups} setCurrentForm={self.setCurrentForm} deleteElement={self.deleteElement} ref={el => { self.formfields = el; }}/>);
         backButtonHTML =
-          <button onClick={() => { if (self.onFinished) self.onFinished(); }}>Terug</button>
+          <button className="osc-button-white" onClick={() => { if (self.onFinished) self.onFinished(); }}>Terug</button>
         ;
         break;
 
@@ -344,10 +337,19 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
 
       default:
         backButtonHTML =
-          <button onClick={() => { if (self.onFinished) self.onFinished(); }}>Terug</button>
+          <button className="osc-button-white" onClick={() => { if (self.onFinished) self.onFinished(); }}>Terug</button>
         ;
         submitButtonHTML = null;
     }
+
+    let errorMessageHTML = null;
+    if (self.state.submitError) {
+      errorMessageHTML = (
+        <div className="osc-message osc-error">
+          {self.state.submitError.message}
+        </div>);
+    }
+    
 
     return (
       <div id={this.divId} className={`osc-form${this.state.busy ? ' osc-busy' : ''}`}>
@@ -355,6 +357,8 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
 
         {formfieldsHTML}
         {overviewHTML}
+
+        {errorMessageHTML}
 
         <br/><br/>
 

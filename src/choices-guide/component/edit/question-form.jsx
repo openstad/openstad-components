@@ -16,7 +16,6 @@ export default class QuestionForm extends OpenStadComponent {
   }
 
   handleFieldChange(data) {
-    console.log('handleFieldChange', data);
     let self = this;
     let parsedData;
     if (data.questionImageA) {

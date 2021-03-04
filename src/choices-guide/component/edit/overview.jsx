@@ -9,7 +9,16 @@ export default class ChoiceForm extends OpenStadComponent {
   }
 
   render() {
+
     let self = this;
+
+    // mutiple questionGroups is not quite ready and is therefore turned of in the interface
+    let newGroupButtonHTML = null;
+    if ( !self.props.questionGroups || self.props.questionGroups.length < 1 ) {
+      newGroupButtonHTML = <a href="#" onClick={event => self.props.setCurrentForm({ what: 'question-group' })}>Nieuwe vraaggroep</a>
+    }
+
+
     return (
           <div className="osc-overview">
             <h2>Vraaggroepen</h2>
@@ -28,7 +37,7 @@ export default class ChoiceForm extends OpenStadComponent {
                       return (
                         <div className="osc-overview-line" key={`question-${question.id}`}>
                           <div className="osc-overview-line-content">
-                            {question.title}
+                            {question.seqnr} - {question.title}
                           </div>
                           {/*
                           <div className="osc-overview-line-content">
@@ -58,7 +67,7 @@ export default class ChoiceForm extends OpenStadComponent {
                       return (
                         <div className="osc-overview-line" key={`choice-${choice.id}`}>
                           <div className="osc-overview-line-content">
-                            {choice.title}
+                            {choice.seqnr} - {choice.title}
                           </div>
                           <div className="osc-overview-line-buttons">
                             <a className="osc-edit-button" onClick={event => self.props.setCurrentForm({ what: 'choice', questionGroupId: questionGroup.id, choiceId: choice.id })}></a>
@@ -77,7 +86,7 @@ export default class ChoiceForm extends OpenStadComponent {
 
 
               let deleteButton = (<div className="osc-no-button"></div>);
-              if (Object.keys(questionGroup.choices).length == 0 && Object.keys(questionGroup.questions).length == 0) {
+              if (Object.keys(questionGroup.choices).length == 0 && Object.keys(questionGroup.questions).length == 0 && self.props.questionGroups.length != 1) {
                 deleteButton = (<a  className="osc-delete-button" onClick={event => self.props.deleteElement({ what: 'question-group', questionGroupId: questionGroup.id, title: questionGroup.title})}></a>);
               }
 
@@ -99,7 +108,7 @@ export default class ChoiceForm extends OpenStadComponent {
               );
             })}
             <br/><br/>
-            <a href="#" onClick={event => self.props.setCurrentForm({ what: 'question-group' })}>Nieuwe groep</a>
+            {newGroupButtonHTML}
           </div>
     )
     ;

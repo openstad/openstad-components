@@ -1,5 +1,8 @@
 # Changelog
 
+## Unreleased
+* Update choices-guides to a production level
+
 ## v0.15.0 (2021-02-23)
 * ideas-on-map: make the introblock optional
 * ideas-on-map: make the location marker configurable

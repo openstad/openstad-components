@@ -114,6 +114,7 @@ export default class OpenStadComponentFormField extends OpenStadComponent {
         break;
 
       default:
+        console.log('Form field ' + self.config.inputType + 'not yet implemented');
     }
 
     return (

@@ -106,8 +106,8 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
 		  var event = new window.CustomEvent('osc-choices-guide-is-ready');
 		  document.dispatchEvent(event);
 
-      // TMP xxx
-      // self.showEditForm()
+      // TMP
+      self.showEditForm()
     });
 
 
