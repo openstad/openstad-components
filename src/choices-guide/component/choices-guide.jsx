@@ -107,7 +107,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
 		  document.dispatchEvent(event);
 
       // TMP
-      self.showEditForm()
+      // self.showEditForm()
     });
 
 
