@@ -77,6 +77,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
       answers: allValues,
       scores: allScores,
       scrollToLogin,
+      questionGroupId: this.config.questionGroupId,
     };
 
   }
@@ -90,7 +91,11 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
     let self = this;
     fetchChoicesGuide({ config: self.config })
       .then((data) => {
-        self.setState(data, () => {
+        // mutiple questionGroups is not quite ready and is therefore turned of in the interface
+        console.log(data);
+        let questionGroupId = data.questionGroups && data.questionGroups[0] && data.questionGroups[0].id;
+        console.log(questionGroupId);
+        self.setState({ ...data, questionGroupId }, () => {
           // override config settings
           self.config.submission.type = data.choicesGuideConfig.submissionType || self.config.submission.type;
           self.startGuide();
@@ -291,7 +296,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
     let choices = self.state.choices;
     let questionGroup;
     if (self.state.questionGroups) {
-      questionGroup = self.state.questionGroups.find( group => group.id == self.config.questionGroupId );
+      questionGroup = self.state.questionGroups.find( group => group.id == self.state.questionGroupId );
       if (questionGroup) {
         questionGroup.values = self.state.values || {};
         if (questionGroup && questionGroup.choices) {
