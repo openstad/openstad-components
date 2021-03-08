@@ -228,7 +228,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
           throw response.text();
         })
         .then(function(json) {
-          self.fetchData();
+          self.onFinished()
         })
         .catch(function(error) {
           error.then(function(messages) {
@@ -308,7 +308,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
     let formfieldsHTML = null;
     let overviewHTML = null;
     let backButtonHTML = <button className="osc-button-white" onClick={() => { self.setCurrentForm({ what: 'choices-guide' }); }}>Terug</button>;
-    let submitButtonHTML = <button className="osc-button-blue" onClick={event => self.submitForm()}>Verstuur</button>;
+    let submitButtonHTML = <button className="osc-button-blue" onClick={event => self.submitForm()}>Opslaan</button>;
     switch (self.state.currentTarget.what) {
 
       case 'choices-guide':

@@ -89,7 +89,7 @@ export default class OpenStadComponentFormField extends OpenStadComponent {
         break;
 
       case 'postcode':
-        fieldHTML = <OpenStadComponentPostcode config={self.config} onChange={self.handleOnChange} ref={el => (self.input = el)}/>
+        fieldHTML = <OpenStadComponentPostcode config={self.config} value={ this.state.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
         break;
 
       case 'radios':

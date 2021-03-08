@@ -41,6 +41,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
     });
 
     this.config.loginUrl = this.config.loginUrl || '/oauth/login?returnTo=' + encodeURIComponent(document.location.href);
+    this.config.logoutUrl = this.config.logoutUrl || '/oauth/logout?returnTo=' + encodeURIComponent(document.location.href);
 
     let allValues = OpenStadComponentLibs.localStorage.get('osc-choices-guide.values') || {};
     allValues = allValues[ this.config.choicesGuideId ] || {};
@@ -92,9 +93,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
     fetchChoicesGuide({ config: self.config })
       .then((data) => {
         // mutiple questionGroups is not quite ready and is therefore turned of in the interface
-        console.log(data);
         let questionGroupId = data.questionGroups && data.questionGroups[0] && data.questionGroups[0].id;
-        console.log(questionGroupId);
         self.setState({ ...data, questionGroupId }, () => {
           // override config settings
           self.config.submission.type = data.choicesGuideConfig.submissionType || self.config.submission.type;
@@ -221,7 +220,10 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
               OpenStadComponentLibs.localStorage.remove('osc-choices-guide.values');
               OpenStadComponentLibs.localStorage.remove('osc-choices-guide.scores');
               OpenStadComponentLibs.localStorage.remove('osc-choices-guide.formvalues');
-              document.location.href = self.config.afterUrl
+              if (requireLogin) {
+                return self.logout({ afterUrl: self.config.afterUrl })
+              }
+              return document.location.href = self.config.afterUrl
             }
           })
           .catch(function(error) {
@@ -273,11 +275,25 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
       url += 'resultdata=' + window.btoa( JSON.stringify(data) ).replace(/=+$/, '');
     }
 
-    console.log(url);
-
     document.location.href = url;
-  }
 
+  }
+  
+  logout({ afterUrl = self.config.afterUrl }) {
+    let logoutUrl = self.config.logoutUrl || '/oauth/logout';
+    
+    fetch(logoutUrl, {
+	    headers: { "Content-type": "application/json" },
+	    method: 'GET',
+    })
+	    .then((response) => {
+        return document.location.href = afterUrl;
+	    })
+	    .catch((err) => {
+        return document.location.href = afterUrl;
+	    });
+  }
+  
   onFormChange() {
 
     let self = this;
@@ -285,6 +301,8 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
     let allFormvalues = OpenStadComponentLibs.localStorage.get('osc-choices-guide.formvalues') || {};
     allFormvalues[self.config.choicesGuideId] = self.form.getValues();
     OpenStadComponentLibs.localStorage.set('osc-choices-guide.formvalues', allFormvalues);
+
+    self.setState({ random: Math.random() }) // force state update
 
   }
   
