@@ -147,6 +147,8 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
       case 'a-to-b':
         let labelA = data.values && data.values.A && data.values.A.label || 'A';
         let labelB = data.values && data.values.B && data.values.B.label || 'B';
+        let labelBelowA = data.values && data.values.A && data.values.A.labelBelow || '';
+        let labelBelowB = data.values && data.values.B && data.values.B.labelBelow || '';
         let questionTextA = data.values && data.values.A && data.values.A.questionText;
         let questionTextB = data.values && data.values.B && data.values.B.questionText;
         let questionAHTML = null, questionBHTML = null;
@@ -199,8 +201,8 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
             <div className="osc-question-selector-label-a">{labelA}</div>
             <div className="osc-question-selector-label-b">{labelB}</div>
             <OpenStadComponentForms.Slider  min='0' max='100' step='1' value={value} className="osc-question-selector-slider" config={{}} touched={isAnswered} onChange={ data => self.onChangeHandler(data) } ref={el => self.selector = el}/>
-            <div className="osc-question-selector-minlabel" dangerouslySetInnerHTML={{ __html: data.minLabel }}></div>
-            <div className="osc-question-selector-maxlabel" dangerouslySetInnerHTML={{ __html: data.maxLabel }}></div>
+            <div className="osc-question-selector-minlabel" dangerouslySetInnerHTML={{ __html: labelBelowA || '' }}></div>
+            <div className="osc-question-selector-maxlabel" dangerouslySetInnerHTML={{ __html: labelBelowB || '' }}></div>
           </div>
         ;
         break;

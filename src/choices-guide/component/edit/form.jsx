@@ -111,6 +111,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
         currentTarget.questionGroup = questionGroup;
         currentTarget.title = question.title;
         currentTarget.description = question.description;
+        currentTarget.moreInfo = question.moreInfo;
         currentTarget.images = question.images;
         currentTarget.minLabel = question.minLabel;
         currentTarget.maxLabel = question.maxLabel;
@@ -196,6 +197,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
           body = {
             title: self.state.currentTarget.title,
             description: self.state.currentTarget.description,
+            moreInfo: self.state.currentTarget.moreInfo,
             images: self.state.currentTarget.images,
             minLabel: self.state.currentTarget.minLabel,
             maxLabel: self.state.currentTarget.maxLabel,
@@ -228,7 +230,11 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
           throw response.text();
         })
         .then(function(json) {
-          self.onFinished()
+          if ( self.state.currentTarget.what == 'choices-guide' ) {
+            self.onFinished()
+          } else {
+            self.fetchData();
+          }
         })
         .catch(function(error) {
           error.then(function(messages) {
