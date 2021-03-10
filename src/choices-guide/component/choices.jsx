@@ -8,8 +8,6 @@ export default class OpenStadComponentChoices extends OpenStadComponent {
 
   constructor(props) {
 
-    console.log(props);
-
     super(props, {
       type: 'default',
       withPercentage: false,

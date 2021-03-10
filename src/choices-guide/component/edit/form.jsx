@@ -49,6 +49,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
       .then((data) => {
         self.setState({ ...data, busy: false }, () => {
           self.setCurrentForm({ what: 'choices-guide' });
+          // self.setCurrentForm({ what: 'question', questionGroupId: 1, questionId: 36 });
         });
       })
       .catch((err) => {
@@ -127,6 +128,25 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
     this.setState({ currentTarget });
   }
 
+	validate({ showErrors, scrollTo }) {
+    let self= this;
+    let isValid = true;
+    let firstInvalid = null
+
+    let fields = self.formfields;
+
+    Object.keys(self.state.currentTarget).forEach((field) => {
+      if (fields[field+'Field'] && fields[field+'Field'].validate && !fields[field+'Field'].validate({ showErrors })) { 
+        isValid = false;
+        if (!firstInvalid) firstInvalid = field;
+      }
+    });
+
+    if (scrollTo && firstInvalid && firstInvalid.instance && firstInvalid.instance.scrollIntoView) firstInvalid.instance.scrollIntoView({behavior: 'smooth'});
+    return isValid;    
+
+	}
+
   canSubmit() {
     let requiredUserRole = 'moderator';
     let user = this.config.user || {};
@@ -139,8 +159,8 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
 
     self.setState({ busy: true, submitError: null }, () => {
 
-      let isValid = true; // todo
-      if (!isValid) return;
+      let isValid = self.validate({ showErrors: true, scrollTo: true });
+      if (!isValid) return self.setState({ busy: false });
 
       if (!(self.canSubmit())) return alert('Je mag dit niet');
 
@@ -242,7 +262,6 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
               messages = JSON.parse(messages);
               if ( typeof messages == 'object' ) messages = messages.message;
             } catch (err) {}
-            console.log(messages);
             self.setState({ submitError: { message: messages } })
             return console.log(messages);
           });

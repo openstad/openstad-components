@@ -16,7 +16,7 @@ export default class OpenStadComponentSelect extends OpenStadComponentDefaultInp
 
     let errorHTML = null;
     if (self.state.error) {
-      errorHTML = (<div className="osc-form-error">Je hebt nog geen keuze gemaakt</div>)
+      errorHTML = (<div className="osc-form-error osc-form-field-error">Je hebt nog geen keuze gemaakt</div>)
     }
 
     return (

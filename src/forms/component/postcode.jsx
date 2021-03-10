@@ -26,7 +26,7 @@ export default class OpenStadComponentPostcode extends OpenStadComponentDefaultI
 
     let errorHTML = null;
     if (self.state.error) {
-      errorHTML = (<div className="osc-form-error">{self.state.error}</div>)
+      errorHTML = (<div className="osc-form-error osc-form-field-error">{self.state.error}</div>)
     }
     
     return (

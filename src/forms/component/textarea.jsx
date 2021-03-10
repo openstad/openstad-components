@@ -10,7 +10,7 @@ export default class OpenStadComponentTextArea extends OpenStadComponentDefaultI
 
     let errorHTML = null;
     if (self.state.error) {
-      errorHTML = (<div className="osc-form-error">Je hebt nog niets ingevuld</div>)
+      errorHTML = (<div className="osc-form-error osc-form-field-error">Je hebt nog niets ingevuld</div>)
     }
     
     return (

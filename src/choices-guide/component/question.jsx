@@ -117,7 +117,6 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
       isAnswered = true;
     }
 
-
     let imageHTML = null;
     let images = data.images || [];
     if (images && images.length) {
@@ -130,7 +129,28 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
       );
     }
 
-    let questionHTML = (<div className="osc-question-description"><div className="osc-question-description-text" dangerouslySetInnerHTML={{ __html: data.description }}></div></div>);
+    let moreInfoHTML = null;
+    if (data.moreInfo && ( data.moreInfo.title || data.moreInfo.text )) {
+      let title = data.moreInfo.title || 'Geen titel';
+      let text = data.moreInfo.text || 'Geen tekst';
+      moreInfoHTML = (
+        <div className="osc-accordeon">
+          <div className="osc-accordeon-item osc-closed">
+            <div className="osc-title osc-info">
+              {title}
+            </div>
+            <div className="osc-description">
+              {text}
+            </div>
+          </div>
+        </div>
+      );
+    }
+    
+    let labelA = data.values && data.values.A && data.values.A.label || 'A';
+    let labelB = data.values && data.values.B && data.values.B.label || 'B';
+    let questionHTML = (<div className="osc-question-description"><div className="osc-question-description-text" dangerouslySetInnerHTML={{ __html: data.description }}></div>{moreInfoHTML}</div>);
+
     let selectorHTML = null;
     switch (data.type) {
 
@@ -138,15 +158,13 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
         selectorHTML =
           <div className="osc-question-selector">
             <OpenStadComponentForms.Slider min='0' max='100' step='1' value={value} className="osc-question-selector-slider" config={{}} touched={isAnswered} onChange={ data => self.onChangeHandler(data) } ref={el => self.selector = el}/>
-            <div className="osc-question-selector-minlabel" dangerouslySetInnerHTML={{ __html: data.minLabel }}></div>
-            <div className="osc-question-selector-maxlabel" dangerouslySetInnerHTML={{ __html: data.maxLabel }}></div>
+            <div className="osc-question-selector-minlabel" dangerouslySetInnerHTML={{ __html: labelA }}></div>
+            <div className="osc-question-selector-maxlabel" dangerouslySetInnerHTML={{ __html: labelB }}></div>
           </div>
         ;
         break;
 
       case 'a-to-b':
-        let labelA = data.values && data.values.A && data.values.A.label || 'A';
-        let labelB = data.values && data.values.B && data.values.B.label || 'B';
         let labelBelowA = data.values && data.values.A && data.values.A.labelBelow || '';
         let labelBelowB = data.values && data.values.B && data.values.B.labelBelow || '';
         let questionTextA = data.values && data.values.A && data.values.A.questionText;
@@ -168,43 +186,48 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
               <div className="osc-question-description-text" dangerouslySetInnerHTML={{ __html: data.description }}></div>
               {questionAHTML}
               {questionBHTML}
+              {moreInfoHTML}
             </div>
           );
         }
         let questionImageA = data.values && data.values.A && data.values.A.questionImage;
         let questionImageB = data.values && data.values.B && data.values.B.questionImage;
+        let questionImageAHTML = null;
+        let questionImageBHTML = null;
         if (questionImageA && questionImageB) {
-          questionHTML = (
-            <div className="osc-question-description">
-              <div className="osc-question-description-text" dangerouslySetInnerHTML={{ __html: data.description }}></div>
-              <div className="osc-question-description-image-container osc-question-description-image-container-a">
-                <div className="osc-question-description-label osc-question-description-label-a">{labelA}</div>
-                <div className={`osc-question-image-container osc-question-image-aspect-${self.config.aspectRatio}`}>
-                  <OpenStadComponentImage config={{ aspectRatio: self.config.aspectRatio }} image={questionImageA} onClick={ () => self.showLightbox(questionImageA) }/>
-                </div>
+          questionImageAHTML = (
+            <div className="osc-question-description-image-container osc-question-description-image-container-a">
+              <div className="osc-question-description-label osc-question-description-label-a">{labelA}</div>
+              <div className={`osc-question-image-container osc-question-image-aspect-${self.config.aspectRatio}`}>
+                <OpenStadComponentImage config={{ aspectRatio: self.config.aspectRatio }} image={questionImageA} onClick={ () => self.showLightbox(questionImageA) }/>
               </div>
-              <div className="osc-question-description-image-container osc-question-description-image-container-b">
-                <div className="osc-question-description-label osc-question-description-label-b">{labelB}</div>
-                <div className={`osc-question-image-container osc-question-image-aspect-${self.config.aspectRatio}`}>
-                  <OpenStadComponentImage config={{ aspectRatio: self.config.aspectRatio }} image={questionImageB} onClick={ () => self.showLightbox(questionImageB) }/>
-                </div>
+            </div>);
+          questionImageBHTML = (
+            <div className="osc-question-description-image-container osc-question-description-image-container-b">
+              <div className="osc-question-description-label osc-question-description-label-b">{labelB}</div>
+              <div className={`osc-question-image-container osc-question-image-aspect-${self.config.aspectRatio}`}>
+                <OpenStadComponentImage config={{ aspectRatio: self.config.aspectRatio }} image={questionImageB} onClick={ () => self.showLightbox(questionImageB) }/>
               </div>
-              <div style={{ clear: 'both', height: 15 }}>
-              </div>
-              {questionAHTML}
-              {questionBHTML}
-            </div>
-          );
+            </div>);
         }
-        selectorHTML =
+        questionHTML = (
+          <div className="osc-question-description">
+            <div className="osc-question-description-text" dangerouslySetInnerHTML={{ __html: data.description }}></div>
+            {moreInfoHTML}
+            {questionImageAHTML}
+            {questionImageBHTML}
+            <div style={{ clear: 'both', height: 15 }}></div>{/* todo dus */}
+            {questionAHTML}
+            {questionBHTML}
+          </div>);
+        selectorHTML = (
           <div className="osc-question-selector">
             <div className="osc-question-selector-label-a">{labelA}</div>
             <div className="osc-question-selector-label-b">{labelB}</div>
             <OpenStadComponentForms.Slider  min='0' max='100' step='1' value={value} className="osc-question-selector-slider" config={{}} touched={isAnswered} onChange={ data => self.onChangeHandler(data) } ref={el => self.selector = el}/>
             <div className="osc-question-selector-minlabel" dangerouslySetInnerHTML={{ __html: labelBelowA || '' }}></div>
             <div className="osc-question-selector-maxlabel" dangerouslySetInnerHTML={{ __html: labelBelowB || '' }}></div>
-          </div>
-        ;
+          </div>);
         break;
 
       case 'enum-radio':
