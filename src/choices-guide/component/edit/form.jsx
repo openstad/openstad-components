@@ -49,7 +49,8 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
       .then((data) => {
         self.setState({ ...data, busy: false }, () => {
           self.setCurrentForm({ what: 'choices-guide' });
-          // self.setCurrentForm({ what: 'question', questionGroupId: 1, questionId: 36 });
+          // TMP
+          //self.setCurrentForm({ what: 'question', questionGroupId: 1, questionId: 91 });
         });
       })
       .catch((err) => {

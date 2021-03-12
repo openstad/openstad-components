@@ -110,7 +110,6 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
       // self.showEditForm()
     });
 
-
   }
 
   showEditForm() {

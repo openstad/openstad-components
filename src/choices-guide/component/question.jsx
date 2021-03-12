@@ -88,10 +88,17 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
 
     let data = this.props.data || {};
 
-    let images = [
-      data.values && data.values.A && data.values.A.questionImage || '',
-      data.values && data.values.B && data.values.B.questionImage || '',
-    ]
+    let questionImageA = data.values && data.values.A && data.values.A.questionImage;
+    if (questionImageA && questionImageA.length) {
+      if (!Array.isArray(questionImageA)) questionImageA = [questionImageA];
+      questionImageA = questionImageA[0];
+    }
+    let questionImageB = data.values && data.values.B && data.values.B.questionImage;
+    if (questionImageB && questionImageB.length) {
+      if (!Array.isArray(questionImageB)) questionImageB = [questionImageB];
+      questionImageB = questionImageB[0];
+    }
+    let images = [questionImageA, questionImageB]
 
     let startIndex = images.findIndex( img => img == startWith );
 
@@ -190,8 +197,17 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
             </div>
           );
         }
+
         let questionImageA = data.values && data.values.A && data.values.A.questionImage;
+        if (questionImageA && questionImageA.length) {
+          if (!Array.isArray(questionImageA)) questionImageA = [questionImageA];
+          questionImageA = questionImageA[0];
+        }
         let questionImageB = data.values && data.values.B && data.values.B.questionImage;
+        if (questionImageB && questionImageB.length) {
+          if (!Array.isArray(questionImageB)) questionImageB = [questionImageB];
+          questionImageB = questionImageB[0];
+        }
         let questionImageAHTML = null;
         let questionImageBHTML = null;
         if (questionImageA && questionImageB) {
