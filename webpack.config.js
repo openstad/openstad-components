@@ -17,7 +17,7 @@ module.exports = {
     "idea-image": './src/image/index.jsx',
     "ideas-on-map": './src/ideas-on-map/index.jsx',
     "lightbox": './src/lightbox/index.jsx',
-    "nlmap": './src/nlmap/index.jsx',
+    "base-map": './src/base-map/index.jsx',
     "previous-next-button-block": './src/previous-next-button-block/index.jsx',
     "poll": './src/poll/index.jsx',
     "reactions": './src/reactions/index.jsx',

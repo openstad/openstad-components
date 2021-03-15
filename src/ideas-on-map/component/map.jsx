@@ -1,8 +1,8 @@
 'use strict';
 
-import OpenStadComponentNLMap from '../../nlmap/index.jsx';
+import OpenStadComponentBaseMap from '../../base-map/index.jsx';
 
-export default class Map extends OpenStadComponentNLMap {
+export default class Map extends OpenStadComponentBaseMap {
 
   constructor(props) {
 

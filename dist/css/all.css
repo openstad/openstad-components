@@ -4033,12 +4033,12 @@
     display: block;
   }
 }
-.osc-ideas-on-map .osc-ideas-on-map-map .osc-nlmap {
+.osc-ideas-on-map .osc-ideas-on-map-map .osc-map {
   width: 100%;
   height: 100%;
 }
 @media only screen and (max-width: 880px) {
-  .osc-ideas-on-map .osc-ideas-on-map-map .osc-nlmap .leaflet-control-container {
+  .osc-ideas-on-map .osc-ideas-on-map-map .osc-map .leaflet-control-container {
     display: none;
   }
 }
@@ -7484,7 +7484,7 @@
   border-left-color: #164995;
 }
 
-.osc-nlmap {
+.osc-map {
   width: 100%;
   height: 100%;
 }
@@ -8862,12 +8862,12 @@
     display: block;
   }
 }
-.osc-ideas-on-map .osc-ideas-on-map-map .osc-nlmap {
+.osc-ideas-on-map .osc-ideas-on-map-map .osc-map {
   width: 100%;
   height: 100%;
 }
 @media only screen and (max-width: 880px) {
-  .osc-ideas-on-map .osc-ideas-on-map-map .osc-nlmap .leaflet-control-container {
+  .osc-ideas-on-map .osc-ideas-on-map-map .osc-map .leaflet-control-container {
     display: none;
   }
 }
