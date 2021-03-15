@@ -2,10 +2,12 @@ const webpack = require("webpack");
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
- 
+const TerserPlugin = require("terser-webpack-plugin");
+
+
 module.exports = {
 
-	devtool: 'source-map',
+	devtool: 'inline-source-map',
 	// mode: 'production',
 	mode: 'development',
 
@@ -21,6 +23,7 @@ module.exports = {
     "previous-next-button-block": './src/previous-next-button-block/index.jsx',
     "poll": './src/poll/index.jsx',
     "reactions": './src/reactions/index.jsx',
+    "store": './src/store/index.ts',
   },
 
 	output: {
@@ -29,6 +32,10 @@ module.exports = {
     library: 'OpenStadComponents',
     libraryTarget: 'window',
 	},
+
+  resolve: {
+    extensions: ['.jsx', '.tsx', '.ts', '.js'],
+  },
 
 	externals: {
     'react': 'React',
@@ -46,24 +53,25 @@ module.exports = {
   ],
 
   optimization: {
+    minimize: true,
     minimizer: [
-      new UglifyJsPlugin({
+      new TerserPlugin({
         test: /\.jsx?$/,
         exclude: /\/core-js/,
-        minify(file, sourceMap) {
-          const extractedComments = [];
-          const { error, map, code, warnings } = require('uglify-js') // Or require('./path/to/uglify-module')
-                .minify(
-                  file,
-                  { /* Your options for minification */ },
-                );
-          return { error, map, code, warnings, extractedComments };
-        }
-        
+        // minify(file, sourceMap) {
+        //   const extractedComments = [];
+        //   const { error, map, code, warnings } = require('uglify-js') // Or require('./path/to/uglify-module')
+        //     .minify(
+        //       file,
+        //       { /* Your options for minification */ },
+        //     );
+        //   return { error, map, code, warnings, extractedComments };
+        // }
+
       })
     ]
   },
-  
+
 	module: {
 		rules: [
 
@@ -79,6 +87,12 @@ module.exports = {
           loader: "babel-loader"
         }
 			},
+
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
 
       {
         test: /\.less$/,
@@ -107,9 +121,9 @@ module.exports = {
 			//   	'css-loader',
 			//   ],
 			// },
-      
+
 		],
 	},
-	
+
 }
 

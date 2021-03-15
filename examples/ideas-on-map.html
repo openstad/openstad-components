@@ -4,11 +4,12 @@
     <title>OpenStad IdeasOnMap</title>
     <link rel="shortcut icon" href="/favicon.ico"/>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
-    <link rel="stylesheet" type="text/css" href="/openstad/css/all.css"/>
-    <link rel="stylesheet" type="text/css" href="/openstad/components/dist/css/ideas-on-map.css"/>
+    <link rel="stylesheet" type="text/css" href="../dist/css/all.css"/>
+    <link rel="stylesheet" type="text/css" href="../dist/css/ideas-on-map.css"/>
     <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
-    <script src="/openstad/components/dist/ideas-on-map.js"></script>
+
+    <script src="../dist/ideas-on-map.js"></script>
 	  <script>
 	   window.addEventListener('load', function(e) {
        let config = {
@@ -19,7 +20,7 @@
          },
          "api": {
            "isUserLoggedIn": true,
-           "url": "APIURL",
+           "url": "http://localhost:5000",
            "headers": {
              "X-Authorization": "Bearer: AUTHTOKEN"
            }
@@ -36,14 +37,83 @@
              "isActive": true
            }
          },
+         "filter": [],
          "argument": {
            "descriptionMinLength": 5,
            "descriptionMaxLength": 50
          }
        };
 
+
+         var initData = {
+           config: {
+             api: "http://localhost:5000/api",
+             siteId: 1
+           },
+           ideas: [
+             {
+               id: 1,
+               name: 'idea name accepted',
+               images: {
+                 heading: 'https://maps.googleapis.com/maps/api/streetview?size=500x500&location=52.3779893,4.8460973&heading=151.78&key=AIzaSyAU1BrnBc0QW9PDai7hpRU2yYpoGXNDnU4',
+                 default: 'https://maps.googleapis.com/maps/api/streetview?size=500x500&location=52.3779893,4.8460973&key=AIzaSyAU1BrnBc0QW9PDai7hpRU2yYpoGXNDnU4',
+                 small: 'https://maps.googleapis.com/maps/api/streetview?size=100x100&location=52.3779893,4.8460973&key=AIzaSyAU1BrnBc0QW9PDai7hpRU2yYpoGXNDnU4'
+               },
+               position: {lat: 52.3631163, lng: 4.9038573},
+               link: 'https://google.nl',
+               status: 'ACCEPTED',
+               theme: 'Sport',
+               budget: 15000,
+
+             },
+             {
+               id: 2,
+               name: 'idea name closed',
+               images: {
+                 heading: 'https://maps.googleapis.com/maps/api/streetview?size=500x500&location=52.3779893,4.8460973&heading=151.78&key=AIzaSyAU1BrnBc0QW9PDai7hpRU2yYpoGXNDnU4',
+                 default: 'https://maps.googleapis.com/maps/api/streetview?size=500x500&location=52.3779893,4.8460973&key=AIzaSyAU1BrnBc0QW9PDai7hpRU2yYpoGXNDnU4',
+                 small: 'https://maps.googleapis.com/maps/api/streetview?size=100x100&location=52.3779893,4.8460973&key=AIzaSyAU1BrnBc0QW9PDai7hpRU2yYpoGXNDnU4'
+               },
+               position: {lat: 52.350330, lng: 4.898734},
+               link: 'https://google.nl',
+               status: 'CLOSED',
+               theme: 'Park',
+               budget: 6000,
+             },
+             {
+               id: 3,
+               name: 'idea name open',
+               images: {
+                 heading: 'https://maps.googleapis.com/maps/api/streetview?size=500x500&location=52.3779893,4.8460973&heading=151.78&key=AIzaSyAU1BrnBc0QW9PDai7hpRU2yYpoGXNDnU4',
+                 default: 'https://maps.googleapis.com/maps/api/streetview?size=500x500&location=52.3779893,4.8460973&key=AIzaSyAU1BrnBc0QW9PDai7hpRU2yYpoGXNDnU4',
+                 small: 'https://maps.googleapis.com/maps/api/streetview?size=100x100&location=52.3779893,4.8460973&key=AIzaSyAU1BrnBc0QW9PDai7hpRU2yYpoGXNDnU4'
+               },
+               position: {lat: 52.370703, lng: 4.872948},
+               link: 'https://google.nl',
+               status: 'OPEN',
+               theme: 'Park',
+               budget: 5000,
+             },
+             {
+               id: 4,
+               name: 'idea name accepted 2',
+               images: {
+                 heading: 'https://maps.googleapis.com/maps/api/streetview?size=500x500&location=52.3779893,4.8460973&heading=151.78&key=AIzaSyAU1BrnBc0QW9PDai7hpRU2yYpoGXNDnU4',
+                 default: 'https://maps.googleapis.com/maps/api/streetview?size=500x500&location=52.3779893,4.8460973&key=AIzaSyAU1BrnBc0QW9PDai7hpRU2yYpoGXNDnU4',
+                 small: 'https://maps.googleapis.com/maps/api/streetview?size=100x100&location=52.3779893,4.8460973&key=AIzaSyAU1BrnBc0QW9PDai7hpRU2yYpoGXNDnU4'
+               },
+               position: {lat: 52.3520283, lng: 4.8560163},
+               link: 'https://google.nl',
+               status: 'ACCEPTED',
+               theme: 'Speeltuin (0-6 jaar)',
+               budget: 5000,
+             }
+           ]
+         }
+         window.OpenstadStore = window.OpenStadComponents.OpenstadStore(initData);
+
        let element = document.querySelector('.openstad-component-ideas-on-map');
-       OpenStadComponents.IdeasOnMap.renderElement(element, config);
+       OpenStadComponents.IdeasOnMap.renderElement(element, config, window.OpenstadStore);
 
      });
 	  </script>
