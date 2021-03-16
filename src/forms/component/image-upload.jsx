@@ -107,7 +107,7 @@ export default class OpenStadComponentImageUpload extends OpenStadComponentDefau
       onprocessfile={( err, file ) => self.updateUploadedFiles({ addFile: file, next: files => self.updateValue(files) })}
       onremovefile={( err, file ) => self.updateUploadedFiles({ removeFile: file, next: files => self.updateValue(files) })}
         
-      name={self.config.name}
+      name="image"
       server={this.config.imageserver.process}
       allowMultiple={this.config.allowMultiple}
       
