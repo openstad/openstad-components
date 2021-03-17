@@ -162,7 +162,6 @@ export default class IdeasForm extends OpenStadComponent {
 	  if (self.state.formfields['location']) {
 			self['form-warning-location'].style.display = 'none';
 		} else {
-      console.log('xxx');
 			self['form-warning-location'].style.display = 'block';
 			isValid = false;
 		}
