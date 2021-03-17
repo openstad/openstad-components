@@ -1,0 +1,1184 @@
+[33mcommit 37bf5f44a155b8497cfc16153f8a5cbc86b3bc83[m[33m ([m[1;36mHEAD -> [m[1;32mfeature/refactor-map[m[33m)[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Mar 16 14:02:43 2021 +0000
+
+    XX
+
+[33mcommit 938ee9d5e633dc5febc5b35b8e1391031f3deda3[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon Mar 15 14:37:20 2021 +0000
+
+    Add files
+
+[33mcommit a0c38789a883666500c4b81954a9846978170435[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon Mar 15 14:24:26 2021 +0000
+
+    Move nlmap to base-map and remove nlmaps dependencies
+
+[33mcommit e2de4cffce7c86b86bb4a0a21f8ed9970c8b8e16[m[33m ([m[1;31morigin/development[m[33m, [m[1;32mdevelopment[m[33m)[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon Mar 15 10:01:14 2021 +0000
+
+    Bump version number
+
+[33mcommit c98a8f4c088852477d59a2d19cb0cd4c7bde91fe[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon Mar 15 09:49:12 2021 +0000
+
+    Test publishing of alpha version
+
+[33mcommit f7c1526edd621f4bd0462f7377e99c83071bb1d2[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon Mar 15 09:46:47 2021 +0000
+
+    Test publishing of alpha version
+
+[33mcommit 753804037093c7733a6bd6eed3ffbd623ff81beb[m[33m ([m[1;32mhotfix/010-multiple-images-in-form[m[33m)[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Fri Mar 12 14:45:33 2021 +0000
+
+    Use filepond-react and allow for mutiple upload elements in one form
+
+[33mcommit 418254b3d163365175cd6f18351772e58993f75d[m[33m ([m[1;32mhotfix/009-a-b-questions[m[33m)[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Mar 10 15:55:21 2021 +0000
+
+    Add new setup of questions
+
+[33mcommit 759a2c92e9fe9eb632f45d9bb2ef5a9ae9095830[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon Mar 8 16:12:56 2021 +0000
+
+    More minor fixes
+
+[33mcommit 169fd7d655f0326f55be160c43f3660ab7246259[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon Mar 8 11:39:08 2021 +0000
+
+    Fix a few tickets
+
+[33mcommit 983daaae3b96dd2f73e89f4392502b9c8d5851d0[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Fri Mar 5 09:31:52 2021 +0000
+
+    Minor update
+
+[33mcommit 27f836e16e9f798bc409d5b6e10b1c469fdcc10c[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Fri Mar 5 09:08:45 2021 +0000
+
+    Minor update
+
+[33mcommit 3165335e9dea7d54e394ae3539179e1ebcbd5aeb[m[33m ([m[1;32mfeature/more-more-refactoring[m[33m)[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu Mar 4 14:22:05 2021 +0000
+
+    Update choices-guides to a production level
+
+[33mcommit e484fb7f7447aa880f7f3c410fb6eddf3a30c26c[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon Mar 1 10:07:22 2021 +0000
+
+    Fix previous/next buttons
+
+[33mcommit e99d99a00defb7a040de201c4db37be6cf4e14fd[m
+Merge: 54a9dac 3787974
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon Mar 1 09:30:10 2021 +0000
+
+    Merge branch 'hotfix/008-last-minute-changes-to-choices-guides' into development
+
+[33mcommit 3787974ab322471ea106b6b3af88ba89d9516116[m[33m ([m[1;32mhotfix/008-last-minute-changes-to-choices-guides[m[33m)[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu Feb 25 15:02:13 2021 +0000
+
+    Add last minute features to choices guide reuslt forms
+
+[33mcommit 54a9dacd30fa8cd92285e0342fbdd29c530804e0[m[33m ([m[1;32mfeature/more-refactoring[m[33m)[m
+Merge: b44152c 44de59d
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu Feb 25 13:55:41 2021 +0000
+
+    Merge branch 'hotfix/007-bugfix' into development
+
+[33mcommit 44de59dc4dbeb45a3dcef2e0bf2145524dca4b57[m[33m ([m[1;32mhotfix/007-bugfix[m[33m)[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Feb 24 13:07:42 2021 +0000
+
+    Fix handling of startWithAllQuestionsAnswered
+
+[33mcommit b44152c849a86d7d7164a6d6864e48177f431907[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Feb 24 12:54:22 2021 +0000
+
+    Bugfix in form
+
+[33mcommit 883dd8a8d97874ee8add82bcd0c0e836287af9e6[m
+Merge: abb9f71 cc0d1ce
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Feb 23 15:13:00 2021 +0000
+
+    Merge branch 'master' into development
+
+[33mcommit cc0d1ce5a9b23b5e272c582854e1052817b2ffc5[m[33m ([m[1;33mtag: v0.0.15[m[33m)[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Feb 23 10:14:20 2021 +0000
+
+    Update version
+
+[33mcommit 926cac111423f0de2c5ae593a6008e225aad402d[m
+Merge: ec7b414 9f92275
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Feb 23 10:12:45 2021 +0000
+
+    Merge branch 'release'
+
+[33mcommit 9f922754a932eca5de541cba65e69a3d415fa5f8[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Feb 23 09:17:33 2021 +0000
+
+    Bugfixes
+
+[33mcommit c18704819904230608da8f16095fcfa576ce2e0b[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon Feb 22 17:57:12 2021 +0000
+
+    Bugfixes
+
+[33mcommit abb9f7191d11344c27664c62e3b2fa39bad832c5[m
+Merge: 57f8cb2 2ee43b3
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon Feb 22 16:42:37 2021 +0000
+
+    Merge branch 'hotfix/006-tickets' into development
+
+[33mcommit 2ee43b3c11a9f9cd2737dff8b038b94a97856cc2[m[33m ([m[1;32mhotfix/006-tickets[m[33m)[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon Feb 22 16:34:39 2021 +0000
+
+    Bugfixes
+    
+    Related tickets:
+    https://trello.com/c/knCw1kzT
+    https://trello.com/c/SiPKAk3k
+    https://trello.com/c/CNzdhBy0
+
+[33mcommit 57f8cb2e10670291f8f09a0f0200d02aca625c3d[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon Feb 22 14:45:00 2021 +0000
+
+    Update choices-guide form
+
+[33mcommit d7bad77f7dd3241ec43653e58a9276763249b9eb[m
+Merge: 018af54 0b5383e
+Author: Niels Vegter <niels@denes.nl>
+Date:   Fri Feb 19 10:34:48 2021 +0000
+
+    Merge branch 'development' into feature/more-refactoring
+
+[33mcommit 018af5480cbe54c0fa3ad6a9fb774ea3c6aa13e8[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Fri Feb 19 10:34:09 2021 +0000
+
+    Init choices guide form
+
+[33mcommit 110c1be8588bd965fc6db9520291415758bbfb3f[m[33m ([m[1;32mhotfix/005-tickets[m[33m)[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu Feb 18 12:00:54 2021 +0000
+
+    Fix several bugs. Related tickets:
+    https://trello.com/c/TdklHw7H
+    https://trello.com/c/fuYt9jqW
+    https://trello.com/c/ZmBqGdxc
+    https://trello.com/c/beeItppc
+    https://trello.com/c/LK4VXMeh
+    https://trello.com/c/1z0LxPJI
+
+[33mcommit 0b5383e839101854826e54e2c439ffb08cc7e649[m
+Merge: ba359f4 5111417
+Author: Niels Vegter <niels@denes.nl>
+Date:   Fri Feb 12 14:37:20 2021 +0000
+
+    Merge branch 'feature/more-refactoring' into development
+
+[33mcommit 5111417a8ef5aa47e617634361b6d0d690383467[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Fri Feb 12 14:36:19 2021 +0000
+
+    Refacttor ideas-on-map.jsx
+
+[33mcommit dd0486c5b9f19b35068f570965930131f380d399[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu Feb 11 12:29:13 2021 +0000
+
+    Change address api server
+
+[33mcommit ba359f44c441a6840747392e4c88410279e0fcfe[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu Feb 11 10:07:12 2021 +0000
+
+    Bugfix: previous/next buttons - related ticket https://trello.com/c/EPbOWSwZ
+
+[33mcommit 1c33d61f2e4608c3be0885a7230b332a349eebab[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Feb 10 13:23:08 2021 +0000
+
+    Fix several issues
+
+[33mcommit ec7b414cac79ac62393cccde018b11d3ef5b58fd[m
+Merge: 40892d9 0ea44e4
+Author: nlsvgtr <niels@denes.nl>
+Date:   Tue Feb 9 15:58:36 2021 +0100
+
+    Merge pull request #2 from Amsterdam/dependabot/npm_and_yarn/elliptic-6.5.3
+    
+    Bump elliptic from 6.5.2 to 6.5.3
+
+[33mcommit 40892d9366d25f5acf7f11a0f927bb2524cdf2eb[m
+Merge: 518e105 2287c77
+Author: nlsvgtr <niels@denes.nl>
+Date:   Tue Feb 9 15:58:23 2021 +0100
+
+    Merge pull request #3 from Amsterdam/dependabot/npm_and_yarn/ini-1.3.8
+    
+    Bump ini from 1.3.5 to 1.3.8
+
+[33mcommit 27cb29698d5f924e20a0fe7ea645e4ba6884ec5b[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu Feb 4 13:49:05 2021 +0000
+
+    Bugfixes
+
+[33mcommit fcba9811214837ef1651d64ac8a98545b82769c1[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Feb 3 11:09:40 2021 +0000
+
+    Bugfixes
+
+[33mcommit 66c47ed47bb6f68dd8179f69b92ec767dc181347[m
+Merge: 79d3817 7c8dd89
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon Feb 1 13:06:03 2021 +0000
+
+    Merge branch 'feature/refactor-choices-guide' into development
+
+[33mcommit 7c8dd89aa9a8d128e0230887de414e3e176bf617[m[33m ([m[1;32mfeature/refactor-choices-guide[m[33m)[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon Feb 1 12:42:48 2021 +0000
+
+    Update choices-guide plane
+
+[33mcommit 79d3817f168791d6c156ba5c2093a032544d75a6[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu Jan 28 12:50:40 2021 +0000
+
+    Minor updates
+
+[33mcommit f0576eb237c2271cdf7dffa2a7b9d0a95381273a[m
+Merge: dba60f3 b6c7868
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu Jan 28 12:22:37 2021 +0000
+
+    Merge branch 'feature/require-login-to-send-choices-guide-results' into development
+
+[33mcommit b6c786828bb0e45ad04e7ec85f9680fd25a414fb[m[33m ([m[1;32mfeature/require-login-to-send-choices-guide-results[m[33m)[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu Jan 28 12:20:07 2021 +0000
+
+    Better error handling
+
+[33mcommit caf7e6b8a2025f6e0ff7065ba69fe7532cdbbca9[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Jan 27 14:18:25 2021 +0000
+
+    Better fingerprinting
+
+[33mcommit 40475ee2d6f1918bdccf5a178aa8def5106ea432[m[33m ([m[1;31morigin/feature/require-login-to-send-choices-guide-results[m[33m)[m
+Merge: 4334fd9 fa5800c
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Jan 27 13:59:48 2021 +0000
+
+    Merge branch 'feature/require-login-to-send-choices-guide-results' of github.com:Amsterdam/openstad-components into feature/require-login-to-send-choices-guide-results
+
+[33mcommit 4334fd9f5d08df6349cc9264faa86ff8e07bec0f[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Jan 27 13:55:05 2021 +0000
+
+    Add require login to choices guide
+
+[33mcommit fa5800c01eac3e1b346fbb585ba6ad45698337d2[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Jan 27 14:32:25 2021 +0100
+
+    Backup current status
+
+[33mcommit dba60f30f8e697ff6cd10c2824559d4e806fde2d[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon Jan 25 12:33:31 2021 +0000
+
+    Add changelog
+
+[33mcommit 518e105a212bfdedd263d394bcd23fbe53fb2ead[m[33m ([m[1;33mtag: v0.0.14[m[33m)[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon Jan 25 12:25:34 2021 +0000
+
+    Start using versioning and changelog
+
+[33mcommit 9501f061f5a5a535eae56cf5d19895797084921a[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Fri Jan 22 12:48:14 2021 +0000
+
+    xxxx
+
+[33mcommit 63d76463d3493e9c4f10319147420ed1c343d229[m
+Merge: 376ccbf 289b9a8
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Jan 20 10:11:26 2021 +0000
+
+    Merge branch 'development' into feature/refactor-choices-guide
+
+[33mcommit 289b9a8a38c4f6bbd97636a02282854d4ee42cce[m[33m ([m[1;32mbugfix/001-bsmp-tickets[m[33m)[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Jan 19 16:27:02 2021 +0000
+
+    Bugfixes tbv BSMP
+    https://trello.com/c/VwiLZKtO
+    https://trello.com/c/ssaDhwew
+    https://trello.com/c/9BFqyUMs
+
+[33mcommit 7b08f98b01f3e117bcf3cf5fc8ffbfd19cfda057[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Fri Jan 15 10:24:38 2021 +0000
+
+    Add missing image module
+
+[33mcommit 376ccbf53c8092ee4576cd8de5b5bd018f4b0ccc[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Fri Jan 15 09:57:41 2021 +0000
+
+    Use image comp in choices-guide
+
+[33mcommit 9a7a447f6238ee0480446984a4b45b3a27872dc9[m
+Merge: 897bff6 bd4d0fa
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Jan 13 12:53:53 2021 +0000
+
+    Merge branch 'feature/image-component' into feature/refactor-choices-guide
+
+[33mcommit bd4d0fade313ecb4f44818e4b0b1501e75f938c3[m[33m ([m[1;32mfeature/image-component[m[33m)[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Jan 13 12:47:06 2021 +0000
+
+    idea-image is now parent image + child idea-image
+
+[33mcommit 897bff61628b86401878c0e42978104114e58e2a[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Jan 13 11:26:14 2021 +0000
+
+    choices-guide new calculation setup
+
+[33mcommit ea363f2e4a17d61c367f78b746076929abff5c80[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Dec 1 11:24:51 2020 +0000
+
+    Refactor some more details
+
+[33mcommit d58d59ec75b1f0b67dba99292123d01fdbfafb46[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Nov 24 14:13:35 2020 +0000
+
+    Refactor obejct config
+
+[33mcommit 935aa0bf51861893b99b4cda89c261ec5194a3d3[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon Nov 23 14:44:02 2020 +0000
+
+    Add ideas-overview to ideas-on-map, including some refactoring
+
+[33mcommit b328e8d64a41480d33fa02e6641b5b00dfe5fc2d[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Nov 3 11:03:19 2020 +0000
+
+    Init ideas-overview
+
+[33mcommit ca58b7646ea7197966d9722c4759f5c6ef90a28a[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Nov 3 10:57:44 2020 +0000
+
+    Refactor ideas-on-map
+
+[33mcommit 7a47971bc48b1b7c12bf5ccde6027e2fec9ab0fc[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Fri Oct 30 13:46:19 2020 +0000
+
+    Init refactor
+
+[33mcommit 00b66b6c59e9f2a33c1fe3ea6f6d2677abd1646f[m
+Merge: 56fd97e e48cc14
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Jan 6 11:13:11 2021 +0000
+
+    Merge branch 'hotfix/004-choices-guide-results' into development
+
+[33mcommit e48cc1498ef341a0442c8de55e6b45f428523b3b[m[33m ([m[1;32mhotfix/004-choices-guide-results[m[33m)[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Jan 6 10:40:37 2021 +0000
+
+    ChoicesGuide better defaults
+
+[33mcommit 194fa63b45f307a6e58064c50f0e4cd4c84f3f15[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon Jan 4 16:04:55 2021 +0000
+
+    Add new options to choices guide results
+    
+    Related tickets:
+    https://trello.com/c/7neV4dZs
+    https://trello.com/c/sHZd609k
+    https://trello.com/c/0x0EX2MD
+
+[33mcommit 3f9d137dc9af63debed124ef099168c4c9e03665[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon Jan 4 15:18:41 2021 +0000
+
+    xxx
+
+[33mcommit 56fd97efdcf0a86342697c1ff1f313fca4509701[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu Dec 17 12:36:32 2020 +0000
+
+    Bugfix
+
+[33mcommit da70d65211fa7d7067591d759473b85254f95f24[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Dec 16 11:26:51 2020 +0000
+
+    Add an extra choices type to the choices guide - related ticket https://trello.com/c/7neV4dZs
+
+[33mcommit 2287c7782c44ac83d27b75ff3e609ce6478b57f1[m[33m ([m[1;31morigin/dependabot/npm_and_yarn/ini-1.3.8[m[33m)[m
+Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+Date:   Sat Dec 12 14:25:17 2020 +0000
+
+    Bump ini from 1.3.5 to 1.3.8
+    
+    Bumps [ini](https://github.com/isaacs/ini) from 1.3.5 to 1.3.8.
+    - [Release notes](https://github.com/isaacs/ini/releases)
+    - [Commits](https://github.com/isaacs/ini/compare/v1.3.5...v1.3.8)
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+
+[33mcommit d2a0df64e5b8886561074f7238770312cfef82ae[m[33m ([m[1;32mhotfix/001-search[m[33m, [m[1;32mhotfix/001-ideas-on-map-content-buttons[m[33m, [m[1;32mhotfix/001-content-buttons[m[33m)[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon Nov 23 13:49:18 2020 +0000
+
+    Add required-role-class to ideas-on-map buttons
+
+[33mcommit 47b64ef1cb99d26eedd0f263de2f9d5373ecdcde[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Fri Nov 20 11:58:41 2020 +0000
+
+    Debug: log config
+
+[33mcommit 967c141c87d784a991f180ed99af42c03c6139a4[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Nov 11 11:46:07 2020 +0000
+
+    Bugfix on reacion count. Related ticket https://trello.com/c/FOkac0S8
+
+[33mcommit 9d5dc13037b55a76d3b492f6378927c10aa05e0a[m
+Merge: 63d8b1a ddcd73a
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon Nov 9 11:43:32 2020 +0000
+
+    Merge branch 'development' into release
+
+[33mcommit 0ea44e40f892a496eb1e6711cbbbac3aca721f2e[m[33m ([m[1;31morigin/dependabot/npm_and_yarn/elliptic-6.5.3[m[33m)[m
+Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+Date:   Mon Oct 26 09:28:56 2020 +0000
+
+    Bump elliptic from 6.5.2 to 6.5.3
+    
+    Bumps [elliptic](https://github.com/indutny/elliptic) from 6.5.2 to 6.5.3.
+    - [Release notes](https://github.com/indutny/elliptic/releases)
+    - [Commits](https://github.com/indutny/elliptic/compare/v6.5.2...v6.5.3)
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+
+[33mcommit 63d8b1a50a69d19ab3b8b228c7486fe9ac30c37e[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon Oct 26 09:28:30 2020 +0000
+
+    Bump version
+
+[33mcommit ece1a26c92fc31ace3c568cfe418874573955b2a[m
+Merge: 758bf2d 17e260e
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon Oct 26 09:26:54 2020 +0000
+
+    Merge branch 'development'
+
+[33mcommit ddcd73a34075cd1483de98d5b1e29a23600b18bc[m[33m ([m[1;31morigin/feature/tickets[m[33m, [m[1;32mfeature/tickets[m[33m)[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Oct 20 13:34:47 2020 +0100
+
+    Add flag to moderator reactions. Related ticket: https://trello.com/c/fnJhaVxy
+
+[33mcommit 7de9a3fe258acd0ab604afd4d3c15923cc14e8ff[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Oct 20 11:27:13 2020 +0100
+
+    Bugfix: moderator can create reaction. Related ticket: https://trello.com/c/q7oxxxtM
+
+[33mcommit 335f918894c21c9d96adf03cfa480632bacd6666[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Oct 20 10:37:50 2020 +0100
+
+    Make details.metadata line configurable. Related ticket: https://trello.com/c/UWuNfkWF
+
+[33mcommit d807c390f9218da805e81a42831963c9633988a7[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Oct 20 09:29:09 2020 +0100
+
+    Make search fields configurable. Related ticket: https://trello.com/c/qaVC72Az
+
+[33mcommit 17e260eeb7aa6711f9952ebc5760917d118f0348[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu Oct 15 11:12:26 2020 +0100
+
+    Fix filters for typeId
+
+[33mcommit 5d4a34341e55bf2011977fb85d0e4bc5cc136e42[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Oct 6 14:21:11 2020 +0100
+
+    Add options for BSMP
+    
+    Related tickets:
+    https://trello.com/c/GV8rDuZz
+    https://trello.com/c/my2klvXi
+    https://trello.com/c/BTsKiBps
+    https://trello.com/c/JGDlo6kx
+    https://trello.com/c/DKJPyhG6
+
+[33mcommit 50664a10ee29bb45ccbf8b8c4025359d026abad3[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Sep 23 16:16:36 2020 +0100
+
+    Bugfix
+
+[33mcommit 92e171c548951ba2dd6b8cfa6807ee78dfcf11ca[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Sep 23 12:00:08 2020 +0100
+
+    Minor fixes
+
+[33mcommit 0e7a270844bc4d67bf4ac182bef93219b3dd8066[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Sep 22 14:40:10 2020 +0100
+
+    Use existing files in form upload
+
+[33mcommit ad79ef722f113e4ed5cee908689c78eb1de8622a[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Fri Sep 18 14:24:35 2020 +0100
+
+    ideas-on-map extra features
+
+[33mcommit 09de8f862cc3aba2f6a40738e6aceeff15bd4da1[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Sep 16 14:15:52 2020 +0100
+
+    Remove localstorage and use #tagd for details and selected,; fix bug on reload with idea open
+
+[33mcommit 758bf2d87f60f1a0ca29c8d12523f59bf3bedfa0[m
+Merge: 1bc9327 e0a9c5b
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Sep 16 11:04:06 2020 +0100
+
+    Merge branch 'development'
+
+[33mcommit e0a9c5b27a141529aaf20848409ad8f24e9a2eb0[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Sep 16 11:00:52 2020 +0100
+
+    Fix scale multiple images on mobile
+
+[33mcommit 521532a529b69c75da213a52df90f3fa97a115ff[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Sep 16 10:28:16 2020 +0100
+
+    Fix on filters
+
+[33mcommit 1bc9327520845031b727363c69c693880fb5312d[m
+Merge: fe44596 3299aea
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon Sep 14 11:37:05 2020 +0100
+
+    Merge branch 'development'
+
+[33mcommit 3299aea2af7832a07a95f60ac42ac180a9a063ec[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon Sep 14 11:36:10 2020 +0100
+
+    Bugfix: list shows ranbdom images
+
+[33mcommit fe445966f586664dfa30064e02df812541122a2c[m
+Merge: 6b266a3 f027546
+Author: Niels Vegter <niels@denes.nl>
+Date:   Fri Sep 11 11:38:51 2020 +0100
+
+    Merge branch 'development'
+
+[33mcommit f027546eea51931c7090201ea8f6d7a94f6215a8[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Fri Sep 11 11:36:26 2020 +0100
+
+    Update maxFile size in uploads
+
+[33mcommit 6b266a3d177e6ad9a3ebb2b1abb9cb5b8d6885c5[m
+Merge: c878e2b 15d13c2
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu Sep 10 15:15:36 2020 +0100
+
+    Merge branch 'development'
+
+[33mcommit 15d13c2d30f4e9e0cd713d9e43a1ae55eb2df8fe[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Sep 8 12:58:47 2020 +0100
+
+    Even more configurable labels - ticket https://trello.com/c/BfgvPNqA
+
+[33mcommit c6f9475ff051598b53eeedc717005393c4c3bc6b[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Sep 8 12:43:17 2020 +0100
+
+    Bugfix on sortbuttons
+
+[33mcommit d03df8e771db3dffc21f3565ed6d84995adee805[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Sep 8 12:02:57 2020 +0100
+
+    More configurable labels - ticket https://trello.com/c/f8konrxD
+
+[33mcommit 10306b49dad2b1898f5c816ec1488f8ad1aa1718[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Sep 8 11:23:27 2020 +0100
+
+    Add radios to forms - tiket https://trello.com/c/SQVRBASM
+
+[33mcommit b65cde18ae6f884dad6c4650e5b4c57dea4332f0[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Sep 8 11:22:42 2020 +0100
+
+    Update reaction buttons css - ticket https://trello.com/c/Gzvhn8N2
+
+[33mcommit 7048d036123a5b81f472c17a6fbf0dc980c7a481[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Fri Sep 4 14:36:23 2020 +0100
+
+    Add sort options
+
+[33mcommit e327e9cb363d17f2a9642a4a18798d9dcd5035c9[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Fri Sep 4 13:15:06 2020 +0100
+
+    Fix argcount; related ticket
+
+[33mcommit 7044535f952cac22b8347117c31d10c5f95e6eba[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Fri Sep 4 13:04:35 2020 +0100
+
+    Update dist; bump version
+
+[33mcommit 3bfa5d6b1b1e19294680d05b8ef68c0032929aa6[m
+Merge: c58a7a8 33fc6d5
+Author: Niels Vegter <niels@denes.nl>
+Date:   Fri Sep 4 13:03:33 2020 +0100
+
+    Merge branch 'feature/multiple-images' into development
+
+[33mcommit 33fc6d55d618584dabee41850b8b0cffdfa8f409[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Fri Sep 4 13:01:51 2020 +0100
+
+    Add multiple images to ideas
+
+[33mcommit c58a7a8f3a8cbbb1ee5a7bb233e75108d7a8a3b3[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu Sep 3 13:30:26 2020 +0100
+
+    Fix default typeId
+
+[33mcommit c878e2b9d640f679bd4af6ddf6a9d6f612a61148[m
+Merge: 7561ff6 f8dbbcc
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu Aug 27 07:56:37 2020 +0100
+
+    Merge branch 'development'
+
+[33mcommit f8dbbcc894d2679dd6c9073d6a906d771dac4638[m
+Merge: 9fc502f d824ebb
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Aug 26 15:35:12 2020 +0100
+
+    Merge branch 'development' of github.com:Amsterdam/openstad-components into development
+
+[33mcommit 9fc502ffc1e004e7c14a4b812c30ad6e0a43ee64[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Aug 26 15:35:01 2020 +0100
+
+    Reactions rebuild
+
+[33mcommit d824ebbe6fb00efb0e6b92b74ae4e931ae9dbc6f[m
+Author: Tosh <tosh.koevoets@gmail.com>
+Date:   Wed Aug 26 16:32:21 2020 +0200
+
+    Rebuild
+
+[33mcommit 51e7a26ce08284be76f970412b4b4f56e546d3b2[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Aug 26 15:12:33 2020 +0100
+
+    Reactions bugfix
+
+[33mcommit 7561ff6ea22674c3546ae406429ee928264004b1[m
+Merge: ac65f3b 85cc7b5
+Author: Niels Vegter <niels@denes.nl>
+Date:   Fri Aug 21 15:28:43 2020 +0100
+
+    Merge branch 'development'
+
+[33mcommit 85cc7b541c15c569baf1922092ee16ccda98f684[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Fri Aug 21 15:28:28 2020 +0100
+
+    Bugfix
+
+[33mcommit ac65f3be987e870ae0bc5373e096031627aad1ee[m
+Merge: 3abd3fc 06adef8
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Aug 18 15:19:54 2020 +0100
+
+    Merge branch 'development'
+
+[33mcommit 06adef8eb7bf1f4056d378ac900bf7b3c04d82d9[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Aug 18 15:18:34 2020 +0100
+
+    Bump version
+
+[33mcommit a43027b3fe523427fafed2c973777ae7ad772ec8[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Aug 18 15:18:15 2020 +0100
+
+    Use argsCount API scope
+
+[33mcommit 43ca3cacfc75d178f99850159948324dd219aca7[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu Aug 13 14:53:15 2020 +0100
+
+    Bugfix on polls
+
+[33mcommit 3abd3fc556e00382055f0273061b14dafe5fed26[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu Aug 13 14:51:57 2020 +0100
+
+    Bugfix on polls
+
+[33mcommit f3fb846c13744da8139a9c4f59b301d3e3d41f4e[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu Aug 13 14:45:36 2020 +0100
+
+    Bugfixes
+
+[33mcommit ade994ddd82a3d440f39a2fcbc57d91535b4d45b[m
+Merge: 6dc69cc fe16572
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu Aug 13 13:20:49 2020 +0100
+
+    Merge branch 'feature/idea-types' into development
+
+[33mcommit 6dc69cc9e88d943b0a0b959efd2e714776d4f68b[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu Aug 13 13:20:03 2020 +0100
+
+    Bump version
+
+[33mcommit fe16572a9329f83d431cafbf57bda4480dae140e[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu Aug 13 13:15:47 2020 +0100
+
+    Add Idea types. Related ticket https://trello.com/c/G1CUGZuo
+
+[33mcommit 290c3cd05f2b3cc81e6374762b330cdfdd3d7fa7[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Aug 11 14:12:23 2020 +0100
+
+    Build
+
+[33mcommit e834a26ccbd129a96aa848e53ee8b8892b6e9f19[m
+Merge: 56bd543 59af18a
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Aug 11 14:08:26 2020 +0100
+
+    Merge branch 'feature/polls' into development
+
+[33mcommit 56bd543a4088ef8db20dfde17e44ed938552bfd4[m
+Merge: 93e96e8 72b77e8
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Aug 11 13:36:13 2020 +0100
+
+    Merge branch 'feature/linkable-ideas' into development
+
+[33mcommit 93e96e8eedd094b7acb4def82e32a23baeb52918[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon Aug 10 10:47:34 2020 +0100
+
+    Empty form field on reaction sent. Related ticket: https://trello.com/c/wRKc8uBE
+
+[33mcommit 999146f7d93ac9298237d998ba7bc8164535e035[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Aug 5 15:57:58 2020 +0100
+
+    Bugfixes
+
+[33mcommit 3d63b00d51f4d940bb025a5e5e57d18d9e38778c[m
+Merge: 1d1a0aa 054818f
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Aug 5 15:32:47 2020 +0100
+
+    Merge branch 'development'
+
+[33mcommit 054818ff88bcdbb383b252a0c74ddcc5f20077ae[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Aug 5 15:21:31 2020 +0100
+
+    Bump version
+
+[33mcommit 72b77e89f8d55889a919de4d37687ef0ec49e639[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Aug 5 12:31:27 2020 +0100
+
+    Add linkable ideas through window.hash. Related ticket https://trello.com/c/4SrtIanS
+
+[33mcommit 688ae1101c7da17e5a0bd4958722e27d2cbdef56[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Aug 4 11:44:32 2020 +0100
+
+    Optionally close reactiosn. Related ticket https://trello.com/c/NPwj5dC7
+
+[33mcommit 31f07a39047beac2146b9f9e850bef19a6250a03[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon Aug 3 15:48:45 2020 +0100
+
+    Bugfix
+
+[33mcommit 46196d3708d65748190f4836355ce0138d1bf45a[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon Aug 3 15:11:22 2020 +0100
+
+    Add mouseovers. Related ticket https://trello.com/c/nGL7gUs8
+
+[33mcommit 59af18a3b124c773fa9101f85849f67e638a4812[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon Aug 3 13:39:12 2020 +0100
+
+    Add poll. Related ticket https://trello.com/c/OzMO4ROf
+
+[33mcommit a9da1db5637add24db6a6a64c731d8f4fd6c0457[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Jul 29 16:34:04 2020 +0100
+
+    Updates to facilitate a specific project
+    
+    Related tickets:
+    https://trello.com/c/NPwj5dC7
+    https://trello.com/c/aAAxjpxU
+    https://trello.com/c/DWDrEs2S
+    https://trello.com/c/0rdFAtrf
+    https://trello.com/c/XpqlM0xC
+    https://trello.com/c/mfEQafGz
+    https://trello.com/c/EvTs05JO
+
+[33mcommit 4618734c00a929e7c342af0a89b8e39ea4a17706[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Jul 22 10:42:32 2020 +0100
+
+    Bugfix
+
+[33mcommit 0b20e5a40d695697e437e44d6a8b94b5b83ce99a[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Jul 21 13:27:11 2020 +0100
+
+    Convinience addition
+
+[33mcommit 109cbd4bd8707057937665834fa79aca4dda716f[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Jul 21 13:20:30 2020 +0100
+
+    Convinience addition
+
+[33mcommit 1d1a0aa80b90f3a6c8866367ee9e49e92df8937d[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Jul 21 12:52:57 2020 +0100
+
+    Bump version
+
+[33mcommit e12ecb9175fb769d11e8900deab105069e3460e8[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Jul 21 12:48:47 2020 +0100
+
+    Updates to facilitate a specific project
+    
+    Related tickets:
+    https://trello.com/c/rNJazgqT
+    https://trello.com/c/h2D7bkIK
+    https://trello.com/c/DVAd3Y0u
+    https://trello.com/c/jLwsmURC
+    https://trello.com/c/eevp34Ol
+    https://trello.com/c/XpqlM0xC
+    https://trello.com/c/EvTs05JO
+    https://trello.com/c/jZdSYyrX
+    https://trello.com/c/jJccrYM6
+
+[33mcommit ba3214ba2541e0f8513092d1b8059ada9522b8a1[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Jun 17 14:20:39 2020 +0100
+
+    Tmp fix for missing cms update
+
+[33mcommit 42a80461a070c15dcb103c84dbf918bb41eabea1[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Jun 17 10:46:07 2020 +0100
+
+    Fix multiple choice
+
+[33mcommit 7660d202a7252a42ac76c58fa23a0550f3c0b9aa[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Jun 16 13:10:17 2020 +0100
+
+    Fix fonts
+
+[33mcommit d90e515525a44e73cb903c2c797d029e326a1a65[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue Jun 16 10:29:16 2020 +0100
+
+    Remove padding
+
+[33mcommit 02700140015b6ec8bca0705bac410c68af7cc6bb[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Sat Jun 13 20:21:45 2020 +0100
+
+    Minor bugfixes
+
+[33mcommit 691c4268802f50c5c7d1fbd54765dd5c213892f6[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu Jun 11 15:51:04 2020 +0100
+
+    Remove old HTML
+
+[33mcommit 24ec9a6531deef6088adeea8e056c834e349ce55[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu Jun 11 13:19:53 2020 +0100
+
+    Last details Omgevingsvisie
+
+[33mcommit a3bf69de9f1d76a904e2ff2f7814b49fe6156fc4[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu Jun 11 12:15:43 2020 +0100
+
+    Bugfix postcode
+
+[33mcommit e5bfaefa8d32b3b0e6be4b387e95413f9d6e58d6[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu Jun 11 12:05:33 2020 +0100
+
+    Bugfixes on plane version
+    Related tickets:
+    https://trello.com/c/fpM3uWEP
+    https://trello.com/c/Rk3cLR8g
+    https://trello.com/c/Mr5eTBf2
+
+[33mcommit 1418031bee87ae64d87846ea23d308a245c7b3ae[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu Jun 4 15:44:31 2020 +0100
+
+    Bugfixes
+
+[33mcommit fcadecddbbbb5eb43e024b43596d7896dc420d00[m
+Merge: 359c462 caba3ba
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Jun 3 15:03:11 2020 +0100
+
+    Merge branch 'feature/generalize-ideas-on-map'
+
+[33mcommit 359c462f219291f39652a5e5cd73715ab2a2958a[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Jun 3 11:48:17 2020 +0100
+
+    Update version
+
+[33mcommit d13900f5ba11107f2ec6fbdbdc975b8ffbf41821[m
+Merge: 23cf927 361e25f
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Jun 3 11:47:40 2020 +0100
+
+    Merge branch 'development'
+
+[33mcommit 361e25f6b1e9d1e38094d9c9c74555ee00601b25[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Jun 3 11:46:34 2020 +0100
+
+    More Marnix tickets
+
+[33mcommit 23cf92732a4672fad5442e781d1758151fd86565[m
+Merge: eec28a6 3f76a1d
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu May 28 15:11:51 2020 +0100
+
+    Merge branch 'development'
+
+[33mcommit 3f76a1d044097518527e3c83aca89a86e6880e36[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu May 28 15:11:25 2020 +0100
+
+    Choices guide fix
+
+[33mcommit caba3ba7b5f64d3351fec23f16affa6249ba4bb8[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue May 26 16:41:51 2020 +0100
+
+    Make ideas-on-map generic and configurable
+
+[33mcommit 8a52ee027862d4704c6f707d54edc226d9435e03[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon May 25 13:01:18 2020 +0100
+
+    Choices guide style
+
+[33mcommit ce5b1a119b31e0bfe09ccad4f7f07a7c4e5c5c7f[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Fri May 22 14:57:57 2020 +0100
+
+    Marnix tickets
+
+[33mcommit 4a724f7109a458151ec41a58540491ef9b741cb8[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu May 21 14:02:50 2020 +0100
+
+    Fix choices guide: image aspect ratio
+
+[33mcommit d047a3f0ca3a6dc1f129c32b78dfa07c29533b7a[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu May 21 13:42:51 2020 +0100
+
+    Generalize ideas on map
+
+[33mcommit eec28a69e1cd37ac98a79ad019edc021d6aba633[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed May 20 07:47:52 2020 +0100
+
+    Update version number
+
+[33mcommit 5f85ad918552306cba2d946c5d2f70d6b92a5b8b[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue May 19 12:14:19 2020 +0100
+
+    Fix map
+
+[33mcommit 9239de2a7e8bf2825a80724ce951570bf02448c6[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue May 19 11:50:28 2020 +0100
+
+    Choices guide updates
+
+[33mcommit 67ba305038366f45ce972cae51d0e5d721c6cf32[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue May 19 10:42:21 2020 +0100
+
+    tmp
+
+[33mcommit 55e2bc12a834810750bbf8a6d01b4658a3ea350f[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue May 12 15:50:52 2020 +0100
+
+    Tmp fallbacks for testsites
+
+[33mcommit 218884735496ca6a49fd280ea8467653b44f4270[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue May 12 09:54:21 2020 +0100
+
+    Fix choices-guide tickets
+
+[33mcommit 41651a5e9e6dc1023757fe6d652fce228070264c[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Mon May 11 16:39:14 2020 +0100
+
+    Many generalizations and updates
+
+[33mcommit e5198262f09f38d8b090ef2191ffab1fbd729343[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue May 5 12:04:41 2020 +0100
+
+    Generalize map; use events
+
+[33mcommit 6e3cdb27a05d4424e37b72f78f63f9bc5af3e208[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Tue May 5 09:46:30 2020 +0100
+
+    Fix choices-guide tickets
+
+[33mcommit 78d8be6db2318d081257eae46492921b07516e9d[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu Apr 30 10:13:44 2020 +0100
+
+    Fix tickets
+
+[33mcommit bb81327d95249b9a54fdd8b1ad00c3a387813d8c[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Fri Apr 24 13:26:46 2020 +0100
+
+    Add ideas-on-map
+
+[33mcommit b7200d968ce785814d8c752dd126d5d7061d7514[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Wed Apr 22 10:47:48 2020 +0100
+
+    After init updates
+
+[33mcommit 5a0fc4a7c6068adb4081af9cbc711de102376598[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Fri Apr 17 12:27:24 2020 +0100
+
+    Add startWithAllQuestionsAnswered config parameter to choices-guide
+
+[33mcommit af559e46ca5648774ed3f743c6597d8f9d237bee[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Fri Apr 17 10:48:12 2020 +0100
+
+    dist update
+
+[33mcommit 9a6a8ffecf24e48434160a51e1e8d3287b1821cb[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Fri Apr 17 10:46:40 2020 +0100
+
+    Minimal choice-guide updates
+
+[33mcommit bb0067546bdd455b07fbdde06dc4abbf2fef29ab[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu Apr 16 14:10:42 2020 +0100
+
+    First setup with choices-guide and deps
+
+[33mcommit cd0500828e17061b9ec2d8b2ee48a94c1e0c68d5[m
+Author: Niels Vegter <niels@denes.nl>
+Date:   Thu Apr 16 11:19:20 2020 +0100
+
+    Init
+
+[33mcommit 61d2837c15851b21640c4f8f9bec7a9f461c299e[m
+Author: nlsvgtr <niels@denes.nl>
+Date:   Thu Apr 16 12:13:03 2020 +0200
+
+    Initial commit

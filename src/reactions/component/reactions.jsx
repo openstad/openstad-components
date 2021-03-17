@@ -124,6 +124,10 @@ export default class OpenStadComponentReactions extends OpenStadComponent {
     this.fetchData();
   }
 
+  userIsModerator() {
+    return OpenStadComponentLibs.user.hasRole(this.config.user, 'moderator');
+  }
+
   render() {
 
     let self = this;
@@ -145,7 +149,7 @@ export default class OpenStadComponentReactions extends OpenStadComponent {
     let title = self.config.title ? <h3>{self.config.title}</h3> : null;
 
     let reactionFormHTML = <OpenStadComponentReactionForm config={self.config} user={self.state.user}/>;
-    if (self.config.isClosed) {
+    if (self.config.isClosed && !self.userIsModerator()) {
       if (self.config.closedText) {
         reactionFormHTML = <div className="osc-closed-text">{self.config.closedText}</div>
       } else {

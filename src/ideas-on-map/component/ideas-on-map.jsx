@@ -24,6 +24,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         height: null,
       },
       canSelectLocation: true,
+      onMarkerClickAction: 'selectIdea',
       types: [],
       typeField: null,
       titleField: 'title',
@@ -366,7 +367,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     }
 
   	self.map.getPointInfo(location, null, function(json, marker) {
-      location.address = json && json._display || 'Geen adres gevonden';
+      location.address = json && json.address || 'Geen adres gevonden';
 	    var event = new window.CustomEvent('osc-update-location', { detail: { location } });
 	    document.dispatchEvent(event);
     });
@@ -379,7 +380,8 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     self.openInfobarOnMobile();
     self.setState({ status: 'idea-details' }, () => {
       // self.map.map.invalidateSize();
-      self.map.hideMarkers({ exception: { location: { lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] } } })
+      // self.map.hideMarkers({ exception: { location: { lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] } } })
+      this.map.fadeMarkers({ exception: idea })
     });
   }
 
@@ -569,6 +571,8 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     switch (this.state.status) {
 
       case 'idea-details':
+        this.hideIdeaDetails();
+        document.location.href='#S'+this.state.selectedIdea.id;
         break;
 
       case 'idea-form':
@@ -604,8 +608,8 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
 		switch (this.state.status) {
 
-      case 'idea-details':
-        break;
+      // case 'idea-details':
+      //   break;
 
       case 'idea-form':
         break;
@@ -618,8 +622,11 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
           this.onUpdateSelectedIdea(null);
         } else {
           this.onUpdateSelectedIdea(event.target.data);
+          if ( this.config.onMarkerClickAction == 'showIdeaDetails' ) {
+            this.showIdeaDetails(event.target.data);
+          }
         }
-        document.querySelector('#osc-ideas-on-map-info').scrollTo(0,0)
+        document.querySelector('#osc-ideas-on-map-info') && document.querySelector('#osc-ideas-on-map-info').scrollTo(0,0)
 
     }
   }
@@ -642,8 +649,8 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     self.map.updateFading();
     switch (self.state.status) {
 
-      case 'idea-details':
-        break;
+      // case 'idea-details':
+      //   break;
 
       case 'idea-form':
         break;

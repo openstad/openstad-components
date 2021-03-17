@@ -5146,7 +5146,7 @@ var IdeasSort = /*#__PURE__*/function (_OpenStadComponent) {
     value: function render() {
       var self = this;
       var ideas = self.props.ideas || [];
-      var showSort = typeof self.props.showSort != 'undefined' ? self.props.showSort : self.config.showSort;
+      var showSort = self.config.sortOptions && self.config.sortOptions.length && (typeof self.props.showSort != 'undefined' ? self.props.showSort : self.config.showSort);
 
       if (!showSort) {
         return null;

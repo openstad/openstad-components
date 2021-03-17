@@ -22901,12 +22901,12 @@ var FormfieldInputWithCounter = /*#__PURE__*/function (_OpenStadComponent) {
       state.isValid = true;
       state.warning = null;
 
-      if (this.state.valueLength < this.config.minLength) {
+      if (this.state.value.length < this.config.minLength) {
         state.warning = "De tekst is te kort";
         state.isValid = false;
       }
 
-      if (this.state.valueLength > this.config.maxLength) {
+      if (this.state.value.length > this.config.maxLength) {
         state.warning = "De tekst is te lang";
         state.isValid = false;
       }
@@ -22925,15 +22925,17 @@ var FormfieldInputWithCounter = /*#__PURE__*/function (_OpenStadComponent) {
   }, {
     key: "handleOnChange",
     value: function handleOnChange(data) {
-      data = data || {};
-      this.setState(data);
+      var _this2 = this;
 
-      if (typeof this.onChange == 'function') {
-        this.onChange({
-          name: this.config.name,
-          value: data.value
-        });
-      }
+      data = data || {};
+      this.setState(data, function () {
+        if (typeof _this2.onChange == 'function') {
+          _this2.onChange({
+            name: _this2.config.name,
+            value: data.value
+          });
+        }
+      });
     }
   }, {
     key: "onInputFocus",
@@ -22955,34 +22957,32 @@ var FormfieldInputWithCounter = /*#__PURE__*/function (_OpenStadComponent) {
     value: function onInputKeyUp(value) {
       var state = {};
       state.value = value || this.input.value;
-      var valueLength = state.value.length;
-      state.valueLength = valueLength;
-      state.isValid = valueLength >= this.config.minLength && valueLength <= this.config.maxLength;
+      state.isValid = state.value.length >= this.config.minLength && state.value.length <= this.config.maxLength;
       this.setState(state);
     }
   }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       var self = this;
       var counter = null;
       var warning = null;
 
       if (self.state.focused) {
-        if (self.state.valueLength < self.config.minLength) {
+        if (self.state.value.length < self.config.minLength) {
           counter = /*#__PURE__*/React.createElement("div", {
             className: "osc-form-counter osc-form-error"
           }, "Nog minimaal ", /*#__PURE__*/React.createElement("span", {
             className: ""
-          }, self.config.minLength - self.state.valueLength), " tekens");
+          }, self.config.minLength - self.state.value.length), " tekens");
         } else {
-          var error = self.state.valueLength > self.config.maxLength ? 'osc-form-error' : '';
+          var error = self.state.value.length > self.config.maxLength ? 'osc-form-error' : '';
           counter = /*#__PURE__*/React.createElement("div", {
             className: 'osc-form-counter ' + error
           }, "Je hebt nog ", /*#__PURE__*/React.createElement("span", {
             className: ""
-          }, self.config.maxLength - self.state.valueLength), " tekens over.");
+          }, self.config.maxLength - self.state.value.length), " tekens over.");
         }
       }
 
@@ -22990,7 +22990,7 @@ var FormfieldInputWithCounter = /*#__PURE__*/function (_OpenStadComponent) {
         warning = /*#__PURE__*/React.createElement("div", {
           className: "osc-form-warning",
           ref: function ref(el) {
-            return _this2['form-warning'] = el;
+            return _this3['form-warning'] = el;
           }
         }, self.state.warning);
       }
@@ -27213,6 +27213,11 @@ var OpenStadComponentReactions = /*#__PURE__*/function (_OpenStadComponent) {
       this.fetchData();
     }
   }, {
+    key: "userIsModerator",
+    value: function userIsModerator() {
+      return _libs_index_jsx__WEBPACK_IMPORTED_MODULE_1__["default"].user.hasRole(this.config.user, 'moderator');
+    }
+  }, {
     key: "render",
     value: function render() {
       var _this3 = this;
@@ -27236,7 +27241,7 @@ var OpenStadComponentReactions = /*#__PURE__*/function (_OpenStadComponent) {
         user: self.state.user
       });
 
-      if (self.config.isClosed) {
+      if (self.config.isClosed && !self.userIsModerator()) {
         if (self.config.closedText) {
           reactionFormHTML = /*#__PURE__*/React.createElement("div", {
             className: "osc-closed-text"

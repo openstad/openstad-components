@@ -52,7 +52,7 @@ export default class IdeasSort extends OpenStadComponent {
     let self = this;
     let ideas = self.props.ideas || [];
 
-    let showSort = typeof self.props.showSort != 'undefined' ? self.props.showSort : self.config.showSort;
+    let showSort = ( self.config.sortOptions && self.config.sortOptions.length ) && ( typeof self.props.showSort != 'undefined' ? self.props.showSort : self.config.showSort );
     if (!showSort) {
       return null;
     }

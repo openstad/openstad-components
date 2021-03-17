@@ -3677,6 +3677,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var merge__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(merge__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
 /* harmony import */ var _lib_amaps_cluster_icon_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../lib/amaps-cluster-icon.js */ "./src/base-map/lib/amaps-cluster-icon.js");
+/* harmony import */ var _lib_get_point_info_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../lib/get-point-info.js */ "./src/base-map/lib/get-point-info.js");
 
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -3706,6 +3707,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 
 
 
@@ -3760,6 +3762,7 @@ var OpenStadComponentMap = /*#__PURE__*/function (_OpenStadComponent) {
       type: 'script',
       src: "https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"
     });
+    self.getPointInfo = _lib_get_point_info_js__WEBPACK_IMPORTED_MODULE_3__["default"].bind(self);
     self.markers = self.config.markers || [];
     return _this;
   }
@@ -4182,69 +4185,6 @@ var OpenStadComponentMap = /*#__PURE__*/function (_OpenStadComponent) {
       return inside;
     }
   }, {
-    key: "getPointInfo",
-    value: function getPointInfo(latlng, marker, next) {
-      // TODO: de uitgecommente versie hieronder kan generiek werken op de PDOK versie, maar die is/wordt betaald en daarvoor heb je dan een API key nodig
-      // Daarom heb ik nu deze gratis service gebruikt; even kijken hoe dat loopt
-      // eerste indruk: veel te traag
-      var self = this;
-      var locatieApiUrl = 'https://geodata.nationaalgeoregister.nl/locatieserver/v3/free?lat=[[lat]]5&lon=[[lng]]&fq=type:adres&rows=1';
-      latlng = latlng || {};
-      var url = locatieApiUrl.replace(/\[\[lat\]\]/, latlng.lat).replace(/\[\[lng\]\]/, latlng.lng);
-      fetch(url).then(function (response) {
-        if (!response.ok) throw Error(response);
-        return response.json();
-      }).then(function (json) {
-        var doc = json.response && json.response.docs && json.response.docs[0];
-        if (!doc) throw new Error('Niets gevonden');
-        var result = {
-          _display: "".concat(doc.straatnaam, " ").concat(doc.huisnummer)
-        };
-        result.lat = latlng.lat;
-        result.lng = latlng.lng;
-        if (next) return next(result, marker);
-        return result;
-      })["catch"](function (err) {
-        console.log('Zoek adres: niet goed');
-        console.log(err);
-        if (next) next({}, marker);
-      }); // var bagApiUrl1 = 'https://api.data.amsterdam.nl/bag/nummeraanduiding/?format=json&locatie=[[lat]],[[lng]],50';
-      // var bagApiUrl2 = 'https://api.data.amsterdam.nl/bag/nummeraanduiding/[[id]]/?format=json';
-      // 
-      // var self = this;
-      // 
-      // latlng = latlng || {};
-      // 
-      // var url = bagApiUrl1
-      // 	  .replace(/\[\[lat\]\]/, latlng.lat)
-      // 	  .replace(/\[\[lng\]\]/, latlng.lng);
-      // 
-      // 
-      // fetch(url)
-      //   .then((response) => {
-      //     return response.json();
-      //   })
-      //   .then( json => {
-      // 	  var id = json && json.results && json.results[0] && json.results[0].landelijk_id;
-      // 	  var url = bagApiUrl2
-      // 			  .replace(/\[\[id\]\]/, id)
-      //     fetch(url)
-      //       .then((response) => {
-      //         return response.json();
-      //       })
-      //       .then( json => {
-      // 			  json.lat = latlng.lat;
-      // 			  json.lng = latlng.lng;
-      // 			  if (next) next(json, marker);
-      //       })
-      //   })
-      //   .catch((err) => {
-      //     console.log('Zoek adres: niet goed');
-      //     console.log(err);
-      // 	  if (next) next({}, marker);
-      //   });
-    }
-  }, {
     key: "onMapClick",
     value: function onMapClick(detail) {
       var event = new CustomEvent('osc-map-click', {
@@ -4399,6 +4339,83 @@ function amapsCreateClusterIcon(cluster) {
     iconSize: L.point(36, 36),
     iconAnchor: [18, 18],
     isFaded: isFaded
+  });
+}
+
+/***/ }),
+
+/***/ "./src/base-map/lib/get-point-info.js":
+/*!********************************************!*\
+  !*** ./src/base-map/lib/get-point-info.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return getPointInfo; });
+function getPointInfo(latlng, marker, next) {
+  if (false) {} else {
+    return getPointInfoFree(latlng, marker, next);
+  }
+}
+
+function getPointInfoBagApi(bagApiKey, latlng, marker, next) {
+  // de bag API zoekt niet op lat/lng; zooek verder naar een andere oplossing
+  var bagApiUrl1 = 'https://api.bag.kadaster.nl/lvbag/individuelebevragingen/v2/nummeraanduidingen/?format=json&locatie=[[lat]],[[lng]],50';
+  var bagApiUrl2 = 'https://api.bag.kadaster.nl/lvbag/individuelebevragingen/v2/nummeraanduidingen/[[id]]/?format=json'; //  let bagApiUrl1 = 'https://api.data.amsterdam.nl/bag/nummeraanduiding/?format=json&locatie=[[lat]],[[lng]],50';
+  //  let bagApiUrl2 = 'https://api.data.amsterdam.nl/bag/nummeraanduiding/[[id]]/?format=json';
+
+  var self = this;
+  console.log(latlng);
+  latlng = latlng || {};
+  console.log(latlng, latlng.lat);
+  var url = bagApiUrl1.replace(/\[\[lat\]\]/, latlng.lat).replace(/\[\[lng\]\]/, latlng.lng);
+  fetch(url, {
+    headers: {
+      "X-Api-Key": bagApiKey
+    }
+  }).then(function (response) {
+    return response.json();
+  }).then(function (json) {
+    var id = json && json.results && json.results[0] && json.results[0].landelijk_id;
+    var url = bagApiUrl2.replace(/\[\[id\]\]/, id);
+    fetch(url).then(function (response) {
+      return response.json();
+    }).then(function (json) {
+      json.lat = latlng.lat;
+      json.lng = latlng.lng;
+      if (next) next(json, marker);
+    });
+  })["catch"](function (err) {
+    console.log('Zoek adres: niet goed');
+    console.log(err);
+    if (next) next({}, marker);
+  });
+}
+
+function getPointInfoFree(latlng, marker, next) {
+  var self = this;
+  var locatieApiUrl = 'https://geodata.nationaalgeoregister.nl/locatieserver/v3/free?lat=[[lat]]5&lon=[[lng]]&fq=type:adres&rows=1';
+  latlng = latlng || {};
+  var url = locatieApiUrl.replace(/\[\[lat\]\]/, latlng.lat).replace(/\[\[lng\]\]/, latlng.lng);
+  fetch(url).then(function (response) {
+    if (!response.ok) throw Error(response);
+    return response.json();
+  }).then(function (json) {
+    var doc = json.response && json.response.docs && json.response.docs[0];
+    if (!doc) throw new Error('Niets gevonden');
+    var result = {
+      address: "".concat(doc.straatnaam, " ").concat(doc.huisnummer)
+    };
+    result.lat = latlng.lat;
+    result.lng = latlng.lng;
+    if (next) return next(result, marker);
+    return result;
+  })["catch"](function (err) {
+    console.log('Zoek adres: niet goed');
+    console.log(err);
+    if (next) next({}, marker);
   });
 }
 
