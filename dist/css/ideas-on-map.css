@@ -2162,6 +2162,7 @@
 }
 .osc-idea-details-container .osc-idea-details .osc-details-image-and-stats .osc-details-stats .osc-vote-button .osc-number-button-text.osc-user-has-voted {
   background-color: #BED200 !important;
+  border-color: #BED200 !important;
 }
 .osc-idea-details-container .osc-idea-details .osc-details-image-and-stats .osc-details-stats .osc-vote-button .osc-number-button-text.osc-busy {
   background-color: #9a9a9a !important;

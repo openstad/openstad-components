@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased2
+* Move map to base-map
+* Update ideas-on-map to a production level
+
 ## Unreleased
 * Update choices-guides to a production level
 
