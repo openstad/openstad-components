@@ -229,12 +229,12 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
         questionHTML = (
           <div className="osc-question-description">
             <div className="osc-question-description-text" dangerouslySetInnerHTML={{ __html: data.description }}></div>
+            {questionAHTML}
+            {questionBHTML}
             {moreInfoHTML}
             {questionImageAHTML}
             {questionImageBHTML}
             <div style={{ clear: 'both', height: 15 }}></div>{/* todo dus */}
-            {questionAHTML}
-            {questionBHTML}
           </div>);
         selectorHTML = (
           <div className="osc-question-selector">
