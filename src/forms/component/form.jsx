@@ -20,7 +20,8 @@ export default class OpenStadComponentForm extends OpenStadComponent {
     if ( !initValues && self.config.fields && self.config.fields.length) {
       initValues = {};
       self.config.fields.map((fieldConfig, i) => {
-        initValues[fieldConfig.title] = fieldConfig.value;
+        let name = fieldConfig.name || fieldConfig.title.toLowerCase();
+        initValues[name] = fieldConfig.value;
       });
     }
     

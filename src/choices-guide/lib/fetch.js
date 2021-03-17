@@ -22,9 +22,24 @@ function fetchChoicesGuide({ config }) {
         status: 'active',
       };
 
-      return data;
-      
-    })
+      // backwards compatibility
+      if (data.questionGroups && data.questionGroups.map) {
+        data.questionGroups.map( questiongroup => {
+          if (questiongroup.questions && questiongroup.questions.map) {
+            questiongroup.questions.map(question => {
+            if (question.type == 'continuous') question.type = 'a-to-b';
+            if (question.type == 'enum-buttons') question.type = 'enum-radio';
+              if (question.type == 'a-to-b') {
+                if (question.values && question.values.A) question.values.A.labelBelow = question.values.A.labelBelow || question.minLabel;
+                if (question.values && question.values.B) question.values.B.labelBelow = question.values.B.labelBelow || question.maxLabel;
+              }
+            });
+          }
+        });
+
+        return data;
+      } 
+    });
 
 }
 

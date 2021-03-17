@@ -5,7 +5,7 @@ import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
 import OpenStadComponentQuestionGroup from './question-group.jsx';
 import OpenStadComponentChoices from './choices.jsx';
-import OpenStadComponentChoicesGuideForm from './edit-form.jsx';
+import OpenStadComponentChoicesGuideForm from './edit/form.jsx';
 import { Image as OpenStadComponentImage } from '../../image/index.jsx';
 import OpenStadComponentLightbox from '../../lightbox/index.jsx';
 import OpenStadComponentPreviousNextButtonBlock from '../../previous-next-button-block/index.jsx';
@@ -105,8 +105,10 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
       self.liveUpdates();
 		  var event = new window.CustomEvent('osc-choices-guide-is-ready');
 		  document.dispatchEvent(event);
-    });
 
+      // TMP
+      // self.showEditForm()
+    });
 
   }
 

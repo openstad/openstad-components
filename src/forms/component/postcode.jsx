@@ -5,7 +5,6 @@ import OpenStadComponentDefaultInput from './default-input.jsx';
 export default class OpenStadComponentPostcode extends OpenStadComponentDefaultInput {
 
 	validate({ showErrors }) {
-    
 		let isValid = true;
     let error = '';
     if (!this.state.value || !this.state.value.match(/^\s*\d{4}\s*[a-zA-Z][a-zA-Z]\s*$/)) {
@@ -17,16 +16,17 @@ export default class OpenStadComponentPostcode extends OpenStadComponentDefaultI
       if (showErrors) error = 'Je hebt nog niets ingevuld';
     }
     this.setState({ isValid, error })
+
 		return isValid;
 	}
-
+  
   render() {
 
 		let self = this;
 
     let errorHTML = null;
     if (self.state.error) {
-      errorHTML = (<div className="osc-form-error">{self.state.error}</div>)
+      errorHTML = (<div className="osc-form-error osc-form-field-error">{self.state.error}</div>)
     }
     
     return (

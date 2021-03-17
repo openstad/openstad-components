@@ -16,14 +16,15 @@ export default class OpenStadComponentSelect extends OpenStadComponentDefaultInp
 
     let errorHTML = null;
     if (self.state.error) {
-      errorHTML = (<div className="osc-form-error">Je hebt nog geen keuze gemaakt</div>)
+      errorHTML = (<div className="osc-form-error osc-form-field-error">Je hebt nog geen keuze gemaakt</div>)
     }
 
     return (
 			<div className="osc-select">
 			  <select value={this.state.value || ''} disabled={this.props.disabled} placeholder={this.config.placeholder} onChange={e => self.handleOnChange({ value: self.input.value })} ref={el => (self.input = el)}>
-          {self.config.choices.map( choice => {
-            return <option value={choice.value || ''} key={choice.value}>{choice.description || choice.title || choice.value}</option>
+          {self.config.choices.map( (choice, i) => {
+            let text = choice.description || choice.title || choice.value;
+            return <option value={choice.value || ''} key={`${text}-${choice.value}-${i}`}>{text}</option>
           })}
         </select>
         {errorHTML}
