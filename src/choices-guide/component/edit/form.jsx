@@ -357,7 +357,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
         break;
 
       case 'question':
-        title = `Bewerk Vraag ${  self.state.currentTarget.questionId}`;
+        title = 'Bewerk Vraag';
         formfieldsHTML = (<QuestionForm config={this.config} currentTarget={self.state.currentTarget} onChange={self.handleFieldChange} ref={el => { self.formfields = el; }}/>);
         break;
 

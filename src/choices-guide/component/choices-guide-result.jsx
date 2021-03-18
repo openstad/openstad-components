@@ -58,7 +58,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
       try {
         resultdata = JSON.parse(resultdata);
       } catch (err) {}
-      scrollToLogin = resultdata.result.scrollToLogin;
+      scrollToLogin = resultdata.scrollToLogin;
       allFormvalues = resultdata.formValues;
       allValues = resultdata.result.answers;
       allScores = resultdata.result.scores;
