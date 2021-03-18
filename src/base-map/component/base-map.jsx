@@ -3,7 +3,7 @@
 import merge from 'merge';
 import OpenStadComponent from '../../component/index.jsx';
 import amapsCreateClusterIcon from '../lib/amaps-cluster-icon.js';
-import getPointInfo from '../lib/get-point-info.js';
+import { searchAddressByLatLng, suggestAddresses, LookupLatLngByAddressId } from '../lib/search.js';
 
 export default class OpenStadComponentMap extends OpenStadComponent {
 
@@ -41,8 +41,10 @@ export default class OpenStadComponentMap extends OpenStadComponent {
 		self.files.push({ type: 'css', href: "https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"  });
 		self.files.push({ type: 'script', src: "https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js" });
 
-
-    self.getPointInfo = getPointInfo.bind(self);
+    // search functions
+    self.searchAddressByLatLng = searchAddressByLatLng.bind(self);
+    self.suggestAddresses = suggestAddresses.bind(self);
+    self.LookupLatLngByAddressId = LookupLatLngByAddressId.bind(self);
 
 		self.markers = self.config.markers || [];
 		

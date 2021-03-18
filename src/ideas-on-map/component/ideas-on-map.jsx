@@ -358,7 +358,6 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   updateLocationAddress(location) {
 
     let self = this;
-
     if (!location) return;
 
     if (location.coordinates) {
@@ -366,10 +365,14 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       location.lng = location.coordinates[1];
     }
 
-  	self.map.getPointInfo(location, null, function(json, marker) {
-      location.address = json && json.address || 'Geen adres gevonden';
-	    var event = new window.CustomEvent('osc-update-location', { detail: { location } });
-	    document.dispatchEvent(event);
+  	self.map.searchAddressByLatLng({
+      latlng: location,
+      addresssesMunicipality: self.config.search.addresssesMunicipality,
+      next: function(json) {
+        location.address = json && json.address || 'Geen adres gevonden';
+	      var event = new window.CustomEvent('osc-update-location', { detail: { location } });
+	      document.dispatchEvent(event);
+      }
     });
         
   }
@@ -505,51 +508,30 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 		});
 
     // search for addresses
-    fetch(`https://geodata.nationaalgeoregister.nl/locatieserver/v3/suggest?rows=5&fq=gemeentenaam:${self.config.search.addresssesMunicipality}&fq=*:*&q=${searchValueLc}`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-			.then((response) => {
-				return response.json();
-			})
-      .then( json => {
-        if (json && json.response && json.response.docs && json.response.docs.length) {
-          searchResult.locations = json.response.docs.map( found => { return {
-						text: found.weergavenaam,
-						onClick: () => { onClickAddress(found.id) },
-					}});
-        }
+  	self.map.suggestAddresses({
+      searchValue: searchValueLc,
+      addresssesMunicipality: self.config.search.addresssesMunicipality,
+      next: function(json) {
+        searchResult.locations = json && json.map(result => {
+				  result.onClick = () => onClickAddress(result.id);
+          return result;
+        });
         callback(searchValue, searchResult)
-      })
-      .catch((err) => {
-        console.log('Search failed:', err);
-        callback(searchValue, searchResult)
-      });
-
+      }
+    });
 
     function onClickAddress(id) {
-      fetch(`https://geodata.nationaalgeoregister.nl/locatieserver/v3/lookup?fq=gemeentenaam:${self.config.search.addresssesMunicipality}&&id=${id}`, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-			  .then((response) => {
-				  return response.json();
-			  })
-        .then( json => {
-          if (json && json.response && json.response.docs && json.response.docs[0]) {
-            let centroide_ll = json.response.docs[0].centroide_ll;
-            let match = centroide_ll.match(/POINT\((\d+\.\d+) (\d+\.\d+)\)/);
-            self.map.map.panTo(new L.LatLng(match[2], match[1]));
-            self.onMapClick({ latlng: { lat: match[2], lng: match[1] } }, true)
-          }
-        })
-        .catch((err) => {
-          console.log('Search failed:', err);
-          callback(searchValue, searchResult)
-        });
-      
+  	  self.map.LookupLatLngByAddressId({
+        id,
+        addresssesMunicipality: self.config.search.addresssesMunicipality,
+        next: function(json) {
+          console.log(json);
+          let centroide_ll = json.centroide_ll;
+          let match = centroide_ll.match(/POINT\((\d+\.\d+) (\d+\.\d+)\)/);
+          self.map.map.panTo(new L.LatLng(match[2], match[1]));
+          self.onMapClick({ latlng: { lat: match[2], lng: match[1] } }, true)
+        }
+      });
     }
 
 	}
