@@ -126,7 +126,7 @@ export default class OpenStadComponentReaction extends OpenStadComponent {
 
     let self = this;
 
-    if (!self.canLike()) return alert('U kunt deze reactie niet liken');
+    if (!self.canLike()) return self.config.showNotLoggedInPopup();
 
     let url = `${self.config.api && self.config.api.url   }/api/site/${  self.config.siteId  }/idea/${  self.config.ideaId  }/argument/${  self.props.data.id  }/vote`;
     let headers = OpenStadComponentLibs.api.getHeaders(self.config);

@@ -82,10 +82,25 @@ window["OpenStadComponents"] =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/previous-next-button-block/index.jsx");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/modal-popup/index.jsx");
 /******/ })
 /************************************************************************/
 /******/ ({
+
+/***/ "./node_modules/core-js/es/array/find-index.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/core-js/es/array/find-index.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(/*! ../../modules/es.array.find-index */ "./node_modules/core-js/modules/es.array.find-index.js");
+var entryUnbind = __webpack_require__(/*! ../../internals/entry-unbind */ "./node_modules/core-js/internals/entry-unbind.js");
+
+module.exports = entryUnbind('Array', 'findIndex');
+
+
+/***/ }),
 
 /***/ "./node_modules/core-js/es/array/includes.js":
 /*!***************************************************!*\
@@ -210,6 +225,82 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/core-js/internals/array-iteration.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/core-js/internals/array-iteration.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var bind = __webpack_require__(/*! ../internals/function-bind-context */ "./node_modules/core-js/internals/function-bind-context.js");
+var IndexedObject = __webpack_require__(/*! ../internals/indexed-object */ "./node_modules/core-js/internals/indexed-object.js");
+var toObject = __webpack_require__(/*! ../internals/to-object */ "./node_modules/core-js/internals/to-object.js");
+var toLength = __webpack_require__(/*! ../internals/to-length */ "./node_modules/core-js/internals/to-length.js");
+var arraySpeciesCreate = __webpack_require__(/*! ../internals/array-species-create */ "./node_modules/core-js/internals/array-species-create.js");
+
+var push = [].push;
+
+// `Array.prototype.{ forEach, map, filter, some, every, find, findIndex }` methods implementation
+var createMethod = function (TYPE) {
+  var IS_MAP = TYPE == 1;
+  var IS_FILTER = TYPE == 2;
+  var IS_SOME = TYPE == 3;
+  var IS_EVERY = TYPE == 4;
+  var IS_FIND_INDEX = TYPE == 6;
+  var NO_HOLES = TYPE == 5 || IS_FIND_INDEX;
+  return function ($this, callbackfn, that, specificCreate) {
+    var O = toObject($this);
+    var self = IndexedObject(O);
+    var boundFunction = bind(callbackfn, that, 3);
+    var length = toLength(self.length);
+    var index = 0;
+    var create = specificCreate || arraySpeciesCreate;
+    var target = IS_MAP ? create($this, length) : IS_FILTER ? create($this, 0) : undefined;
+    var value, result;
+    for (;length > index; index++) if (NO_HOLES || index in self) {
+      value = self[index];
+      result = boundFunction(value, index, O);
+      if (TYPE) {
+        if (IS_MAP) target[index] = result; // map
+        else if (result) switch (TYPE) {
+          case 3: return true;              // some
+          case 5: return value;             // find
+          case 6: return index;             // findIndex
+          case 2: push.call(target, value); // filter
+        } else if (IS_EVERY) return false;  // every
+      }
+    }
+    return IS_FIND_INDEX ? -1 : IS_SOME || IS_EVERY ? IS_EVERY : target;
+  };
+};
+
+module.exports = {
+  // `Array.prototype.forEach` method
+  // https://tc39.github.io/ecma262/#sec-array.prototype.foreach
+  forEach: createMethod(0),
+  // `Array.prototype.map` method
+  // https://tc39.github.io/ecma262/#sec-array.prototype.map
+  map: createMethod(1),
+  // `Array.prototype.filter` method
+  // https://tc39.github.io/ecma262/#sec-array.prototype.filter
+  filter: createMethod(2),
+  // `Array.prototype.some` method
+  // https://tc39.github.io/ecma262/#sec-array.prototype.some
+  some: createMethod(3),
+  // `Array.prototype.every` method
+  // https://tc39.github.io/ecma262/#sec-array.prototype.every
+  every: createMethod(4),
+  // `Array.prototype.find` method
+  // https://tc39.github.io/ecma262/#sec-array.prototype.find
+  find: createMethod(5),
+  // `Array.prototype.findIndex` method
+  // https://tc39.github.io/ecma262/#sec-array.prototype.findIndex
+  findIndex: createMethod(6)
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/internals/array-method-uses-to-length.js":
 /*!***********************************************************************!*\
   !*** ./node_modules/core-js/internals/array-method-uses-to-length.js ***!
@@ -243,6 +334,37 @@ module.exports = function (METHOD_NAME, options) {
 
     method.call(O, argument0, argument1);
   });
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/internals/array-species-create.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/core-js/internals/array-species-create.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var isObject = __webpack_require__(/*! ../internals/is-object */ "./node_modules/core-js/internals/is-object.js");
+var isArray = __webpack_require__(/*! ../internals/is-array */ "./node_modules/core-js/internals/is-array.js");
+var wellKnownSymbol = __webpack_require__(/*! ../internals/well-known-symbol */ "./node_modules/core-js/internals/well-known-symbol.js");
+
+var SPECIES = wellKnownSymbol('species');
+
+// `ArraySpeciesCreate` abstract operation
+// https://tc39.github.io/ecma262/#sec-arrayspeciescreate
+module.exports = function (originalArray, length) {
+  var C;
+  if (isArray(originalArray)) {
+    C = originalArray.constructor;
+    // cross-realm fallback
+    if (typeof C == 'function' && (C === Array || isArray(C.prototype))) C = undefined;
+    else if (isObject(C)) {
+      C = C[SPECIES];
+      if (C === null) C = undefined;
+    }
+  } return new (C === undefined ? Array : C)(length === 0 ? 0 : length);
 };
 
 
@@ -749,6 +871,24 @@ module.exports = {
   has: has,
   enforce: enforce,
   getterFor: getterFor
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/internals/is-array.js":
+/*!****************************************************!*\
+  !*** ./node_modules/core-js/internals/is-array.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var classof = __webpack_require__(/*! ../internals/classof-raw */ "./node_modules/core-js/internals/classof-raw.js");
+
+// `IsArray` abstract operation
+// https://tc39.github.io/ecma262/#sec-isarray
+module.exports = Array.isArray || function isArray(arg) {
+  return classof(arg) == 'Array';
 };
 
 
@@ -1387,6 +1527,24 @@ module.exports = function (argument) {
 
 /***/ }),
 
+/***/ "./node_modules/core-js/internals/to-object.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/core-js/internals/to-object.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var requireObjectCoercible = __webpack_require__(/*! ../internals/require-object-coercible */ "./node_modules/core-js/internals/require-object-coercible.js");
+
+// `ToObject` abstract operation
+// https://tc39.github.io/ecma262/#sec-toobject
+module.exports = function (argument) {
+  return Object(requireObjectCoercible(argument));
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/internals/to-primitive.js":
 /*!********************************************************!*\
   !*** ./node_modules/core-js/internals/to-primitive.js ***!
@@ -1471,6 +1629,42 @@ module.exports = function (name) {
     else WellKnownSymbolsStore[name] = createWellKnownSymbol('Symbol.' + name);
   } return WellKnownSymbolsStore[name];
 };
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/modules/es.array.find-index.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/core-js/modules/es.array.find-index.js ***!
+  \*************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js/internals/export.js");
+var $findIndex = __webpack_require__(/*! ../internals/array-iteration */ "./node_modules/core-js/internals/array-iteration.js").findIndex;
+var addToUnscopables = __webpack_require__(/*! ../internals/add-to-unscopables */ "./node_modules/core-js/internals/add-to-unscopables.js");
+var arrayMethodUsesToLength = __webpack_require__(/*! ../internals/array-method-uses-to-length */ "./node_modules/core-js/internals/array-method-uses-to-length.js");
+
+var FIND_INDEX = 'findIndex';
+var SKIPS_HOLES = true;
+
+var USES_TO_LENGTH = arrayMethodUsesToLength(FIND_INDEX);
+
+// Shouldn't skip holes
+if (FIND_INDEX in []) Array(1)[FIND_INDEX](function () { SKIPS_HOLES = false; });
+
+// `Array.prototype.findIndex` method
+// https://tc39.github.io/ecma262/#sec-array.prototype.findindex
+$({ target: 'Array', proto: true, forced: SKIPS_HOLES || !USES_TO_LENGTH }, {
+  findIndex: function findIndex(callbackfn /* , that = undefined */) {
+    return $findIndex(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+  }
+});
+
+// https://tc39.github.io/ecma262/#sec-array.prototype-@@unscopables
+addToUnscopables(FIND_INDEX);
 
 
 /***/ }),
@@ -3778,20 +3972,26 @@ function removeUndefAndNull(obj) {
 
 /***/ }),
 
-/***/ "./src/previous-next-button-block/component/previous-next-button-block.jsx":
-/*!*********************************************************************************!*\
-  !*** ./src/previous-next-button-block/component/previous-next-button-block.jsx ***!
-  \*********************************************************************************/
+/***/ "./src/modal-popup/component/modal-popup.jsx":
+/*!***************************************************!*\
+  !*** ./src/modal-popup/component/modal-popup.jsx ***!
+  \***************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OpenStadComponentPreviousNextButtonBlock; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return OpenStadComponentModalPopup; });
 /* harmony import */ var _component_index_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../component/index.jsx */ "./src/component/index.jsx");
 
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3815,77 +4015,121 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-var OpenStadComponentPreviousNextButtonBlock = /*#__PURE__*/function (_OpenStadComponent) {
-  _inherits(OpenStadComponentPreviousNextButtonBlock, _OpenStadComponent);
+var OpenStadComponentModalPopup = /*#__PURE__*/function (_OpenStadComponent) {
+  _inherits(OpenStadComponentModalPopup, _OpenStadComponent);
 
-  var _super = _createSuper(OpenStadComponentPreviousNextButtonBlock);
+  var _super = _createSuper(OpenStadComponentModalPopup);
 
-  function OpenStadComponentPreviousNextButtonBlock(props) {
-    _classCallCheck(this, OpenStadComponentPreviousNextButtonBlock);
+  function OpenStadComponentModalPopup(props) {
+    var _this;
 
-    return _super.call(this, props, {});
+    _classCallCheck(this, OpenStadComponentModalPopup);
+
+    _this = _super.call(this, props, {});
+    _this.state = {
+      width: 300,
+      height: 200,
+      title: 'Titel',
+      text: 'Tekst',
+      buttonAction: function buttonAction() {
+        return alert("Knop actie");
+      },
+      buttonText: 'Knop tekst',
+      cancelText: 'Annuleren'
+    };
+    return _this;
   }
 
-  _createClass(OpenStadComponentPreviousNextButtonBlock, [{
+  _createClass(OpenStadComponentModalPopup, [{
+    key: "componentDidMount",
+    value: function componentDidMount(prevProps, prevState) {
+      var self = this; // start on event
+
+      self.showModalPopupListener = function (event) {
+        self.showModalPopup(event.detail);
+      };
+
+      document.addEventListener('osc-show-modal-popup', self.showModalPopupListener); // move to root
+
+      document.body.appendChild(this.instance);
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      document.removeEventListener('osc-show-modal-popup', this.showModalPopupListener);
+    }
+  }, {
+    key: "showModalPopup",
+    value: function showModalPopup(data) {
+      var self = this;
+      self.setState(_objectSpread({}, data), function () {
+        self.instance.style.display = 'block';
+      });
+    }
+  }, {
+    key: "hideModalPopup",
+    value: function hideModalPopup() {
+      this.instance.style.display = 'none';
+    }
+  }, {
     key: "render",
     value: function render() {
       var self = this;
-      var previousButtonHTML;
-      var previousAction = this.props.previousAction || this.config.previousAction;
-      var previousUrl = this.props.previousUrl || this.config.previousUrl;
-      var previousIsDisabled = this.props.previousIsDisabled || this.config.previousIsDisabled;
-      var previousLabel = this.props.previousLabel || this.config.previousLabel;
-      if (previousUrl) previousAction = function previousAction() {
-        document.location.href = "".concat(previousUrl);
-      };
+      var content = self.state.content || null;
 
-      if (previousAction) {
-        previousButtonHTML = /*#__PURE__*/React.createElement("div", {
-          className: "osc-previous-button".concat(previousIsDisabled ? ' osc-disabled' : ''),
-          onClick: function onClick(args) {
-            return previousAction(args);
-          }
-        }, previousLabel);
-      }
-
-      var nextButtonHTML;
-      var nextAction = this.props.nextAction || this.config.nextAction;
-      var nextUrl = this.props.nextUrl || this.config.nextUrl;
-      var nextIsDisabled = this.props.nextIsDisabled || this.config.nextIsDisabled;
-      var nextLabel = this.props.nextLabel || this.config.nextLabel;
-      if (nextUrl) nextAction = function nextAction() {
-        document.location.href = "".concat(nextUrl);
-      };
-
-      if (nextAction) {
-        nextButtonHTML = /*#__PURE__*/React.createElement("div", {
-          className: "osc-next-button".concat(nextIsDisabled ? ' osc-disabled' : ''),
-          onClick: function onClick(args) {
-            return nextAction(args);
-          }
-        }, nextLabel);
+      if (!content) {
+        content = /*#__PURE__*/React.createElement("div", {
+          className: "osc-modal-popup-content"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "osc-modal-popup-header"
+        }, self.state.title), /*#__PURE__*/React.createElement("div", {
+          className: "osc-modal-popup-text"
+        }, self.state.text), /*#__PURE__*/React.createElement("div", {
+          className: "osc-modal-popup-buttons"
+        }, /*#__PURE__*/React.createElement("button", {
+          onClick: self.state.buttonAction,
+          className: "osc-button-blue"
+        }, self.state.buttonText), /*#__PURE__*/React.createElement("button", {
+          onClick: function onClick() {
+            return self.hideModalPopup();
+          },
+          className: "osc-button-white"
+        }, "Annuleren")));
       }
 
       return /*#__PURE__*/React.createElement("div", {
-        className: "osc-previous-next-button-block",
+        id: "osc-modal-popup-container",
         ref: function ref(el) {
           return self.instance = el;
         }
-      }, previousButtonHTML, nextButtonHTML);
+      }, /*#__PURE__*/React.createElement("div", {
+        id: "osc-modal-popup",
+        style: {
+          top: "calc(50% - ( ".concat(self.state.height2, " / 2 )px)"),
+          left: "calc(50% - ( ".concat(self.state.width, " / 2 )px)"),
+          width: self.state.width,
+          height: self.state.height
+        }
+      }, content, /*#__PURE__*/React.createElement("div", {
+        className: "osc-close-button",
+        onClick: function onClick() {
+          return self.hideModalPopup();
+        }
+      })));
     }
   }]);
 
-  return OpenStadComponentPreviousNextButtonBlock;
+  return OpenStadComponentModalPopup;
 }(_component_index_jsx__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 
 /***/ }),
 
-/***/ "./src/previous-next-button-block/css/default.less":
-/*!*********************************************************!*\
-  !*** ./src/previous-next-button-block/css/default.less ***!
-  \*********************************************************/
+/***/ "./src/modal-popup/css/default.less":
+/*!******************************************!*\
+  !*** ./src/modal-popup/css/default.less ***!
+  \******************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3893,28 +4137,31 @@ var OpenStadComponentPreviousNextButtonBlock = /*#__PURE__*/function (_OpenStadC
 
 /***/ }),
 
-/***/ "./src/previous-next-button-block/index.jsx":
-/*!**************************************************!*\
-  !*** ./src/previous-next-button-block/index.jsx ***!
-  \**************************************************/
-/*! exports provided: default, PreviousNextButtonBlock */
+/***/ "./src/modal-popup/index.jsx":
+/*!***********************************!*\
+  !*** ./src/modal-popup/index.jsx ***!
+  \***********************************/
+/*! exports provided: default, ModalPopup */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var whatwg_fetch__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! whatwg-fetch */ "./node_modules/whatwg-fetch/fetch.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "react-dom");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _css_default_less__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./css/default.less */ "./src/previous-next-button-block/css/default.less");
-/* harmony import */ var _css_default_less__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_css_default_less__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _component_previous_next_button_block_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./component/previous-next-button-block.jsx */ "./src/previous-next-button-block/component/previous-next-button-block.jsx");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _component_previous_next_button_block_jsx__WEBPACK_IMPORTED_MODULE_4__["default"]; });
+/* harmony import */ var core_js_es_array_find_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/es/array/find-index */ "./node_modules/core-js/es/array/find-index.js");
+/* harmony import */ var core_js_es_array_find_index__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_es_array_find_index__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-dom */ "react-dom");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _css_default_less__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./css/default.less */ "./src/modal-popup/css/default.less");
+/* harmony import */ var _css_default_less__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_css_default_less__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _component_modal_popup_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./component/modal-popup.jsx */ "./src/modal-popup/component/modal-popup.jsx");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _component_modal_popup_jsx__WEBPACK_IMPORTED_MODULE_5__["default"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PreviousNextButtonBlock", function() { return _component_previous_next_button_block_jsx__WEBPACK_IMPORTED_MODULE_4__["default"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ModalPopup", function() { return _component_modal_popup_jsx__WEBPACK_IMPORTED_MODULE_5__["default"]; });
 
 // polyfills
+
  // react
 
 
@@ -3924,9 +4171,9 @@ __webpack_require__.r(__webpack_exports__);
 
  // render elements
 
-_component_previous_next_button_block_jsx__WEBPACK_IMPORTED_MODULE_4__["default"].renderElement = function renderElement(elem, config) {
+_component_modal_popup_jsx__WEBPACK_IMPORTED_MODULE_5__["default"].renderElement = function renderElement(elem, config) {
   var attributes = elem.attributes;
-  react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_component_previous_next_button_block_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  react_dom__WEBPACK_IMPORTED_MODULE_3___default.a.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(_component_modal_popup_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], {
     attributes: attributes,
     config: config
   }), elem);
@@ -3970,4 +4217,4 @@ _component_previous_next_button_block_jsx__WEBPACK_IMPORTED_MODULE_4__["default"
 /***/ })
 
 /******/ });
-//# sourceMappingURL=previous-next-button-block.js.map
+//# sourceMappingURL=modal-popup.js.map

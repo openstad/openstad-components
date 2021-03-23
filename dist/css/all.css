@@ -4121,6 +4121,10 @@
     overflow-y: visible;
   }
 }
+.leaflet-top,
+.leaflet-bottom {
+  z-index: 400 !important;
+}
 .osc-lightbox {
   position: fixed;
   top: 0;
@@ -8950,6 +8954,10 @@
     overflow-y: visible;
   }
 }
+.leaflet-top,
+.leaflet-bottom {
+  z-index: 400 !important;
+}
 
 .osc-ideas-filterbar {
   display: flex;
@@ -11490,6 +11498,115 @@
   background-color: transparent;
   border-left: 3px solid #B0B0B0;
   padding-right: 0;
+}
+
+#osc-modal-popup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10000000;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: none;
+}
+#osc-modal-popup-container #osc-modal-popup {
+  position: absolute;
+  top: calc(50% - 200px);
+  left: calc(50% - 150px);
+  width: 300px;
+  height: 200px;
+  background-color: white;
+}
+#osc-modal-popup-container #osc-modal-popup .osc-close-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDIwIDIwIj48cGF0aCBmaWxsPSIjMDAwMDAwIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xNy45MTcgMEwxMCA3LjkxNyAyLjA4MyAwIDAgMi4wODMgNy45MTcgMTAgMCAxNy45MTYgMi4wODMgMjAgMTAgMTIuMDg0IDE3LjkxNyAyMCAyMCAxNy45MTYgMTIuMDgzIDEwIDIwIDIuMDgzeiIvPjwvc3ZnPgo=);
+}
+#osc-modal-popup-container #osc-modal-popup .osc-modal-popup-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+#osc-modal-popup-container #osc-modal-popup .osc-modal-popup-content .osc-modal-popup-header {
+  height: 48px;
+  padding: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 25px;
+  border-bottom: 1px solid black;
+}
+#osc-modal-popup-container #osc-modal-popup .osc-modal-popup-content .osc-modal-popup-text {
+  padding: 15px;
+  font-size: 16px;
+}
+#osc-modal-popup-container #osc-modal-popup .osc-modal-popup-content .osc-modal-popup-buttons {
+  position: absolute;
+  padding: 15px;
+  bottom: 0;
+}
+#osc-modal-popup-container #osc-modal-popup .osc-modal-popup-content .osc-modal-popup-buttons .osc-button-blue {
+  position: relative;
+  display: inline-block;
+  padding: 10px 13px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 20px;
+  border: 1px solid black;
+  cursor: pointer;
+  color: white;
+  border-color: #164995;
+  background-color: #164995;
+  border-width: 2px;
+  border-radius: 22px;
+  margin-right: 5px;
+}
+#osc-modal-popup-container #osc-modal-popup .osc-modal-popup-content .osc-modal-popup-buttons .osc-button-blue:active,
+#osc-modal-popup-container #osc-modal-popup .osc-modal-popup-content .osc-modal-popup-buttons .osc-button-blue:focus {
+  outline: 0;
+}
+#osc-modal-popup-container #osc-modal-popup .osc-modal-popup-content .osc-modal-popup-buttons .osc-button-blue.osc-disabled {
+  opacity: 0.3;
+}
+#osc-modal-popup-container #osc-modal-popup .osc-modal-popup-content .osc-modal-popup-buttons .osc-button-blue:hover {
+  text-decoration: underline;
+  border-color: #003066;
+  background-color: #003066;
+}
+#osc-modal-popup-container #osc-modal-popup .osc-modal-popup-content .osc-modal-popup-buttons .osc-button-white {
+  position: relative;
+  display: inline-block;
+  padding: 10px 13px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 20px;
+  border: 1px solid black;
+  cursor: pointer;
+  color: #164995;
+  border-color: #164995;
+  background-color: white;
+  border-width: 2px;
+  border-radius: 20px;
+  margin-right: 5px;
+}
+#osc-modal-popup-container #osc-modal-popup .osc-modal-popup-content .osc-modal-popup-buttons .osc-button-white:active,
+#osc-modal-popup-container #osc-modal-popup .osc-modal-popup-content .osc-modal-popup-buttons .osc-button-white:focus {
+  outline: 0;
+}
+#osc-modal-popup-container #osc-modal-popup .osc-modal-popup-content .osc-modal-popup-buttons .osc-button-white.osc-disabled {
+  opacity: 0.3;
+}
+#osc-modal-popup-container #osc-modal-popup .osc-modal-popup-content .osc-modal-popup-buttons .osc-button-white:hover {
+  text-decoration: underline;
+  color: #003066;
+  border-color: #003066;
+  background-color: white;
 }
 
 

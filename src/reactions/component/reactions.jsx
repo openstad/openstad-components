@@ -4,6 +4,7 @@ import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
 import OpenStadComponentReactionForm from './reaction-form.jsx';
 import OpenStadComponentReaction from './reaction.jsx';
+import OpenStadComponentNotLoggedInPopup from './not-logged-in-popup.jsx';
 
 export default class OpenStadComponentReactions extends OpenStadComponent {
 
@@ -27,6 +28,8 @@ export default class OpenStadComponentReactions extends OpenStadComponent {
       placeholder: '',
       formIntro: '',
     });
+
+    this.showNotLoggedInPopup = this.showNotLoggedInPopup.bind(this)
 
     this.state = {
       user: this.config.user,
@@ -128,6 +131,10 @@ export default class OpenStadComponentReactions extends OpenStadComponent {
     return OpenStadComponentLibs.user.hasRole(this.config.user, 'moderator');
   }
 
+  showNotLoggedInPopup() {
+    this.notLoggedInPopup.showPopup();
+  }
+
   render() {
 
     let self = this;
@@ -139,7 +146,7 @@ export default class OpenStadComponentReactions extends OpenStadComponent {
           let key = `osc-reaction-key-${   reaction.id || parseInt( 1000000 * Math.random() )}`;
           return (
             <li key={key}>
-              <OpenStadComponentReaction config={self.config} user={self.state.user} data={{ ...reaction }}/>
+              <OpenStadComponentReaction config={{ ...self.config, showNotLoggedInPopup: self.showNotLoggedInPopup }} user={self.state.user} data={{ ...reaction }}/>
             </li>
           );
 
@@ -148,7 +155,7 @@ export default class OpenStadComponentReactions extends OpenStadComponent {
 
     let title = self.config.title ? <h3>{self.config.title}</h3> : null;
 
-    let reactionFormHTML = <OpenStadComponentReactionForm config={self.config} user={self.state.user}/>;
+    let reactionFormHTML = <OpenStadComponentReactionForm config={{ ...self.config, showNotLoggedInPopup: self.showNotLoggedInPopup }} user={self.state.user}/>;
     if (self.config.isClosed && !self.userIsModerator()) {
       if (self.config.closedText) {
         reactionFormHTML = <div className="osc-closed-text">{self.config.closedText}</div>
@@ -159,6 +166,8 @@ export default class OpenStadComponentReactions extends OpenStadComponent {
 
     return (
       <div id={this.id} className={self.props.className || 'osc-reactions'} ref={(el) => { this.instance = el; }} >
+
+        <OpenStadComponentNotLoggedInPopup config={self.config} ref={el => (self.notLoggedInPopup = el)}/>
 
         {title}
 

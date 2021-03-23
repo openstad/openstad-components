@@ -841,7 +841,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       let buttonHTML = null;
       if (this.config.linkToCompleteUrl) buttonHTML = <button onClick={() => { document.location.href = this.config.linkToCompleteUrl }} className="osc-button-blue" style={{position: 'absolute', top: 20, right: 20}}>Bekijk de volledige kaart</button>
       simpleHTML = (
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 1000 }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 400 }}>
           {buttonHTML}
         </div>)
       if (this.config.display.width) divStyle.width = this.config.display.width;
