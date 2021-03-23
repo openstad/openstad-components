@@ -225,6 +225,12 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         // showIdeaDetails = showIdeaDetails || ( window.location.hash.match(/(\w)(\d+)/) && window.location.hash.match(/(\w)(\d+)/)[2] ) || OpenStadComponentLibs.localStorage.get('osc-ideas-on-map-details'); //  document.location.hash.replace(/.*details=(\d+).*/, "$1");
         // showIdeaSelected = showIdeaSelected || OpenStadComponentLibs.localStorage.get('osc-ideas-on-map-selected'); // document.location.hash.replace(/.*selected=(\d+).*/, "$1");
         showIdeaDetails = showIdeaDetails || ( window.location.hash.match(/^#D(\d+)/) && window.location.hash.match(/^#D(\d+)/)[1] );
+        if(!showIdeaDetails && OpenStadComponentLibs.localStorage.get('osc-login-pending-show-details')) {
+          console.log('=====');
+          showIdeaDetails = OpenStadComponentLibs.localStorage.get('osc-login-pending-show-details');
+          OpenStadComponentLibs.localStorage.remove('osc-login-pending-show-details');
+        }
+        console.log('++++++++++++++++++++', showIdeaDetails);
         showIdeaSelected = showIdeaSelected || ( window.location.hash.match(/^#S(\d+)/) && window.location.hash.match(/^#S(\d+)/)[1] );
         let ideas = json.filter( idea => idea.location )
         self.updateListedIdeas({ ideas, sortOrder: self.config.sort.defaultValue });

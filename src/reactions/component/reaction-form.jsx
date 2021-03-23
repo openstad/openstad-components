@@ -145,7 +145,7 @@ export default class OpenStadComponentReactionForm extends OpenStadComponent {
       );
       submitButtonHTML = (
         <div className="osc-align-right-container">
-          <button onClick={() => { OpenStadComponentLibs.localStorage.set('osc-reactions-login-pending', true); document.location.href = self.config.loginUrl; }} className="osc-button-blue osc-not-logged-in-button">Inloggen</button>
+          <button onClick={() => { OpenStadComponentLibs.localStorage.set('osc-login-pending-scroll-to-reactions', true); OpenStadComponentLibs.localStorage.set('osc-login-pending-show-details', self.config.ideaId); document.location.href = self.config.loginUrl; }} className="osc-button-blue osc-not-logged-in-button">Inloggen</button>
         </div>
       );
     }
