@@ -4,6 +4,7 @@ import OpenStadComponent from '../../component/index.jsx';
 
 import OpenStadComponentLibs from '../../libs/index.jsx';
 import { IdeaImage as OpenStadComponentIdeaImage } from '../../image/index.jsx';
+import { IdeaTile as OpenStadComponentIdeaTile } from '../../ideas-overview/index.jsx';
 
 // todo: dit moet nog heel erg opgeschoond
 // todo: selectedidea weergave kan met idea-overview.tile gaan werken
@@ -238,25 +239,7 @@ export default class Preview extends OpenStadComponent {
 			  <div className="osc-infobar-selected-idea" onClick={(event) => self.dispatchSelectedIdeaClick(event, self.props.selectedIdea)}>
           <button className="osc-close-button-black" onClick={(event) => self.dispatchClosePreview(event, 'idea')} ref={el => (self.resetButton = el)}/>
           <h3>Geselecteerd</h3>
-          <div className="osc-infobar-selected-idea-idea">
-            <div className="osc-idea-image-container">
-              <OpenStadComponentIdeaImage config={{}} idea={idea} key={'image-' + idea.id}/>
-            </div>
-            <div className="osc-content">
-              <h4>{ eval(`idea.${self.config.titleField}`) }</h4>
-              <div className="osc-summary">
-                { eval(`idea.${self.config.summaryField}`) }
-              </div>
-              <div className="osc-stats">
-                {voteCountHTML}
-                {argcountHTML}
-                <div className="osc-type">
-                  <div className="osc-type-content" dangerouslySetInnerHTML={{ __html: typeDef.listicon.html }}></div>
-                </div>
-              </div>
-            </div>
-            <div className="osc-clear-both"></div>
-          </div>
+          <OpenStadComponentIdeaTile config={self.config} idea={idea} className={`osc-${self.config.display.columns}-columns${this.config.display.onMouseOverTileFadeOthers && self.state.highLightIdeaId && self.state.highLightIdeaId != idea.id ? ' osc-opacity-65' : ''}`} key={`osc-idea-tile-${idea.id}`}/>
         </div>
       );
       titleAddition = 'in de buurt';

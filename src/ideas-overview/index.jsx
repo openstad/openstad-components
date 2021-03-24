@@ -15,6 +15,7 @@ import OpenStadComponentIdeasFilterbar from './component/ideas-filterbar.jsx';
 import OpenStadComponentIdeasFilter from './component/ideas-filter.jsx';
 import OpenStadComponentIdeasSearch from './component/ideas-search.jsx';
 import OpenStadComponentIdeasSort from './component/ideas-sort.jsx';
+import OpenStadComponentIdeaTile from './component/idea-tile.jsx';
 
 // render elements
 OpenStadComponentIdeasOverview.renderElement = function renderElement( elem, config ) {
@@ -30,5 +31,6 @@ export {
   OpenStadComponentIdeasFilter as IdeasFilter,
   OpenStadComponentIdeasSort as IdeasSort,
   OpenStadComponentIdeasSearch as IdeasSearch,
+  OpenStadComponentIdeaTile as IdeaTile,
 };
 

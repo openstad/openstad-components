@@ -1,5 +1,5 @@
 import merge from 'merge';
-import React from 'react';
+import React, { useRef } from 'react';
 
 import OpenStadComponent from '../../component/index.jsx';
 
@@ -47,15 +47,14 @@ export default class OpenStadComponentImage extends OpenStadComponent {
   }
 
   getAspectRatioFactor() {
-
     if (this.props.width && this.props.height) return this.props.width/this.props.height
-    
     let match = this.config.aspectRatio.match(/(\d+)x(\d+)/);
     return match ? match[1] / match[2] : 16/9
   }
 
   getWidthHeight() {
-    let width = this.props.width || this.state.width;
+    let parentNode = document.querySelector(`#${this.divId}`) && document.querySelector(`#${this.divId}`).parentNode
+    let width = this.props.width || this.state.width || ( parentNode && parentNode.offsetWidth );
     let height = this.props.height || width * ( 1 / this.getAspectRatioFactor() ) || undefined;
     return [ width, height ]
   }

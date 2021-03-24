@@ -226,11 +226,9 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         // showIdeaSelected = showIdeaSelected || OpenStadComponentLibs.localStorage.get('osc-ideas-on-map-selected'); // document.location.hash.replace(/.*selected=(\d+).*/, "$1");
         showIdeaDetails = showIdeaDetails || ( window.location.hash.match(/^#D(\d+)/) && window.location.hash.match(/^#D(\d+)/)[1] );
         if(!showIdeaDetails && OpenStadComponentLibs.localStorage.get('osc-login-pending-show-details')) {
-          console.log('=====');
           showIdeaDetails = OpenStadComponentLibs.localStorage.get('osc-login-pending-show-details');
           OpenStadComponentLibs.localStorage.remove('osc-login-pending-show-details');
         }
-        console.log('++++++++++++++++++++', showIdeaDetails);
         showIdeaSelected = showIdeaSelected || ( window.location.hash.match(/^#S(\d+)/) && window.location.hash.match(/^#S(\d+)/)[1] );
         let ideas = json.filter( idea => idea.location )
         self.updateListedIdeas({ ideas, sortOrder: self.config.sort.defaultValue });
@@ -391,6 +389,8 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       // self.map.map.invalidateSize();
       // self.map.hideMarkers({ exception: { location: { lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] } } })
       this.map.fadeMarkers({ exception: idea })
+      self.map.map.invalidateSize();
+      self.map.map.panTo({ lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] });
     });
   }
 
@@ -404,6 +404,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         self.updateListedIdeas({ ideas: self.state.ideas.filter( idea => idea.id != selectedIdea.id ), sortOrder: 'distance',  center: { lat: selectedIdea.location.coordinates[0], lng: selectedIdea.location.coordinates[1] }, maxLength: 5 });
       }
       self.map.showMarkers({})
+      self.map.map.invalidateSize();
     });
   }
 
