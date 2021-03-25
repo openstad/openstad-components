@@ -182,8 +182,9 @@ export default class QuestionForm extends OpenStadComponent {
 
               <div className="osc-overview-line">
                 <div className="osc-overview-line-content"><strong>Tekst</strong></div>
-                { ( dimensions == "['x']" || dimensions == "['x','y']" ) && (<div className="osc-overview-line-content osc-overview-line-field"><strong>X</strong></div>)}
-                { ( dimensions == "['y']" || dimensions == "['x','y']" ) && (<div className="osc-overview-line-content osc-overview-line-field"><strong>Y</strong></div>)}
+                { ( self.props.currentTarget.questionGroup && self.props.currentTarget.questionGroup.answerDimensions == 1 ) && (<div className="osc-overview-line-content osc-overview-line-field"><strong>Waarde</strong></div>)}
+                { ( self.props.currentTarget.questionGroup && self.props.currentTarget.questionGroup.answerDimensions > 1 ) && ( dimensions == "['x']" || dimensions == "['x','y']" ) && (<div className="osc-overview-line-content osc-overview-line-field"><strong>X</strong></div>)}
+                { ( self.props.currentTarget.questionGroup && self.props.currentTarget.questionGroup.answerDimensions ) > 1 && ( dimensions == "['y']" || dimensions == "['x','y']" ) && (<div className="osc-overview-line-content osc-overview-line-field"><strong>Y</strong></div>)}
                 <div className="osc-overview-line-buttons"><div style={{ width: '60px' }}></div></div>
               </div>
 
@@ -222,7 +223,7 @@ export default class QuestionForm extends OpenStadComponent {
               })}
 
               <div className="osc-overview-line">
-                <a onClick={ () => self.handleFieldChange({ newValue: { text: 'Nieuwe optie', value: {x: '50', y: '50'} }})}>
+                <a onClick={ () => self.handleFieldChange({ newValue: { text: '', value: {x: '50', y: '50'} }})}>
                   Nieuwe optie toevoegen
                 </a>
               </div>

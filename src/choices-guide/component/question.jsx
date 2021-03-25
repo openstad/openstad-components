@@ -146,8 +146,7 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
             <div className="osc-title osc-info">
               {title}
             </div>
-            <div className="osc-description">
-              {text}
+            <div className="osc-description" dangerouslySetInnerHTML={{ __html: text }}>
             </div>
           </div>
         </div>
