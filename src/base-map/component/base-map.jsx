@@ -115,6 +115,12 @@ export default class OpenStadComponentMap extends OpenStadComponent {
 	        maxZoom: 18,
 				}).addTo(self.map);
 				break;
+			case "custom":
+        L.tileLayer(self.config.mapTilesUrl, {
+	        maxZoom: 19,
+          subdomains: self.config.mapTilesSubdomains,
+        }).addTo(self.map);
+        break;
 			default:
 			case "nlmaps":
         L.tileLayer('https://geodata.nationaalgeoregister.nl/tiles/service/wmts/brtachtergrondkaart/EPSG:3857/{z}/{x}/{y}.png', {

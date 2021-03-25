@@ -1,10 +1,11 @@
 # Changelog
 
-## Unreleased2
+## Unreleased
 * Move map to base-map
 * Update ideas-on-map to a production level
+* Add custom tiles server variant to base-map
 
-## Unreleased
+## v0.18.0 (2021-03-17)
 * Update choices-guides to a production level
 
 ## v0.15.0 (2021-02-23)
