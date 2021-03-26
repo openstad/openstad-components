@@ -2,12 +2,41 @@
 
 import OpenStadComponent from '../../component/index.jsx';
 
-export default class OpenStadComponentPreviousNextButtonBlock extends OpenStadComponent {
+import {getIdeas} from "../../store/src/features/ideas/selector";
+import {bindActionCreators} from "redux";
+import {addIdea, fetchIdeas} from "../../store/src/features/ideas/ideasSlice";
+import {connect} from "react-redux";
+
+class OpenStadComponentPreviousNextButtonBlock extends OpenStadComponent {
 
   constructor(props) {
 
     super(props, {});
+    this.nextAction = this.nextAction.bind(this)
 
+  }
+
+  doeIets() {
+    this.props.addIdea({
+      id: 2,
+      name: 'one more plan',
+      images: {
+        heading: 'https://maps.googleapis.com/maps/api/streetview?size=500x500&location=52.3779893,4.8460973&heading=151.78&key=AIzaSyAU1BrnBc0QW9PDai7hpRU2yYpoGXNDnU4',
+      },
+      position: {lat: 52.3631163, lng: 4.9038573},
+      link: 'https://google.nl',
+      status: 'ACCEPTED',
+      theme: 'Lazyness',
+      budget: 15000,
+    })
+  }
+
+  nextAction(action) {
+    if (action == 'doeIets') {
+      this.doeIets();
+    } else {
+      action()
+    }
   }
 
 	render() {
@@ -33,12 +62,13 @@ export default class OpenStadComponentPreviousNextButtonBlock extends OpenStadCo
 
     if (nextUrl) nextAction = () => { document.location.href = `${nextUrl}` };
     if ( nextAction ) {
-      nextButtonHTML = <div className={`osc-next-button${nextIsDisabled ? ' osc-disabled' : ''}`} onClick={(args) => nextAction(args) }>{nextLabel}</div>
+      nextButtonHTML = <div className={`osc-next-button${nextIsDisabled ? ' osc-disabled' : ''}`} onClick={(args) => self.nextAction(nextAction) }>{nextLabel}</div>
     }
 
     return (
 			<div className="osc-previous-next-button-block" ref={el => (self.instance = el)}>
 				{previousButtonHTML}
+        Aantal ideeen: {self.props.ideas.length}
 				{nextButtonHTML}
 			</div>
     );
@@ -46,3 +76,15 @@ export default class OpenStadComponentPreviousNextButtonBlock extends OpenStadCo
   }
 
 }
+
+const mapStateToProps = (state) => {
+  return {
+    ideas: getIdeas(state),
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({ addIdea, fetchIdeas }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true })(OpenStadComponentPreviousNextButtonBlock)

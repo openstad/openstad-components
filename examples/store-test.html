@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>OpenStad PreviousNextButtonBlock</title>
+    <link rel="shortcut icon" href="/favicon.ico"/>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/css/all.css"/>
+    <link rel="stylesheet" type="text/css" href="/components/dist/css/previous-next-button-block.css"/>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="/components/dist/previous-next-button-block.js"></script>
+	  <script>
+
+	   window.addEventListener('load', function(e) {
+
+       let config = {
+         nextUrl: 'https://nrc.nl',
+         nextLabel: 'Lees de NRC',
+       };
+
+       var initData = {
+         config: {
+           "api": {
+             "url": "https://api.openstad.nlsvgtr.nl",
+           },
+           "siteId": 276,
+         },
+         ideas: [
+           {
+             id: 1,
+             name: 'idea name accepted',
+             images: {
+               heading: 'https://maps.googleapis.com/maps/api/streetview?size=500x500&location=52.3779893,4.8460973&heading=151.78&key=AIzaSyAU1BrnBc0QW9PDai7hpRU2yYpoGXNDnU4',
+               default: 'https://maps.googleapis.com/maps/api/streetview?size=500x500&location=52.3779893,4.8460973&key=AIzaSyAU1BrnBc0QW9PDai7hpRU2yYpoGXNDnU4',
+               small: 'https://maps.googleapis.com/maps/api/streetview?size=100x100&location=52.3779893,4.8460973&key=AIzaSyAU1BrnBc0QW9PDai7hpRU2yYpoGXNDnU4'
+             },
+             position: {lat: 52.3631163, lng: 4.9038573},
+             link: 'https://google.nl',
+             status: 'ACCEPTED',
+             theme: 'Sport',
+             budget: 15000,
+
+           },
+         ]
+       }
+
+       window.OpenstadStore = window.OpenStadComponents.OpenstadStore(initData);
+
+       let element1 = document.querySelector('#element-1');
+       OpenStadComponents.PreviousNextButtonBlock.renderElement(element1, config, window.OpenstadStore);
+
+       config = {
+         nextAction: 'doeIets',
+         nextLabel: 'Doe iets',
+       };
+
+       let element2 = document.querySelector('#element-2');
+       OpenStadComponents.PreviousNextButtonBlock.renderElement(element2, config, window.OpenstadStore);
+
+     });
+	  </script>
+    <style>
+     body, html {
+       position: relative;
+       width: 100%;
+       height: 100%;
+       overflow: hidden;
+       background-color: pink;
+     }
+     h1 {
+       margin: 0;
+       padding: 10px;
+     }
+     .container {
+       position: relative;
+       width: 940px;
+       height: 75px;
+       background-color: green;
+     }
+
+     .openstad-component-previous-next-button-block {
+       width: 100%;
+       height: 100%;
+     }
+
+    </style>
+  </head>
+  <body>
+	  <h1>OpenStad PreviousNextButtonBlock</h1>
+    <div class="container osc-component">
+		  <div id="element-1" class="openstad-component-previous-next-button-block"></div>
+    </div>
+    <br/><br/>
+    <div class="container osc-component">
+		  <div id="element-2" class="openstad-component-previous-next-button-block"></div>
+    </div>
+  </body>
+</html>

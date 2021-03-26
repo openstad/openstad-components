@@ -10,6 +10,7 @@ import ReactDOM from 'react-dom';
 
 // import css to make sure it is generated in the result
 import './index.less';
+import store from './store';
 
 // the module
 import OpenStadComponent from './component/index.jsx';
@@ -26,7 +27,6 @@ import OpenStadComponentPreviousNextButtonBlock from './previous-next-button-blo
 import OpenStadComponentPoll from './poll/index.jsx';
 import OpenStadComponentReactions from './reactions/index.jsx';
 
-
 export {
   OpenStadComponent as Component,
   OpenStadComponentLibs as Libs,
@@ -42,6 +42,7 @@ export {
   OpenStadComponentPreviousNextButtonBlock as PreviousNextButtonBlock,
   OpenStadComponentPoll as Poll,
   OpenStadComponentReactions as Reactions,
+  store as OpenstadStore
 }
 
 
