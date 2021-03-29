@@ -597,8 +597,11 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
 		switch (this.state.status) {
 
-      // case 'idea-details':
-      //   break;
+      case 'idea-details':
+        this.onUpdateSelectedIdea(event.target.data);
+        this.showIdeaDetails(event.target.data);
+        document.querySelector('#osc-ideas-on-map-info') && document.querySelector('#osc-ideas-on-map-info').scrollTo(0,0)
+        break;
 
       case 'idea-form':
         break;

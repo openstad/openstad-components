@@ -14,6 +14,7 @@ export default class OpenStadComponentReactionForm extends OpenStadComponent {
   
   showPopup() {
 		// dispatch an event
+    let self = this;
 		var event = new window.CustomEvent('osc-show-modal-popup', { detail: {
       title: 'Login om verder te gaan',
       text: 'Login om een argument te plaatsen, te reageren of een argument te liken',

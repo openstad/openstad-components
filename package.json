@@ -36,6 +36,7 @@
     "filepond-plugin-file-validate-size": "^2.2.2",
     "filepond-plugin-file-validate-type": "^1.2.5",
     "filepond-plugin-image-preview": "^4.6.5",
+    "filepond-polyfill": "^1.0.4",
     "imports-loader": "^0.8.0",
     "json-loader": "^0.5.7",
     "less": "^3.10.3",
@@ -54,7 +55,6 @@
   "dependencies": {
     "@fingerprintjs/fingerprintjs": "^3.0.5",
     "filepond": "^4.20.1",
-    "filepond-polyfill": "^1.0.4",
     "merge": "^1.2.1",
     "react-app-polyfill": "^1.0.6",
     "react-filepond": "^7.1.0",
