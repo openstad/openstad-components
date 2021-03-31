@@ -28275,8 +28275,36 @@ function fetchChoicesGuide(_ref) {
           });
         }
       });
-      return data;
+    } // fix choices: delete answers for questions that do not exist
+
+
+    if (data.questionGroups && data.questionGroups.map) {
+      data.questionGroups.map(function (questiongroup) {
+        if (questiongroup.questions && questiongroup.questions.map) {
+          var questionIds = questiongroup.questions.map(function (question) {
+            return question.id;
+          });
+
+          if (questiongroup.choices && questiongroup.choices.map) {
+            questiongroup.choices.map(function (choice) {
+              if (choice.answers) {
+                var keys = Object.keys(choice.answers).map(function (key) {
+                  return parseInt(key);
+                });
+                var oldkeys = keys.filter(function (key) {
+                  return questionIds.indexOf(key) == -1;
+                });
+                oldkeys.map(function (key) {
+                  return delete choice.answers[key];
+                });
+              }
+            });
+          }
+        }
+      });
     }
+
+    return data;
   });
 }
 
