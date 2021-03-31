@@ -20,8 +20,8 @@ export default class QuestionForm extends OpenStadComponent {
     let parsedData;
     if (typeof data.type != 'undefined') {
       parsedData = { type: data.type };
-      if (self.props.currentTarget.type == 'a-to-b' && data.type == 'enum-radio') parsedData.values = [];
-      if (self.props.currentTarget.type == 'enum-radio' && data.type == 'a-to-b') parsedData.values = { A: {}, B: {} };
+      if (( !self.props.currentTarget.type || self.props.currentTarget.type == 'a-to-b' ) && data.type == 'enum-radio') parsedData.values = [];
+      if (( !self.props.currentTarget.type || self.props.currentTarget.type == 'enum-radio' ) && data.type == 'a-to-b') parsedData.values = { A: {}, B: {} };
     }
     if (typeof data.moreInfoTitle != 'undefined') {
       parsedData = { moreInfo: merge.recursive({}, self.props.currentTarget.moreInfo) };
