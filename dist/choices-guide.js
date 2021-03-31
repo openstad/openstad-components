@@ -25588,11 +25588,13 @@ var ChoiceForm = /*#__PURE__*/function (_OpenStadComponent) {
       if (data.questionId) {
         parsedData = merge__WEBPACK_IMPORTED_MODULE_0___default.a.recursive(true, {}, self.props.currentTarget.answers);
         parsedData[data.questionId] = parsedData[data.questionId] || {};
+        if (_typeof(parsedData[data.questionId]) != 'object') parsedData[data.questionId] = {
+          x: parsedData[data.questionId]
+        };
         parsedData[data.questionId][data.dimension] = data.value;
       }
 
       parsedData = parsedData || data;
-      console.log('=', JSON.stringify(parsedData, null, 2));
       self.props.onChange({
         answers: parsedData
       });

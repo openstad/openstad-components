@@ -19,10 +19,10 @@ export default class ChoiceForm extends OpenStadComponent {
     if (data.questionId) {
       parsedData = merge.recursive(true, {}, self.props.currentTarget.answers);
       parsedData[data.questionId] = parsedData[data.questionId] || {};
+      if (typeof parsedData[data.questionId] != 'object') parsedData[data.questionId] = { x: parsedData[data.questionId] };
       parsedData[data.questionId][data.dimension] = data.value;
     }
     parsedData = parsedData || data;
-    console.log('=', JSON.stringify(parsedData,null,2));
     self.props.onChange({ answers: parsedData })    
   } 
 
