@@ -54,7 +54,7 @@ export default class ChoiceForm extends OpenStadComponent {
           let questionDimensions = question.dimensions || ['x'];
           if (questionDimensions.indexOf('x') != -1 || (self.props.currentTarget.questionGroup && self.props.currentTarget.questionGroup.answerDimensions == 1)) dimensions.push('x');
           if (questionDimensions.indexOf('y') != -1 && self.props.currentTarget.questionGroup && self.props.currentTarget.questionGroup.answerDimensions == 2) dimensions.push('y');
-          if (questionDimensions.indexOf('z') != -1 && self.props.currentTarget.questionGroup && self.props.currentTarget.questionGroup.answerDimensions == 3) dimensions.push('z');
+          // if (questionDimensions.indexOf('z') != -1 && self.props.currentTarget.questionGroup && self.props.currentTarget.questionGroup.answerDimensions == 3) dimensions.push('z');
 
           return (
             <div className="osc-overview-line" key={`question-${question.id}`}>
@@ -66,7 +66,14 @@ export default class ChoiceForm extends OpenStadComponent {
                 {question.description}
               </div>
               */}
-              { dimensions.map((dimension, j) => {
+              { ['x', 'y'].map((dimension, j) => {
+                if (!dimensions.includes(dimension)) {
+                  if (self.props.currentTarget.questionGroup.answerDimensions == 1) {
+                    return null
+                  } else {
+                    return (<div className="osc-overview-line-content osc-overview-line-field" key={`field-${j}`}></div>);
+                  }
+                }
                 let answerValue = self.props.currentTarget.answers && self.props.currentTarget.answers[question.id] && ( typeof self.props.currentTarget.answers[question.id] == 'object' ? self.props.currentTarget.answers[question.id][dimension] : self.props.currentTarget.answers[question.id] )
                 if (self.state.questionEditModeIndex == i) {
                   return (
