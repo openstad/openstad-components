@@ -36,9 +36,28 @@ function fetchChoicesGuide({ config }) {
             });
           }
         });
-
-        return data;
       } 
+
+      // fix choices: delete answers for questions that do not exist
+      if (data.questionGroups && data.questionGroups.map) {
+        data.questionGroups.map( questiongroup => {
+          if (questiongroup.questions && questiongroup.questions.map) {
+            let questionIds = questiongroup.questions.map(question => question.id);
+            if (questiongroup.choices && questiongroup.choices.map) {
+              questiongroup.choices.map(choice => {
+                if (choice.answers) {
+                  let keys = Object.keys(choice.answers).map(key => parseInt(key));
+                  let oldkeys = keys.filter( key => questionIds.indexOf(key) == -1 );
+                  oldkeys.map(key => delete choice.answers[key]);
+                }
+              });
+            }
+          }
+        });
+      } 
+
+      return data;
+
     });
 
 }

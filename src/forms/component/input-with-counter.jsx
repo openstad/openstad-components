@@ -42,11 +42,11 @@ export default class FormfieldInputWithCounter extends OpenStadComponent {
 		let state = {};
 		state.isValid = true;
 		state.warning = null;
-		if (this.state.valueLength < this.config.minLength) {
+		if (this.state.value.length < this.config.minLength) {
 			state.warning = `De tekst is te kort`;
 			state.isValid = false;
 		}
-		if (this.state.valueLength > this.config.maxLength) {
+		if (this.state.value.length > this.config.maxLength) {
 			state.warning = `De tekst is te lang`;
 			state.isValid = false;
 		}
@@ -61,10 +61,11 @@ export default class FormfieldInputWithCounter extends OpenStadComponent {
   
 	handleOnChange(data) {
     data = data || {};
-		this.setState(data)
-		if (typeof this.onChange == 'function') {
-			this.onChange({ name: this.config.name, value: data.value });
-		}
+		this.setState(data, () => {
+		  if (typeof this.onChange == 'function') {
+			  this.onChange({ name: this.config.name, value: data.value });
+		  }
+    })
 	}
 
 	onInputFocus() {
@@ -83,9 +84,7 @@ export default class FormfieldInputWithCounter extends OpenStadComponent {
 	onInputKeyUp(value) {
 		let state = {};
 		state.value = value || this.input.value;
-		let valueLength = state.value.length;
-		state.valueLength = valueLength;
-		state.isValid = valueLength >= this.config.minLength && valueLength <= this.config.maxLength;
+		state.isValid = state.value.length >= this.config.minLength && state.value.length <= this.config.maxLength;
 		this.setState(state)
 	}
 
@@ -96,11 +95,11 @@ export default class FormfieldInputWithCounter extends OpenStadComponent {
 		let counter = null;
 		let warning = null;
 		if (self.state.focused) {
-			if (self.state.valueLength < self.config.minLength) {
-				counter = (<div className="osc-form-counter osc-form-error">Nog minimaal <span className="">{self.config.minLength - self.state.valueLength}</span> tekens</div>)
+			if (self.state.value.length < self.config.minLength) {
+				counter = (<div className="osc-form-counter osc-form-error">Nog minimaal <span className="">{self.config.minLength - self.state.value.length}</span> tekens</div>)
 			} else {
-				let error = self.state.valueLength > self.config.maxLength ? 'osc-form-error' : '';
-				counter = (<div className={'osc-form-counter ' + error}>Je hebt nog <span className="">{self.config.maxLength - self.state.valueLength}</span> tekens over.</div>)
+				let error = self.state.value.length > self.config.maxLength ? 'osc-form-error' : '';
+				counter = (<div className={'osc-form-counter ' + error}>Je hebt nog <span className="">{self.config.maxLength - self.state.value.length}</span> tekens over.</div>)
 			}
 		}
 

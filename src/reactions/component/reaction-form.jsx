@@ -108,7 +108,7 @@ export default class OpenStadComponentReactionForm extends OpenStadComponent {
     });
 
   }
-
+  
   render() {
 
     let self = this;
@@ -125,25 +125,35 @@ export default class OpenStadComponentReactionForm extends OpenStadComponent {
       );
     }
 
+    let inputHTML = null;
     let submitButtonHTML = null;
     if (self.canSubmit()) {
+      inputHTML = (
+        <OpenStadComponentForms.InputWithCounter config={{ inputType: 'textarea', minLength: config.descriptionMinLength, maxLength: config.descriptionMaxLength, placeholder: self.config.placeholder }} value={self.state.description} onChange={ data => self.handleOnChange({ description: data.value }) } ref={el => (self.description = el)}/>
+      );
       submitButtonHTML = (
         <div className="osc-align-right-container">
-			    <button onClick={(e) => { if (!self.state.isBusy) self.submitForm(); }} className={`osc-button-blue${ !self.state.isValid || self.state.isBusy ? ' osc-disabled' : '' }`} >Verzenden</button>
+			    <button onClick={(e) => { if (!self.state.isBusy) self.submitForm(); }} className={`osc-button-blue${ !self.state.isValid || self.state.isBusy ? ' osc-disabled' : '' }`}>Verzenden</button>
         </div>
       );
     } else {
+      inputHTML = (
+        <div style={{position: 'relative'}}>
+          <OpenStadComponentForms.InputWithCounter disabled={true} config={{ inputType: 'textarea', minLength: config.descriptionMinLength, maxLength: config.descriptionMaxLength, placeholder: self.config.placeholder }} value={self.state.description} ref={el => (self.description = el)}/>
+          <div onClick={() => self.config.showNotLoggedInPopup()} style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%'}}></div>
+        </div>
+      );
       submitButtonHTML = (
         <div className="osc-align-right-container">
-          <button onClick={() => { OpenStadComponentLibs.localStorage.set('osc-reactions-login-pending', true); document.location.href = self.config.loginUrl; }} className="osc-button-blue osc-not-logged-in-button">Inloggen</button>
+          <button onClick={() => { OpenStadComponentLibs.localStorage.set('osc-login-pending-scroll-to-reactions', true); OpenStadComponentLibs.localStorage.set('osc-login-pending-show-details', self.config.ideaId); document.location.href = self.config.loginUrl; }} className="osc-button-blue osc-not-logged-in-button">Inloggen</button>
         </div>
       );
     }
 
     return (
-      <div id={self.divId} className="" ref={el => (self.instance = el)} >
+      <div id={self.divId} className="">
         {formIntro}
-        <OpenStadComponentForms.InputWithCounter disabled={this.canSubmit() ? null : true} config={{ inputType: 'textarea', minLength: config.descriptionMinLength, maxLength: config.descriptionMaxLength, placeholder: self.config.placeholder }} value={self.state.description} onChange={ data => self.handleOnChange({ description: data.value }) } ref={el => (self.description = el)}/>
+        {inputHTML}
         {submitButtonHTML}
       </div>
     );

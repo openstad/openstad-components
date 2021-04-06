@@ -78,6 +78,7 @@ export default class ChoicesGuideForm extends OpenStadComponent {
     return (
       <div className="openstad-form">
         <h3>Naam</h3>
+        <div className="osc-form-description">Geef deze keuzewijzer een naam, zodat deze makkelijk terug te vinden is in de 'Keuzewijzer' en 'Keuzewijzer resultaat' widget.</div>
         <OpenStadComponentForms.InputWithCounter key="x1" config={{ inputType: 'input', minLength: 1, maxLength: 1000 }} value={self.props.currentTarget.title} onChange={ data => self.handleFieldChange({ title: data.value }) } ref={el => { self.titleField = el; }}/>
         <h4>Deze keuzewijzer is actief</h4>
         <OpenStadComponentForms.Select config={{ choices: [{ value: "true", description: "Ja"}, { value: "false", description: "Nee"}] }} value={ config.isActive } onChange={ data => self.handleFieldChange({ isActive: data.value }) } ref={el => self.isActiveField = el}/>

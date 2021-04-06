@@ -24,6 +24,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         height: null,
       },
       canSelectLocation: true,
+      onMarkerClickAction: 'selectIdea',
       types: [],
       typeField: null,
       titleField: 'title',
@@ -224,6 +225,10 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         // showIdeaDetails = showIdeaDetails || ( window.location.hash.match(/(\w)(\d+)/) && window.location.hash.match(/(\w)(\d+)/)[2] ) || OpenStadComponentLibs.localStorage.get('osc-ideas-on-map-details'); //  document.location.hash.replace(/.*details=(\d+).*/, "$1");
         // showIdeaSelected = showIdeaSelected || OpenStadComponentLibs.localStorage.get('osc-ideas-on-map-selected'); // document.location.hash.replace(/.*selected=(\d+).*/, "$1");
         showIdeaDetails = showIdeaDetails || ( window.location.hash.match(/^#D(\d+)/) && window.location.hash.match(/^#D(\d+)/)[1] );
+        if(!showIdeaDetails && OpenStadComponentLibs.localStorage.get('osc-login-pending-show-details')) {
+          showIdeaDetails = OpenStadComponentLibs.localStorage.get('osc-login-pending-show-details');
+          OpenStadComponentLibs.localStorage.remove('osc-login-pending-show-details');
+        }
         showIdeaSelected = showIdeaSelected || ( window.location.hash.match(/^#S(\d+)/) && window.location.hash.match(/^#S(\d+)/)[1] );
         let ideas = json.filter( idea => idea.location )
         self.updateListedIdeas({ ideas, sortOrder: self.config.sort.defaultValue });
@@ -357,7 +362,6 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   updateLocationAddress(location) {
 
     let self = this;
-
     if (!location) return;
 
     if (location.coordinates) {
@@ -365,10 +369,14 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       location.lng = location.coordinates[1];
     }
 
-  	self.map.getPointInfo(location, null, function(json, marker) {
-      location.address = json && json._display || 'Geen adres gevonden';
-	    var event = new window.CustomEvent('osc-update-location', { detail: { location } });
-	    document.dispatchEvent(event);
+  	self.map.searchAddressByLatLng({
+      latlng: location,
+      addresssesMunicipality: self.config.search.addresssesMunicipality,
+      next: function(json) {
+        location.address = json && json.address || 'Geen adres gevonden';
+	      var event = new window.CustomEvent('osc-update-location', { detail: { location } });
+	      document.dispatchEvent(event);
+      }
     });
         
   }
@@ -379,7 +387,10 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     self.openInfobarOnMobile();
     self.setState({ status: 'idea-details' }, () => {
       // self.map.map.invalidateSize();
-      self.map.hideMarkers({ exception: { location: { lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] } } })
+      // self.map.hideMarkers({ exception: { location: { lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] } } })
+      this.map.fadeMarkers({ exception: idea })
+      self.map.map.invalidateSize();
+      self.map.map.panTo({ lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] });
     });
   }
 
@@ -393,6 +404,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         self.updateListedIdeas({ ideas: self.state.ideas.filter( idea => idea.id != selectedIdea.id ), sortOrder: 'distance',  center: { lat: selectedIdea.location.coordinates[0], lng: selectedIdea.location.coordinates[1] }, maxLength: 5 });
       }
       self.map.showMarkers({})
+      self.map.map.invalidateSize();
     });
   }
 
@@ -503,51 +515,30 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 		});
 
     // search for addresses
-    fetch(`https://geodata.nationaalgeoregister.nl/locatieserver/v3/suggest?rows=5&fq=gemeentenaam:${self.config.search.addresssesMunicipality}&fq=*:*&q=${searchValueLc}`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-			.then((response) => {
-				return response.json();
-			})
-      .then( json => {
-        if (json && json.response && json.response.docs && json.response.docs.length) {
-          searchResult.locations = json.response.docs.map( found => { return {
-						text: found.weergavenaam,
-						onClick: () => { onClickAddress(found.id) },
-					}});
-        }
+  	self.map.suggestAddresses({
+      searchValue: searchValueLc,
+      addresssesMunicipality: self.config.search.addresssesMunicipality,
+      next: function(json) {
+        searchResult.locations = json && json.map(result => {
+				  result.onClick = () => onClickAddress(result.id);
+          return result;
+        });
         callback(searchValue, searchResult)
-      })
-      .catch((err) => {
-        console.log('Search failed:', err);
-        callback(searchValue, searchResult)
-      });
-
+      }
+    });
 
     function onClickAddress(id) {
-      fetch(`https://geodata.nationaalgeoregister.nl/locatieserver/v3/lookup?fq=gemeentenaam:${self.config.search.addresssesMunicipality}&&id=${id}`, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-			  .then((response) => {
-				  return response.json();
-			  })
-        .then( json => {
-          if (json && json.response && json.response.docs && json.response.docs[0]) {
-            let centroide_ll = json.response.docs[0].centroide_ll;
-            let match = centroide_ll.match(/POINT\((\d+\.\d+) (\d+\.\d+)\)/);
-            self.map.map.panTo(new L.LatLng(match[2], match[1]));
-            self.onMapClick({ latlng: { lat: match[2], lng: match[1] } }, true)
-          }
-        })
-        .catch((err) => {
-          console.log('Search failed:', err);
-          callback(searchValue, searchResult)
-        });
-      
+  	  self.map.LookupLatLngByAddressId({
+        id,
+        addresssesMunicipality: self.config.search.addresssesMunicipality,
+        next: function(json) {
+          console.log(json);
+          let centroide_ll = json.centroide_ll;
+          let match = centroide_ll.match(/POINT\((\d+\.\d+) (\d+\.\d+)\)/);
+          self.map.map.panTo(new L.LatLng(match[2], match[1]));
+          self.onMapClick({ latlng: { lat: match[2], lng: match[1] } }, true)
+        }
+      });
     }
 
 	}
@@ -569,6 +560,8 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     switch (this.state.status) {
 
       case 'idea-details':
+        this.hideIdeaDetails();
+        document.location.href='#S'+this.state.selectedIdea.id;
         break;
 
       case 'idea-form':
@@ -605,6 +598,9 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 		switch (this.state.status) {
 
       case 'idea-details':
+        this.onUpdateSelectedIdea(event.target.data);
+        this.showIdeaDetails(event.target.data);
+        document.querySelector('#osc-ideas-on-map-info') && document.querySelector('#osc-ideas-on-map-info').scrollTo(0,0)
         break;
 
       case 'idea-form':
@@ -618,8 +614,11 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
           this.onUpdateSelectedIdea(null);
         } else {
           this.onUpdateSelectedIdea(event.target.data);
+          if ( this.config.onMarkerClickAction == 'showIdeaDetails' ) {
+            this.showIdeaDetails(event.target.data);
+          }
         }
-        document.querySelector('#osc-ideas-on-map-info').scrollTo(0,0)
+        document.querySelector('#osc-ideas-on-map-info') && document.querySelector('#osc-ideas-on-map-info').scrollTo(0,0)
 
     }
   }
@@ -642,8 +641,8 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     self.map.updateFading();
     switch (self.state.status) {
 
-      case 'idea-details':
-        break;
+      // case 'idea-details':
+      //   break;
 
       case 'idea-form':
         break;
@@ -852,7 +851,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       let buttonHTML = null;
       if (this.config.linkToCompleteUrl) buttonHTML = <button onClick={() => { document.location.href = this.config.linkToCompleteUrl }} className="osc-button-blue" style={{position: 'absolute', top: 20, right: 20}}>Bekijk de volledige kaart</button>
       simpleHTML = (
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 1000 }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 400 }}>
           {buttonHTML}
         </div>)
       if (this.config.display.width) divStyle.width = this.config.display.width;

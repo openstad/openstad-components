@@ -13,35 +13,35 @@ import './index.less';
 
 // the module
 import OpenStadComponent from './component/index.jsx';
-import OpenStadComponentLibs from './libs/index.jsx';
-import OpenStadComponentForms from './forms/index.jsx';
+import Libs from './libs/index.jsx';
+import Forms from './forms/index.jsx';
 import { ChoicesGuide, ChoicesGuideResult } from './choices-guide/index.jsx';
-import OpenStadComponentNLMap from './nlmap/index.jsx';
-import OpenStadComponentLightbox from './lightbox/index.jsx';
-import OpenStadComponentIdeasOnMap from './ideas-on-map/index.jsx';
-import OpenStadComponentIdeaDetails from './idea-details/index.jsx';
-import OpenStadComponentIdeasOverview from './ideas-overview/index.jsx';
-import OpenStadComponentIdeasImage from './image/index.jsx';
-import OpenStadComponentPreviousNextButtonBlock from './previous-next-button-block/index.jsx';
-import OpenStadComponentPoll from './poll/index.jsx';
-import OpenStadComponentReactions from './reactions/index.jsx';
+import BaseMap from './base-map/index.jsx';
+import Lightbox from './lightbox/index.jsx';
+import IdeasOnMap from './ideas-on-map/index.jsx';
+import IdeaDetails from './idea-details/index.jsx';
+import IdeasOverview from './ideas-overview/index.jsx';
+import IdeasImage from './image/index.jsx';
+import PreviousNextButtonBlock from './previous-next-button-block/index.jsx';
+import Poll from './poll/index.jsx';
+import Reactions from './reactions/index.jsx';
 
 
 export {
-  OpenStadComponent as Component,
-  OpenStadComponentLibs as Libs,
-  OpenStadComponentForms as Forms,
+  OpenStadComponent,
+  Libs,
+  Forms,
   ChoicesGuide,
   ChoicesGuideResult,
-  OpenStadComponentNLMap as NLMap,
-  OpenStadComponentIdeasOnMap as IdeasOnMap,
-  OpenStadComponentIdeaDetails as IdeaDetails,
-  OpenStadComponentIdeasOverview as IdeasOverview,
-  OpenStadComponentIdeasImage as IdeasImage,
-  OpenStadComponentLightbox as Lightbox,
-  OpenStadComponentPreviousNextButtonBlock as PreviousNextButtonBlock,
-  OpenStadComponentPoll as Poll,
-  OpenStadComponentReactions as Reactions,
+  BaseMap,
+  IdeasOnMap,
+  IdeaDetails,
+  IdeasOverview,
+  IdeasImage,
+  Lightbox,
+  PreviousNextButtonBlock,
+  Poll,
+  Reactions,
 }
 
 

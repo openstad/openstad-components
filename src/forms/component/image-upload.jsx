@@ -1,18 +1,16 @@
 import { FilePond, registerPlugin } from "react-filepond";
 // TODO: dit gaat mis omdat webpack nu geen css lust
 // import "filepond/dist/filepond.min.css";
-// moet filepond-polyfill ook nog?
-import FilepondPluginImagePreview from "filepond-plugin-image-preview";
-import FilepondPluginFileValidateType from "filepond-plugin-file-validate-type";
-import FilepondPluginFileValidateSize from "filepond-plugin-file-validate-size";
-import FilepondPluginFilePoster from "filepond-plugin-file-poster";
+import 'filepond-polyfill';
+import FilepondPluginImagePreview from 'filepond-plugin-image-preview';
+import FilepondPluginFileValidateType from 'filepond-plugin-file-validate-type';
+import FilepondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
+import FilepondPluginFilePoster from 'filepond-plugin-file-poster';
 
 import OpenStadComponentDefaultInput from './default-input.jsx';
 
 // Register the plugins
 registerPlugin(FilepondPluginImagePreview, FilepondPluginFileValidateType, FilepondPluginFileValidateSize, FilepondPluginFilePoster);
-
-// Our app
 
 export default class OpenStadComponentImageUpload extends OpenStadComponentDefaultInput {
 

@@ -4,6 +4,8 @@
 .osc-ideas-on-map {
 
   @phone: ~'only screen and (max-width: 880px)';
+  @tablet: ~'only screen and (min-width: 880px) and (max-width: 1200px)';
+  @phone-or-tablet: ~'only screen and (max-width: 1200px)';
 
   // ----------------------------------------------------------------------------------------------------
   // general
@@ -108,7 +110,7 @@
     
   .osc-ideas-on-map-map {
 
-    .osc-nlmap {
+    .osc-map {
       width: 100%;
       height: 100%;
 
@@ -237,3 +239,6 @@
   
 }
 
+.leaflet-top, .leaflet-bottom {
+  z-index: 400 !important;
+}

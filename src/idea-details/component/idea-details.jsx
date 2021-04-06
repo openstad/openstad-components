@@ -158,9 +158,9 @@ export default class IdeasDetails extends OpenStadComponent {
 
         let idea = json;
         self.setState({ idea }, function() {
-          if(OpenStadComponentLibs.localStorage.get('osc-reactions-login-pending')) {
-            window.location.hash = `#reactions`;
-            OpenStadComponentLibs.localStorage.set('osc-reactions-login-pending', false)
+          if(OpenStadComponentLibs.localStorage.get('osc-login-pending-scroll-to-reactions')) {
+            document.getElementById('reactions') && document.getElementById('reactions').scrollIntoView();
+            OpenStadComponentLibs.localStorage.set('osc-login-pending-scroll-to-reactions', false)
           }
         });
 

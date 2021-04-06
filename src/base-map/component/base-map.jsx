@@ -3,8 +3,9 @@
 import merge from 'merge';
 import OpenStadComponent from '../../component/index.jsx';
 import amapsCreateClusterIcon from '../lib/amaps-cluster-icon.js';
+import { searchAddressByLatLng, suggestAddresses, LookupLatLngByAddressId } from '../lib/search.js';
 
-export default class OpenStadComponentNLMap extends OpenStadComponent {
+export default class OpenStadComponentMap extends OpenStadComponent {
 
   constructor(props, defaultConfig) {
 
@@ -13,10 +14,11 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 			marker: false,
 			search: false,
 			center: {
-				latitude: 52.37104644463586,
-				longitude: 4.900402911007405,
+				lat: 52.37104644463586,
+				lng: 4.900402911007405,
 			},
 			zoom: 14,
+      // todo: minzoom/maxzoom
 			zoomposition     : 'bottomleft',
 			disableDefaultUI : true,
 			polygon : null,
@@ -25,6 +27,10 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 
 		var self = this;
     self.config.target = self.divId;
+
+    // backwards compatibility
+    self.config.center.lat = props.config && props.config.center && props.config.center.latitude || self.config.center.lat;
+    self.config.center.lng = props.config && props.config.center && props.config.center.longitude || self.config.center.lng;
     
 		// external css and script files
 		self._loadedFiles = 0;
@@ -32,17 +38,13 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 			{ type: 'css', href: "https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" },
 			{ type: 'script', src: "https://unpkg.com/leaflet@1.0.3/dist/leaflet.js" },
 		];
-		switch(self.config.variant) {
-			case "amaps":
-				// self.files.push({ type: 'css', href: "https://map.data.amsterdam.nl/dist/css/ams-map.css"}); // in tegenstelling tot wat ze beloven overschrijft dit ook css buiten de map
-				self.files.push({ type: 'script', src: "https://map.data.amsterdam.nl/dist/amaps.iife.js"});
-				break;
-			default:
-				self.files.push({ type: 'css', href: "https://nlmaps.nl/dist/assets/css/nlmaps.css"});
-				self.files.push({ type: 'script', src: "https://nlmaps.nl/dist/nlmaps.iife.js"});
-		}
 		self.files.push({ type: 'css', href: "https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"  });
 		self.files.push({ type: 'script', src: "https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js" });
+
+    // search functions
+    self.searchAddressByLatLng = searchAddressByLatLng.bind(self);
+    self.suggestAddresses = suggestAddresses.bind(self);
+    self.LookupLatLngByAddressId = LookupLatLngByAddressId.bind(self);
 
 		self.markers = self.config.markers || [];
 		
@@ -94,17 +96,40 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 		var self = this;
 
 		// init map
-		switch(self.config.variant) {
-			case "amaps":
-				self.map = amaps.createMap({ ...self.config });
-				break;
-			default:
-				self.map = nlmaps.createMap(self.config);
-		}
 
-    if (self.config.zoomControl == false) {
-      self.map.removeControl(self.map.zoomControl);
-    }
+    self.map = L.map(self.config.target, {
+      ...self.config,
+    })
+
+    switch(self.config.variant) {
+			case "n9r":
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+	        maxZoom: 19,
+          subdomains: 'abcd',
+        }).addTo(self.map);
+        break;
+			case "amaps":
+				L.tileLayer('https://t{s}.data.amsterdam.nl/topo_wm/{z}/{x}/{y}.png', {
+					subdomains: '1234',
+	        minZoom: 11,
+	        maxZoom: 18,
+				}).addTo(self.map);
+				break;
+			case "custom":
+        L.tileLayer(self.config.mapTilesUrl, {
+	        maxZoom: 19,
+          subdomains: self.config.mapTilesSubdomains,
+        }).addTo(self.map);
+        break;
+			default:
+			case "nlmaps":
+        L.tileLayer('https://geodata.nationaalgeoregister.nl/tiles/service/wmts/brtachtergrondkaart/EPSG:3857/{z}/{x}/{y}.png', {
+	        minZoom: 6,
+	        maxZoom: 19,
+	        bounds: [[50.5, 3.25], [54, 7.6]],
+	        attribution: 'Kaartgegevens &copy; <a href="kadaster.nl">Kadaster</a>'
+        }).addTo(self.map);
+		}
 
 		// clustering
 		if (self.config.clustering && self.config.clustering.isActive && L.markerClusterGroup) {
@@ -222,7 +247,7 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 
 	createClusterIcon(cluster) {
 		var count = cluster.getChildCount();
-		return L.divIcon({ html: count, className: 'osc-nlmap-icon-cluster', iconSize: L.point(20, 20), iconAnchor: [20, 10] });
+		return L.divIcon({ html: count, className: 'osc-map-icon-cluster', iconSize: L.point(20, 20), iconAnchor: [20, 10] });
 	}
 
 	createCutoutPolygon(polygon) {
@@ -397,87 +422,6 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 
   }
 
-  getPointInfo(latlng, marker, next) {
-
-    // TODO: de uitgecommente versie hieronder kan generiek werken op de PDOK versie, maar die is/wordt betaald en daarvoor heb je dan een API key nodig
-    // Daarom heb ik nu deze gratis service gebruikt; even kijken hoe dat loopt
-    // eerste indruk: veel te traag
-
-	  var self = this;
-    var locatieApiUrl = 'https://geodata.nationaalgeoregister.nl/locatieserver/v3/free?lat=[[lat]]5&lon=[[lng]]&fq=type:adres&rows=1';
-
-	  latlng = latlng || {};
-
-	  var url = locatieApiUrl
-			  .replace(/\[\[lat\]\]/, latlng.lat)
-			  .replace(/\[\[lng\]\]/, latlng.lng);
-
-	  fetch(url)
-      .then((response) => {
-        if (!response.ok) throw Error(response);
-        return response.json();
-      })
-      .then( json => {
-
-        let doc = json.response && json.response.docs && json.response.docs[0];
-        
-        if (!doc) throw new Error ('Niets gevonden');
-
-        let result = {
-          _display: `${doc.straatnaam} ${doc.huisnummer}`
-        }
-
-				result.lat = latlng.lat;
-				result.lng = latlng.lng;
-				if (next) return next(result, marker);
-        return result;
-
-      })
-      .catch((err) => {
-        console.log('Zoek adres: niet goed');
-        console.log(err);
-			  if (next) next({}, marker);
-      });
-
-
-    // var bagApiUrl1 = 'https://api.data.amsterdam.nl/bag/nummeraanduiding/?format=json&locatie=[[lat]],[[lng]],50';
-    // var bagApiUrl2 = 'https://api.data.amsterdam.nl/bag/nummeraanduiding/[[id]]/?format=json';
-    // 
-	  // var self = this;
-    // 
-	  // latlng = latlng || {};
-    // 
-	  // var url = bagApiUrl1
-		// 	  .replace(/\[\[lat\]\]/, latlng.lat)
-		// 	  .replace(/\[\[lng\]\]/, latlng.lng);
-    // 
-    // 
-	  // fetch(url)
-    //   .then((response) => {
-    //     return response.json();
-    //   })
-    //   .then( json => {
-		// 	  var id = json && json.results && json.results[0] && json.results[0].landelijk_id;
-		// 	  var url = bagApiUrl2
-		// 			  .replace(/\[\[id\]\]/, id)
-	  //     fetch(url)
-    //       .then((response) => {
-    //         return response.json();
-    //       })
-    //       .then( json => {
-		// 			  json.lat = latlng.lat;
-		// 			  json.lng = latlng.lng;
-		// 			  if (next) next(json, marker);
-    //       })
-    //   })
-    //   .catch((err) => {
-    //     console.log('Zoek adres: niet goed');
-    //     console.log(err);
-		// 	  if (next) next({}, marker);
-    //   });
-
-  }
-
 	onMapClick(detail) {
 		var event = new CustomEvent('osc-map-click', { detail });
 		document.dispatchEvent(event);
@@ -501,7 +445,7 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 	render() {
 
     return (
-			<div id={this.divId} className={this.props.className || 'osc-nlmap'} ref={el => (this.instance = el)}>
+			<div id={this.divId} className={this.props.className || 'osc-map'} ref={el => (this.instance = el)}>
 				<div id={this.divId + '-map'}></div>
 			</div>
     );

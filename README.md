@@ -10,6 +10,6 @@ Dit is de eerste opzet en is nog niet geschikt voor publiek gebruik.
 [Kaartapplicatie](doc/ideas-on-map)
 
 [Formulieren](doc/forms)
-[NLMap](doc/nlmap)
+[BaseMap](doc/base-map)
 
 [Libs](/doc/libs)

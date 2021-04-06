@@ -37,6 +37,7 @@ export default class IdeasOverview extends OpenStadComponent {
       typeField: 'typeId',
 
 		};
+
     // type specific default config
     switch (props.config.display && props.config.display.type) {
       case 'list':
@@ -201,10 +202,14 @@ export default class IdeasOverview extends OpenStadComponent {
           </div>
           {voteProgressHTML}
           {statsHTML}
-          {/*
-             <div className="osc-type">
-             <div className="osc-type-content" dangerouslySetInnerHTML={{ __html: typeDef.listicon.html }}></div>
-             </div>*/}
+        </div>
+        <div className="osc-idea-tile-content-alt">
+          <div className="osc-idea-image-container">
+            <OpenStadComponentIdeaImage config={{}} idea={idea} key={'image-' + idea.id}/>
+          </div>
+          <h4 className="osc-title">{ eval(`idea.${self.config.idea.titleField}`) }</h4>
+          { eval(`idea.${self.config.idea.summaryField}`) }
+          {statsHTML}
         </div>
         {typeIconHTML}
       </div>
