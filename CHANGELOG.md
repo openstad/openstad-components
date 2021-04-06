@@ -1,11 +1,14 @@
 # Changelog
 
-## v0.19.0 2021-04-06
+## v0.1.20 2021-04-06
+Fix max zoom in amaps variant
+
+## v0.1.19 2021-04-06
 * Move map to base-map
 * Update ideas-on-map to a production level
 * Add custom tiles server variant to base-map
 
-## v0.18.0 (2021-03-17)
+## v0.1.18 (2021-03-17)
 * Update choices-guides to a production level
 
 ## v0.15.0 (2021-02-23)

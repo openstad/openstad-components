@@ -112,7 +112,7 @@ export default class OpenStadComponentMap extends OpenStadComponent {
 				L.tileLayer('https://t{s}.data.amsterdam.nl/topo_wm/{z}/{x}/{y}.png', {
 					subdomains: '1234',
 	        minZoom: 11,
-	        maxZoom: 18,
+	        maxZoom: 21,
 				}).addTo(self.map);
 				break;
 			case "custom":
