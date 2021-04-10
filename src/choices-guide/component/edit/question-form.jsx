@@ -12,6 +12,7 @@ export default class QuestionForm extends OpenStadComponent {
     this.handleFieldChange = this.handleFieldChange.bind(this)
     this.state = {
       valueEditModeIndex: null,
+      showMoreInfoFields: ( this.props.currentTarget.moreInfo && ( this.props.currentTarget.moreInfo.text || this.props.currentTarget.moreInfo.title ) ) ? 'yes' : 'no',
     }
   }
 
@@ -78,7 +79,7 @@ export default class QuestionForm extends OpenStadComponent {
     if (typeof data.newValue != 'undefined') {
       parsedData = { values: self.props.currentTarget.values || [] };
       parsedData.values.push(data.newValue);
-      this.setState({ valueEditModeIndex: parsedData.values.length - 1 })
+      this.setEditMode(parsedData.values.length - 1)
     }
     if (typeof data.deleteIndex != 'undefined') {
       parsedData = { values: self.props.currentTarget.values || [] };
@@ -100,20 +101,40 @@ export default class QuestionForm extends OpenStadComponent {
     self.props.onChange(parsedData)    
   } 
 
+  setShowMoreInfoFields(value) {
+    let self = this;
+    self.setState({ showMoreInfoFields: value }, () => {
+    })
+  }
+  
   toggleEditMode(index) {
-    this.setState({ valueEditModeIndex: this.state.valueEditModeIndex != index ? index : null })
+    let newValue = this.state.valueEditModeIndex != index ? index : null;
+    this.setEditMode(newValue)
+  }
+
+  setEditMode(value) {
+    let self = this;
+    this.setState({ valueEditModeIndex: value }, () => {
+      if (self.state.valueEditModeIndex != null) {
+        let input = self[`osc-question-button-text-${self.state.valueEditModeIndex}`] && self[`osc-question-button-text-${self.state.valueEditModeIndex}`].input;
+        input.focus()
+      }
+    })
   }
   
   render() {
 
     let self = this;
 
+    let x = self.state.showMoreInfoFields;
     let moreInfoHTML = (
       <div>
-        <h3>Meer informatie</h3>
-        <OpenStadComponentForms.InputWithCounter config={{ inputType: 'text', minLength: 0, maxLength: 200 }} value={self.props.currentTarget.moreInfo && self.props.currentTarget.moreInfo.title} onChange={ data => self.handleFieldChange({ moreInfoTitle: data.value }) } ref={el => self.moreInfoField = el}/>
+        <h3>Extra info</h3>
+        <div className="osc-form-description">Wil je een blok met uitklapbare tekst toevoegen? (bijvoorbeeld met extra uitleg)</div>
+        <OpenStadComponentForms.Select config={{ choices: [{ value: 'yes', description: "Ja"}, { value: 'no', description: 'Nee'}] }} value={self.state.showMoreInfoFields} onChange={ data => self.setShowMoreInfoFields(data.value) }/>
       </div>);
-    if (self.props.currentTarget.moreInfo && (self.props.currentTarget.moreInfo.title || self.props.currentTarget.moreInfo.text)) {
+
+    if (self.state.showMoreInfoFields == 'yes') {
       moreInfoHTML = (
         <div>
           <h3>Meer informatie titel</h3>
@@ -143,9 +164,9 @@ export default class QuestionForm extends OpenStadComponent {
           <div className="osc-column-50p osc-margin-right-10">
 
             <h3>Label voor A</h3>
-            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 0, maxLength: 1000 }} value={self.props.currentTarget.values && self.props.currentTarget.values.A && self.props.currentTarget.values.A.label} onChange={ data => self.handleFieldChange({ labelA: data.value }) } ref={el => self.labelField = el}/>
+            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 0, maxLength: 1000 }} value={self.props.currentTarget.values && self.props.currentTarget.values.A && ( typeof self.props.currentTarget.values.A.label != 'undefined' ? self.props.currentTarget.values.A.label : 'A' )} onChange={ data => self.handleFieldChange({ labelA: data.value }) } ref={el => self.labelField = el}/>
             <h3>Label onder slider A</h3>
-            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 0, maxLength: 1000 }} value={self.props.currentTarget.values && self.props.currentTarget.values.A && self.props.currentTarget.values.A.labelBelow} onChange={ data => self.handleFieldChange({ labelBelowA: data.value }) } ref={el => self.labelBelowField = el}/>
+            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 0, maxLength: 1000 }} value={self.props.currentTarget.values && self.props.currentTarget.values.A && ( typeof self.props.currentTarget.values.A.labelBelow != 'undefined' ? self.props.currentTarget.values.A.labelBelow : '0' )} onChange={ data => self.handleFieldChange({ labelBelowA: data.value }) } ref={el => self.labelBelowField = el}/>
             <h3>Uitleg bij A</h3>
             <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 0, maxLength: 1000 }} value={self.props.currentTarget.values && self.props.currentTarget.values.A && self.props.currentTarget.values.A.questionText} onChange={ data => self.handleFieldChange({ questionTextA: data.value }) } ref={el => self.minLabelField = el}/>
             <h3>Afbeelding bij A</h3>
@@ -156,9 +177,9 @@ export default class QuestionForm extends OpenStadComponent {
           <div className="osc-column-50p osc-margin-left-10">
 
             <h3>Label voor B</h3>
-            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 0, maxLength: 1000 }} value={self.props.currentTarget.values && self.props.currentTarget.values.B && self.props.currentTarget.values.B.label} onChange={ data => self.handleFieldChange({ labelB: data.value }) } ref={el => self.labelField = el}/>
+            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 0, maxLength: 1000 }} value={self.props.currentTarget.values && self.props.currentTarget.values.B && ( typeof self.props.currentTarget.values.B.label != 'undefined' ? self.props.currentTarget.values.B.label : 'B' )} onChange={ data => self.handleFieldChange({ labelB: data.value }) } ref={el => self.labelField = el}/>
             <h3>Label onder slider B</h3>
-            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 0, maxLength: 1000 }} value={self.props.currentTarget.values && self.props.currentTarget.values.B && self.props.currentTarget.values.B.labelBelow} onChange={ data => self.handleFieldChange({ labelBelowB: data.value }) } ref={el => self.labelBelowField = el}/>
+            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 0, maxLength: 1000 }} value={self.props.currentTarget.values && self.props.currentTarget.values.B && ( typeof self.props.currentTarget.values.B.labelBelow != 'undefined' ? self.props.currentTarget.values.B.labelBelow : '100' )} onChange={ data => self.handleFieldChange({ labelBelowB: data.value }) } ref={el => self.labelBelowField = el}/>
             <h3>Uitleg bij B</h3>
             <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 0, maxLength: 1000 }} value={self.props.currentTarget.values && self.props.currentTarget.values.B && self.props.currentTarget.values.B.questionText} onChange={ data => self.handleFieldChange({ questionTextB: data.value }) } ref={el => self.minLabelField = el}/>
             <h3>Afbeelding bij B</h3>
@@ -193,7 +214,7 @@ export default class QuestionForm extends OpenStadComponent {
                 let showEntry = function(fieldname, dimension) {
                   let value = dimension ? entry[fieldname][dimension] : entry[fieldname];
                   if (self.state.valueEditModeIndex == i) {
-                    return <OpenStadComponentForms.Text config={{}} value={value} onChange={ data => self.handleFieldChange({ valueIndex: i, valueDimension: dimension, valueText: data.value, valueValue: data.value }) }/>
+                    return <OpenStadComponentForms.Text value={value} onChange={ data => self.handleFieldChange({ valueIndex: i, valueDimension: dimension, valueText: data.value, valueValue: data.value }) } ref={ el => self[`osc-question-button-${fieldname}-${i}`] = el }/>
                   } else {
                     return value
                   }

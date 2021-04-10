@@ -30,8 +30,8 @@ function fetchChoicesGuide({ config }) {
             if (question.type == 'continuous') question.type = 'a-to-b';
             if (question.type == 'enum-buttons') question.type = 'enum-radio';
               if (question.type == 'a-to-b') {
-                if (question.values && question.values.A) question.values.A.labelBelow = question.values.A.labelBelow || question.minLabel;
-                if (question.values && question.values.B) question.values.B.labelBelow = question.values.B.labelBelow || question.maxLabel;
+                if (question.values && question.values.A) question.values.A.labelBelow = typeof question.values.A.labelBelow != 'undefined' ? question.values.A.labelBelow : question.minLabel;
+                if (question.values && question.values.B) question.values.B.labelBelow = typeof question.values.B.labelBelow != 'undefined' ? question.values.B.labelBelow : question.maxLabel;
               }
             });
           }

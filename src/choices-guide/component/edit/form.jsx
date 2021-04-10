@@ -40,9 +40,26 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
   }
 
   componentDidMount(prevProps, prevState) {
-    this.fetchData();
+    let self= this;
+    self.fetchData();
+    const beforeUnloadListener = (event) => {
+      console.log('=', self.state.changed);
+      if (self.state.changed) {
+        event.preventDefault();
+        event.returnValue = "Are you sure you want to exit?";
+        return event;
+      }
+      return null;
+    };
+    window.addEventListener("beforeunload", beforeUnloadListener, {capture: true});
   }
 
+  componentWillUnmount() {
+    console.log('UNMOUNT');
+	  window.removeEventListener('beforeunload', self.unloadListener);
+  }
+
+  
   fetchData() {
     let self = this;
     fetchChoicesGuide({ config: self.config })
@@ -50,7 +67,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
         self.setState({ ...data, busy: false }, () => {
           self.setCurrentForm({ what: 'choices-guide' });
           // TMP
-          //self.setCurrentForm({ what: 'question', questionGroupId: 1, questionId: 91 });
+          // self.setCurrentForm({ what: 'question', questionGroupId: 1, questionId: 95 });
         });
       })
       .catch((err) => {
@@ -59,14 +76,19 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
       });
   }
 
-  handleFieldChange(data) {
-    let currentTarget = this.state.currentTarget;
+  handleFieldChange(data, changed = false) {
+    let self= this;
+    let currentTarget = self.state.currentTarget;
 
+    console.log('self.state.changed', self.state.changed, changed);
     Object.keys(data).forEach((key) => {
+      changed = changed || self.state.changed || ( currentTarget[key] != data[key] && key != 'choicesGuideConfig' );
+      if (currentTarget[key] != data[key]) console.log(key);
       currentTarget[key] = data[key];
     });
 
-    this.setState({ currentTarget });
+    console.log('changed', changed);
+    self.setState({ currentTarget, changed });
 
   }
 
@@ -126,7 +148,11 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
       default:
     }
 
-    this.setState({ currentTarget });
+    console.log('xxx');
+    this.setState({ currentTarget, changed: false }, () => {
+      console.log('=1', this.state.changed);
+      window.scrollTo(0,0)
+    });
   }
 
 	validate({ showErrors, scrollTo }) {
@@ -266,7 +292,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
             self.setState({ submitError: { message: messages } })
             return console.log(messages);
           });
-          self.setState({ busy: false });
+          self.setState({ busy: false, changed: false });
         });
 
     });

@@ -14,24 +14,29 @@ export default class ChoicesGuideForm extends OpenStadComponent {
   handleFieldChange(data) {
     let self = this;
     let parsedData;
+    let changed = false;
     if (typeof data.isActive != 'undefined') {
+      changed = self.props.currentTarget.choicesGuideConfig.isActive != data.isActive;
       parsedData = { choicesGuideConfig: merge.recursive({}, self.props.currentTarget.choicesGuideConfig) };
       parsedData.choicesGuideConfig.isActive = data.isActive
     }
     if (typeof data.submissionType != 'undefined') {
+      changed = self.props.currentTarget.choicesGuideConfig.submissionType != data.submissionType;
       parsedData = { choicesGuideConfig: merge.recursive({}, self.props.currentTarget.choicesGuideConfig) };
       parsedData.choicesGuideConfig.submissionType = data.submissionType
     }
     if (typeof data.withExisting != 'undefined') {
+      changed = self.props.currentTarget.choicesGuideConfig.withExisting != data.withExisting;
       parsedData = { choicesGuideConfig: merge.recursive({}, self.props.currentTarget.choicesGuideConfig) };
       parsedData.choicesGuideConfig.withExisting = data.withExisting
     }
     if (typeof data.requiredUserRole != 'undefined') {
+      changed = self.props.currentTarget.choicesGuideConfig.requiredUserRole != data.requiredUserRole;
       parsedData = { choicesGuideConfig: merge.recursive({}, self.props.currentTarget.choicesGuideConfig) };
       parsedData.choicesGuideConfig.requiredUserRole = data.requiredUserRole || null;
     }
     parsedData = parsedData || data;
-    self.props.onChange(parsedData)    
+    self.props.onChange(parsedData, changed)    
   }
 
   

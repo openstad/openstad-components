@@ -1306,6 +1306,9 @@
   font-size: 16px;
   font-weight: normal;
 }
+.osc-choices-guide .osc-form .osc-select {
+  margin-bottom: 40px;
+}
 .osc-choices-guide .osc-form .osc-select select {
   background-position: center right 10px;
   background-size: 13px 9px;
