@@ -110,10 +110,10 @@ export default class ChoiceForm extends OpenStadComponent {
       <div className="openstad-form">
 
         <h3>Titel</h3>
-        <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 1, maxLength: 1000 }} value={self.props.currentTarget.title} onChange={ data => self.props.onChange({ title: data.value }) } ref={el => self.titleField = el}/>
+        <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 2, maxLength: 255 }} value={self.props.currentTarget.title} onChange={ data => self.props.onChange({ title: data.value }) } ref={el => self.titleField = el}/>
 
         <h3>Beschrijving</h3>
-        <OpenStadComponentForms.InputWithCounter config={{ inputType: 'textarea', minLength: 0, maxLength: 1000 }} value={self.props.currentTarget.description} onChange={ data => self.props.onChange({ description: data.value }) } ref={el => self.descriptionField = el}/>
+        <OpenStadComponentForms.InputWithCounter config={{ inputType: 'textarea', minLength: 0, maxLength: 5000 }} value={self.props.currentTarget.description} onChange={ data => self.props.onChange({ description: data.value }) } ref={el => self.descriptionField = el}/>
 
         {imageHTML}
 

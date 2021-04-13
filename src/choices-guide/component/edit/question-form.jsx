@@ -138,9 +138,9 @@ export default class QuestionForm extends OpenStadComponent {
       moreInfoHTML = (
         <div>
           <h3>Meer informatie titel</h3>
-          <OpenStadComponentForms.InputWithCounter config={{ inputType: 'text', minLength: 0, maxLength: 200 }} value={self.props.currentTarget.moreInfo && self.props.currentTarget.moreInfo.title} onChange={ data => self.handleFieldChange({ moreInfoTitle: data.value }) } ref={el => self.moreInfoField = el}/>
+          <OpenStadComponentForms.InputWithCounter config={{ inputType: 'text', minLength: 0, maxLength: 255 }} value={self.props.currentTarget.moreInfo && self.props.currentTarget.moreInfo.title} onChange={ data => self.handleFieldChange({ moreInfoTitle: data.value }) } ref={el => self.moreInfoField = el}/>
           <h3>Meer informatie text</h3>
-          <OpenStadComponentForms.InputWithCounter config={{ inputType: 'textarea', minLength: 0, maxLength: 1000 }} value={self.props.currentTarget.moreInfo && self.props.currentTarget.moreInfo.text} onChange={ data => self.handleFieldChange({ moreInfoText: data.value }) } ref={el => self.moreInfoField = el}/>
+          <OpenStadComponentForms.InputWithCounter config={{ inputType: 'textarea', minLength: 0, maxLength: 5000 }} value={self.props.currentTarget.moreInfo && self.props.currentTarget.moreInfo.text} onChange={ data => self.handleFieldChange({ moreInfoText: data.value }) } ref={el => self.moreInfoField = el}/>
         </div>);
     }
 
@@ -150,9 +150,9 @@ export default class QuestionForm extends OpenStadComponent {
       valuesHTML = (
         <div>
           <h3>Label minimale waarde</h3>
-          <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 0, maxLength: 250 }} value={self.props.currentTarget.minLabel} onChange={ data => self.props.onChange({ minLabel: data.value }) } ref={el => self.minLabelField = el}/>
+          <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 0, maxLength: 255 }} value={self.props.currentTarget.minLabel} onChange={ data => self.props.onChange({ minLabel: data.value }) } ref={el => self.minLabelField = el}/>
           <h3>Label maximale waarde</h3>
-          <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 0, maxLength: 1000 }} value={self.props.currentTarget.maxLabel} onChange={ data => self.props.onChange({ maxLabel: data.value }) } ref={el => self.maxLabelField = el}/>
+          <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 0, maxLength: 5000 }} value={self.props.currentTarget.maxLabel} onChange={ data => self.props.onChange({ maxLabel: data.value }) } ref={el => self.maxLabelField = el}/>
         </div>);
     }
 
@@ -164,11 +164,11 @@ export default class QuestionForm extends OpenStadComponent {
           <div className="osc-column-50p osc-margin-right-10">
 
             <h3>Label voor A</h3>
-            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 0, maxLength: 1000 }} value={self.props.currentTarget.values && self.props.currentTarget.values.A && ( typeof self.props.currentTarget.values.A.label != 'undefined' ? self.props.currentTarget.values.A.label : 'A' )} onChange={ data => self.handleFieldChange({ labelA: data.value }) } ref={el => self.labelField = el}/>
+            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 0, maxLength: 5000 }} value={self.props.currentTarget.values && self.props.currentTarget.values.A && ( typeof self.props.currentTarget.values.A.label != 'undefined' ? self.props.currentTarget.values.A.label : 'A' )} onChange={ data => self.handleFieldChange({ labelA: data.value }) } ref={el => self.labelField = el}/>
             <h3>Label onder slider A</h3>
-            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 0, maxLength: 1000 }} value={self.props.currentTarget.values && self.props.currentTarget.values.A && ( typeof self.props.currentTarget.values.A.labelBelow != 'undefined' ? self.props.currentTarget.values.A.labelBelow : '0' )} onChange={ data => self.handleFieldChange({ labelBelowA: data.value }) } ref={el => self.labelBelowField = el}/>
+            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 0, maxLength: 5000 }} value={self.props.currentTarget.values && self.props.currentTarget.values.A && ( typeof self.props.currentTarget.values.A.labelBelow != 'undefined' ? self.props.currentTarget.values.A.labelBelow : '0' )} onChange={ data => self.handleFieldChange({ labelBelowA: data.value }) } ref={el => self.labelBelowField = el}/>
             <h3>Uitleg bij A</h3>
-            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 0, maxLength: 1000 }} value={self.props.currentTarget.values && self.props.currentTarget.values.A && self.props.currentTarget.values.A.questionText} onChange={ data => self.handleFieldChange({ questionTextA: data.value }) } ref={el => self.minLabelField = el}/>
+            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 0, maxLength: 5000 }} value={self.props.currentTarget.values && self.props.currentTarget.values.A && self.props.currentTarget.values.A.questionText} onChange={ data => self.handleFieldChange({ questionTextA: data.value }) } ref={el => self.minLabelField = el}/>
             <h3>Afbeelding bij A</h3>
             {/* <OpenStadComponentForms.Text config={{}} value={self.props.currentTarget.values && self.props.currentTarget.values.A && ( typeof self.props.currentTarget.values.A.questionImage == 'object' ? JSON.stringify(self.props.currentTarget.values.A.questionImage) : self.props.currentTarget.values.A.questionImage )} onChange={ data => self.handleFieldChange({ questionImageA: data.value }) } ref={el => self.questionImageAField = el}/> */}
             <OpenStadComponentForms.ImageUpload key="i1" config={{ as: 'json', imageserver: self.config.imageserver }} value={self.props.currentTarget.values && self.props.currentTarget.values.A && self.props.currentTarget.values.A.questionImage} onChange={ data => self.handleFieldChange({ questionImageA: data.value }) } ref={el => self.questionImageAField = el}/>
@@ -177,11 +177,11 @@ export default class QuestionForm extends OpenStadComponent {
           <div className="osc-column-50p osc-margin-left-10">
 
             <h3>Label voor B</h3>
-            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 0, maxLength: 1000 }} value={self.props.currentTarget.values && self.props.currentTarget.values.B && ( typeof self.props.currentTarget.values.B.label != 'undefined' ? self.props.currentTarget.values.B.label : 'B' )} onChange={ data => self.handleFieldChange({ labelB: data.value }) } ref={el => self.labelField = el}/>
+            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 0, maxLength: 5000 }} value={self.props.currentTarget.values && self.props.currentTarget.values.B && ( typeof self.props.currentTarget.values.B.label != 'undefined' ? self.props.currentTarget.values.B.label : 'B' )} onChange={ data => self.handleFieldChange({ labelB: data.value }) } ref={el => self.labelField = el}/>
             <h3>Label onder slider B</h3>
-            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 0, maxLength: 1000 }} value={self.props.currentTarget.values && self.props.currentTarget.values.B && ( typeof self.props.currentTarget.values.B.labelBelow != 'undefined' ? self.props.currentTarget.values.B.labelBelow : '100' )} onChange={ data => self.handleFieldChange({ labelBelowB: data.value }) } ref={el => self.labelBelowField = el}/>
+            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 0, maxLength: 5000 }} value={self.props.currentTarget.values && self.props.currentTarget.values.B && ( typeof self.props.currentTarget.values.B.labelBelow != 'undefined' ? self.props.currentTarget.values.B.labelBelow : '100' )} onChange={ data => self.handleFieldChange({ labelBelowB: data.value }) } ref={el => self.labelBelowField = el}/>
             <h3>Uitleg bij B</h3>
-            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 0, maxLength: 1000 }} value={self.props.currentTarget.values && self.props.currentTarget.values.B && self.props.currentTarget.values.B.questionText} onChange={ data => self.handleFieldChange({ questionTextB: data.value }) } ref={el => self.minLabelField = el}/>
+            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 0, maxLength: 5000 }} value={self.props.currentTarget.values && self.props.currentTarget.values.B && self.props.currentTarget.values.B.questionText} onChange={ data => self.handleFieldChange({ questionTextB: data.value }) } ref={el => self.minLabelField = el}/>
             <h3>Afbeelding bij B</h3>
             {/* <OpenStadComponentForms.Text config={{}} value={self.props.currentTarget.values && self.props.currentTarget.values.B && ( typeof self.props.currentTarget.values.B.questionImage == 'object' ? JSON.stringify(self.props.currentTarget.values.B.questionImage) : self.props.currentTarget.values.B.questionImage )} onChange={ data => self.handleFieldChange({ questionImageB: data.value }) } ref={el => self.questionImageBField = el}/> */}
             <OpenStadComponentForms.ImageUpload key="i1" config={{ as: 'json', imageserver: self.config.imageserver }} value={self.props.currentTarget.values && self.props.currentTarget.values.B && self.props.currentTarget.values.B.questionImage} onChange={ data => self.handleFieldChange({ questionImageB: data.value }) } ref={el => self.questionImageBField = el}/>
@@ -268,9 +268,9 @@ export default class QuestionForm extends OpenStadComponent {
       <div className="openstad-form">
 
         <h3>Titel</h3>
-        <OpenStadComponentForms.InputWithCounter config={{ inputType: 'text', minLength: 0, maxLength: 200 }} value={self.props.currentTarget.title} onChange={ data => self.props.onChange({ title: data.value }) } ref={el => self.titleField = el}/>
+        <OpenStadComponentForms.InputWithCounter config={{ inputType: 'text', minLength: 2, maxLength: 255 }} value={self.props.currentTarget.title} onChange={ data => self.props.onChange({ title: data.value }) } ref={el => self.titleField = el}/>
         <h3>Beschrijving</h3>
-        <OpenStadComponentForms.InputWithCounter config={{ inputType: 'textarea', minLength: 0, maxLength: 1000 }} value={self.props.currentTarget.description} onChange={ data => self.props.onChange({ description: data.value }) } ref={el => self.descriptionField = el}/>
+        <OpenStadComponentForms.InputWithCounter config={{ inputType: 'textarea', minLength: 0, maxLength: 5000 }} value={self.props.currentTarget.description} onChange={ data => self.props.onChange({ description: data.value }) } ref={el => self.descriptionField = el}/>
         {moreInfoHTML}
         <h3>Afbeelding boven de vraag</h3>
         <OpenStadComponentForms.ImageUpload key="i1" config={{ as: 'json', imageserver: self.config.imageserver }} value={self.props.currentTarget.images} onChange={ data => self.props.onChange({ images: data.value }) } ref={el => self.imagesField = el}/>
