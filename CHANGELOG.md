@@ -1,6 +1,9 @@
 # Changelog
 
 ## v0.1.20 2021-04-06
+Bugfix in stored question value
+
+## v0.1.21 2021-04-12
 Fix max zoom in amaps variant
 
 ## v0.1.19 2021-04-06
