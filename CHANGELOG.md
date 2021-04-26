@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.1.22 2021-04-26
+Choices Guide updates
+
 ## v0.1.21 2021-04-15
 Bugfix
 
