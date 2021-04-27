@@ -20,8 +20,6 @@ export default class OpenStadComponentImage extends OpenStadComponent {
       }
 		};
 		this.config = merge.recursive(defaultConfig, this.config, this.props.config || {})
-
-    this.config.image.server.fetch = 'https://image-server2.openstadsdeel.nl/image'
     
     this.state = {
       currentImageIndex: 0,
