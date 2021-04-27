@@ -22,9 +22,11 @@ export default class IdeasDetails extends OpenStadComponent {
       idea: {
         showVoteButtons: true,
         showLabels: false,
-        allowMultipleImages: false,
         shareChannelsSelection: ["facebook","twitter","mail","whatsapp"],
         metaDataTemplate: null,
+      },
+      image: {
+        allowMultipleImages: false,
       },
       argument: {
         isActive: true,
@@ -351,7 +353,7 @@ export default class IdeasDetails extends OpenStadComponent {
             <div className="osc-details-image-and-stats">
 
               <div className="osc-idea-image-container">
-                <OpenStadComponentIdeaImage config={{ allowMultipleImages: self.config.idea.allowMultipleImages }} idea={idea}/>
+                <OpenStadComponentIdeaImage config={self.config} idea={idea}/>
               </div>
 
               {labelHTML}

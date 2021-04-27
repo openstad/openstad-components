@@ -38,6 +38,7 @@ export default class OpenStadComponent extends React.Component {
     }, defaultConfig, defaultdefaultConfig, propsConfig)
 
     self.divId = self.divId || ( self.config && self.config.divId ) || props.id || `openstad-component-${  parseInt( 100000000 * Math.random() )}`;
+    self.config.divId = null; // do not propage to child components
     
     window[self.divId] = self;
 

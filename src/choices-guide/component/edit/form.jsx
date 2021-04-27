@@ -22,6 +22,8 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
       api: {
         url: null
       },
+      image: {
+      }
     });
 
     this.handleFieldChange = this.handleFieldChange.bind(this)

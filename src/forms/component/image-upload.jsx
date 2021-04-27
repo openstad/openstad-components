@@ -19,9 +19,11 @@ export default class OpenStadComponentImageUpload extends OpenStadComponentDefau
     super(props, {
       name: 'image',
       allowMultiple: false,
-			imageserver: {
-				process: '/image',
-				fetch: '/image'
+			image: {
+        server: {
+				  process: '/image',
+				  fetch: '/image'
+			  },
 			},
     });
 
@@ -106,7 +108,7 @@ export default class OpenStadComponentImageUpload extends OpenStadComponentDefau
       onremovefile={( err, file ) => self.updateUploadedFiles({ removeFile: file, next: files => self.updateValue(files) })}
         
       name="image"
-      server={this.config.imageserver.process}
+      server={this.config.image.server.process}
       allowMultiple={this.config.allowMultiple}
       
       // todo: maak dit allemaal configurabel
