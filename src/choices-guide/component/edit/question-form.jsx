@@ -88,7 +88,19 @@ export default class QuestionForm extends OpenStadComponent {
     if (typeof data.valueIndex != 'undefined') {
       parsedData = { values: self.props.currentTarget.values || [] };
       parsedData.values[data.valueIndex] = parsedData.values[data.valueIndex] || { text: '', value: {} };
-      if (data.valueDimension) {
+      if (data.move) {
+        if (data.move == 'up' && data.valueIndex > 0) {
+          let bak = parsedData.values[data.valueIndex];
+          parsedData.values[data.valueIndex] = parsedData.values[data.valueIndex - 1];
+          parsedData.values[data.valueIndex - 1] = bak;
+        }
+        if (data.move == 'down' && data.valueIndex < parsedData.values.length-1) {
+          let bak = parsedData.values[data.valueIndex];
+          console.log(bak);
+          parsedData.values[data.valueIndex] = parsedData.values[data.valueIndex + 1];
+          parsedData.values[data.valueIndex + 1] = bak;
+        }
+      } else if (data.valueDimension) {
         if (typeof data.valueValue != 'undefined') {
           if ( typeof parsedData.values[data.valueIndex].value != 'object' ) parsedData.values[data.valueIndex].value = {};
           parsedData.values[data.valueIndex].value[data.valueDimension] = data.valueValue;
@@ -108,13 +120,13 @@ export default class QuestionForm extends OpenStadComponent {
   }
   
   toggleEditMode(index) {
-    let newValue = this.state.valueEditModeIndex != index ? index : null;
-    this.setEditMode(newValue)
+    let newIndex = this.state.valueEditModeIndex != index ? index : null;
+    this.setEditMode(newIndex)
   }
 
-  setEditMode(value) {
+  setEditMode(index) {
     let self = this;
-    this.setState({ valueEditModeIndex: value }, () => {
+    this.setState({ valueEditModeIndex: index }, () => {
       if (self.state.valueEditModeIndex != null) {
         let input = self[`osc-question-button-text-${self.state.valueEditModeIndex}`] && self[`osc-question-button-text-${self.state.valueEditModeIndex}`].input;
         input.focus()
@@ -237,6 +249,8 @@ export default class QuestionForm extends OpenStadComponent {
                       </div>
                     )}
                     <div className="osc-overview-line-buttons">
+                      { i < self.props.currentTarget.values.length -1 ? <a className="osc-arrow-down-button" onClick={event => self.handleFieldChange({ valueIndex: i, move: 'down' })}></a> : <div className="osc-no-button"></div>}
+                      { i > 0 ? <a className="osc-arrow-up-button" onClick={event => self.handleFieldChange({ valueIndex: i, move: 'up' })}></a> : <div className="osc-no-button"></div> }
                       <a className="osc-edit-button" onClick={event => self.toggleEditMode(i)}></a>
                       <a className="osc-delete-button" onClick={event => self.handleFieldChange({ deleteIndex: i })}></a>
                     </div>
@@ -266,7 +280,6 @@ export default class QuestionForm extends OpenStadComponent {
 
     return (
       <div className="openstad-form">
-
         <h3>Titel</h3>
         <OpenStadComponentForms.InputWithCounter config={{ inputType: 'text', minLength: 2, maxLength: 255 }} value={self.props.currentTarget.title} onChange={ data => self.props.onChange({ title: data.value }) } ref={el => self.titleField = el}/>
         <h3>Beschrijving</h3>
@@ -281,9 +294,6 @@ export default class QuestionForm extends OpenStadComponent {
         {valuesHTML}
         {dimensionsHTML}
         
-        <h3>Volgorde nummer</h3>
-        <OpenStadComponentForms.Text config={{}} value={self.props.currentTarget.seqnr} onChange={ data => self.props.onChange({ seqnr: data.value }) } ref={el => self.seqnrField = el}/>
-
       </div>)
     ;
 

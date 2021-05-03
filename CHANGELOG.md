@@ -3,6 +3,7 @@
 ## v0.1.23 Unreleased
 * Add configurable placeholder image
 * Add sizes to image urls - Related ticket: https://trello.com/c/MzSh2iyq
+* Use arrow buttons for seqnr
 
 ## v0.1.21 2021-04-15
 * Bugfix

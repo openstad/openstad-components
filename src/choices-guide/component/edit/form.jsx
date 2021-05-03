@@ -29,6 +29,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
     this.handleFieldChange = this.handleFieldChange.bind(this)
     this.setCurrentForm = this.setCurrentForm.bind(this)
     this.deleteElement = this.deleteElement.bind(this)
+    this.updateSeqnr = this.updateSeqnr.bind(this)
 
     this.state = {
       choicesGuideId: this.props.data.choicesGuideId,
@@ -42,10 +43,9 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
   }
 
   componentDidMount(prevProps, prevState) {
-    let self= this;
+    let self = this;
     self.fetchData();
     const beforeUnloadListener = (event) => {
-      console.log('=', self.state.changed);
       if (self.state.changed) {
         event.preventDefault();
         event.returnValue = "Are you sure you want to exit?";
@@ -57,7 +57,6 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
   }
 
   componentWillUnmount() {
-    console.log('UNMOUNT');
 	  window.removeEventListener('beforeunload', self.unloadListener);
   }
 
@@ -69,7 +68,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
         self.setState({ ...data, busy: false }, () => {
           self.setCurrentForm({ what: 'choices-guide' });
           // TMP
-          // self.setCurrentForm({ what: 'question', questionGroupId: 1, questionId: 95 });
+          // self.setCurrentForm({ what: 'question', questionGroupId: 1, questionId: 35 });
         });
       })
       .catch((err) => {
@@ -81,17 +80,69 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
   handleFieldChange(data, changed = false) {
     let self= this;
     let currentTarget = self.state.currentTarget;
-
-    console.log('self.state.changed', self.state.changed, changed);
     Object.keys(data).forEach((key) => {
       changed = changed || self.state.changed || ( currentTarget[key] != data[key] && key != 'choicesGuideConfig' );
-      if (currentTarget[key] != data[key]) console.log(key);
       currentTarget[key] = data[key];
     });
-
-    console.log('changed', changed);
     self.setState({ currentTarget, changed });
 
+  }
+
+  updateSeqnr(data) {
+    let self = this;
+    if (self.state.currentTarget.what == 'choices-guide') {
+      let questionGroups = this.state.questionGroups;
+      let questionGroup = this.state.questionGroups.find(group => group.id == data.questionGroupId) || {};
+      let targetList = questionGroup[`${data.what}s`] && questionGroup[`${data.what}s`];
+      let targetId = data[`${data.what}Id`]
+      let targetIndex = targetList && targetList.findIndex(target => target.id == targetId);
+      let one, two;
+      if (data.move == 'up' && targetIndex > 0) {
+        one = targetList[targetIndex - 1];
+        two = targetList[targetIndex];
+      }
+      if (data.move == 'down' && targetIndex < targetList.length - 1) {
+        one = targetList[targetIndex];
+        two = targetList[targetIndex + 1];
+      }
+      let bak = one.seqnr;
+      one.seqnr = two.seqnr;
+      two.seqnr = bak;
+      questionGroup[`${data.what}s`] = targetList.sort((a,b) => a.seqnr - b.seqnr);
+      self.setState({ questionGroups });
+
+      let urlOne = self.createApiUrl({ ...data, questionId: one.id, choiceId: one.id });
+      let urlTwo = self.createApiUrl({ ...data, questionId: two.id, choiceId: two.id });
+      let headers = OpenStadComponentLibs.api.getHeaders(self.config);
+
+      fetch(urlOne, {
+        method: 'PUT',
+        headers,
+        body: JSON.stringify({ seqnr: one.seqnr })
+      })
+        .then( function(response) {
+          if (response.ok) {
+            return response.json();
+          }
+          throw response.text();
+        })
+        .catch(self.apiError);
+
+      fetch(urlTwo, {
+        method: 'PUT',
+        headers,
+        body: JSON.stringify({ seqnr: two.seqnr })
+      })
+        .then( function(response) {
+          if (response.ok) {
+            return response.json();
+          }
+          throw response.text();
+        })
+        .catch(self.apiError);
+      
+
+    }
   }
 
   setCurrentForm(currentTarget) {
@@ -120,7 +171,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
         currentTarget.description = choice.description;
         currentTarget.images = choice.images;
         currentTarget.answers = choice.answers;
-        currentTarget.seqnr = typeof choice.seqnr != 'undefined' ? choice.seqnr : 10;
+        currentTarget.seqnr = typeof choice.seqnr != 'undefined' ? choice.seqnr : ( questionGroup.choices && questionGroup.choices[questionGroup.choices.length - 1] && parseInt(questionGroup.choices[questionGroup.choices.length - 1].seqnr) + 10 || 10 );
         break;
 
       case 'question-group':
@@ -144,15 +195,13 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
         currentTarget.type = question.type;
         currentTarget.dimensions = question.dimensions;
         currentTarget.values = question.values;
-        currentTarget.seqnr = typeof question.seqnr != 'undefined' ? question.seqnr : 10;
+        currentTarget.seqnr = typeof question.seqnr != 'undefined' ? question.seqnr : ( questionGroup.questions && questionGroup.questions[questionGroup.questions.length - 1] && parseInt(questionGroup.questions[questionGroup.questions.length - 1].seqnr) + 10 || 10 );
         break;
 
       default:
     }
 
-    console.log('xxx');
     this.setState({ currentTarget, changed: false }, () => {
-      console.log('=1', this.state.changed);
       window.scrollTo(0,0)
     });
   }
@@ -182,6 +231,25 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
     return OpenStadComponentLibs.user.hasRole(user, requiredUserRole)
   }
 
+  createApiUrl({ what, questionGroupId, choiceId, questionId }) {
+    // TODO: wordt gebruikt door updateSeqnr en deleteElement maar nog niet door submitForm
+    let self = this;
+    let url;
+    switch (what) {
+      case 'question-group':
+        url = `${self.config.api && self.config.api.url   }/api/site/${  self.config.siteId  }/choicesguide/${  self.state.choicesGuideId  }/questiongroup/${  questionGroupId  }`;
+        break;
+      case 'choice':
+        url = `${self.config.api && self.config.api.url   }/api/site/${  self.config.siteId  }/choicesguide/${  self.state.choicesGuideId  }/questiongroup/${  questionGroupId  }/choice/${ choiceId }`;
+        break;
+      case 'question':
+        url = `${self.config.api && self.config.api.url   }/api/site/${  self.config.siteId  }/choicesguide/${  self.state.choicesGuideId  }/questiongroup/${  questionGroupId  }/question/${ questionId }`;
+        break;
+      default:
+    }
+    return url;
+  }
+  
   submitForm() {
 
     let self = this;
@@ -285,17 +353,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
             self.fetchData();
           }
         })
-        .catch(function(error) {
-          error.then(function(messages) {
-            try {
-              messages = JSON.parse(messages);
-              if ( typeof messages == 'object' ) messages = messages.message;
-            } catch (err) {}
-            self.setState({ submitError: { message: messages } })
-            return console.log(messages);
-          });
-          self.setState({ busy: false, changed: false });
-        });
+      .catch(self.apiError);
 
     });
   }
@@ -308,25 +366,9 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
     
     if (!confirm("Je gaat " + what + " " + title + " verwijderen. Weet je het zeker?")) return;
 
-    let url;
-    switch (what) {
-
-      case 'question-group':
-        url = `${self.config.api && self.config.api.url   }/api/site/${  self.config.siteId  }/choicesguide/${  self.state.choicesGuideId  }/questiongroup/${  questionGroupId  }`;
-        break;
-
-      case 'choice':
-        url = `${self.config.api && self.config.api.url   }/api/site/${  self.config.siteId  }/choicesguide/${  self.state.choicesGuideId  }/questiongroup/${  questionGroupId  }/choice/${ choiceId }`;
-        break;
-
-      case 'question':
-        url = `${self.config.api && self.config.api.url   }/api/site/${  self.config.siteId  }/choicesguide/${  self.state.choicesGuideId  }/questiongroup/${  questionGroupId  }/question/${ questionId }`;
-        break;
-
-      default:
-    }
-    
+    let url = self.createApiUrl({ what, questionGroupId, choiceId, questionId });
     let headers = OpenStadComponentLibs.api.getHeaders(self.config);
+
     fetch(url, {
       method: 'DELETE',
       headers,
@@ -340,18 +382,20 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
       .then(function(json) {
         self.fetchData();
       })
-      .catch(function(error) {
-        error.then(function(messages) {
-          try {
-            messages = JSON.parse(messages);
-            if ( typeof messages == 'object' ) messages = messages.message;
-          } catch (err) {}
-          self.setState({ submitError: { message: messages } })
-          return console.log(messages);
-        });
-        self.setState({ busy: false });
-      });
+      .catch(self.apiError);
     
+  }
+
+  apiError(error) {
+    error.then(function(messages) {
+      try {
+        messages = JSON.parse(messages);
+        if ( typeof messages == 'object' ) messages = messages.message;
+      } catch (err) {}
+      self.setState({ submitError: { message: messages } })
+      return console.log(messages);
+    });
+    self.setState({ busy: false });
   }
   
   render() {
@@ -368,7 +412,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
       case 'choices-guide':
         title = 'Bewerk keuzewijzer';
         formfieldsHTML = (<ChoicesGuideForm config={this.config} currentTarget={self.state.currentTarget} onChange={self.handleFieldChange} ref={el => { self.formfields = el; }}/>);
-        overviewHTML = (<Overview questionGroups={self.state.questionGroups} setCurrentForm={self.setCurrentForm} deleteElement={self.deleteElement} ref={el => { self.formfields = el; }}/>);
+        overviewHTML = (<Overview questionGroups={self.state.questionGroups} setCurrentForm={self.setCurrentForm} deleteElement={self.deleteElement} updateSeqnr={self.updateSeqnr} ref={el => { self.formfields = el; }}/>);
         backButtonHTML =
           <button className="osc-button-white" onClick={() => { if (self.onFinished) self.onFinished(); }}>Terug</button>
         ;
