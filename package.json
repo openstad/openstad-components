@@ -1,6 +1,6 @@
 {
   "name": "openstad-components",
-  "version": "0.1.23-alpha.3",
+  "version": "0.1.23-alpha.4",
   "description": "Components for the OpenStad Ecosystem",
   "main": "index.js",
   "scripts": {
@@ -16,6 +16,9 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Amsterdam/openstad-components/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "homepage": "https://github.com/Amsterdam/openstad-components#readme",
   "devDependencies": {

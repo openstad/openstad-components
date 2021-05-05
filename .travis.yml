@@ -17,6 +17,7 @@ branches:
 deploy:
   - provider: npm
     skip_cleanup: true
+    local_dir: dist
     email: $NPM_EMAIL
     api_key: $NPM_AUTH_TOKEN
     overwrite: true
@@ -25,6 +26,7 @@ deploy:
       branch: development
   - provider: npm
     skip_cleanup: true
+    local_dir: dist
     email: $NPM_EMAIL
     api_key: $NPM_AUTH_TOKEN
     overwrite: true
@@ -33,6 +35,7 @@ deploy:
       branch: release
   - provider: npm
     skip_cleanup: true
+    local_dir: dist
     email: $NPM_EMAIL
     api_key: $NPM_AUTH_TOKEN
     overwrite: true
