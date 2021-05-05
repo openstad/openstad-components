@@ -102,7 +102,7 @@ export default class ChoiceForm extends OpenStadComponent {
       imageHTML = (
         <div>
           <h3>Afbeelding</h3>
-          <OpenStadComponentForms.ImageUpload key="i1" config={{ as: 'json', imageserver: self.config.imageserver }} value={self.props.currentTarget.images} onChange={ data => self.props.onChange({ images: data.value }) } ref={el => self.imagesField = el}/>
+          <OpenStadComponentForms.ImageUpload key="i1" config={{ as: 'json', imageserver: self.config.image.server }} value={self.props.currentTarget.images} onChange={ data => self.props.onChange({ images: data.value }) } ref={el => self.imagesField = el}/>
         </div>);
     }
     
@@ -119,9 +119,6 @@ export default class ChoiceForm extends OpenStadComponent {
 
         <h3>Antwoorden</h3>
         {answersHTML}
-
-        <h3>Volgorde nummer</h3>
-        <OpenStadComponentForms.Text config={{}} value={self.props.currentTarget.seqnr} onChange={ data => self.props.onChange({ seqnr: data.value }) } ref={el => self.seqnrField = el}/>
 
       </div>
     )

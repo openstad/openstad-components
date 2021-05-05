@@ -18,7 +18,6 @@ export default class ChoiceForm extends OpenStadComponent {
       newGroupButtonHTML = <a href="#" onClick={event => self.props.setCurrentForm({ what: 'question-group' })}>Nieuwe vraaggroep</a>
     }
 
-
     return (
           <div className="osc-overview">
             <h2>Vraaggroepen</h2>
@@ -37,7 +36,7 @@ export default class ChoiceForm extends OpenStadComponent {
                       return (
                         <div className="osc-overview-line" key={`question-${question.id}`}>
                           <div className="osc-overview-line-content">
-                            {question.seqnr} - {question.title}
+                            {question.title}
                           </div>
                           {/*
                           <div className="osc-overview-line-content">
@@ -45,6 +44,8 @@ export default class ChoiceForm extends OpenStadComponent {
                           </div>
                           */}
                           <div className="osc-overview-line-buttons">
+                            {i < questionGroup.questions.length - 1 ? <a className="osc-arrow-down-button" onClick={event => self.props.updateSeqnr({ what: 'question', move: 'down', questionGroupId: questionGroup.id, questionId: question.id })}></a> : <div className="osc-no-button"></div>}
+                            {i > 0 ? <a className="osc-arrow-up-button" onClick={event => self.props.updateSeqnr({ what: 'question', move: 'up', questionGroupId: questionGroup.id, questionId: question.id })}></a> : <div className="osc-no-button"></div>}
                             <a className="osc-edit-button" onClick={event => self.props.setCurrentForm({ what: 'question', questionGroupId: questionGroup.id, questionId: question.id })}></a>
                             <a className="osc-delete-button" onClick={event => self.props.deleteElement({ what: 'question', questionGroupId: questionGroup.id, questionId: question.id, title: question.title})}></a>
                           </div>
@@ -67,9 +68,11 @@ export default class ChoiceForm extends OpenStadComponent {
                       return (
                         <div className="osc-overview-line" key={`choice-${choice.id}`}>
                           <div className="osc-overview-line-content">
-                            {choice.seqnr} - {choice.title}
+                            {choice.title}
                           </div>
                           <div className="osc-overview-line-buttons">
+                            {i < questionGroup.choices.length - 1 ? <a className="osc-arrow-down-button" onClick={event => self.props.updateSeqnr({ what: 'choice', move: 'down', questionGroupId: questionGroup.id, choiceId: choice.id })}></a> : <div className="osc-no-button"></div>}
+                            {i > 0 ? <a className="osc-arrow-up-button" onClick={event => self.props.updateSeqnr({ what: 'choice', move: 'up', questionGroupId: questionGroup.id, choiceId: choice.id })}></a> : <div className="osc-no-button"></div>}
                             <a className="osc-edit-button" onClick={event => self.props.setCurrentForm({ what: 'choice', questionGroupId: questionGroup.id, choiceId: choice.id })}></a>
                             <a className="osc-delete-button" onClick={event => self.props.deleteElement({ what: 'choice', questionGroupId: questionGroup.id, choiceId: choice.id, title: choice.title})}></a>
                           </div>

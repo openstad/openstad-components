@@ -1,1 +1,0 @@
-{"version":3,"sources":["webpack://OpenStadComponents/./src/base-map/css/default.less"],"names":[],"mappings":"AAAA;AACA;AACA;AACA","file":"css/base-map.css","sourcesContent":[".osc-map {\n  width: 100%;\n  height: 100%;\n}\n"],"sourceRoot":""}

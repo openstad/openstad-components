@@ -1,13 +1,18 @@
 # Changelog
 
+## v0.1.23 Unreleased
+* Add configurable placeholder image
+* Add sizes to image urls - Related ticket: https://trello.com/c/MzSh2iyq
+* Use arrow buttons for seqnr
+
 ## v0.1.21 2021-04-15
-Bugfix
+* Bugfix
 
 ## v0.1.20 2021-04-06
-Bugfix in stored question value
+* Bugfix in stored question value
 
 ## v0.1.21 2021-04-12
-Fix max zoom in amaps variant
+* Fix max zoom in amaps variant
 
 ## v0.1.19 2021-04-06
 * Move map to base-map

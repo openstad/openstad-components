@@ -69,7 +69,8 @@ export default class IdeasForm extends OpenStadComponent {
 
     let imageField = fields.find(field => field.inputType == 'image-upload'); // TODO: multiple images?
     if (imageField) {
-		  imageField.imageserver = self.config.imageserver;
+		  imageField.config = imageField.config || {};
+		  imageField.config.image = self.config.image && self.config.image.server;
     }
 
     if (OpenStadComponentLibs.user.hasRole( self.config.user, 'editor' ) ) {

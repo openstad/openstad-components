@@ -23,6 +23,8 @@ export default class IdeasOverview extends OpenStadComponent {
         summaryField: 'summary',
       },
 
+      image: {},
+
       argument: {
         isActive: true,
         ignoreReactionsForIdeaIds: '',
@@ -76,6 +78,8 @@ export default class IdeasOverview extends OpenStadComponent {
     }
 
     super(props, defaultConfig);
+
+    this.config.image.allowMultipleImages = false;
 
     this.state = {
       idea: this.props.idea || {},
@@ -191,7 +195,7 @@ export default class IdeasOverview extends OpenStadComponent {
     return (
 			<div id={self.divId} className={`osc-idea-tile osc-displaytype-${self.config.display.type} ${self.props.className || ''}`} onClick={event => self.dispatchIdeaTileClick(event, idea)} onMouseOver={event => self.dispatchIdeaTileMouseOver(event, idea)} onMouseOut={event => self.dispatchIdeaTileMouseOut(event, idea)}>
         <div className="osc-idea-image-container">
-          <OpenStadComponentIdeaImage config={{}} idea={idea} key={'image-' + idea.id}/>
+          <OpenStadComponentIdeaImage config={this.config} idea={idea} key={'image-' + idea.id}/>
         </div>
         <div className="osc-idea-tile-content">
           {statusLabelHTML}
@@ -205,7 +209,7 @@ export default class IdeasOverview extends OpenStadComponent {
         </div>
         <div className="osc-idea-tile-content-alt">
           <div className="osc-idea-image-container">
-            <OpenStadComponentIdeaImage config={{}} idea={idea} key={'image-' + idea.id}/>
+            <OpenStadComponentIdeaImage config={this.config} idea={idea} key={'image-' + idea.id}/>
           </div>
           <h4 className="osc-title">{ eval(`idea.${self.config.idea.titleField}`) }</h4>
           { eval(`idea.${self.config.idea.summaryField}`) }

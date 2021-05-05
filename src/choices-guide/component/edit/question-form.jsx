@@ -88,7 +88,19 @@ export default class QuestionForm extends OpenStadComponent {
     if (typeof data.valueIndex != 'undefined') {
       parsedData = { values: self.props.currentTarget.values || [] };
       parsedData.values[data.valueIndex] = parsedData.values[data.valueIndex] || { text: '', value: {} };
-      if (data.valueDimension) {
+      if (data.move) {
+        if (data.move == 'up' && data.valueIndex > 0) {
+          let bak = parsedData.values[data.valueIndex];
+          parsedData.values[data.valueIndex] = parsedData.values[data.valueIndex - 1];
+          parsedData.values[data.valueIndex - 1] = bak;
+        }
+        if (data.move == 'down' && data.valueIndex < parsedData.values.length-1) {
+          let bak = parsedData.values[data.valueIndex];
+          console.log(bak);
+          parsedData.values[data.valueIndex] = parsedData.values[data.valueIndex + 1];
+          parsedData.values[data.valueIndex + 1] = bak;
+        }
+      } else if (data.valueDimension) {
         if (typeof data.valueValue != 'undefined') {
           if ( typeof parsedData.values[data.valueIndex].value != 'object' ) parsedData.values[data.valueIndex].value = {};
           parsedData.values[data.valueIndex].value[data.valueDimension] = data.valueValue;
@@ -108,13 +120,13 @@ export default class QuestionForm extends OpenStadComponent {
   }
   
   toggleEditMode(index) {
-    let newValue = this.state.valueEditModeIndex != index ? index : null;
-    this.setEditMode(newValue)
+    let newIndex = this.state.valueEditModeIndex != index ? index : null;
+    this.setEditMode(newIndex)
   }
 
-  setEditMode(value) {
+  setEditMode(index) {
     let self = this;
-    this.setState({ valueEditModeIndex: value }, () => {
+    this.setState({ valueEditModeIndex: index }, () => {
       if (self.state.valueEditModeIndex != null) {
         let input = self[`osc-question-button-text-${self.state.valueEditModeIndex}`] && self[`osc-question-button-text-${self.state.valueEditModeIndex}`].input;
         input.focus()
@@ -171,7 +183,7 @@ export default class QuestionForm extends OpenStadComponent {
             <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 0, maxLength: 5000 }} value={self.props.currentTarget.values && self.props.currentTarget.values.A && self.props.currentTarget.values.A.questionText} onChange={ data => self.handleFieldChange({ questionTextA: data.value }) } ref={el => self.minLabelField = el}/>
             <h3>Afbeelding bij A</h3>
             {/* <OpenStadComponentForms.Text config={{}} value={self.props.currentTarget.values && self.props.currentTarget.values.A && ( typeof self.props.currentTarget.values.A.questionImage == 'object' ? JSON.stringify(self.props.currentTarget.values.A.questionImage) : self.props.currentTarget.values.A.questionImage )} onChange={ data => self.handleFieldChange({ questionImageA: data.value }) } ref={el => self.questionImageAField = el}/> */}
-            <OpenStadComponentForms.ImageUpload key="i1" config={{ as: 'json', imageserver: self.config.imageserver }} value={self.props.currentTarget.values && self.props.currentTarget.values.A && self.props.currentTarget.values.A.questionImage} onChange={ data => self.handleFieldChange({ questionImageA: data.value }) } ref={el => self.questionImageAField = el}/>
+            <OpenStadComponentForms.ImageUpload key="i1" config={{ as: 'json', imageserver: self.config.image.server }} value={self.props.currentTarget.values && self.props.currentTarget.values.A && self.props.currentTarget.values.A.questionImage} onChange={ data => self.handleFieldChange({ questionImageA: data.value }) } ref={el => self.questionImageAField = el}/>
 
           </div>
           <div className="osc-column-50p osc-margin-left-10">
@@ -184,7 +196,7 @@ export default class QuestionForm extends OpenStadComponent {
             <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 0, maxLength: 5000 }} value={self.props.currentTarget.values && self.props.currentTarget.values.B && self.props.currentTarget.values.B.questionText} onChange={ data => self.handleFieldChange({ questionTextB: data.value }) } ref={el => self.minLabelField = el}/>
             <h3>Afbeelding bij B</h3>
             {/* <OpenStadComponentForms.Text config={{}} value={self.props.currentTarget.values && self.props.currentTarget.values.B && ( typeof self.props.currentTarget.values.B.questionImage == 'object' ? JSON.stringify(self.props.currentTarget.values.B.questionImage) : self.props.currentTarget.values.B.questionImage )} onChange={ data => self.handleFieldChange({ questionImageB: data.value }) } ref={el => self.questionImageBField = el}/> */}
-            <OpenStadComponentForms.ImageUpload key="i1" config={{ as: 'json', imageserver: self.config.imageserver }} value={self.props.currentTarget.values && self.props.currentTarget.values.B && self.props.currentTarget.values.B.questionImage} onChange={ data => self.handleFieldChange({ questionImageB: data.value }) } ref={el => self.questionImageBField = el}/>
+            <OpenStadComponentForms.ImageUpload key="i1" config={{ as: 'json', imageserver: self.config.image.server }} value={self.props.currentTarget.values && self.props.currentTarget.values.B && self.props.currentTarget.values.B.questionImage} onChange={ data => self.handleFieldChange({ questionImageB: data.value }) } ref={el => self.questionImageBField = el}/>
 
           </div>
 
@@ -237,6 +249,8 @@ export default class QuestionForm extends OpenStadComponent {
                       </div>
                     )}
                     <div className="osc-overview-line-buttons">
+                      { i < self.props.currentTarget.values.length -1 ? <a className="osc-arrow-down-button" onClick={event => self.handleFieldChange({ valueIndex: i, move: 'down' })}></a> : <div className="osc-no-button"></div>}
+                      { i > 0 ? <a className="osc-arrow-up-button" onClick={event => self.handleFieldChange({ valueIndex: i, move: 'up' })}></a> : <div className="osc-no-button"></div> }
                       <a className="osc-edit-button" onClick={event => self.toggleEditMode(i)}></a>
                       <a className="osc-delete-button" onClick={event => self.handleFieldChange({ deleteIndex: i })}></a>
                     </div>
@@ -266,14 +280,13 @@ export default class QuestionForm extends OpenStadComponent {
 
     return (
       <div className="openstad-form">
-
         <h3>Titel</h3>
         <OpenStadComponentForms.InputWithCounter config={{ inputType: 'text', minLength: 2, maxLength: 255 }} value={self.props.currentTarget.title} onChange={ data => self.props.onChange({ title: data.value }) } ref={el => self.titleField = el}/>
         <h3>Beschrijving</h3>
         <OpenStadComponentForms.InputWithCounter config={{ inputType: 'textarea', minLength: 0, maxLength: 5000 }} value={self.props.currentTarget.description} onChange={ data => self.props.onChange({ description: data.value }) } ref={el => self.descriptionField = el}/>
         {moreInfoHTML}
         <h3>Afbeelding boven de vraag</h3>
-        <OpenStadComponentForms.ImageUpload key="i1" config={{ as: 'json', imageserver: self.config.imageserver }} value={self.props.currentTarget.images} onChange={ data => self.props.onChange({ images: data.value }) } ref={el => self.imagesField = el}/>
+        <OpenStadComponentForms.ImageUpload key="i1" config={{ as: 'json', imageserver: self.config.image.server }} value={self.props.currentTarget.images} onChange={ data => self.props.onChange({ images: data.value }) } ref={el => self.imagesField = el}/>
 
         <h3>Type vraag</h3>
         <OpenStadComponentForms.Select config={{ choices: [{ value: "", description: "Maak een keuze" },/*{ value: "continuous", description: "continue" },*/{ value: "a-to-b", description: "van a naar b slider" },/*{ value: "enum-buttons", description: "multiple choice - buttons" }*/,{ value: "enum-radio", description: "radio buttons" }], required: true  }} value={ self.props.currentTarget.type } onChange={ data => self.handleFieldChange({ type: data.value }) } ref={el => self.typeField = el}/>
@@ -281,9 +294,6 @@ export default class QuestionForm extends OpenStadComponent {
         {valuesHTML}
         {dimensionsHTML}
         
-        <h3>Volgorde nummer</h3>
-        <OpenStadComponentForms.Text config={{}} value={self.props.currentTarget.seqnr} onChange={ data => self.props.onChange({ seqnr: data.value }) } ref={el => self.seqnrField = el}/>
-
       </div>)
     ;
 

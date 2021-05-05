@@ -101,7 +101,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     let self = this;
 
     window.addEventListener( 'hashchange', e => {
-      let match = window.location.hash.match(/(\w)(\d+)/);
+      let match = window.location.hash.match(/(\w)(\d+)$/);
       if (match) {
         let ideaId = match[2];
         let idea = self.state.ideas && self.state.ideas.find(idea => idea.id == ideaId);
@@ -110,6 +110,9 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         }
         if (match[1] == 'S') {
         }
+      } else {
+        if (self.state.status == 'idea-details') self.hideIdeaDetails()
+        if (self.state.status == 'idea-selected') self.setSelectedIdea(null)
       }
     }, false );
 
