@@ -26,8 +26,6 @@ import PreviousNextButtonBlock from './previous-next-button-block/index.jsx';
 import Poll from './poll/index.jsx';
 import Reactions from './reactions/index.jsx';
 
-console.log('dev');
-
 export {
   OpenStadComponent,
   Libs,

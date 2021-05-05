@@ -4,57 +4,47 @@ const exec = util.promisify(require('child_process').exec);
 
 async function updateVersionNumber() {
 
-
-  // get current branch
-  const { stdout, stderr } = await exec('git rev-parse --abbrev-ref HEAD');
-  let branch = stdout.trim().toString();
-  
-  let packageJSON = await fs.readFile('./package.json');
-  packageJSON = packageJSON.toString();
-  
-  let match = packageJSON.match(/"version": "([^"]+)"/);
-  if (match) {
-    let versionLine = match[0];
-    let version = match[1];
-
-    console.log(branch, versionLine, version);
-
-    // alpha on development: increase number
-    if (version.match('alpha') && branch == 'development') {
-      console.log('alpha on development: increase number');
-      version = version.replace(/(\d+)$/, ($0, $1) => parseInt($1) + 1);
-    }
+  try {
     
-    // alpha on release: apparently just merged, so replace alpha by beta
-    if (version.match('alpha') && branch == 'release') {
-      console.log('alpha on release: apparently just merged, so replace alpha by beta');
-    }
+    // get current branch
+    const { stdout, stderr } = await exec('git rev-parse --abbrev-ref HEAD');
+    let branch = stdout.trim().toString();
     
-    // beta on release: increase number
-    if (version.match('beta') && branch == 'release') {
-      console.log('beta on release: increase number');
-      version = version.replace(/(\d+)$/, ($0, $1) => parseInt($1) + 1);
-    }
+    let packageJSON = await fs.readFile('./package.json');
+    packageJSON = packageJSON.toString();
     
-    // beta on master: apparently just merged, so remove beta
-    if (version.match('beta') && branch == 'master') {
-      console.log('beta on master: apparently just merged, so remove beta');
+    let match = packageJSON.match(/"version": "([^"]+)"/);
+    if (match) {
+      let versionLine = match[0];
+      let version = match[1];
+
+      if (version.match('alpha') && branch == 'development') {
+        // alpha on development: increase number
+        version = version.replace(/(\d+)$/, ($0, $1) => parseInt($1) + 1);
+      } else if (version.match('alpha') && branch == 'release') {
+        // alpha on release: apparently just merged, so replace alpha by beta
+        version = version.replace('alpha', 'beta');
+      } else if (version.match('beta') && branch == 'release') {
+        // beta on release: increase number
+        version = version.replace(/(\d+)$/, ($0, $1) => parseInt($1) + 1);
+      } else if (version.match('beta') && branch == 'master') {
+        // beta on master: apparently just merged, so remove beta including number
+        version = version.replace(/-beta\.\d+/, '');
+      } else if (!version.match('alpha|beta') && branch == 'master') {
+        // neither on master: increase number
+        version = version.replace(/(\d+)$/, ($0, $1) => parseInt($1) + 1);
+      }
+
+      packageJSON = packageJSON.replace(versionLine, `"version": "${version}"`)
+      await fs.writeFile('./package.json', packageJSON);
+
+    } else {
+      throw new Error('Version not found');
     }
 
-    // neither on master: increase number
-    if (!version.match('alpha|beta') && branch == 'master') {
-      console.log('neither on master: increase number');
-      version = version.replace(/(\d+)$/, ($0, $1) => parseInt($1) + 1);
-    }
-
-    console.log(branch, versionLine, version);
-
+  } catch (err) {
+    console.log(err);
   }
-
-
-
-
-//  fs.writeFileSync('./package.json', packageJSON);
 
 }
 
