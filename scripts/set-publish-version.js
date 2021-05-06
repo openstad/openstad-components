@@ -10,31 +10,12 @@ async function updateVersionNumber() {
     packageJSON = packageJSON.toString();
 
     // get current branch
-    let { stdout, stderr } = await exec('git branch --show-current');
-    console.log(stdout);
-    let branch = stdout && stdout.trim().toString();
-    console.log(branch);
-    //if (!branch) throw new Error('Current branch not found');
+    let branch = process.env.TRAVIS_BRANCH;
+    if (!branch) throw new Error('Current branch not found');
     if (branch == 'master') return;
     let tag = '';
     if (branch == 'release') tag = 'beta';
     if (branch == 'development') tag = 'alpha';
-    console.log(tag);
-
-
-    console.log('1:');
-    ({ stdout, stderr } = await exec('git version'));
-    console.log(stdout);
-    
-    console.log('2:');
-    ({ stdout, stderr } = await exec('git branch'));
-    console.log(stdout);
-
-    console.log('3:');
-    console.log(process.env.TRAVIS_BRANCH)
-
-
-    return 
     
     // get version from package.json
     let match = packageJSON.match(/"version": "([^"]+)"/);
@@ -43,13 +24,10 @@ async function updateVersionNumber() {
     if (!versionLine || !version) throw new Error('Version not found');
 
     // get current published version
-    ({ stdout, stderr } = await exec('npm view --json openstad-components'));
+    let { stdout, stderr } = await exec('npm view --json openstad-components');
     let info = stdout && stdout.toString();
     info = JSON.parse(info)
-    console.log(info);
-    console.log((branch == 'release' && 'beta') || (branch == 'development' && 'alpha'));
     let publishedVersion = info['dist-tags'][tag];
-    console.log(publishedVersion);
     if (!publishedVersion) throw new Error('Published version not found');
 
     // set new version
