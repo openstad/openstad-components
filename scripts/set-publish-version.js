@@ -14,7 +14,7 @@ async function updateVersionNumber() {
     console.log(stdout);
     let branch = stdout && stdout.trim().toString();
     console.log(branch);
-    if (!branch) throw new Error('Current branch not found');
+    //if (!branch) throw new Error('Current branch not found');
     if (branch == 'master') return;
     let tag = '';
     if (branch == 'release') tag = 'beta';
@@ -33,6 +33,8 @@ async function updateVersionNumber() {
     console.log('3:');
     console.log(process.env.TRAVIS_BRANCH)
 
+
+    return 
     
     // get version from package.json
     let match = packageJSON.match(/"version": "([^"]+)"/);
