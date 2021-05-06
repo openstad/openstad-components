@@ -11,12 +11,15 @@ async function updateVersionNumber() {
 
     // get current branch
     let { stdout, stderr } = await exec('git rev-parse --abbrev-ref HEAD');
+    console.log(stdout);
     let branch = stdout && stdout.trim().toString();
+    console.log(branch);
     if (!branch) throw new Error('Current branch not found');
     if (branch == 'master') return;
     let tag = '';
     if (branch == 'release') tag = 'beta';
     if (branch == 'development') tag = 'alpha';
+    console.log(tag);
 
     // get version from package.json
     let match = packageJSON.match(/"version": "([^"]+)"/);
