@@ -10,7 +10,7 @@ async function updateVersionNumber() {
     packageJSON = packageJSON.toString();
 
     // get current branch
-    let { stdout, stderr } = await exec('git rev-parse --abbrev-ref HEAD');
+    let { stdout, stderr } = await exec('git branch --show-current');
     console.log(stdout);
     let branch = stdout && stdout.trim().toString();
     console.log(branch);
@@ -21,6 +21,19 @@ async function updateVersionNumber() {
     if (branch == 'development') tag = 'alpha';
     console.log(tag);
 
+
+    console.log('1:');
+    ({ stdout, stderr } = await exec('git version'));
+    console.log(stdout);
+    
+    console.log('2:');
+    ({ stdout, stderr } = await exec('git branch'));
+    console.log(stdout);
+
+    console.log('3:');
+    console.log(process.env.TRAVIS_BRANCH)
+
+    
     // get version from package.json
     let match = packageJSON.match(/"version": "([^"]+)"/);
     let versionLine = match && match[0];
