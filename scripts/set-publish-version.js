@@ -14,6 +14,9 @@ async function updateVersionNumber() {
     let branch = stdout && stdout.trim().toString();
     if (!branch) throw new Error('Current branch not found');
     if (branch == 'master') return;
+    let tag = '';
+    if (branch == 'release') tag = 'beta';
+    if (branch == 'development') tag = 'alpha';
 
     // get version from package.json
     let match = packageJSON.match(/"version": "([^"]+)"/);
@@ -23,18 +26,28 @@ async function updateVersionNumber() {
 
     // get current published version
     ({ stdout, stderr } = await exec('npm view --json openstad-components'));
-    console.log(stdout);
-    //let info = stdout && stdout.toString();
-    //info = JSON.parse(info)
-    //let publishedVersion = info['dist-tags'][(branch == 'release' && 'beta') || (branch == 'development' && 'alpha')];
-    //if (!publishedVersion) throw new Error('Published version not found');
+    let info = stdout && stdout.toString();
+    info = JSON.parse(info)
+    console.log(info);
+    console.log((branch == 'release' && 'beta') || (branch == 'development' && 'alpha'));
+    let publishedVersion = info['dist-tags'][tag];
+    console.log(publishedVersion);
+    if (!publishedVersion) throw new Error('Published version not found');
 
-    // increase version number
-    // version = publishedVersion.replace(/(\d+)$/, ($0, $1) => parseInt($1) + 1);
-    version = "0.1.24-alpha.0"
+    // set new version
+    let newVersion = publishedVersion;
+    if (publishedVersion.match(new RegExp('^'+version))) {
+       // increase version number
+      newVersion = newVersion.replace(/(\d+)$/, ($0, $1) => parseInt($1) + 1);
+    } else {
+      // first release for this version
+      newVersion = `${version}-${tag}.0`; 
+    }
+
+    console.log(newVersion);
 
     // save in package.json
-    packageJSON = packageJSON.replace(versionLine, `"version": "${version}"`)
+    packageJSON = packageJSON.replace(versionLine, `"version": "${newVersion}"`)
     await fs.writeFile('./package.json', packageJSON);
 
   } catch (err) {
