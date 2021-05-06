@@ -23,13 +23,15 @@ async function updateVersionNumber() {
 
     // get current published version
     ({ stdout, stderr } = await exec('npm view --json openstad-components'));
-    let info = stdout && stdout.toString();
-    info = JSON.parse(info)
-    let publishedVersion = info['dist-tags'][(branch == 'release' && 'beta') || (branch == 'development' && 'alpha')];
-    if (!publishedVersion) throw new Error('Published version not found');
+    console.log(stdout);
+    //let info = stdout && stdout.toString();
+    //info = JSON.parse(info)
+    //let publishedVersion = info['dist-tags'][(branch == 'release' && 'beta') || (branch == 'development' && 'alpha')];
+    //if (!publishedVersion) throw new Error('Published version not found');
 
     // increase version number
-    version = publishedVersion.replace(/(\d+)$/, ($0, $1) => parseInt($1) + 1);
+    // version = publishedVersion.replace(/(\d+)$/, ($0, $1) => parseInt($1) + 1);
+    version = "0.1.24-alpha.0"
 
     // save in package.json
     packageJSON = packageJSON.replace(versionLine, `"version": "${version}"`)
