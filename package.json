@@ -1,13 +1,13 @@
 {
   "name": "openstad-components",
-  "version": "0.1.23-alpha.15",
+  "version": "0.1.24",
   "description": "Components for the OpenStad Ecosystem",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "webpack --watch --mode development",
     "build": "webpack --mode production",
-    "update-version": "node ./scripts/update-version.js"
+    "set-publish-version": "node ./scripts/set-publish-version.js"
   },
   "repository": {
     "type": "git",
