@@ -109,6 +109,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
           self.showIdeaDetails(idea)
         }
         if (match[1] == 'S') {
+          self.hideIdeaDetails()
         }
       } else {
         if (self.state.status == 'idea-details') self.hideIdeaDetails()

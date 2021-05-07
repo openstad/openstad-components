@@ -4,8 +4,8 @@
 * Add configurable placeholder image
 * Add sizes to image urls - Related ticket: https://trello.com/c/MzSh2iyq
 * Use arrow buttons for seqnr
-* Add semi-automatic version numbering
-* Add .travis.yml
+* Add semi-automatic version numbering and deployment through travis
+* Fix browser back button in idea details
 
 ## v0.1.21 2021-04-15
 * Bugfix
