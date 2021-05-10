@@ -1,3 +1,4 @@
 /node_modules
 /local
-/dist/*
+# this can be done when cdn automation is properly used in the frontend
+# /dist/*
