@@ -1,7 +1,14 @@
 .osc-tile-list-container {
   
+  .osc-columns-container();
+
   overflow-x: hidden;
-  
+
+  @media @phone {
+    width: 94%;
+    margin: 0 3%;
+  }
+
   .osc-tile-list {
     width: calc( 100% + @margin );
     display: flex;

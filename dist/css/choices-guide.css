@@ -209,20 +209,6 @@
 .osc-idea-details-editbutton.osc-edit:after {
   background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgdmlld0JveD0iMCAwIDM2IDM2Ij4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPHBhdGggZmlsbD0idHJhbnNwYXJlbnQiIGQ9Ik0wIDBoMzZ2MzZIMHoiLz4KICAgICAgICA8ZyBmaWxsPSIjRkZGIiBmaWxsLXJ1bGU9Im5vbnplcm8iPgogICAgICAgICAgICA8cGF0aCBkPSJNOS43NzUgMjMuNTY0bC4wMTIuMDE0Yy0uMTguMTI4LS4zMjEuMzAzLS40MS41MDVsLTEuNDMgMy40ODVhLjU0NC41NDQgMCAwIDAgLjA1NS42MDQuNDkuNDkgMCAwIDAgLjQ1Mi4xMDMuODQxLjg0MSAwIDAgMCAuMTU1LS4wNDhsMy41MDUtMS40MjNhMS4yMiAxLjIyIDAgMCAwIC41MDktLjQwN2wuMDEyLjAxMi40NzItLjQ2Ny0yLjg2Mi0yLjg0Ny0uNDcuNDd6TTExLjM0MyAyMS45OWwxMS41LTExLjQ5NyAyLjg5NSAyLjg5Ni0xMS41IDExLjQ5OHpNMjkuMDc3IDkuMjczbC0xLjk5Mi0xLjk4MmMtLjM2OS0uMzY2LS42MTktLjM4Mi0uOTI3LS4wNzVsLTIuMTYyIDIuMTUgMi45MTIgMi44OTYgMi4xNzQtMi4xNjJhLjQ5Mi40OTIgMCAwIDAtLjAwNS0uODI3eiIvPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+);
 }
-.osc-column-container {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-}
-.osc-column-50p {
-  flex: 50%;
-}
-.osc-margin-left-10 {
-  margin-left: 10px;
-}
-.osc-margin-right-10 {
-  margin-right: 10px;
-}
 .osc-sharebuttons ul {
   margin: 10px 0 0 0;
   padding: 0;
@@ -1106,12 +1092,13 @@
   margin-bottom: 40px;
 }
 .osc-choices-guide .osc-form {
-  width: 100%;
   padding: 15px 40px;
   font-size: 16px;
   background-color: white;
   position: relative;
   margin-bottom: 36px;
+  width: 100%;
+  overflow-x: hidden;
 }
 .osc-choices-guide .osc-form h3 {
   margin: 10px 0;
@@ -1132,6 +1119,56 @@
   background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDM2IDQwIj4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPHBhdGggZmlsbD0iIzE2NDk5NSIgZD0iTTEzLjQxIDM1LjQxQzUuNjkxIDMzLjM4IDAgMjYuMzU0IDAgMTggMCA4LjA1OSA4LjA1OSAwIDE4IDBzMTggOC4wNTkgMTggMThjMCA4LjM1NS01LjY5MiAxNS4zOC0xMy40MSAxNy40MUwxOCA0MGwtNC41OS00LjU5eiIvPgogICAgICAgIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0xNS40NCAxNC45NDJoNS4yMjN2MTEuODk0aC01LjIyNFYxNC45NDJ6bS0uMDkxLTMuNDM4YzAtLjM2MS4wNzEtLjcwNC4yMTUtMS4wMjkuMTQzLS4zMjQuMzM5LS42MDYuNTg4LS44NDguMjQ4LS4yNC41MzgtLjQzMy44Ny0uNTc2YTIuNjUyIDIuNjUyIDAgMCAxIDEuMDYzLS4yMTVjLjM2MiAwIC43LjA3MiAxLjAxOC4yMTUuMzE2LjE0My41OTkuMzM1Ljg0Ny41NzYuMjUuMjQyLjQ0NS41MjQuNTg4Ljg0OC4xNDQuMzI1LjIxNS42NjguMjE1IDEuMDNhMi41NzIgMi41NzIgMCAwIDEtLjgwMyAxLjg4OCAyLjg5MyAyLjg5MyAwIDAgMS0uODQ3LjU1NCAyLjU1NiAyLjU1NiAwIDAgMS0xLjAxOC4yMDMgMi44MTQgMi44MTQgMCAwIDEtMS45MzMtLjc1OCAyLjU3MiAyLjU3MiAwIDAgMS0uODAzLTEuODg4eiIvPgogICAgPC9nPgo8L3N2Zz4K);
   margin-bottom: 10px;
   padding-left: 30px;
+}
+.osc-choices-guide .osc-form .osc-columns {
+  width: calc(100% + 20px);
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-content: flex-start;
+}
+.osc-choices-guide .osc-form .osc-column {
+  margin-right: 20px;
+}
+.osc-choices-guide .osc-form .osc-column.osc-2-columns {
+  width: calc((100% - (2 * 20px)) / 2);
+}
+@media only screen and (max-width: 700px) {
+  .osc-choices-guide .osc-form .osc-column.osc-2-columns {
+    width: 100%;
+  }
+}
+.osc-choices-guide .osc-form .osc-column.osc-3-columns {
+  width: calc((100% - (3 * 20px)) / 3);
+}
+@media only screen and (max-width: 700px) {
+  .osc-choices-guide .osc-form .osc-column.osc-3-columns {
+    width: 100%;
+  }
+}
+.osc-choices-guide .osc-form .osc-column.osc-4-columns {
+  width: calc((100% - (4 * 20px)) / 4);
+}
+@media only screen and (max-width: 700px) {
+  .osc-choices-guide .osc-form .osc-column.osc-4-columns {
+    width: 100%;
+  }
+}
+.osc-choices-guide .osc-form .osc-column.osc-5-columns {
+  width: calc((100% - (5 * 20px)) / 5);
+}
+@media only screen and (max-width: 700px) {
+  .osc-choices-guide .osc-form .osc-column.osc-5-columns {
+    width: 100%;
+  }
+}
+.osc-choices-guide .osc-form .osc-column.osc-6-columns {
+  width: calc((100% - (6 * 20px)) / 6);
+}
+@media only screen and (max-width: 700px) {
+  .osc-choices-guide .osc-form .osc-column.osc-6-columns {
+    width: 100%;
+  }
 }
 .osc-choices-guide .osc-form .osc-overview {
   margin-top: 40px;

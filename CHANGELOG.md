@@ -1,7 +1,7 @@
 # Changelog
 
 ## Unreleased
-# Add to progress to ideas-overview
+# Update ideas-overview, incl. add progress
 
 ## v0.1.25
 * Add configurable placeholder image
