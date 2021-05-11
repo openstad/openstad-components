@@ -1,6 +1,9 @@
 # Changelog
 
-## v0.1.23 Unreleased
+## Unreleased
+# Add to progress to ideas-overview
+
+## v0.1.25
 * Add configurable placeholder image
 * Add sizes to image urls - Related ticket: https://trello.com/c/MzSh2iyq
 * Use arrow buttons for seqnr

@@ -21,6 +21,7 @@ export default class IdeasOverview extends OpenStadComponent {
         showVoteButtons: true, // TODO: dit is een stomme config parameter
         titleField: 'title',
         summaryField: 'summary',
+        minimumYesVotes: undefined,
       },
 
       image: {},
@@ -164,8 +165,14 @@ export default class IdeasOverview extends OpenStadComponent {
 
     let voteProgressHTML = null;
     if (self.config.display.showVoteProgressbar) {
+      console.log(idea.progress);
       voteProgressHTML = (
-        <div>GENOEGSTEMMNBALK</div>
+        <div className="osc-progress-container">
+          <div className="osc-progress">
+            <div className="osc-progress-bar osc-status-open" style={{ width: idea.progress + '%' }}></div>
+            <div className="osc-progress-target">{self.config.idea.minimumYesVotes}</div>
+          </div>
+        </div>
       );
     }
 
