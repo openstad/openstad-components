@@ -85,6 +85,9 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
     let self = this;
     fetchChoicesGuide({ config: self.config })
       .then((data) => {
+        if (!data.choicesGuideId) {
+          return self.setState({ status: 'panic', message: "Er is geen keuzewijzer gevonden. Maak er één aan in het admin deel van deze site, en koppel deze dan hier in 'Bewerk keuzewijzer'." });
+        }
         self.setState(data, () => {
           self.startGuide();
         });
@@ -219,7 +222,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
     let answers = merge(self.state.values || {}, self.questionGroupElement.getAnswers());
     let scores;
     ( {scores} = self.choicesElement.calculateScores(answers) );
-    self.userPreference && self.userPreference.calculateScores(answers); //xxx
+    self.userPreference && self.userPreference.calculateScores(answers);
     self.setState({ scores, firstAnswerGiven: Object.keys(answers).length > 0 }, () => {
       let allValues = OpenStadComponentLibs.localStorage.get('osc-choices-guide.values') || {};
       allValues[self.config.choicesGuideId] = answers;
@@ -285,7 +288,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
     }
 
     let contentHTML = null;
-    if (self.state.status == 'edit') {
+    if (self.state.status == 'edit') { // todo: maak hier een switch van
       contentHTML = (
         <div className="osc-choices-guide-content">
           <OpenStadComponentChoicesGuideForm config={self.config} onFinished={self.hideEditForm} data={{ ...self.state }}/>
@@ -296,7 +299,13 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
 
       let introHTML = null;
 
-      if (self.state.status == 'init') {
+      if (self.state.status == 'panic') {
+        contentHTML = (
+          <div className="osc-choices-guide-content">
+            <div className="osc-alert osc-alert-warning">{self.state.message}</div>
+          </div>
+        );
+      } else if (self.state.status == 'init') {
         contentHTML = (
           <div className="osc-choices-guide-content">
             <div className="osc-intro">Laden...</div>

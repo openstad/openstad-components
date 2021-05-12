@@ -1,7 +1,8 @@
 # Changelog
 
 ## Unreleased
-# Update ideas-overview, incl. add progress
+* Update ideas-overview, incl. add progress
+* Add warning when no choices guide was found
 
 ## v0.1.25
 * Add configurable placeholder image
