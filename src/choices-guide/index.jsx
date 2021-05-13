@@ -1,3 +1,8 @@
+// polyfills
+import 'whatwg-fetch';
+import 'core-js/es/array/find';
+import 'custom-event-polyfill';
+
 // react
 import React from 'react';
 import ReactDOM from 'react-dom';

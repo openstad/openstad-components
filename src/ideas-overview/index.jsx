@@ -1,3 +1,6 @@
+// polyfills
+import 'whatwg-fetch';
+
 // react
 import React from 'react';
 import ReactDOM from 'react-dom';
