@@ -3,6 +3,7 @@
 ## Unreleased
 * Update ideas-overview, incl. add progress
 * Add warning when no choices guide was found
+* Simplify polyfills
 
 ## v0.1.25
 * Add configurable placeholder image

@@ -1,7 +1,3 @@
-// polyfills
-import 'whatwg-fetch';
-import 'custom-event-polyfill';
-
 // react
 import React from 'react';
 import ReactDOM from 'react-dom';

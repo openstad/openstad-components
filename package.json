@@ -30,6 +30,7 @@
     "babel-loader": "^8.0.6",
     "babel-plugin-react-css-modules": "^5.2.6",
     "babel-plugin-transform-postcss": "^0.3.0",
+    "babel-polyfill": "^6.26.0",
     "core-js": "^3.4.1",
     "css-loader": "^3.0.0",
     "custom-event-polyfill": "^1.0.7",

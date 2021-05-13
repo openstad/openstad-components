@@ -2,7 +2,7 @@ const webpack = require("webpack");
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
- 
+
 module.exports = {
 
 	devtool: 'source-map',
@@ -10,18 +10,18 @@ module.exports = {
 	mode: 'development',
 
 	entry: {
-    "all": './src/index.jsx',
-    "base-map": './src/base-map/index.jsx',
-    "choices-guide": './src/choices-guide/index.jsx',
-    "idea-details": './src/idea-details/index.jsx',
-    "ideas-overview": './src/ideas-overview/index.jsx',
-    "idea-image": './src/image/index.jsx',
-    "ideas-on-map": './src/ideas-on-map/index.jsx',
-    "lightbox": './src/lightbox/index.jsx',
-    "modal-popup": './src/modal-popup/index.jsx',
-    "previous-next-button-block": './src/previous-next-button-block/index.jsx',
-    "poll": './src/poll/index.jsx',
-    "reactions": './src/reactions/index.jsx',
+    "all": ['babel-polyfill', 'whatwg-fetch', './src/index.jsx'],
+    "base-map": ['babel-polyfill', 'whatwg-fetch', './src/base-map/index.jsx'],
+    "choices-guide": ['babel-polyfill', 'whatwg-fetch', './src/choices-guide/index.jsx'],
+    "idea-details": ['babel-polyfill', 'whatwg-fetch', './src/idea-details/index.jsx'],
+    "ideas-overview": ['babel-polyfill', 'whatwg-fetch', './src/ideas-overview/index.jsx'],
+    "idea-image": ['babel-polyfill', 'whatwg-fetch', './src/image/index.jsx'],
+    "ideas-on-map": ['babel-polyfill', 'whatwg-fetch', './src/ideas-on-map/index.jsx'],
+    "lightbox": ['babel-polyfill', 'whatwg-fetch', './src/lightbox/index.jsx'],
+    "modal-popup": ['babel-polyfill', 'whatwg-fetch', './src/modal-popup/index.jsx'],
+    "previous-next-button-block": ['babel-polyfill', 'whatwg-fetch', './src/previous-next-button-block/index.jsx'],
+    "poll": ['babel-polyfill', 'whatwg-fetch', './src/poll/index.jsx'],
+    "reactions": ['babel-polyfill', 'whatwg-fetch', './src/reactions/index.jsx'],
   },
 
 	output: {
