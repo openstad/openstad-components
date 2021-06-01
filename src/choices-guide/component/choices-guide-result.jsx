@@ -326,7 +326,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
 
     let choicesHTML = null;
     if (choices) {
-      choicesHTML = <OpenStadComponentChoices config={{ ...self.config.choices }} scores={{...self.state.scores}} choices={[...choices]} firstAnswerGiven={true} ref={function(el) { self.choicesElement = el; }} key='choices'/>;
+      choicesHTML = <OpenStadComponentChoices config={{ ...self.config.choices, startWithAllQuestionsAnswered: self.config.startWithAllQuestionsAnswered }} scores={{...self.state.scores}} choices={[...choices]} firstAnswerGiven={true} ref={function(el) { self.choicesElement = el; }} key='choices'/>;
     }
 
     let moreInfoHTML = null;

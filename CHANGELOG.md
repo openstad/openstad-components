@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.1.22.1 2021-06-01
+Add option startWithAllQuestionsAnsweredAndConfirmed to Choices Guide
+
 ## v0.1.22 2021-04-26
 Choices Guide updates
 
