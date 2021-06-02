@@ -18,7 +18,7 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
       value: 50,
       isAnswered: false,
     };
-
+    
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.showLightbox = this.showLightbox.bind(this);
 
@@ -35,10 +35,12 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
 
   isValid() {
 
+
     let data = this.props.data || {};
     let wasAlreadyAnswered = typeof data.value != 'undefined';
 
-    if (wasAlreadyAnswered || this.state.isAnswered) return true;
+    let isAnswered = this.state.isAnswered || !!this.config.startWithAllQuestionsAnsweredAndConfirmed
+    if (wasAlreadyAnswered || isAnswered) return true;
 
     this.setState({error: 'Je hebt nog geen keuze gemaakt'});
     return false;
@@ -71,8 +73,6 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
       if ( dimensions.includes('y') ) result.y = this.state.value.y;
       if ( dimensions.includes('z') ) result.z = this.state.value.z;
     }
-
-    // console.log('answer', data.title, result);
 
     return result;
 

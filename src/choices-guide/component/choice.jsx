@@ -51,6 +51,7 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
     Object.keys(choiceAnswers).forEach((id) => {
 
       let choiceAnswer = choiceAnswers[id] || {};
+      // TODO: this.config.startWithAllQuestionsAnswered hoort in question, niet hier
       let userAnswer = userAnswers[id] || ( this.config.startWithAllQuestionsAnswered ? { x: 50, y: 50, z: 50 } : {} );
 
       let result = results[id] = {};

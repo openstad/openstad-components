@@ -68,7 +68,7 @@ export default class OpenStadComponentQuestionGroup extends OpenStadComponent {
 
   gotoNextQuestion() {
 
-    if (!this.isValid()) return;
+    if (!this.isValid()) return {};
 
     let state = {};
     let currentQuestion = this.state.currentQuestion + this.noOfQuestionsToShow;
