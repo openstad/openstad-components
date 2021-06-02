@@ -84,6 +84,17 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
 		document.dispatchEvent(event);
   }
 
+  toggleMoreInfo(id) {
+    let elem = document.querySelector(`#${id}`);
+    if (elem) {
+      if( elem.className.match(' osc-closed') ) {
+        elem.className = elem.className.replace(' osc-closed', ' osc-open');
+      } else {
+        elem.className = elem.className.replace(' osc-open', ' osc-closed');
+      }
+    }
+  }
+
   showLightbox(startWith) {
 
     let data = this.props.data || {};
@@ -147,9 +158,10 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
     if (data.moreInfo && ( data.moreInfo.title || data.moreInfo.text )) {
       let title = data.moreInfo.title || 'Geen titel';
       let text = data.moreInfo.text || 'Geen tekst';
+      let id = `osc-moreInfo-${parseInt(100000*Math.random())}`;
       moreInfoHTML = (
         <div className="osc-accordeon">
-          <div className="osc-accordeon-item osc-closed">
+          <div id={id} className="osc-accordeon-item osc-closed" onClick={() => self.toggleMoreInfo(id)}>
             <div className="osc-title osc-info">
               {title}
             </div>
