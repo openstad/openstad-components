@@ -1,19 +1,29 @@
 # Changelog
 
+## v0.1.26 2021-06-08
+* Fix bug in accordeons
+
 ## v0.1.22.1 2021-06-01
-Add option startWithAllQuestionsAnsweredAndConfirmed to Choices Guide
+* Add option startWithAllQuestionsAnsweredAndConfirmed to Choices Guide
 
 ## v0.1.22 2021-04-26
-Choices Guide updates
+* Choices Guide updates
+
+## v0.1.23 Unreleased
+* Add configurable placeholder image
+* Add sizes to image urls - Related ticket: https://trello.com/c/MzSh2iyq
+* Use arrow buttons for seqnr
+* Add semi-automatic version numbering and deployment through travis
+* Fix browser back button in idea details
 
 ## v0.1.21 2021-04-15
-Bugfix
+* Bugfix
 
 ## v0.1.20 2021-04-06
-Bugfix in stored question value
+* Bugfix in stored question value
 
 ## v0.1.21 2021-04-12
-Fix max zoom in amaps variant
+* Fix max zoom in amaps variant
 
 ## v0.1.19 2021-04-06
 * Move map to base-map

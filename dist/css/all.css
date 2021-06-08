@@ -1115,6 +1115,8 @@
   white-space: nowrap;
 }
 .osc-choices-guide .osc-form .osc-overview .osc-no-button,
+.osc-choices-guide .osc-form .osc-overview .osc-arrow-up-button,
+.osc-choices-guide .osc-form .osc-overview .osc-arrow-down-button,
 .osc-choices-guide .osc-form .osc-overview .osc-delete-button,
 .osc-choices-guide .osc-form .osc-overview .osc-edit-button {
   display: inline-block;
@@ -1126,6 +1128,18 @@
   border: 0 none;
   outline: 0;
   cursor: pointer;
+}
+.osc-choices-guide .osc-form .osc-overview .osc-arrow-down-button {
+  background-position: center right 10px;
+  background-size: 13px 9px;
+  background-repeat: no-repeat;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjEyNTkuNzc5IDk1Ni4yMjEgMTMuODMzIDkuMzkxIiB3aWR0aD0iMTMuOCIgaGVpZ2h0PSI5LjQiPgogIDxkZWZzPgogICAgPHN0eWxlPgogICAgICAuY2xzLTEgewogICAgICAgIGZpbGw6ICMzMjMzMzM7CiAgICAgIH0KICAgIDwvc3R5bGU+CiAgPC9kZWZzPgogIDxwYXRoIGlkPSJQYXRoXzc2IiBkYXRhLW5hbWU9IlBhdGggNzYiIGNsYXNzPSJjbHMtMSIgZD0iTTEuNTQ3LDEzLjgzMy4xMSwxMi4xNzNsNS44NTYtNS4yTDAsMS42NiwxLjQzNiwwLDkuMzkxLDYuOTcyWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTI3My42MTIgOTU2LjIyMSkgcm90YXRlKDkwKSIvPgo8L3N2Zz4=);
+}
+.osc-choices-guide .osc-form .osc-overview .osc-arrow-up-button {
+  background-position: center right 10px;
+  background-size: 13px 9px;
+  background-repeat: no-repeat;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjEyNTkuNzc5IC0yMjU3Ljc3OSAxMy44MzMgOS4zOTEiIHdpZHRoPSIxMy44IiBoZWlnaHQ9IjkuNCI+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5jbHMtMSB7CiAgICAgICAgZmlsbDogYmxhY2s7CiAgICAgIH0KICAgIDwvc3R5bGU+CiAgPC9kZWZzPgogIDxwYXRoIGlkPSJQYXRoXzEyMjkiIGRhdGEtbmFtZT0iUGF0aCAxMjI5IiBjbGFzcz0iY2xzLTEiIGQ9Ik0xLjU0NywxMy44MzMuMTEsMTIuMTczbDUuODU2LTUuMkwwLDEuNjYsMS40MzYsMCw5LjM5MSw2Ljk3MloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEyNTkuNzc5IC0yMjQ4LjM4OCkgcm90YXRlKC05MCkiLz4KPC9zdmc+Cg==);
 }
 .osc-choices-guide .osc-form .osc-overview .osc-delete-button {
   background-size: cover;
@@ -6992,6 +7006,8 @@
   white-space: nowrap;
 }
 .osc-choices-guide .osc-form .osc-overview .osc-no-button,
+.osc-choices-guide .osc-form .osc-overview .osc-arrow-up-button,
+.osc-choices-guide .osc-form .osc-overview .osc-arrow-down-button,
 .osc-choices-guide .osc-form .osc-overview .osc-delete-button,
 .osc-choices-guide .osc-form .osc-overview .osc-edit-button {
   display: inline-block;
@@ -7003,6 +7019,18 @@
   border: 0 none;
   outline: 0;
   cursor: pointer;
+}
+.osc-choices-guide .osc-form .osc-overview .osc-arrow-down-button {
+  background-position: center right 10px;
+  background-size: 13px 9px;
+  background-repeat: no-repeat;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjEyNTkuNzc5IDk1Ni4yMjEgMTMuODMzIDkuMzkxIiB3aWR0aD0iMTMuOCIgaGVpZ2h0PSI5LjQiPgogIDxkZWZzPgogICAgPHN0eWxlPgogICAgICAuY2xzLTEgewogICAgICAgIGZpbGw6ICMzMjMzMzM7CiAgICAgIH0KICAgIDwvc3R5bGU+CiAgPC9kZWZzPgogIDxwYXRoIGlkPSJQYXRoXzc2IiBkYXRhLW5hbWU9IlBhdGggNzYiIGNsYXNzPSJjbHMtMSIgZD0iTTEuNTQ3LDEzLjgzMy4xMSwxMi4xNzNsNS44NTYtNS4yTDAsMS42NiwxLjQzNiwwLDkuMzkxLDYuOTcyWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTI3My42MTIgOTU2LjIyMSkgcm90YXRlKDkwKSIvPgo8L3N2Zz4=);
+}
+.osc-choices-guide .osc-form .osc-overview .osc-arrow-up-button {
+  background-position: center right 10px;
+  background-size: 13px 9px;
+  background-repeat: no-repeat;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjEyNTkuNzc5IC0yMjU3Ljc3OSAxMy44MzMgOS4zOTEiIHdpZHRoPSIxMy44IiBoZWlnaHQ9IjkuNCI+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5jbHMtMSB7CiAgICAgICAgZmlsbDogYmxhY2s7CiAgICAgIH0KICAgIDwvc3R5bGU+CiAgPC9kZWZzPgogIDxwYXRoIGlkPSJQYXRoXzEyMjkiIGRhdGEtbmFtZT0iUGF0aCAxMjI5IiBjbGFzcz0iY2xzLTEiIGQ9Ik0xLjU0NywxMy44MzMuMTEsMTIuMTczbDUuODU2LTUuMkwwLDEuNjYsMS40MzYsMCw5LjM5MSw2Ljk3MloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEyNTkuNzc5IC0yMjQ4LjM4OCkgcm90YXRlKC05MCkiLz4KPC9zdmc+Cg==);
 }
 .osc-choices-guide .osc-form .osc-overview .osc-delete-button {
   background-size: cover;

@@ -10,7 +10,7 @@ export default class IdeasOverview2 extends IdeasOverview {
 
     let ideas = typeof self.props.ideas != 'undefined' ? self.props.ideas : self.state.ideas || [];
 
-    let titleHML = (<h3 className="osc-title">{self.config.title} ({ideas.length})</h3>);
+    let titleHML = (<h3 className="osc-title">{self.props.title || self.config.title} ({ideas.length})</h3>);
 
     return (
 			<div id={self.id} className={`osc-ideas-overview ${self.props.className || ''}`}>

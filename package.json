@@ -1,12 +1,13 @@
 {
   "name": "openstad-components",
-  "version": "0.1.22",
+  "version": "0.1.26",
   "description": "Components for the OpenStad Ecosystem",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "webpack --watch --mode development",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "set-publish-version": "node ./scripts/set-publish-version.js"
   },
   "repository": {
     "type": "git",
@@ -16,6 +17,9 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Amsterdam/openstad-components/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "homepage": "https://github.com/Amsterdam/openstad-components#readme",
   "devDependencies": {

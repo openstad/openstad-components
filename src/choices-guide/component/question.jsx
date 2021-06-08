@@ -11,7 +11,6 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
     super(props);
 
     // defaults
-    this.config.aspectRatio = this.config.aspectRatio || '16x9';
 
     this.questionId = props.data.id;
 
@@ -149,7 +148,7 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
       let image = images[0];
       imageHTML = (
         <div className={`osc-question-image-container`}>
-          <OpenStadComponentImage config={{ aspectRatio: self.config.aspectRatio }} image={image}/>
+          <OpenStadComponentImage config={self.config} image={image}/>
         </div>
       );
     }
