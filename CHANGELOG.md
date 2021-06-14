@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+* Set default noOfQuestionsToShow to 100
 * Update ideas-overview, incl. add progress
 * Add warning when no choices guide was found
 * Bugfix: scroll to unanswerd question

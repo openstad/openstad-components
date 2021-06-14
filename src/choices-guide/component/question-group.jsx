@@ -12,7 +12,7 @@ export default class OpenStadComponentQuestionGroup extends OpenStadComponent {
 
     super(props);
 
-    this.noOfQuestionsToShow = this.config.noOfQuestionsToShow || 1;
+    this.noOfQuestionsToShow = this.config.noOfQuestionsToShow || 100;
     this.questionElements = [];
 
     this.state = {

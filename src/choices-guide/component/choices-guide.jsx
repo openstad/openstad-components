@@ -20,7 +20,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
     super(props, {
       siteId: null,
       loginUrl: null,
-      noOfQuestionsToShow: 1,
+      noOfQuestionsToShow: 100,
       api: {
         url: null
       },
