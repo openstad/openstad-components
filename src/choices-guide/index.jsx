@@ -1,6 +1,9 @@
 // polyfills
 import 'whatwg-fetch';
 import 'core-js/es/array/find';
+import 'core-js/es/array/find-index';
+import 'core-js/es/array/includes';
+import 'core-js/es/string/includes';
 import 'custom-event-polyfill';
 
 // react
@@ -29,4 +32,3 @@ export {
   OpenStadComponentChoicesGuide as ChoicesGuide,
   OpenStadComponentChoicesGuideResult as ChoicesGuideResult,
 };
-
