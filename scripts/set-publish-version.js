@@ -29,6 +29,7 @@ async function updateVersionNumber() {
     info = JSON.parse(info)
     let publishedVersion = info['dist-tags'][tag];
     if (!publishedVersion) throw new Error('Published version not found');
+    console.log(publishedVersion);
 
     // set new version
     let newVersion = publishedVersion;
