@@ -1,6 +1,6 @@
 {
   "name": "openstad-components",
-  "version": "0.1.26",
+  "version": "0.30.0",
   "description": "Components for the OpenStad Ecosystem",
   "main": "index.js",
   "scripts": {

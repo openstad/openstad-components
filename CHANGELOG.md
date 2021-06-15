@@ -1,10 +1,12 @@
 # Changelog
 
-## Unreleased
+## 0.30.0
 * Set default noOfQuestionsToShow to 100
 * Update ideas-overview, incl. add progress
 * Add warning when no choices guide was found
 * Bugfix: scroll to unanswerd question
+* Remove dist from repo
+* Reset version numbers
 
 ## v0.1.25
 * Add configurable placeholder image
