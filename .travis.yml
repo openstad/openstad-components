@@ -8,6 +8,12 @@ install:
 script:
   - npm run build
   - npm run set-publish-version
+
+branches:
+  only:
+  - master
+  - release
+  - development
   
 deploy:
   - provider: npm
