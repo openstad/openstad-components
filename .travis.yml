@@ -8,7 +8,7 @@ install:
 script:
   - npm run build
   - npm run set-publish-version
-
+  
 deploy:
   - provider: npm
     skip_cleanup: true
@@ -18,9 +18,7 @@ deploy:
     overwrite: true
     tag: alpha
     on:
-      branches:
-        only:
-          - development
+      branch: development
   - provider: npm
     skip_cleanup: true
     local_dir: dist
@@ -29,9 +27,7 @@ deploy:
     overwrite: true
     tag: beta
     on:
-      branches:
-        only:
-          - release
+      branch: release
   - provider: npm
     skip_cleanup: true
     local_dir: dist
@@ -40,6 +36,4 @@ deploy:
     overwrite: true
     tag: latest
     on:
-      branches:
-        only:
-          - master
+      branch: master
