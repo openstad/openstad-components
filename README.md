@@ -1,8 +1,8 @@
 # openstad-components
 
-Dit zijn componenten voor het OpenStad Ecosystem.
+These are components used in the OpenStad Ecosystem.
 
-Dit is de eerste opzet en is nog niet geschikt voor publiek gebruik.
+More information can be found at https://docs.openstad.amsterdam
 
 # Componenten
 
