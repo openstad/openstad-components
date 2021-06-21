@@ -7,6 +7,7 @@
 * Bugfix: scroll to unanswerd question
 * Reset version numbers
 * Remove dist from repo
+* New export setup that allows multiple libraries per page
 
 ## v0.1.25
 * Add configurable placeholder image

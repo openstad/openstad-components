@@ -27,7 +27,7 @@ module.exports = {
 	output: {
 		path: __dirname + '/dist',
 		filename: '[name].js',
-    library: 'OpenStadComponents',
+    library: ['OpenStadComponents', '[name]'],
     libraryTarget: 'window',
 	},
 
