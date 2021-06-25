@@ -1,49 +1,235 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title>OpenStad IdeasOnMap</title>
+    <title>Ideas on map</title>
     <link rel="shortcut icon" href="/favicon.ico"/>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
-    <link rel="stylesheet" type="text/css" href="/openstad/css/all.css"/>
-    <link rel="stylesheet" type="text/css" href="/openstad/components/dist/css/ideas-on-map.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/all.css"/>
+
+    <!-- load react -->
     <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
-    <script src="/openstad/components/dist/ideas-on-map.js"></script>
-	  <script>
+
+    <!-- load openstad component -->
+    <!--
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/openstad-components@latest/dist/css/ideas-on-map.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/openstad-components@latest/dist/ideas-on-map.js"></script>
+    -->
+    <link rel="stylesheet" type="text/css" href="/components/dist/css/ideas-on-map.css"/>
+    <script src="/components/dist/ideas-on-map.js"></script>
+
+    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+    <script>
 	   window.addEventListener('load', function(e) {
-       let config = {
-         "divId": "ideeen-op-de-kaart",
-         "user": {
-           "fullName": "FULLNAME",
-           "role": "ROLE"
+
+       // configure
+       var config = {
+
+         divId: "ideas-on-map",
+         siteId: 276,
+
+         // simple display of the map, to be used in other pages
+         // display: {
+         //   type: "simple",
+         //   width: '400px',
+         //   height: '400px',
+         // },
+
+         startWithListOpenOnMobile: true,
+         // canSelectLocation: false, // disable location selection
+         typeField: 'extraData.theme', // 'typeId' or 'extraData.theme'; for types see docs
+         onMarkerClickAction: 'selectIdea', // 'selectIdea' or 'showIdeaDetails'
+
+         ideaName: 'Inzendingen',
+
+         content: {
+           // in the ideas list a block is shown when the user selects a location - override the content of that block here
+           noSelectionLoggedInHTML: "<div class=\"osc-info-block-default-block-line osc-line-1\">Klik op een plek op de kaart om een nieuw punt toe te voegen.</div>",
+           noSelectionNotLoggedInHTML: "<div class=\"osc-info-block-default-block-line osc-line-1\">Klik op een plek op de kaart om een nieuw punt toe te voegen.</div> {loginButton}",
+           selectionActiveLoggedInHTML: "U heeft een punt geselecteerd ter hoogte van {address}. <br>\nVoeg via onderstaande knop een aandachtspunt toe aan de kaart. <br><br> {addButton}",
+           selectionInactiveLoggedInHTML: "<h3>Geselecteerd</h3> U heeft een punt geselecteerd buiten het gebied van dit project.<br/>Bekijk hieronder welke aandachtspunten hier het dichtst bij in de buurt zijn.",
+           selectionActiveNotLoggedInHTML: "<h3>Geselecteerd</h3> U heeft een punt geselecteerd ter hoogte van {address}. <br>\nOm een punt toe te voegen aan de kaart, vragen wij u eerst in te loggen. <br><br>{loginButton}",
+           selectionInactiveNotLoggedInHTML: "<h3>Geselecteerd</h3> U heeft een punt geselecteerd buiten het gebied van dit project.",
+           mobilePreviewLoggedInHTML: "U heeft een punt geselecteerd ter hoogte van {address}. <br>\nVoeg via onderstaande knop een aandachtspunt toe aan de kaart. <br><br> {addButton}",
+           mobilePreviewNotLoggedInHTML: "<h3>Geselecteerd</h3> U heeft een punt geselecteerd ter hoogte van {address}. <br>\nOm een punt toe te voegen aan de kaart, vragen wij u eerst in te loggen. <br><br>{loginButton}",
+           
          },
-         "api": {
-           "isUserLoggedIn": true,
-           "url": "APIURL",
-           "headers": {
-             "X-Authorization": "Bearer: AUTHTOKEN"
+
+         // sorting of ideas list
+         sort: {
+           sortOptions: [  { value: 'createdtime,desc', label: 'Nieuwste eerst' },{ value: 'createdtime,asc', label: 'Oudste eerst' }, {value: 'title',label: 'Titel'},{value: 'random',label: 'Willekeurig'},{value: 'likes,desc',label: 'Meeste likes'},{value: 'likes,asc',label: 'Minste likes'},{value: 'args,desc',label: 'Meeste reacties'},{value: 'args,asc',label: 'Minste reacties'},{value: 'ranking,asc',label: 'Ranglijst'}, ],
+           //sortOptions: [  {value: 'args,desc',label: 'Meeste reacties'} ],
+           showSortButton: true,
+           defaultValue: 'args,desc',
+         },
+
+         // filter bar search field
+         search: {
+           searchIn: ['ideas', 'addresses'],
+           placeholder: 'Zoek iets',
+           // label: 'Zoek op',
+           placeholder: 'Zoekterm',
+           fieldNames: ['title', 'summary'],
+           // showSearch: false,
+           showButton: true,
+           showSuggestions: true,
+           defaultValue: '',
+           addresssesMunicipality: 'amsterdam', // search in adresses uses an external api that uses this
+         },
+
+         // filter bar dropdowns
+         filter: [{
+           fieldName: 'extraData.theme',
+           filterOptions: [{ value: '', label: 'Alle thema\'s' }, { value: 'Auto', label: 'Auto' }, { value: 'Fiets', label: 'Fiets' }, { value: 'Overig', label: 'Overig' }],
+           // defaultValue: 'Fiets',
+         }, {
+           showFilter: true,
+           fieldName: 'extraData.area',
+           filterOptions: [{ value: '', label: 'Alle buurten' }, { value: 'Centrum West', label: 'Centrum West' }, { value: 'Centrum Oost', label: 'Centrum Oost' }],
+           defaultValue: '',
+         }],
+
+
+
+         idea: {
+
+           canAddNewIdeas: true,
+
+           summaryMinLength: 20,
+           summaryMaxLength: 140,
+           titleMinLength: 4,
+           titleMaxLength: 32,
+
+           // idea details
+           showLabels: true,
+           shareChannelsSelection: [ "twitter", "mail" ],
+           metaDataTemplate: '<span style="color: green">Plannetje van {username}</span>, ingestuurd op  {createDate} | Thema: {theme}',
+
+           // idea form
+           // use 'formUrl' to redirect to an extarnal form, or define formfields in 'fields'
+           // formUrl: "http://niels.xs4all.nl/openstad/components/local/ideas-form.html?id=:ideaId&typeId=:typeId&location=:location&address=:address",
+           fields: [
+             {
+               "name": "title",
+               "title": "Titel",
+               "description": "Schrijf hier een titel",
+               "inputType": "text-with-counter",
+               "choices": [],
+               "required": true
+             },
+             {
+               "name": "summary",
+               "title": "Samenvatting",
+               "description": "Typ hier een samenvatting",
+               "inputType": "textarea-with-counter",
+               "choices": [],
+               "required": true
+             },
+             {
+               "name": "description",
+               "title": "Beschrijving",
+               "description": "Geef een beschrijving",
+               "inputType": "textarea-with-counter",
+               "choices": [],
+               "required": true
+             },
+             {
+               "name": "extraData.images",
+               "title": "Afbeeldingen",
+               "inputType": "image-upload",
+               "allowMultiple": true
+             },
+           ],
+
+         },
+
+         // polls can be added to ideas
+         poll: {
+           canAddPolls: true,
+           questionMinLength: 1,
+           questionMaxLength: 20,
+           titleMinLength: 1,
+           titleMaxLength: 30,
+           descriptionMinLength: 1,
+           descriptionMaxLength: 50,
+           allowShowResultsIfNotVoted: false,
+         },
+
+         // reactions on an idea
+         argument: {
+           title: "Dit is de titel",
+           formIntro: "Dit is het formintro",
+           placeholder: "Dit is de placeholder",
+           descriptionMinLength: 5,
+           descriptionMaxLength: 50,
+           ignoreReactionsForIdeaIds: '6493',
+           closeReactionsForIdeaIds: '6519, 6520, 6378',
+           isClosed: false,
+           closedText: 'Niels is gek',
+         },
+
+         // likes - doet nog niets
+         vote: {
+           isViewable: true,
+           isActive: true,
+           voteValues: [
+             {
+               label: "voor",
+               value: "yes"
+             },
+             {
+               label: "tegen",
+               value: "no"
+             }
+           ]
+         },
+
+         // map settings
+         map: {
+           // map is leaflet, most settings are directly passed to leaflet
+           variant: "amaps", // 'nlmaps', 'amaps'
+           zoom: 16,
+           clustering: {
+             isActive: true,
+             maxClusterRadius: 30,
+             showCoverageOnHover: false,
+           },
+           polygon: [{ "lng": 4.8753796, "lat": 52.373407 }, { "lng": 4.8755899, "lat": 52.374302499999999 }, { "lng": 4.8799131, "lat": 52.3813052 }, { "lng": 4.8796339, "lat": 52.381912800000002 }, { "lng": 4.880478, "lat": 52.3822531 }, { "lng": 4.8818058, "lat": 52.384352800000002 }, { "lng": 4.882637, "lat": 52.385410700000001 }, { "lng": 4.8846503, "lat": 52.388346599999998 }, { "lng": 4.8857963, "lat": 52.388147600000003 }, { "lng": 4.8911796, "lat": 52.388450200000001 }, { "lng": 4.8937804, "lat": 52.388671199999997 }, { "lng": 4.8956658, "lat": 52.3888313 }, { "lng": 4.8971002, "lat": 52.383473299999999 }, { "lng": 4.8987657, "lat": 52.382542000000001 }, { "lng": 4.9017615, "lat": 52.380958100000001 }, { "lng": 4.9058091, "lat": 52.379866399999997 }, { "lng": 4.9109777, "lat": 52.379982699999999 }, { "lng": 4.9117844, "lat": 52.376762900000003 }, { "lng": 4.9130404, "lat": 52.376807800000002 }, { "lng": 4.9142964, "lat": 52.376637100000003 }, { "lng": 4.9235616, "lat": 52.375160299999997 }, { "lng": 4.930471, "lat": 52.373219499999998 }, { "lng": 4.9324817, "lat": 52.371757100000004 }, { "lng": 4.9330223, "lat": 52.369993000000001 }, { "lng": 4.9328247, "lat": 52.3687465 }, { "lng": 4.9318203, "lat": 52.366566800000001 }, { "lng": 4.9271491, "lat": 52.366449799999998 }, { "lng": 4.9223217, "lat": 52.363750199999998 }, { "lng": 4.9198812, "lat": 52.363239800000002 }, { "lng": 4.9183577, "lat": 52.362234299999997 }, { "lng": 4.9117783, "lat": 52.361245799999999 }, { "lng": 4.9102065, "lat": 52.360537399999998 }, { "lng": 4.9082953, "lat": 52.3605771 }, { "lng": 4.9066727, "lat": 52.359713499999998 }, { "lng": 4.9046567, "lat": 52.359200899999998 }, { "lng": 4.8987439, "lat": 52.357973999999999 }, { "lng": 4.8908705, "lat": 52.358319899999998 }, { "lng": 4.8891062, "lat": 52.358981 }, { "lng": 4.8873652, "lat": 52.3602226 }, { "lng": 4.8841505, "lat": 52.361811799999998 }, { "lng": 4.8819952, "lat": 52.362042700000003 }, { "lng": 4.8813956, "lat": 52.363081800000003 }, { "lng": 4.8808146, "lat": 52.363490400000003 }, { "lng": 4.8793708, "lat": 52.3643261 }, { "lng": 4.8792691, "lat": 52.364957400000002 }, { "lng": 4.8787082, "lat": 52.365820599999999 }, { "lng": 4.8775395, "lat": 52.366781500000002 }, { "lng": 4.8767523, "lat": 52.368511699999999 }, { "lng": 4.8754901, "lat": 52.369786699999999 }, { "lng": 4.8745065, "lat": 52.3718772 }, { "lng": 4.8745782, "lat": 52.3725454 }, { "lng": 4.8753796, "lat": 52.373407 }],
+           autoZoomAndCenter: 'polygon',
+           locationIcon: { html: '<svg width="39" height="50" viewBox="0 0 39 50" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19.1038 0C29.6577 0 38.2075 8.46671 38.2075 18.9181C38.2075 33.1786 21.7544 47.7273 21.0432 48.3035L19.1038 50L17.1643 48.3035C16.4532 47.7273 0 33.1786 0 18.9181C0 8.46831 8.54983 0 19.1038 0ZM32.3245 18.9181C32.3083 11.6837 26.4091 5.84187 19.1038 5.82586C11.7984 5.84187 5.89922 11.6837 5.88306 18.9181C5.88306 27.3367 14.1581 37.2439 19.0876 42.1095C23.1767 38.1242 32.3245 27.993 32.3245 18.9181Z" fill="#007d24"/><path d="M19.104 5.82568C26.4093 5.84169 32.3086 11.6836 32.3247 18.9179C32.3247 27.9928 23.1769 38.124 19.0879 42.1093C14.1584 37.2437 5.8833 27.3366 5.8833 18.9179C5.89946 11.6836 11.7987 5.84169 19.104 5.82568ZM25.5689 18.9179C25.5689 15.3807 22.6759 12.5158 19.104 12.5158C15.5322 12.5158 12.6391 15.3807 12.6391 18.9179C12.6391 22.455 15.5322 25.3199 19.104 25.3199C22.6759 25.3199 25.5689 22.455 25.5689 18.9179Z" fill="white"/><path d="M19.1038 25.3202C22.6743 25.3202 25.5687 22.4539 25.5687 18.9182C25.5687 15.3824 22.6743 12.5161 19.1038 12.5161C15.5333 12.5161 12.6389 15.3824 12.6389 18.9182C12.6389 22.4539 15.5333 25.3202 19.1038 25.3202Z" fill="#007d24"/></svg>', className: 'osc-ideas-on-map-icon', width: 39, height: 50, iconAnchor: [20, 50] },
+         },
+         
+         // image settings
+         image: {
+           server: {
+				     process: 'http://osc.cms.openstad.francesco.denes.nl/image',
+             fetch: 'https://image-server2.openstadsdeel.nl/image/',
+             srcExtension: '/:/rs=w:[[width]],h:[[height]];cp=w:[[width]],h:[[height]]',
+           },
+           aspectRatio: '16x9',
+           allowMultipleImages: true,
+           // placeholderImageSrc: 'https://nlsvgtr.nl/nlsvgtr.png',
+         },
+         
+         user: {
+           fullName: "USER FULL NAME",
+           role: "USER ROLE"
+         },
+         
+         api: {
+           isUserLoggedIn: true,
+           url: "API_URL",
+           headers: {
+             "X-Authorization": "Bearer JWT"
            }
          },
-         "idea": {
-           "titleMinLength": 5,
-           "titleMaxLength": 140
-         },
-         "siteId": 1,
-         "map": {
-           "variant": "amaps",
-           "zoom": 16,
-           "clustering": {
-             "isActive": true
-           }
-         },
-         "argument": {
-           "descriptionMinLength": 5,
-           "descriptionMaxLength": 50
-         }
+
+         loginUrl: 'LOGIN URL',
+
        };
 
        let element = document.querySelector('.openstad-component-ideas-on-map');
-       OpenStadComponents.IdeasOnMap.renderElement(element, config);
+       OpenStadComponents['ideas-on-map'].IdeasOnMap.renderElement(element, config);
 
      });
 	  </script>
@@ -53,7 +239,7 @@
        width: 100%;
        height: 100%;
        overflow: hidden;
-       background-color: pink;
+       background-color: white;
      }
      h1 {
        margin: 0;

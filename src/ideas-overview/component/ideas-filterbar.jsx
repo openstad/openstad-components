@@ -100,7 +100,7 @@ export default class IdeasFilterbar extends OpenStadComponent {
     );
 
     let filterHTML = null;
-    if (self.config.filter.length) {
+    if (self.config.filter && self.config.filter.length) {
       let isActive = self.filters && self.filters.find( filter => filter.state.currentValue );
       self.filters = [];
       filterHTML = (

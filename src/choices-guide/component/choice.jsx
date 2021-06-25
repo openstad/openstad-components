@@ -117,9 +117,9 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
 
       case 'minus-to-plus-100':
         let valueHTML = null;
-        let percentage = parseInt(2 * ( score.x - 50 ));
+        let percentage = parseInt(2 * ( score.x - 50 )) || 0;
         if (self.config.withPercentage) {
-          valueHTML = <div className="osc-percentage">{percentage}%</div>
+          valueHTML = <div className="osc-percentage">{percentage}</div>
         }
 
         let maxColorMatch = self.config.barColor.max.match(/#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})/i); // todo: rgb(a) colors
@@ -158,7 +158,7 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
       default:
         let percentageHTML = null;
         if (self.config.withPercentage) {
-          let percentage = parseInt(score.x);
+          let percentage = parseInt(score.x) || 0;
           percentageHTML = <div className="osc-percentage">{percentage}%</div>
         }
 
