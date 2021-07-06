@@ -62,7 +62,6 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
 
     // get a number between 0 and 100
     let result;
-    console.log('++');
     if (typeof this.state.value == 'number' || typeof this.state.value == 'string') {
       result = {};
       if ( dimensions.includes('x') ) result.x = this.state.value;
@@ -132,6 +131,7 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
     let value = typeof data.value != 'undefined' ? data.value : 'not defined';
     if ( typeof data.value == 'object' ) {
       let dimensions = data.dimensions;
+      if ( dimensions == 'null' ) dimensions = null;
       if ( !dimensions || dimensions.includes('x') ) value = data.value.x;
       if ( dimensions && dimensions.includes('y') ) value = data.value.y;
       if ( dimensions && dimensions.includes('z') ) value = data.value.z;

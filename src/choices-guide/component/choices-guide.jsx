@@ -145,8 +145,6 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
 
     self.choicesElement.calculateScores(state.values);
 
-    self.userPreference && self.userPreference.calculateScores();    
-
     let { isReady, currentQuestion } = self.questionGroupElement.gotoNextQuestion();
     self.setState({currentQuestion}, () => {
       if (isReady) {
@@ -168,8 +166,6 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
 
     this.choicesElement.calculateScores(state.values);
 
-    self.userPreference && self.userPreference.calculateScores();
-    
     let { isBeginning, currentQuestion } = this.questionGroupElement.gotoPreviousQuestion();
     this.setState({currentQuestion}, () => {
       if (isBeginning) {
@@ -222,7 +218,6 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
     let answers = merge(self.state.values || {}, self.questionGroupElement.getAnswers());
     let scores;
     ( {scores} = self.choicesElement.calculateScores(answers) );
-    self.userPreference && self.userPreference.calculateScores(answers);
     self.setState({ scores, firstAnswerGiven: Object.keys(answers).length > 0 }, () => {
       let allValues = OpenStadComponentLibs.localStorage.get('osc-choices-guide.values') || {};
       allValues[self.config.choicesGuideId] = answers;

@@ -58,6 +58,7 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
 
       ['x','y','z'].forEach((dimension) => {
         if (typeof choiceAnswer[dimension] == 'undefined') return;
+        if (choiceAnswer[dimension] == '') return;
         if (typeof userAnswer[dimension] == 'undefined') return;
         return result[dimension] = 100 - Math.abs(choiceAnswer[dimension] - userAnswer[dimension]);
       });

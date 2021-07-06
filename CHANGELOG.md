@@ -9,8 +9,13 @@
 * Remove dist from repo
 * New export setup that allows multiple libraries per page
 * Better docs
+* Fix 'no answer given'
 
 ## v0.1.25
+## v0.1.26 2021-06-08
+* Fix bug in accordeons
+
+## v0.1.23 Unreleased
 * Add configurable placeholder image
 * Add sizes to image urls - Related ticket: https://trello.com/c/MzSh2iyq
 * Use arrow buttons for seqnr
