@@ -1,45 +1,171 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title>An HTML Document</title>
+    <title>Choices Guide</title>
     <link rel="shortcut icon" href="/favicon.ico"/>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
-    <link rel="stylesheet" type="text/css" href="/openstad/components/dist/css/choices-guide.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/all.css"/>
+
+    <!-- load react -->
     <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
-    <script src="/openstad/components/dist/choices-guide.js"></script>
-	  <script>
+
+    <!-- load openstad component -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/openstad-components@latest/dist/css/choices-guide.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/openstad-components@latest/dist/choices-guide.js"></script>
+
+    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+    <script>
 	   window.addEventListener('load', function(e) {
-       let config = {
 
-         divId: "choices-guide-result",
+       // configure
+       var config = {
 
+         divId: "choices-guide",
          siteId: 1,
          choicesGuideId: 1,
-         questionGroupId: 1,
 
+         noOfQuestionsToShow: 10,
+         startWithAllQuestionsAnswered: true, // this controls if the calculated results include all the questions from the start
+         startWithAllQuestionsAnsweredAndConfirmed: true,  // this controls if a user needs to actively anser all the questions
+
+         // configuration for the choices block
          choices: {
-           // type: 'plane',
+           type: 'zero-to-100', // 'zero-to-100' or 'minus-to-plus-100' for a one dimensional view, 'plane' for two dimensional
+           barColor: { min: null, max: null, deafult: null }, // 'default' is used by 'zero-to-100', 'min' and 'max' by 'minus-to-plus-100'
+           withPercentage: true, // add the percentage in text
+           title: {
+             noPreferenceYet: 'Ik hebt nog geen keuze gemaakt',
+             preference: '<b>Mijn voorkeur:</b><br/>{preferredChoice}',
+             inBetween: 'Ik staat precies tussen meerdere voorkeuren in'
+           },
          },
 
-         api: {
-           "url": "http://APIURL",
-           "headers": { "X-Authorization": "Bearer ACCRESSTOKEN" }
+         // urls that are used in the previous/next buttons
+         beforeUrl: '/choices-guide/example.html?before',
+         afterUrl: '/components/local/choices-guide-result.html',
+
+         user: {
+           fullName: "USER FULL NAME",
+           role: "USER ROLE"
          },
+         
+         api: {
+           isUserLoggedIn: true,
+           url: "API_URL",
+           headers: {
+             "X-Authorization": "Bearer JWT"
+           }
+         },
+
+         submission:{
+           type: "form", // none, auto or form
+           form: {
+             // for contains extra information to be send with a submission
+             title: "Stuur je voorkeur in",
+             intro: "",
+             fields: [
+               {
+                 title: "Geveltuin of plantenbakken",
+                 description: "Heb je interesse om (eventueel samen met je buren) plantenbakken op de kade of een geveltuin te onderhouden?",
+                 inputType: "select",
+                 choices: [
+                   {
+                     title: "Maak een keuze",
+                     value: ""
+                   },
+                   {
+                     title: "Ja, plantenbakken op de kade",
+                     value: "Groenbakken"
+                   },
+                   {
+                     title: "Ja, een geveltuin",
+                     value: "Geveltuin"
+                   },
+                   {
+                     title: "Ja, ik heb interesse in beide",
+                     value: "Beide"
+                   },
+                   {
+                     title: "Nee, bedankt",
+                     value: "Nee"
+                   }
+                 ],
+                 required: true
+               },
+               {
+                 title: "Radio",
+                 description: "Moet de radio aan of uit",
+                 inputType: "radios",
+                 choices: [
+                   {
+                     title: "Aan",
+                     value: "aan"
+                   },
+                   {
+                     title: "Uit",
+                     value: "uit"
+                   },
+                 ],
+                 required: true
+               },
+               {
+                 title: "Naam (optioneel)",
+                 description: "Je naam wordt alleen gebruikt om contact met je te zoeken over het onderhouden van plantenbakken of geveltuintjes op de kade.",
+                 inputType: "text",
+                 choices: [],
+                 required: false
+               },
+               {
+                 title: "Emailadres (optioneel)",
+                 description: "Je emailadres wordt alleen gebruikt om contact met je te zoeken over het onderhouden van plantenbakken of geveltuintjes op de kade.",
+                 inputType: "text",
+                 choices: [],
+                 required: false
+               },
+               {
+                 title: "Postcode",
+                 description: "Type je postcode.",
+                 inputType: "postcode",
+                 required: true
+               },
+               {
+                 title: "Feedback (optioneel)",
+                 description: "Hier kun je nog een bericht achterlaten over jouw voorkeuren.",
+                 inputType: "textarea",
+                 choices: [],
+                 required: false
+               }
+             ]
+           },
+           requireLoginSettings: {
+             // required login is an optional extra: before the form can be posted the user must be logged in
+             title: "Stemcode",
+             description: "Om te kunnen stemmen vul je de stemcode in die je per post hebt ontvangen. Alle huishoudens van Recht Boomssloot nr. 36 t/m 99-100 hebben een stemcode per post ontvangen. Wij controleren je stemcode op geldigheid. Als dat gelukt is kun je stemmen.",
+             buttonTextLogin: "Vul je stemcode in.",
+             buttonTextLoggedIn: "Geldige stemcode, lekker bezig",
+             buttonTextAlreadySubmitted: "Ongeldige stemcode !$%#$",
+             changeLoginLinkText: "Speel vals: log in als iemand anders",
+             loggedInMessage: "Het controleren van je stemcode is gelukt! Klik op onderstaande knop om je keuze in te sturen.",
+             notYetLoggedInError: "Niet goed!!",
+             alreadySubmittedMessage: "Deze stemcode is al gebruikt om te stemmen. Een stemcode kan maar één keer gebruikt worden. Dat snap je zelf ook wel."
+           }
+         }
 
        };
 
-       let element = document.querySelector('.openstad-component-choices-guide-result');
-       OpenStadComponents.ChoicesGuideResult.renderElement(element, config);
+       // load in page
+       var element = document.querySelector('.openstad-component-choices-guide-result');
+       OpenStadComponents['choices-guide'].ChoicesGuideResult.renderElement(element, config);
 
      });
+
 	  </script>
     <style>
      body, html {
        position: relative;
        width: 100%;
        height: 100%;
-       background-color: pink;
      }
      h1 {
        margin: 10px;
@@ -64,5 +190,6 @@
     <div class="container osc-component">
 		  <div class="openstad-component-choices-guide-result"></div>
     </div>
+    <div>Testtekst</div>
   </body>
 </html>

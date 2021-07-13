@@ -18,7 +18,7 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
       value: 50,
       isAnswered: false,
     };
-
+    
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.showLightbox = this.showLightbox.bind(this);
 
@@ -35,10 +35,12 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
 
   isValid() {
 
+
     let data = this.props.data || {};
     let wasAlreadyAnswered = typeof data.value != 'undefined';
 
-    if (wasAlreadyAnswered || this.state.isAnswered) return true;
+    let isAnswered = this.state.isAnswered || !!this.config.startWithAllQuestionsAnsweredAndConfirmed
+    if (wasAlreadyAnswered || isAnswered) return true;
 
     this.setState({error: 'Je hebt nog geen keuze gemaakt'});
     return false;
@@ -72,8 +74,6 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
       if ( dimensions.includes('z') ) result.z = this.state.value.z;
     }
 
-    // console.log('answer', data.title, result);
-
     return result;
 
   }
@@ -81,6 +81,17 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
   liveUpdates() {
 		var event = new window.CustomEvent('osc-choices-guide-live-updates');
 		document.dispatchEvent(event);
+  }
+
+  toggleMoreInfo(id) {
+    let elem = document.querySelector(`#${id}`);
+    if (elem) {
+      if( elem.className.match(' osc-closed') ) {
+        elem.className = elem.className.replace(' osc-closed', ' osc-open');
+      } else {
+        elem.className = elem.className.replace(' osc-open', ' osc-closed');
+      }
+    }
   }
 
   showLightbox(startWith) {
@@ -120,6 +131,7 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
     let value = typeof data.value != 'undefined' ? data.value : 'not defined';
     if ( typeof data.value == 'object' ) {
       let dimensions = data.dimensions;
+      if ( dimensions == 'null' ) dimensions = null;
       if ( !dimensions || dimensions.includes('x') ) value = data.value.x;
       if ( dimensions && dimensions.includes('y') ) value = data.value.y;
       if ( dimensions && dimensions.includes('z') ) value = data.value.z;
@@ -146,9 +158,10 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
     if (data.moreInfo && ( data.moreInfo.title || data.moreInfo.text )) {
       let title = data.moreInfo.title || 'Geen titel';
       let text = data.moreInfo.text || 'Geen tekst';
+      let id = `osc-moreInfo-${parseInt(100000*Math.random())}`;
       moreInfoHTML = (
         <div className="osc-accordeon">
-          <div className="osc-accordeon-item osc-closed">
+          <div id={id} className="osc-accordeon-item osc-closed" onClick={() => self.toggleMoreInfo(id)}>
             <div className="osc-title osc-info">
               {title}
             </div>

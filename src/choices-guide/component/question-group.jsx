@@ -12,7 +12,7 @@ export default class OpenStadComponentQuestionGroup extends OpenStadComponent {
 
     super(props);
 
-    this.noOfQuestionsToShow = this.config.noOfQuestionsToShow || 1;
+    this.noOfQuestionsToShow = this.config.noOfQuestionsToShow || 100;
     this.questionElements = [];
 
     this.state = {
@@ -36,7 +36,11 @@ export default class OpenStadComponentQuestionGroup extends OpenStadComponent {
       if ( !self.questionElements[i].isValid() ) {
         if (!scrollDone) {
           setTimeout( () => {
-            document.querySelector(`#${self.questionElements[i].config.divId}-content`).scrollIntoView({behavior: 'smooth'})
+            console.log(self.questionElements[i]);
+            console.log(self.questionElements[i].questionId);
+            let elem = document.querySelector(`#osc-question-${self.questionElements[i].questionId}-content`);
+            console.log(elem);
+            elem && elem.scrollIntoView({behavior: 'smooth'})
           }, 250 );
         }
         scrollDone = true;
@@ -64,7 +68,7 @@ export default class OpenStadComponentQuestionGroup extends OpenStadComponent {
 
   gotoNextQuestion() {
 
-    if (!this.isValid()) return;
+    if (!this.isValid()) return {};
 
     let state = {};
     let currentQuestion = this.state.currentQuestion + this.noOfQuestionsToShow;

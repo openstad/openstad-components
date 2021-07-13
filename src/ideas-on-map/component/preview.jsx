@@ -235,11 +235,14 @@ export default class Preview extends OpenStadComponent {
             {idea.argCount || 0}
           </div>);
       }
+      let config = { ... self.config };
+      config.display.showStats = true;
+      config.display.showTypeIcon = true;
       selectedIdeaHTML = (
 			  <div className="osc-infobar-selected-idea" onClick={(event) => self.dispatchSelectedIdeaClick(event, self.props.selectedIdea)}>
           <button className="osc-close-button-black" onClick={(event) => self.dispatchClosePreview(event, 'idea')} ref={el => (self.resetButton = el)}/>
           <h3>Geselecteerd</h3>
-          <OpenStadComponentIdeaTile config={self.config} idea={idea} className={`osc-${self.config.display.columns}-columns${this.config.display.onMouseOverTileFadeOthers && self.state.highLightIdeaId && self.state.highLightIdeaId != idea.id ? ' osc-opacity-65' : ''}`} key={`osc-idea-tile-${idea.id}`}/>
+          <OpenStadComponentIdeaTile config={config} idea={idea} className={`osc-${self.config.display.columns}-columns${this.config.display.onMouseOverTileFadeOthers && self.state.highLightIdeaId && self.state.highLightIdeaId != idea.id ? ' osc-opacity-65' : ''}`} key={`osc-idea-tile-${idea.id}`}/>
         </div>
       );
       titleAddition = 'in de buurt';

@@ -1,11 +1,32 @@
 # Changelog
 
+## 0.30.0
+* Set default noOfQuestionsToShow to 100
+* Update ideas-overview, incl. add progress
+* Add warning when no choices guide was found
+* Bugfix: scroll to unanswerd question
+* Reset version numbers
+* Remove dist from repo
+* New export setup that allows multiple libraries per page
+* Better docs
+* Fix 'no answer given'
+
+## v0.1.25
+## v0.1.26 2021-06-08
+* Fix bug in accordeons
+
 ## v0.1.23 Unreleased
 * Add configurable placeholder image
 * Add sizes to image urls - Related ticket: https://trello.com/c/MzSh2iyq
 * Use arrow buttons for seqnr
 * Add semi-automatic version numbering and deployment through travis
 * Fix browser back button in idea details
+
+## v0.1.22.1 2021-06-01
+Add option startWithAllQuestionsAnsweredAndConfirmed to Choices Guide
+
+## v0.1.22 2021-04-26
+Choices Guide updates
 
 ## v0.1.21 2021-04-15
 * Bugfix

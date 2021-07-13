@@ -31,6 +31,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       summaryField: 'summary',
       user: {},
       sort: {},
+      map: {},
       api: {
         url: null,
         headers: null,

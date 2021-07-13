@@ -20,7 +20,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
     super(props, {
       siteId: null,
       loginUrl: null,
-      noOfQuestionsToShow: 1,
+      noOfQuestionsToShow: 100,
       api: {
         url: null
       },
@@ -85,6 +85,9 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
     let self = this;
     fetchChoicesGuide({ config: self.config })
       .then((data) => {
+        if (!data.choicesGuideId) {
+          return self.setState({ status: 'panic', message: "Er is geen keuzewijzer gevonden. Maak er één aan in het admin deel van deze site, en koppel deze dan hier in 'Bewerk keuzewijzer'." });
+        }
         self.setState(data, () => {
           self.startGuide();
         });
@@ -142,8 +145,6 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
 
     self.choicesElement.calculateScores(state.values);
 
-    self.userPreference && self.userPreference.calculateScores();    
-
     let { isReady, currentQuestion } = self.questionGroupElement.gotoNextQuestion();
     self.setState({currentQuestion}, () => {
       if (isReady) {
@@ -165,8 +166,6 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
 
     this.choicesElement.calculateScores(state.values);
 
-    self.userPreference && self.userPreference.calculateScores();
-    
     let { isBeginning, currentQuestion } = this.questionGroupElement.gotoPreviousQuestion();
     this.setState({currentQuestion}, () => {
       if (isBeginning) {
@@ -219,7 +218,6 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
     let answers = merge(self.state.values || {}, self.questionGroupElement.getAnswers());
     let scores;
     ( {scores} = self.choicesElement.calculateScores(answers) );
-    self.userPreference && self.userPreference.calculateScores(answers); //xxx
     self.setState({ scores, firstAnswerGiven: Object.keys(answers).length > 0 }, () => {
       let allValues = OpenStadComponentLibs.localStorage.get('osc-choices-guide.values') || {};
       allValues[self.config.choicesGuideId] = answers;
@@ -285,7 +283,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
     }
 
     let contentHTML = null;
-    if (self.state.status == 'edit') {
+    if (self.state.status == 'edit') { // todo: maak hier een switch van
       contentHTML = (
         <div className="osc-choices-guide-content">
           <OpenStadComponentChoicesGuideForm config={self.config} onFinished={self.hideEditForm} data={{ ...self.state }}/>
@@ -296,7 +294,13 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
 
       let introHTML = null;
 
-      if (self.state.status == 'init') {
+      if (self.state.status == 'panic') {
+        contentHTML = (
+          <div className="osc-choices-guide-content">
+            <div className="osc-alert osc-alert-warning">{self.state.message}</div>
+          </div>
+        );
+      } else if (self.state.status == 'init') {
         contentHTML = (
           <div className="osc-choices-guide-content">
             <div className="osc-intro">Laden...</div>
@@ -308,7 +312,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
           <div id={'osc-choices-container-' + this.divId} className={`osc-choices-container osc-accordeon osc-closed ${'osc-type-' + self.config.choices.type}`} ref={el => { self.choicesAccordeon = el; }}>
             <div onClick={e => self.onChoicesClick(e)} className="osc-accordeon-button" dangerouslySetInnerHTML={{ __html: self.state.choicesTitle }}></div>
             <div className="osc-accordeon-content">
-              <OpenStadComponentChoices config={{ ...self.config.choices }} choices={[...choices]} scores={{...self.state.scores}} firstAnswerGiven={ self.state.firstAnswerGiven ? true : false } ref={function(el) { self.choicesElement = el; }} key='choices'/>
+              <OpenStadComponentChoices config={{ ...self.config.choices, startWithAllQuestionsAnswered: self.config.startWithAllQuestionsAnswered }} choices={[...choices]} scores={{...self.state.scores}} firstAnswerGiven={ self.state.firstAnswerGiven ? true : false } ref={function(el) { self.choicesElement = el; }} key='choices'/>
             </div>
           </div>
         );
