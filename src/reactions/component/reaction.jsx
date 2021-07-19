@@ -86,6 +86,10 @@ export default class OpenStadComponentReaction extends OpenStadComponent {
     return this.props.data.can.reply;
   }
 
+  userIsModerator() {
+    return OpenStadComponentLibs.user.hasRole(this.config.user, 'moderator');
+  }
+
   submitDelete() {
 
     let self = this;
@@ -205,7 +209,7 @@ export default class OpenStadComponentReaction extends OpenStadComponent {
 
     let replyButtonHTML = null;
     let replyFormHTML = null;
-    if (self.canReply() && !self.config.isClosed) {
+    if (self.canReply() && (!self.config.isClosed || self.userIsModerator() )) {
       replyButtonHTML = (<a onClick={ () => self.toggleReplyForm() } className="osc-reply-button">Reageren</a>);
       if (self.state.isReplyFromActive) {
         let config = { ...self.config, parentId: data.id };

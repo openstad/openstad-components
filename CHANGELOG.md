@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.31.0
+* Fix closed reactions for moderators
+
 ## 0.30.0
 * Set default noOfQuestionsToShow to 100
 * Update ideas-overview, incl. add progress
@@ -10,6 +13,7 @@
 * New export setup that allows multiple libraries per page
 * Better docs
 * Fix 'no answer given'
+* Fix closed reactions for moderators
 
 ## v0.1.25
 ## v0.1.26 2021-06-08
