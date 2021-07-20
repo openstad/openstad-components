@@ -1,10 +1,15 @@
 @import (reference) '../../component/css/default.less';
-@import './ideas-list.less';
 @import './ideas-filterbar.less';
 @import './ideas-filter.less';
 @import './ideas-search.less';
 @import './ideas-sort.less';
+
+@import './ideas-list.less';
 @import './idea-tile.less';
+
+@import './displaytype-list.less';
+@import './displaytype-tiles.less';
+@import './displaytype-gridder.less';
 
 @margin: 20px;
 
@@ -12,17 +17,13 @@
 
   width: 100%;
 
-  .osc-tile-list-container {
-    
-    overflow-x: hidden;
-  
-    .osc-tile-list {
-      width: calc( 100% + @margin );
-      display: flex;
-      flex-flow: row wrap;
-      justify-content: flex-start;
+  .osc-title {
+    @media @phone {
+      width: 94%;
+      margin-left: 3%;
+      margin-right: 3%;
+      
     }
-
   }
 
   .osc-align-right-container {

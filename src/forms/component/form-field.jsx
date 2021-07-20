@@ -1,7 +1,8 @@
 'use strict';
 
-import OpenStadComponent from '../../component/index.jsx';
+import merge from 'merge';
 
+import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentHidden from './hidden.jsx';
 import OpenStadComponentImageUpload from './image-upload.jsx';
 import OpenStadComponentInputWithCounter from './input-with-counter.jsx';
@@ -28,6 +29,11 @@ export default class OpenStadComponentFormField extends OpenStadComponent {
 		});
 
 		let self = this;
+
+    // some fields are cretaed with their own config
+    let fieldconfig = this.config.config;
+    delete this.config.config;
+    this.config = merge.recursive( this.config, fieldconfig );
 
     self.config.name = self.config.name || self.config.title.toLowerCase();
 

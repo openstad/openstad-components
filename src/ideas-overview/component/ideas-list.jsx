@@ -15,15 +15,8 @@ export default class IdeasList extends OpenStadComponent {
 
   constructor(props) {
 
-    super(props, {
-      display: {
-        title: 'Inzendingen',
-        // type: 'grid',
-        type: 'tiles',
-        // type: 'list',
-        columns: 3,
-        onMouseOverTileFadeOthers: false,
-      },
+		// config
+		let defaultConfig = {
       idea:{
         titleField: 'title',
         summaryField: 'summary',
@@ -34,7 +27,52 @@ export default class IdeasList extends OpenStadComponent {
         defaultValue: 'createdtime,desc',
       },
       types: [],
-		});
+		};
+
+    // type specific default config
+    switch (props.config.display && props.config.display.type) {
+      case 'list':
+        defaultConfig.display = {
+          title: 'Inzendingen',
+          columns: 1,
+          showStatusLabel: false,
+          showTheme: false,
+          showArea: false,
+          showVoteProgressbar: false,
+          showStats: true,
+          showTypeIcon: true,
+          onMouseOverTileFadeOthers: false,
+        };
+        break;
+      case 'grid':
+        defaultConfig.display = {
+          title: 'Inzendingen',
+          columns: 3,
+          showStatusLabel: false,
+          showTheme: true,
+          showArea: true,
+          showVoteProgressbar: false,
+          showStats: false,
+          showTypeIcon: false,
+          onMouseOverTileFadeOthers: false,
+        };
+        break;
+      default:
+        defaultConfig.display = {
+          title: 'Inzendingen',
+          type: 'tiles',
+          columns: 4,
+          showStatusLabel: true,
+          showTheme: false,
+          showArea: false,
+          showVoteProgressbar: true,
+          showStats: true,
+          showTypeIcon: false,
+          onMouseOverTileFadeOthers: false,
+        };
+    }
+
+    super(props, defaultConfig);
 
     this.state = {
       highLightIdeaId: null,
@@ -77,11 +115,11 @@ export default class IdeasList extends OpenStadComponent {
     let ideas = self.props.ideas || [];
     
     return (
-      <div className={`osc-tile-list-container ${self.props.className || ''}`}>
-        <div className="osc-tile-list">
+      <div className={`osc-tile-list-container osc-columns-container ${self.props.className || ''}`}>
+        <div className="osc-tile-list osc-columns">
           { ideas.map((idea, i) => {
             return (
-              <IdeaTile config={self.config} idea={idea} className={`osc-${self.config.display.columns}-columns${this.config.display.onMouseOverTileFadeOthers && self.state.highLightIdeaId && self.state.highLightIdeaId != idea.id ? ' osc-opacity-65' : ''}`} key={`osc-idea-tile-${idea.id}`}/>
+              <IdeaTile config={self.config} idea={idea} className={`${this.config.display.onMouseOverTileFadeOthers && self.state.highLightIdeaId && self.state.highLightIdeaId != idea.id ? ' osc-opacity-65' : ''}`} key={`osc-idea-tile-${idea.id}`}/>
             );
           })}
         </div>

@@ -1,6 +1,7 @@
 // polyfills
 import 'whatwg-fetch';
 import 'custom-event-polyfill';
+import 'core-js/es/object/assign';
 
 // react
 import React from 'react';

@@ -14,15 +14,27 @@ export default class IdeasOverview extends OpenStadComponent {
 
   constructor(props) {
 
-		// config
-		let defaultConfig = {
+    super(props, {
 
       idea:{
         showVoteButtons: true, // TODO: dit is een stomme config parameter
         titleField: 'title',
         summaryField: 'summary',
+        minimumYesVotes: undefined,
       },
 
+      display: {
+        type: 'tiles',
+        columns: 4,
+        showStatusLabel: false,
+        showTheme: false,
+        showArea: false,
+        showVoteProgressbar: false,
+        showStats: false,
+        showTypeIcon: false,
+        onMouseOverTileFadeOthers: false,
+      },
+      
       image: {},
 
       argument: {
@@ -38,46 +50,7 @@ export default class IdeasOverview extends OpenStadComponent {
       types: [],
       typeField: 'typeId',
 
-		};
-
-    // type specific default config
-    switch (props.config.display && props.config.display.type) {
-      case 'list':
-        defaultConfig.display = {
-          columns: 1,
-          showStatusLabel: false,
-          showTheme: false,
-          showArea: false,
-          showVoteProgressbar: false,
-          showStats: true,
-          showTypeIcon: true,
-        };
-        break;
-      case 'grid':
-        defaultConfig.display = {
-          columns: 3,
-          showStatusLabel: false,
-          showTheme: true,
-          showArea: true,
-          showVoteProgressbar: false,
-          showStats: false,
-          showTypeIcon: false,
-        };
-        break;
-      default:
-        defaultConfig.display = {
-          type: 'tiles',
-          columns: 4,
-          showStatusLabel: true,
-          showTheme: false,
-          showArea: false,
-          showVoteProgressbar: true,
-          showStats: true,
-          showTypeIcon: false,
-        };
-    }
-
-    super(props, defaultConfig);
+		});
 
     this.config.image.allowMultipleImages = false;
 
@@ -164,8 +137,14 @@ export default class IdeasOverview extends OpenStadComponent {
 
     let voteProgressHTML = null;
     if (self.config.display.showVoteProgressbar) {
+      console.log(idea.progress);
       voteProgressHTML = (
-        <div>GENOEGSTEMMNBALK</div>
+        <div className="osc-progress-container">
+          <div className="osc-progress">
+            <div className="osc-progress-bar osc-status-open" style={{ width: idea.progress + '%' }}></div>
+            <div className="osc-progress-target">{self.config.idea.minimumYesVotes}</div>
+          </div>
+        </div>
       );
     }
 
@@ -193,7 +172,7 @@ export default class IdeasOverview extends OpenStadComponent {
 
     // now render
     return (
-			<div id={self.divId} className={`osc-idea-tile osc-displaytype-${self.config.display.type} ${self.props.className || ''}`} onClick={event => self.dispatchIdeaTileClick(event, idea)} onMouseOver={event => self.dispatchIdeaTileMouseOver(event, idea)} onMouseOut={event => self.dispatchIdeaTileMouseOut(event, idea)}>
+			<div id={self.divId} className={`osc-idea-tile osc-displaytype-${self.config.display.type} osc-column osc-${self.config.display.columns}-columns ${self.props.className || ''}`} onClick={event => self.dispatchIdeaTileClick(event, idea)} onMouseOver={event => self.dispatchIdeaTileMouseOver(event, idea)} onMouseOut={event => self.dispatchIdeaTileMouseOut(event, idea)}>
         <div className="osc-idea-image-container">
           <OpenStadComponentIdeaImage config={this.config} idea={idea} key={'image-' + idea.id}/>
         </div>
