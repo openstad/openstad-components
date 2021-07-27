@@ -15,6 +15,15 @@
 * Fix 'no answer given'
 * Fix closed reactions for moderators
 
+## v0.1.26 2021-06-08
+* Fix bug in accordeons
+
+## v0.1.22.1 2021-06-01
+* Add option startWithAllQuestionsAnsweredAndConfirmed to Choices Guide
+
+## v0.1.22 2021-04-26
+* Choices Guide updates
+
 ## v0.1.25
 ## v0.1.26 2021-06-08
 * Fix bug in accordeons
