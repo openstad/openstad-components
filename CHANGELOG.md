@@ -2,6 +2,7 @@
 
 ## 0.31.0
 * Fix closed reactions for moderators
+* Empty value in radio buttons means 'no effect'
 
 ## 0.30.0
 * Set default noOfQuestionsToShow to 100

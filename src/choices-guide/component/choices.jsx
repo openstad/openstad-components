@@ -72,7 +72,7 @@ export default class OpenStadComponentChoices extends OpenStadComponent {
       }
 
     }
-    
+
     self.setState({answers, scores, planePos});
     return {answers, scores, planePos};
 

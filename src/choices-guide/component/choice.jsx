@@ -53,6 +53,7 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
       let choiceAnswer = choiceAnswers[id] || {};
       // TODO: this.config.startWithAllQuestionsAnswered hoort in question, niet hier
       let userAnswer = userAnswers[id] || ( this.config.startWithAllQuestionsAnswered ? { x: 50, y: 50, z: 50 } : {} );
+      console.log(userAnswer);
 
       let result = results[id] = {};
 
@@ -60,6 +61,7 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
         if (typeof choiceAnswer[dimension] == 'undefined') return;
         if (choiceAnswer[dimension] == '') return;
         if (typeof userAnswer[dimension] == 'undefined') return;
+        if (userAnswer[dimension] == '') return;
         return result[dimension] = 100 - Math.abs(choiceAnswer[dimension] - userAnswer[dimension]);
       });
 
@@ -72,7 +74,7 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
         if (typeof results[id][dimension] != 'undefined') {
           scores[dimension].score.push(results[id][dimension]);
         }
-        if (choiceAnswers[id] && typeof choiceAnswers[id][dimension] != 'undefined') {
+        if (choiceAnswers[id] && choiceAnswers[id][dimension] != '' && typeof choiceAnswers[id][dimension] != 'undefined') {
           scores[dimension].noOfAnswers++;
         }
       });
@@ -81,7 +83,7 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
       scores[dimension] = scores[dimension].score.length ? scores[dimension].score.reduce(function (accumulator, currentValue){return accumulator + currentValue;}) / scores[dimension].noOfAnswers : undefined;
     });
 
-    // console.log('scores', scores);
+    console.log('scores', scores);
 
     self.setState({score: scores});
     return scores;
