@@ -1,0 +1,45 @@
+'use strict';
+
+import OpenStadComponent from '../../component/index.jsx';
+import OpenStadComponentLibs from '../../libs/index.jsx';
+
+export default class OpenStadComponentNumberplates extends OpenStadComponent {
+
+  constructor(props) {
+
+    super(props, {
+      number: 0,
+    });
+
+    this.state = {
+      number: this.config.number,
+    };
+
+  }
+
+  updateNumber(value) {
+    this.setState({ number: value });
+  }
+
+  render() {
+
+    let self = this;
+
+    let numberHTML = [];
+    let number = parseInt(typeof self.props.number != 'undefined' ? self.props.number : self.state.number);
+    number = number.toString();
+    for (var i = 0; i < number.length; i++) {
+      numberHTML.push((
+        <div className="osc-numberplate" key={'osc-numberplate-'+i}>{number.charAt(i)}</div>
+      ))
+    }
+
+    return (
+      <div id={self.divId} className={self.props.className || 'osc-numberplates'} ref={el => self.instance = el} >
+        {numberHTML}
+      </div>
+    );
+
+  }
+
+}
