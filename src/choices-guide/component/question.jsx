@@ -25,8 +25,8 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
 
   }
 
-  onChangeHandler(value) {
-    let state = { value: value, isAnswered: true };
+  onChangeHandler(value, position = true) {
+    let state = { value: value, isAnswered: true, position};
     state.error = undefined;
     this.setState(state, () => {
       this.liveUpdates();
@@ -62,16 +62,20 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
 
     // get a number between 0 and 100
     let result;
-    if (typeof this.state.value == 'number' || typeof this.state.value == 'string') {
-      result = {};
-      if ( dimensions.includes('x') ) result.x = this.state.value;
-      if ( dimensions.includes('y') ) result.y = this.state.value;
-      if ( dimensions.includes('z') ) result.z = this.state.value;
+    if (this.state.position === true) {
+      if (typeof this.state.value == 'number' || typeof this.state.value == 'string') {
+        result = {};
+        if (dimensions.includes('x')) result.x = this.state.value;
+        if (dimensions.includes('y')) result.y = this.state.value;
+        if (dimensions.includes('z')) result.z = this.state.value;
+      } else {
+        result = {};
+        if (dimensions.includes('x')) result.x = this.state.value.x;
+        if (dimensions.includes('y')) result.y = this.state.value.y;
+        if (dimensions.includes('z')) result.z = this.state.value.z;
+      }
     } else {
-      result = {};
-      if ( dimensions.includes('x') ) result.x = this.state.value.x;
-      if ( dimensions.includes('y') ) result.y = this.state.value.y;
-      if ( dimensions.includes('z') ) result.z = this.state.value.z;
+      result = this.state.value;
     }
 
     return result;
@@ -115,7 +119,7 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
 		// dispatch an event
 		var event = new window.CustomEvent('osc-show-light-box', { detail: { images, startIndex, aspectRatio: this.config.aspectRatio } });
 		document.dispatchEvent(event);
-    
+  
   }
 
   render() {
@@ -299,6 +303,32 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
               return <button onClick={() => self.onChangeHandler(entry.value)} key={`button-value-${i}`}>{entry.text}</button>;
             })}
           </div>;
+        break;
+        
+      case 'input':
+        selectorHTML =
+          <div className="osc-question-selector">
+            <div className="osc-radio-container">
+                  <div className={`osc-text-input`}>
+                    <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', minLength: 2, maxLength: 255 }}  onChange={ data => self.onChangeHandler(data.value, false) } ref={el => self.titleField = el}/>
+                  </div>
+                  <div className="osc-text-text">{data.values.text}</div>
+                </div>
+            
+            </div>;
+        break;
+        
+      case 'textarea':
+        selectorHTML =
+          <div className="osc-question-selector">
+            <div className="osc-radio-container">
+                  <div className={`osc-text-input`}>
+                    <OpenStadComponentForms.InputWithCounter config={{ inputType: 'textarea', minLength: 2, maxLength: 255 }} value onChange={ data => self.onChangeHandler(data.value, false) } ref={el => self.titleField = el}/>
+                  </div>
+                  <div className="osc-text-text">{data.values.text}</div>
+                </div>
+            
+            </div>;
         break;
 
       default:

@@ -218,7 +218,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
     let answers = merge(self.state.values || {}, self.questionGroupElement.getAnswers());
     let scores;
     ( {scores} = self.choicesElement.calculateScores(answers) );
-    self.setState({ scores, firstAnswerGiven: Object.keys(answers).length > 0 }, () => {
+    self.setState({ scores, firstAnswerGiven: Object.keys(answers).length > 0, answers }, () => {
       let allValues = OpenStadComponentLibs.localStorage.get('osc-choices-guide.values') || {};
       allValues[self.config.choicesGuideId] = answers;
       OpenStadComponentLibs.localStorage.set('osc-choices-guide.values', allValues);
@@ -254,7 +254,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
 
 		var event = new window.CustomEvent('osc-choices-click', { detail: {} });
 		document.dispatchEvent(event);
-    
+  
   }
 
   render() {
