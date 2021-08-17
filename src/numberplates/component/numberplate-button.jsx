@@ -14,7 +14,9 @@ export default class OpenStadComponentNumberplateButton extends OpenStadComponen
     });
 
     this.state = {
-      number: typeof props.number != 'undefined' ? props.number : this.config.number,
+      number: this.config.number,
+      url: this.config.url,
+      caption: this.config.caption,
     };
 
   }
@@ -27,28 +29,32 @@ export default class OpenStadComponentNumberplateButton extends OpenStadComponen
 
     let self = this;
 
-    let numberplatesHTML = (<OpenStadComponentNumberplates number={self.state.number} ref={(el) => { self.numberplates = el; }}/>);
+    let number = parseInt(typeof self.props.number != 'undefined' ? self.props.number : self.state.number);
+    let numberplatesHTML = (<OpenStadComponentNumberplates number={number} ref={(el) => { self.numberplates = el; }}/>);
 
     let captionHTML = null;
     if (self.config.caption) {
+      let caption = typeof self.props.caption != 'undefined' ? self.props.caption : self.state.caption;
       captionHTML = <div className="osc-numberplate-button-caption"><div className="osc-elipsis">{self.config.caption}</div></div>
     }
 
-    if (self.config.url) {
+    let url = typeof self.props.url != 'undefined' ? self.props.url : self.state.url;
+    if (url) {
       return (
-        <a href={self.config.url} id={self.divId} className={self.props.className || 'osc-numberplate-button'}>
+        <a href={url} id={self.divId} className={self.props.className || 'osc-numberplate-button'}>
           {numberplatesHTML}
           {captionHTML}
         </a>
       );
-    } else {
-      return (
-        <div id={self.divId} className={self.props.className || 'osc-numberplate-button'}>
-          {numberplatesHTML}
-          {captionHTML}
-        </div>
-      );
     }
+
+    let onClick = typeof self.props.onClick != 'undefined' ? self.props.onClick : self.state.onClick || null;
+    return (
+      <div id={self.divId} onClick={onClick} className={self.props.className || 'osc-numberplate-button'}>
+        {numberplatesHTML}
+        {captionHTML}
+      </div>
+    );
 
   }
 
