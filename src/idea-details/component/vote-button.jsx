@@ -2,6 +2,7 @@
 
 import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
+import OpenStadComponentNumberplateButton from '../../numberplates/component/numberplate-button.jsx';
 
 'use strict';
 
@@ -10,11 +11,8 @@ export default class VoteButton extends OpenStadComponent {
   constructor(props) {
 
     super(props, {
-      name: 'likebutton',
-      backgroundColor: '#164995',
-      color: '#fff',
-      text: 'like',
-      opinion: 'yes',
+      caption: 'like',
+      name: 'votebutton',
 		});
 
     this.state = {
@@ -94,17 +92,7 @@ export default class VoteButton extends OpenStadComponent {
 	  let value0   = value - value000 * 100 - value00 * 10;
 
     return (
-	    <div id={self.id} className={self.props.className || 'osc-vote-button osc-number-button'} ref={el => (self.instance = el)}>
-		    <div className="osc-number-plates" style={{ color: this.config.color, backgroundColor: this.config.backgroundColor }}>
-			    <div id={`${this.config.name}-number-plate-000`} className="osc-number-plate">{value000}</div>
-			    <div id={`${this.config.name}-number-plate-00`} className="osc-number-plate">{value00}</div>
-			    <div id={`${this.config.name}-number-plate-0`} className="osc-number-plate">{value0}</div>
-		    </div>
-        <div className={`osc-number-button-text ${this.config.name}-name ${this.props.idea.userVote ? ' osc-user-has-voted' : ''} ${this.state.busy ? ' osc-busy' : ''}`} style={{ color: this.config.color, backgroundColor: this.config.backgroundColor }} onClick={ (e) => self.doVote(e) }>
-			    {self.config.text}
-		    </div>
-        <div className="osc-clear-both"></div>
-	    </div>
+      <OpenStadComponentNumberplateButton config={{ caption: 'eens' }} number={self.state.value} onClick={(e) => self.doVote(e)} className={`osc-numberplate-button ${this.props.idea.userVote ? ' osc-user-has-voted' : ''} ${this.state.busy ? ' osc-busy' : ''}`}/>
     );
 
   }

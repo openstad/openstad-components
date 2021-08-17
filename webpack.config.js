@@ -19,8 +19,9 @@ module.exports = {
     "ideas-on-map": './src/ideas-on-map/index.jsx',
     "lightbox": './src/lightbox/index.jsx',
     "modal-popup": './src/modal-popup/index.jsx',
-    "previous-next-button-block": './src/previous-next-button-block/index.jsx',
+    "numberplates": './src/numberplates/index.jsx',
     "poll": './src/poll/index.jsx',
+    "previous-next-button-block": './src/previous-next-button-block/index.jsx',
     "reactions": './src/reactions/index.jsx',
   },
 

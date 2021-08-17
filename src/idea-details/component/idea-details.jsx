@@ -255,9 +255,9 @@ export default class IdeasDetails extends OpenStadComponent {
     let voteButtonsHTML = null;
     if (self.config.idea.showVoteButtons) {
       voteButtonsHTML = (
-        <div className="osc-details-vote-buttons-container">
+        <div className="osc-vote-buttons-container">
           <h3>Likes</h3>
-          <VoteButton config={{ text: 'eens', opinion: 'yes', api: this.config.api, user: this.config.user, siteId: this.config.siteId }} idea={this.state.idea} name="likebutton" value={idea.yes}/>
+          <VoteButton config={{ caption: 'eens', opinion: 'yes', api: this.config.api, user: this.config.user, siteId: this.config.siteId }} idea={this.state.idea} name="likebutton" value={idea.yes}/>
         </div>
       );
     }

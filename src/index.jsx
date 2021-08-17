@@ -26,8 +26,9 @@ import IdeasOnMap from './ideas-on-map/index.jsx';
 import IdeaDetails from './idea-details/index.jsx';
 import IdeasOverview from './ideas-overview/index.jsx';
 import IdeasImage from './image/index.jsx';
-import PreviousNextButtonBlock from './previous-next-button-block/index.jsx';
+import Numberplates from './numberplates/index.jsx';
 import Poll from './poll/index.jsx';
+import PreviousNextButtonBlock from './previous-next-button-block/index.jsx';
 import Reactions from './reactions/index.jsx';
 
 export {
@@ -42,8 +43,9 @@ export {
   IdeasOverview,
   IdeasImage,
   Lightbox,
-  PreviousNextButtonBlock,
+  Numberplates,
   Poll,
+  PreviousNextButtonBlock,
   Reactions,
 }
 
