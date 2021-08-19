@@ -13,7 +13,6 @@ export default class OpenStadComponentReactions extends OpenStadComponent {
     super(props, {
       scrollToNewReaction: true,
       isClosed: false,
-      closedText: 'De reactiemogelijkheid is gesloten',
       sentiment: undefined,
       siteId: null,
       ideaId: null,
@@ -27,13 +26,19 @@ export default class OpenStadComponentReactions extends OpenStadComponent {
       requiredUserRole: 'member',
       placeholder: '',
       formIntro: '',
+
+      emptyListText: 'Nog geen argumenten',
+      isReplyingEnabled: true,
+      isVotingEnabled: true,
+      doShowLastName: true,
+      
     });
 
     this.showNotLoggedInPopup = this.showNotLoggedInPopup.bind(this)
 
     this.state = {
       user: this.config.user,
-      reactions: [],
+      reactions: null,
     };
 
   }
@@ -139,20 +144,27 @@ export default class OpenStadComponentReactions extends OpenStadComponent {
 
     let self = this;
 
-    let reactions =
-      <ul className="osc-reactions-list">
-        {self.state.reactions.map((reaction) => {
+    let reactionsHTML = null;
+    if (Array.isArray(self.state.reactions)) {
+      if (self.state.reactions.length > 0) {
+        reactionsHTML =
+          <ul className="osc-reactions-list">
+            {self.state.reactions.map((reaction) => {
 
-          let key = `osc-reaction-key-${   reaction.id || parseInt( 1000000 * Math.random() )}`;
-          return (
-            <li key={key}>
-              <OpenStadComponentReaction config={{ ...self.config, showNotLoggedInPopup: self.showNotLoggedInPopup }} user={self.state.user} data={{ ...reaction }}/>
-            </li>
-          );
+              let key = `osc-reaction-key-${   reaction.id || parseInt( 1000000 * Math.random() )}`;
+              return (
+                <li key={key}>
+                  <OpenStadComponentReaction config={{ ...self.config, showNotLoggedInPopup: self.showNotLoggedInPopup }} user={self.state.user} data={{ ...reaction }}/>
+                </li>
+              );
 
-        })}
-      </ul>;
-
+            })}
+          </ul>;
+      } else {
+        reactionsHTML = <div className="osc-empty-list-text">{self.config.emptyListText}</div>
+      }
+    }
+    
     let title = self.config.title ? <h3>{self.config.title}</h3> : null;
 
     let reactionFormHTML = <OpenStadComponentReactionForm config={{ ...self.config, showNotLoggedInPopup: self.showNotLoggedInPopup }} user={self.state.user}/>;
@@ -173,7 +185,8 @@ export default class OpenStadComponentReactions extends OpenStadComponent {
 
         {reactionFormHTML}
 
-        {reactions}
+        {reactionsHTML}
+
         <br/><br/>
 
       </div>

@@ -41,9 +41,11 @@ export default class OpenStadComponentModalPopup extends OpenStadComponent {
 
   showModalPopup(data) {
     let self = this;
-    self.setState({ ...data }, () => {
-      self.instance.style.display = 'block'
-    })
+    if (!data.divId || data.divId == self.divId) {
+      self.setState({ ...data }, () => {
+        self.instance.style.display = 'block'
+      })
+    }
   }
 
   hideModalPopup() {

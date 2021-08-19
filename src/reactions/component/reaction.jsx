@@ -64,10 +64,12 @@ export default class OpenStadComponentReaction extends OpenStadComponent {
   }
 
   canEdit() {
+    if (this.config.isClosed) return false;
     return this.props.data.can.edit;
   }
 
   canDelete() {
+    if (this.config.isClosed) return false;
     return this.props.data.can.delete;
   }
 
@@ -200,25 +202,37 @@ export default class OpenStadComponentReaction extends OpenStadComponent {
 
     let likeButtonHTML = null;
     if (!data.parentId) {
-      likeButtonHTML = (
-			  <a className={ `osc-reaction-like-button${ ( typeof self.state.hasUserVoted != 'undefined' ? self.state.hasUserVoted : data.hasUserVoted ) ? ' osc-reaction-like-button-hasvoted' : ''}` } onClick={ () => self.submitLike() }>
-				  Mee eens (<span>{( typeof self.state.yes != 'undefined' ? self.state.yes : data.yes ) | 0}</span>)
-        </a>
-      );
+      if (self.config.isVotingEnabled) {
+        if ((!self.config.isClosed || self.userIsModerator() )) {
+          likeButtonHTML = (
+			      <a className={ `osc-reaction-like-button${ ( typeof self.state.hasUserVoted != 'undefined' ? self.state.hasUserVoted : data.hasUserVoted ) ? ' osc-reaction-like-button-hasvoted' : ''}` } onClick={ () => self.submitLike() }>
+				      Mee eens (<span>{( typeof self.state.yes != 'undefined' ? self.state.yes : data.yes ) | 0}</span>)
+            </a>
+          );
+        } else {
+          likeButtonHTML = (
+			      <div className={ `osc-reaction-like-button${ ( typeof self.state.hasUserVoted != 'undefined' ? self.state.hasUserVoted : data.hasUserVoted ) ? ' osc-reaction-like-button-hasvoted' : ''}` }>
+				      Mee eens (<span>{( typeof self.state.yes != 'undefined' ? self.state.yes : data.yes ) | 0}</span>)
+            </div>
+          );
+        }
+      }
     }
 
     let replyButtonHTML = null;
     let replyFormHTML = null;
-    if (self.canReply() && (!self.config.isClosed || self.userIsModerator() )) {
-      replyButtonHTML = (<a onClick={ () => self.toggleReplyForm() } className="osc-reply-button">Reageren</a>);
-      if (self.state.isReplyFromActive) {
-        let config = { ...self.config, parentId: data.id };
-        config.formIntro = '';
-        replyFormHTML = (
-			    <div id={`osc-reaction-${data.id}`} className="osc-reply">
-            <OpenStadComponentReactionForm config={config} user={self.state.user} ref={el => (self.editForm = el)}/>
-          </div>
-        );
+    if (self.config.isReplyingEnabled) {
+      if (self.canReply() && (!self.config.isClosed || self.userIsModerator() )) {
+        replyButtonHTML = (<a onClick={ () => self.toggleReplyForm() } className="osc-reply-button">Reageren</a>);
+        if (self.state.isReplyFromActive) {
+          let config = { ...self.config, parentId: data.id };
+          config.formIntro = '';
+          replyFormHTML = (
+			      <div id={`osc-reaction-${data.id}`} className="osc-reply">
+              <OpenStadComponentReactionForm config={config} user={self.state.user} ref={el => (self.editForm = el)}/>
+            </div>
+          );
+        }
       }
     }
 

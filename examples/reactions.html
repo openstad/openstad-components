@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Arguments/Reactions</title>
+
+    <link rel="shortcut icon" href="/favicon.ico"/>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
+
+    <!-- load react -->
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- load openstad component -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/openstad-components@latest/dist/css/reactions.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/openstad-components@latest/dist/reactions.js"></script>
+
+	  <script>
+	   window.addEventListener('load', function(e) {
+       let config = {
+
+         divId: "choices-guide",
+         siteId: 1,
+         ideaId: 1,
+
+         placeholder: 'Type eens wat leuks',
+         formIntro: 'Introtekst. lorem ipsum dolor sit amet, consectetuer adipiscing elit. aenean tortor dolor.',
+         sentiment: 'for',
+         title: 'Niels zn reacties voor',
+
+         isClosed: false,
+         // closedText: 'Niet meer',
+         emptyListText: 'Nog geen argumenten',
+         isReplyingEnabled: true,
+         isVotingEnabled: true,
+         doShowLastName: true,
+
+         descriptionMinLength: 3,
+         descriptionMaxLength: 50,
+
+         user: {
+           fullName: "USER FULL NAME",
+           role: "USER ROLE"
+         },
+         
+         api: {
+           isUserLoggedIn: true,
+           url: "API_URL",
+           headers: {
+             "X-Authorization": "Bearer JWT"
+           }
+         },
+
+         loginUrl: 'LOGIN URL',
+
+       };
+
+       let element1 = document.querySelector('.openstad-component-reactions-for');
+       OpenStadComponents['reactions'].Reactions.renderElement(element1, config);
+
+       config.sentiment = 'against';
+       config.title = 'Niels zn reacties tegen';
+       let element2 = document.querySelector('.openstad-component-reactions-against');
+       OpenStadComponents['reactions'].Reactions.renderElement(element2, config);
+
+     });
+	  </script>
+    <style>
+     * {
+       box-sizing: border-box;       
+     }
+     body, html {
+       position: relative;
+       width: 100%;
+       height: 100%;
+       background-color: pink;
+     }
+     h1 {
+       margin: 10px;
+       padding: 0;
+     }
+     .container {
+       display: block;
+       position: relative;
+       width: 700px;
+       margin: 0 auto;
+       top: 0px;
+       bottom: 0px;
+     }
+     .openstad-component-reactions-for,
+     .openstad-component-reactions-against {
+       width: 50%;
+       padding-right: 20px;
+       float: left;
+     }
+    </style>
+  </head>
+  <body>
+	  <h1>OpenStad Reactions</h1>
+    <div class="container osc-component">
+		  <div class="openstad-component-reactions-for"></div>
+		  <div class="openstad-component-reactions-against"></div>
+    </div>
+  </body>
+</html>
