@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.32.0
+* Add new configuration options to reactions
+
 ## 0.31.0
 * Fix closed reactions for moderators
 * Empty value in radio buttons means 'no effect'

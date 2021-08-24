@@ -19,6 +19,7 @@ export default class OpenStadComponentReaction extends OpenStadComponent {
         headers: null,
       },
       requiredUserRole: 'member',
+      userNameFields: ['firstName', 'lastName'],
     });
 
     this.state = {
@@ -61,6 +62,15 @@ export default class OpenStadComponentReaction extends OpenStadComponent {
 
   toggleEditForm(what) {
     this.setState({ editMode: !this.state.editMode });
+  }
+
+  getUserName(user) {
+    let self = this;
+    let userNameFields = self.config.userNameFields;
+    if (Array.isArray(userNameFields)) userNameFields = { or: [userNameFields] };
+    return userNameFields.or.map(config => 
+      Array.isArray(config) ? config.map(field => user[field]).join(' ') : user[config]
+    ).find(name => !!name);
   }
 
   canEdit() {
@@ -178,8 +188,9 @@ export default class OpenStadComponentReaction extends OpenStadComponent {
 
     if (data.isDeleted) return null;
 
+    let userName = self.getUserName(data.user);
     let isAdmin = OpenStadComponentLibs.user.hasRole(data.user, 'editor') ? 'osc-is-admin' : '';
-    let metadataHTML = <div className={`osc-reaction-user ${isAdmin}`}>{data.user.nickName || data.user.fullName || `${data.user.firstName } ${  data.user.lastName}`}</div>
+    let metadataHTML = <div className={`osc-reaction-user ${isAdmin}`}>{userName}</div>
 
     let menuHTML = null;
     if ( self.canEdit() && self.canDelete() ) {

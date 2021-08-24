@@ -32,7 +32,7 @@
          emptyListText: 'Nog geen argumenten',
          isReplyingEnabled: true,
          isVotingEnabled: true,
-         doShowLastName: true,
+         userNameFields: { or: ['nickName', ['firstName', 'lastName'] ] }, // nickName || firstName + lastName
 
          descriptionMinLength: 3,
          descriptionMaxLength: 50,

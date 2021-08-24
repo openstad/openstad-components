@@ -30,7 +30,6 @@ export default class OpenStadComponentReactions extends OpenStadComponent {
       emptyListText: 'Nog geen argumenten',
       isReplyingEnabled: true,
       isVotingEnabled: true,
-      doShowLastName: true,
       
     });
 
