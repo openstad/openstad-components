@@ -347,6 +347,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
           throw response.text();
         })
         .then(function(json) {
+          self.setState({ busy: false, changed: false })
           if ( self.state.currentTarget.what == 'choices-guide' ) {
             self.onFinished()
           } else {
