@@ -18,21 +18,21 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
         type: 'none',
         requireLoginSettings: {
           title: "Stemcode",
-          description: "Om te kunnen stemmen vul je de stemcode in die je per post hebt ontvangen. Wij controleren je stemcode op geldigheid. Als dat gelukt is kun je stemmen.",
-          buttonTextLogin: "Vul je stemcode in",
+          description: "Om te kunnen stemmen vult u de stemcode in die u per post hebt ontvangen. Wij controleren uw stemcode op geldigheid. Als dat gelukt is kunt u stemmen.",
+          buttonTextLogin: "Vul uw stemcode in",
           buttonTextLoggedIn: "Geldige stemcode",
           buttonTextAlreadySubmitted: "Ongeldige stemcode",
           changeLoginLinkText: "Vul een andere stemcode in",
-          loggedInMessage: "Het controleren van je stemcode is gelukt! Klik op onderstaande knop om je keuze in te sturen.",
-          notYetLoggedInError: "Klik hierboven om je stem te valideren.",
+          loggedInMessage: "Het controleren van uw stemcode is gelukt! Klik op onderstaande knop om uw keuze in te sturen.",
+          notYetLoggedInError: "Klik hierboven om uw stem te valideren.",
           alreadySubmittedMessage: "Deze stemcode is al gebruikt om te stemmen. Een stemcode kan maar één keer gebruikt worden.",
         },
       },
       choices: {
         title: {
-          noPreferenceYet: 'Je hebt nog geen keuze gemaakt',
-          preference: 'Jouw voorkeur is {preferredChoice}',
-          inBetween: 'Je staat precies tussen meerdere voorkeuren in'
+          noPreferenceYet: 'U hebt nog geen keuze gemaakt',
+          preference: 'Uw voorkeur is {preferredChoice}',
+          inBetween: 'U staat precies tussen meerdere voorkeuren in'
         },
         withPercentage: true,
         minLabel: null,
@@ -234,7 +234,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
               self.setState({
                 submissionError: {
                   message: message.toString(),
-                  type: message == 'Je hebt je mening al ingestuurd' ? 'alreadySubmitted' : 'unknown'
+                  type: message == 'U heeft uw mening al ingestuurd' ? 'alreadySubmitted' : 'unknown'
                 }
               }, () => {
                 return console.log(messages);

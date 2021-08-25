@@ -142,7 +142,7 @@ export default class QuestionForm extends OpenStadComponent {
     let moreInfoHTML = (
       <div>
         <h3>Extra info</h3>
-        <div className="osc-form-description">Wil je een blok met uitklapbare tekst toevoegen? (bijvoorbeeld met extra uitleg)</div>
+        <div className="osc-form-description">Wilt u een blok met uitklapbare tekst toevoegen? (bijvoorbeeld met extra uitleg)</div>
         <OpenStadComponentForms.Select config={{ choices: [{ value: 'yes', description: "Ja"}, { value: 'no', description: 'Nee'}] }} value={self.state.showMoreInfoFields} onChange={ data => self.setShowMoreInfoFields(data.value) }/>
       </div>);
 

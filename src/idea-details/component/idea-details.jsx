@@ -267,7 +267,7 @@ export default class IdeasDetails extends OpenStadComponent {
       editButtonsHTML = (
         <div className="osc-editbuttons-container">
           <button className="osc-idea-details-editbutton osc-edit" onClick={(event) => self.dispatchEditIdeaButtonClick(event)}>Bewerk idee</button>
-          <button className="osc-idea-details-editbutton osc-delete" onClick={(event) => { if ( confirm('Weet je het zeker') ) self.deleteIdea(event) }}>Verwijder idee</button>
+          <button className="osc-idea-details-editbutton osc-delete" onClick={(event) => { if ( confirm('Weet u het zeker') ) self.deleteIdea(event) }}>Verwijder idee</button>
         </div>
       );
 

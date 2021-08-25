@@ -196,7 +196,7 @@ export default class OpenStadComponentReaction extends OpenStadComponent {
     if ( self.canEdit() && self.canDelete() ) {
       menuHTML = (
         <div className={ `osc-reaction-menu${   self.state.isMenuActive ? ' osc-reaction-hamburger-active' : ''}` } onClick={ () => { self.showMenu(); }}>
-          <a className="osc-reaction-delete" title="Argument verwijderen" onClick={ () => { if (confirm('Weet je het zeker?')) self.submitDelete(); } }/>
+          <a className="osc-reaction-delete" title="Argument verwijderen" onClick={ () => { if (confirm('Weet u het zeker?')) self.submitDelete(); } }/>
           <a className="osc-reaction-edit" title="Argument bewerken" onClick={ () => self.toggleEditForm() }/>
         </div>
       );
