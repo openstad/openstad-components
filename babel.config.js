@@ -13,6 +13,15 @@ module.exports = function (api) {
 				"generateScopedName": "[name]__[local]___[hash:base64:5]",
 			}
 		],
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        "absoluteRuntime": false,
+        "corejs": false,
+        "helpers": true,
+        "regenerator": true,
+      }
+    ],
 		"transform-postcss",
 	];
 
