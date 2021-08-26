@@ -342,7 +342,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       self.setState({ selectedLocation: location }, () => {
         if (self.state.currentEditIdea) {
           self.updateCurrentEditIdea({ location }, idea => {
-            self.updateLocationAddress(idea.location)
+            self.updateLocationAddress(location)
           });
         }
         if (next) next(self.state.selectedLocation)
@@ -537,7 +537,6 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         id,
         addresssesMunicipality: self.config.search.addresssesMunicipality,
         next: function(json) {
-          console.log(json);
           let centroide_ll = json.centroide_ll;
           let match = centroide_ll.match(/POINT\((\d+\.\d+) (\d+\.\d+)\)/);
           self.map.map.panTo(new L.LatLng(match[2], match[1]));
@@ -555,7 +554,6 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   }
   
 	onMapClick(event, forceSelectLocation) {
-
 
 		if ( this.state.infobarOnMobileIsOpen == true && isMobile) {
       this.closeInfobarOnMobile()
@@ -604,7 +602,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
       case 'idea-details':
         this.onUpdateSelectedIdea(event.target.data);
-        this.showIdeaDetails(event.target.data);
+        document.location.href = "#D" + event.target.data.id;
         document.querySelector('#osc-ideas-on-map-info') && document.querySelector('#osc-ideas-on-map-info').scrollTo(0,0)
         break;
 
@@ -620,7 +618,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         } else {
           this.onUpdateSelectedIdea(event.target.data);
           if ( this.config.onMarkerClickAction == 'showIdeaDetails' ) {
-            this.showIdeaDetails(event.target.data);
+            document.location.href = "#D" + event.target.data.id;
           }
         }
         document.querySelector('#osc-ideas-on-map-info') && document.querySelector('#osc-ideas-on-map-info').scrollTo(0,0)
@@ -671,9 +669,15 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   }
 
 	onUpdateSelectedIdea(idea) {
-    let status = idea ? 'idea-selected' : 'default';
+    let status = 'default';
     if (idea) {
-      document.location.href='#S'+idea.id;
+      if (this.state.status == 'idea-details') {
+        document.location.href='#D'+idea.id;
+        status = 'idea-details';
+      } else {
+        document.location.href='#S'+idea.id;
+        status = 'idea-selected';
+      }
     } else {
       document.location.href = "#";
     }
