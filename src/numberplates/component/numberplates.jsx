@@ -34,8 +34,9 @@ export default class OpenStadComponentNumberplates extends OpenStadComponent {
     number = ('000' + number).slice(-len);
     
     for (var i = 0; i < number.length; i++) {
+      let inverseCount = number.length - i - 1;
       numberHTML.push((
-        <div className="osc-numberplate" key={'osc-numberplate-'+i}>{number.charAt(i)}</div>
+        <div id={'osc-numberplate-'+inverseCount} className="osc-numberplate" key={'osc-numberplate-'+i}>{number.charAt(i)}</div>
       ))
     }
 

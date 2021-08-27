@@ -92,7 +92,7 @@ export default class VoteButton extends OpenStadComponent {
 	  let value0   = value - value000 * 100 - value00 * 10;
 
     return (
-      <OpenStadComponentNumberplateButton config={{ caption: 'eens' }} number={self.state.value} onClick={(e) => self.doVote(e)} className={`osc-numberplate-button ${this.props.idea.userVote ? ' osc-user-has-voted' : ''} ${this.state.busy ? ' osc-busy' : ''}`}/>
+      <OpenStadComponentNumberplateButton config={{ caption: 'eens' }} number={self.state.value} id="osc-like-button" className={`osc-numberplate-button ${this.props.idea.userVote ? ' osc-user-has-voted' : ''} ${this.state.busy ? ' osc-busy' : ''}`} onClick={(e) => self.doVote(e)} />
     );
 
   }
