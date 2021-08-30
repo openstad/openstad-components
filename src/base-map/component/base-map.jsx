@@ -158,7 +158,7 @@ export default class OpenStadComponentMap extends OpenStadComponent {
 
 	  // set bounds and center
 	  if (self.config.autoZoomAndCenter) {
-		  var centerOn = ( self.config.autoZoomAndCenter == 'polygon' && self.config.polygon ) || ( self.markers && self.markers.length && self.markers );
+		  var centerOn = ( self.config.autoZoomAndCenter == 'polygon' && self.config.polygon ) || ( self.markers && self.markers.length && self.markers ) || self.config.polygon;
 		  if (self.editorMarker) {
 			  if (self.editorMarker.position) {
 				  centerOn = [self.editorMarker];
