@@ -1,0 +1,44 @@
+@import (reference) "../../component/css/default.less";
+
+.osc-decision-tree {
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  ul li {
+    list-style: none;
+    margin-bottom: 5px;
+  }
+
+  li label {
+    display: block;
+    background: #e6e6e6;
+    padding: 10px;
+    font-size: 1.125em;
+  }
+
+  .button-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    align-content: flex-end;
+  }
+
+  .back {
+    .osc-button;
+    .osc-previous-button;
+    line-height: 24px;
+    padding-left: 24px;
+  }
+  
+  .back:before {
+    left: 8px
+  }
+
+  .next {
+    .osc-button;
+    .osc-next-button;
+  }
+}

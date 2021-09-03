@@ -22,6 +22,7 @@ module.exports = {
     "previous-next-button-block": './src/previous-next-button-block/index.jsx',
     "poll": './src/poll/index.jsx',
     "reactions": './src/reactions/index.jsx',
+    "decision-tree": './src/decision-tree/index.jsx'
   },
 
 	output: {

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Decision tree</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+
+    <!-- load react -->
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- load openstad component -->
+    <script src="../dist/decision-tree.js"></script>
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../dist/css/decision-tree.css"
+    />
+
+    <script>
+      const config = {
+        decisions: [
+          {
+            id: "w59932012909589541",
+            title: "Ik wil graag hulp, advies of meer informatie",
+            type: "explainer",
+            url: null,
+            explainer: "Lalala",
+            decisions: [],
+            previous: null,
+            next: [],
+          },
+          {
+            id: "w850360303270394475",
+            title: "Ik wil mijn idee zelf uitvoeren",
+            type: "decision",
+            url: null,
+            explainer: "",
+            decisions: [
+              {
+                id: "w273900125115583572",
+                title: "dasd",
+                type: "decision",
+                url: null,
+                explainer: "",
+                decisions: [
+                  {
+                    id: "w790962567272305059",
+                    title: "asdasd",
+                    type: "decision",
+                    url: null,
+                    explainer: "",
+                    decisions: [
+                      {
+                        id: "w125942963199962313",
+                        title: "asdasd",
+                        type: "decision",
+                        url: null,
+                        explainer: "",
+                        decisions: [
+                          {
+                            id: "w210064565603824895",
+                            title: "asdasd",
+                            type: "decision",
+                            url: null,
+                            explainer: "",
+                            decisions: [
+                              {
+                                id: "w565280419917439647",
+                                title: "asdasd",
+                                type: "referer",
+                                url: "http://savvy.codes",
+                                explainer: "",
+                                previous: "w210064565603824895",
+                              },
+                            ],
+                            previous: "w125942963199962313",
+                          },
+                        ],
+                        previous: "w790962567272305059",
+                      },
+                    ],
+                    previous: "w273900125115583572",
+                  },
+                ],
+                previous: "w850360303270394475",
+              },
+            ],
+            previous: null,
+            next: ["w273900125115583572"],
+          },
+          {
+            id: "w734603181786734245",
+            title:
+              "Ik wil mijn idee onder de aandacht brengen van een bepaald stadsdeel",
+            type: "referer",
+            url: "https://savvy.codes",
+            explainer: "",
+            decisions: [],
+            previous: null,
+            next: [],
+          },
+        ],
+        devDebug: false,
+        _id: "w846401825141285990",
+        title: "Ik heb een goed idee!",
+        type: "decision-tree",
+        _edit: true,
+        __docId: "ckt2tywy20095a5spc842btyw",
+        __dotPath: "body.items.0.area1.items.0",
+        containerId: "ckt2ynwtl004yt3spug2lw46y",
+        openstadComponentsCdn: "http://localhost:5000/dist",
+        flatTree: {
+          w59932012909589541: {
+            id: "w59932012909589541",
+            title: "Ik wil graag hulp, advies of meer informatie",
+            type: "explainer",
+            url: null,
+            explainer: "Lalala",
+            decisions: [],
+            previous: null,
+            next: [],
+          },
+          w850360303270394475: {
+            id: "w850360303270394475",
+            title: "Ik wil mijn idee zelf uitvoeren",
+            type: "decision",
+            url: null,
+            explainer: "",
+            decisions: [
+              {
+                id: "w273900125115583572",
+                title: "dasd",
+                type: "decision",
+                url: null,
+                explainer: "",
+                decisions: [
+                  {
+                    id: "w790962567272305059",
+                    title: "asdasd",
+                    type: "decision",
+                    url: null,
+                    explainer: "",
+                    decisions: [
+                      {
+                        id: "w125942963199962313",
+                        title: "asdasd",
+                        type: "decision",
+                        url: null,
+                        explainer: "",
+                        decisions: [
+                          {
+                            id: "w210064565603824895",
+                            title: "asdasd",
+                            type: "decision",
+                            url: null,
+                            explainer: "",
+                            decisions: [
+                              {
+                                id: "w565280419917439647",
+                                title: "asdasd",
+                                type: "referer",
+                                url: "http://savvy.codes",
+                                explainer: "",
+                                previous: "w210064565603824895",
+                              },
+                            ],
+                            previous: "w125942963199962313",
+                          },
+                        ],
+                        previous: "w790962567272305059",
+                      },
+                    ],
+                    previous: "w273900125115583572",
+                  },
+                ],
+                previous: "w850360303270394475",
+              },
+            ],
+            previous: null,
+            next: ["w273900125115583572"],
+          },
+          w273900125115583572: {
+            id: "w273900125115583572",
+            title: "dasd",
+            type: "decision",
+            url: null,
+            explainer: "",
+            decisions: [
+              {
+                id: "w790962567272305059",
+                title: "asdasd",
+                type: "decision",
+                url: null,
+                explainer: "",
+                decisions: [
+                  {
+                    id: "w125942963199962313",
+                    title: "asdasd",
+                    type: "decision",
+                    url: null,
+                    explainer: "",
+                    decisions: [
+                      {
+                        id: "w210064565603824895",
+                        title: "asdasd",
+                        type: "decision",
+                        url: null,
+                        explainer: "",
+                        decisions: [
+                          {
+                            id: "w565280419917439647",
+                            title: "asdasd",
+                            type: "referer",
+                            url: "http://savvy.codes",
+                            explainer: "",
+                            previous: "w210064565603824895",
+                          },
+                        ],
+                        previous: "w125942963199962313",
+                      },
+                    ],
+                    previous: "w790962567272305059",
+                  },
+                ],
+                previous: "w273900125115583572",
+              },
+            ],
+            previous: "w850360303270394475",
+          },
+          w790962567272305059: {
+            id: "w790962567272305059",
+            title: "asdasd",
+            type: "decision",
+            url: null,
+            explainer: "",
+            decisions: [
+              {
+                id: "w125942963199962313",
+                title: "asdasd",
+                type: "decision",
+                url: null,
+                explainer: "",
+                decisions: [
+                  {
+                    id: "w210064565603824895",
+                    title: "asdasd",
+                    type: "decision",
+                    url: null,
+                    explainer: "",
+                    decisions: [
+                      {
+                        id: "w565280419917439647",
+                        title: "asdasd",
+                        type: "referer",
+                        url: "http://savvy.codes",
+                        explainer: "",
+                        previous: "w210064565603824895",
+                      },
+                    ],
+                    previous: "w125942963199962313",
+                  },
+                ],
+                previous: "w790962567272305059",
+              },
+            ],
+            previous: "w273900125115583572",
+          },
+          w125942963199962313: {
+            id: "w125942963199962313",
+            title: "asdasd",
+            type: "decision",
+            url: null,
+            explainer: "",
+            decisions: [
+              {
+                id: "w210064565603824895",
+                title: "asdasd",
+                type: "decision",
+                url: null,
+                explainer: "",
+                decisions: [
+                  {
+                    id: "w565280419917439647",
+                    title: "asdasd",
+                    type: "referer",
+                    url: "http://savvy.codes",
+                    explainer: "",
+                    previous: "w210064565603824895",
+                  },
+                ],
+                previous: "w125942963199962313",
+              },
+            ],
+            previous: "w790962567272305059",
+          },
+          w210064565603824895: {
+            id: "w210064565603824895",
+            title: "asdasd",
+            type: "decision",
+            url: null,
+            explainer: "",
+            decisions: [
+              {
+                id: "w565280419917439647",
+                title: "asdasd",
+                type: "referer",
+                url: "http://savvy.codes",
+                explainer: "",
+                previous: "w210064565603824895",
+              },
+            ],
+            previous: "w125942963199962313",
+          },
+          w565280419917439647: {
+            id: "w565280419917439647",
+            title: "asdasd",
+            type: "referer",
+            url: "http://savvy.codes",
+            explainer: "",
+            previous: "w210064565603824895",
+          },
+          w734603181786734245: {
+            id: "w734603181786734245",
+            title:
+              "Ik wil mijn idee onder de aandacht brengen van een bepaald stadsdeel",
+            type: "referer",
+            url: "https://savvy.codes",
+            explainer: "",
+            decisions: [],
+            previous: null,
+            next: [],
+          },
+        },
+      };
+
+      window.addEventListener("load", function (e) {
+        // load in page
+        let element = document.querySelector(
+          ".openstad-component-decision-tree"
+        );
+        OpenStadComponents["decision-tree"].DecisionTree.renderElement(
+          element,
+          config
+        );
+      });
+    </script>
+  </head>
+  <body>
+    <div class="container osc-component">
+      <div class="openstad-component-decision-tree"></div>
+    </div>
+  </body>
+</html>
