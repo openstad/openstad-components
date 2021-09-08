@@ -230,7 +230,20 @@ export default class IdeasDetails extends OpenStadComponent {
         );
       }
     }
-    
+
+    // FIXME: temporary hack to show label based on idea.status
+    if (idea.status === 'DENIED') {
+      labelHTML = (
+        <div className="osc-idea-label" style={{ color: "#FFFFFF", backgroundColor: "#FF0000" }}>Niet haalbaar</div>
+      );
+    }
+
+    if (idea.status === 'ACCEPTED') {
+      labelHTML = (
+        <div className="osc-idea-label" style={{ color: "#FFFFFF", backgroundColor: "#227b3c" }}>Haalbaar</div>
+      );
+    }
+
     let pollHTML = null;
     let addPollButtonHTML = null;
     if (self.config.poll.canAddPolls) {
