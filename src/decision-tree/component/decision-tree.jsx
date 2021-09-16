@@ -112,7 +112,7 @@ export default function DecisionTree({ config }) {
               </svg>
               terug
             </button>
-          ) : null}
+          ) : <div></div>}
           {activeDecision.next.length ? (
             <button className="next" type="submit">
               volgende
