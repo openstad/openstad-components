@@ -1,5 +1,8 @@
 # Changelog
 
+## Unreleased
+* Fix error when clicking on new idea button in mobile view
+
 ## 0.31.0
 * Fix closed reactions for moderators
 * Empty value in radio buttons means 'no effect'
