@@ -13,12 +13,17 @@
     background: #e6e6e6;
     display: flex;
     align-items: center;
+    border: 4px solid transparent;
   }
 
-  li label input {
+  ul li:focus-within{
+    color: #EC0000;
+    background-color: #FFFFFF;
+    border: 4px solid #EC0000;
+  }
 
-    visibility: hidden;
-
+  ul li input {
+    margin-right: 12px;
   }
 
   li label {
@@ -35,18 +40,23 @@
   }
 
   .back {
-    .osc-button;
-    .osc-previous-button;
-    line-height: 24px;
-    padding-left: 24px;
+    border: none;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
   }
-  
-  .back:before {
-    left: 8px
+  .back svg {
+    margin-right: 12px;
   }
 
   .next {
-    .osc-button;
-    .osc-next-button;
+    border: none;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+  }
+
+  .next svg {
+    margin-left: 12px;
   }
 }
