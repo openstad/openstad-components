@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.33.0
+* Fix error when clicking on new idea button in mobile view
+
 ## 0.32.0
 * Add new configuration options to reactions
 
