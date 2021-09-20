@@ -31,6 +31,13 @@ export default class IdeasForm extends OpenStadComponent {
 
     let fields = self.config.idea.fields = [ ...self.config.idea.fields ];
 
+    fields.forEach((field) => {
+		  if ( field.inputType ==	 "image-upload" ) {
+			  field.allowMultiple = self.config.image && self.config.image.allowMultipleImages;
+		  }
+	  });
+    
+
     if (!self.props.idea.extraData) self.props.idea.extraData = {};
 
     let state = {
