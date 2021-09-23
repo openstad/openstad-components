@@ -341,7 +341,14 @@ export default class IdeasDetails extends OpenStadComponent {
 
     }
 
-    let authorHTML = idea.user.nickName || idea.user.fullName || idea.user.firstName +' ' + idea.user.lastName;
+    let authorHTML = '';
+    if (idea.user.nickName || idea.user.fullName) {
+      authorHTML = idea.user.nickName || idea.user.fullName;
+    } else {
+      const lastName = parseInt(idea.user.lastName).toString() !== idea.user.lastName ? idea.user.lastName : '';
+      authorHTML = `${idea.user.firstName} ${lastName}`;
+    }
+    
     if (this.config.linkToUserPageUrl) {
       authorHTML = <a href={this.config.linkToUserPageUrl + '/' + idea.user.id} className="osc-author-link">{authorHTML}</a>
     }
