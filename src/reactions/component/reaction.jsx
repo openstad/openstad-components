@@ -177,7 +177,16 @@ export default class OpenStadComponentReaction extends OpenStadComponent {
     if (data.isDeleted) return null;
 
     let isAdmin = OpenStadComponentLibs.user.hasRole(data.user, 'editor') ? 'osc-is-admin' : '';
-    let metadataHTML = <div className={`osc-reaction-user ${isAdmin}`}>{data.user.nickName || data.user.fullName || `${data.user.firstName } ${  data.user.lastName}`}</div>
+    
+    let username = '';
+    if (data.user.nickName || data.user.fullName) {
+      username = data.user.nickName || data.user.fullName;
+    } else {
+      const lastName = parseInt(data.user.lastName).toString() !== data.user.lastName ? data.user.lastName : '';
+      username = `${data.user.firstName} ${lastName}`;
+    }
+    
+    let metadataHTML = <div className={`osc-reaction-user ${isAdmin}`}>{username}</div>
 
     let menuHTML = null;
     if ( self.canEdit() && self.canDelete() ) {
