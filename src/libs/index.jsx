@@ -12,6 +12,7 @@ import './css/default.less';
 
 // the module
 import api from './lib/api/index.js';
+import auth from './lib/auth.js';
 import user from './lib/user/index.js';
 import ideasSort from './lib/ideas-sort.js';
 import localStorage from './lib/local-storage.js';
@@ -20,6 +21,7 @@ import reactTemplate from './lib/react-template.js';
 
 let OpenStadComponentLibs = {
   api,
+  auth,
   user,
   ideasSort,
   localStorage,

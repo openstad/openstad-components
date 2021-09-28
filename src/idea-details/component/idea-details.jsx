@@ -300,10 +300,11 @@ export default class IdeasDetails extends OpenStadComponent {
       let config = {...self.config}
       config.argument.isActive = this.config.argument.isActive && !this.config.argument.ignoreReactionsForIdeaIds.match(new RegExp(`(?:^|\\D)${idea.id}(?:\\D|$)`));
       config.argument.isClosed = this.config.argument.isClosed || this.config.argument.closeReactionsForIdeaIds.match(new RegExp(`(?:^|\\D)${idea.id}(?:\\D|$)`));
+      let loginUrl = OpenStadComponentLibs.auth.getLoginUrl(self.config);
       reactionsHTML = (
         <div>
 			    <div id="reactions" className="osc-reactions-header"><h3>{self.config.argument.title || 'Reacties'}</h3></div>
-          <OpenStadComponentReactions config={{ ...self.config.argument, title: undefined, api: self.config.api, user: self.config.user, siteId: self.config.siteId, ideaId: idea.id, loginUrl: self.config.loginUrl, }}/>
+          <OpenStadComponentReactions config={{ ...self.config.argument, title: undefined, api: self.config.api, user: self.config.user, siteId: self.config.siteId, ideaId: idea.id, loginUrl: loginUrl, }}/>
         </div>
       );
     }

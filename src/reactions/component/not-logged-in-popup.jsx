@@ -15,11 +15,12 @@ export default class OpenStadComponentNotLoggedInPopup extends OpenStadComponent
   showPopup() {
 		// dispatch an event
     let self = this;
+    let loginUrl = OpenStadComponentLibs.auth.getLoginUrl(self.config);
 		var event = new window.CustomEvent('osc-show-modal-popup', { detail: {
-      divId: this.divId,
+      divId: self.divId,
       title: 'Login om verder te gaan',
       text: 'Login om een argument te plaatsen, te reageren of een argument te liken',
-      buttonAction: () => { OpenStadComponentLibs.localStorage.set('osc-login-pending-scroll-to-reactions', true); OpenStadComponentLibs.localStorage.set('osc-login-pending-show-details', self.config.ideaId); document.location.href = this.config.loginUrl; },
+      buttonAction: () => { OpenStadComponentLibs.localStorage.set('osc-login-pending-scroll-to-reactions', true); OpenStadComponentLibs.localStorage.set('osc-login-pending-show-details', self.config.ideaId); document.location.href = loginUrl; },
       buttonText: 'Inloggen',
     }});
 		document.dispatchEvent(event);

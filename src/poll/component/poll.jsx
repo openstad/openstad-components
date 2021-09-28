@@ -31,7 +31,6 @@ export default class OpenStadComponentPoll extends OpenStadComponent {
 
     let self = this;
 
-    self.config.loginUrl = self.config.loginUrl || '/oauth/login?returnTo=' + encodeURIComponent(document.location.href);
     self.hideEditForm = self.hideEditForm.bind(self);
 
     self.state = {
@@ -162,11 +161,8 @@ export default class OpenStadComponentPoll extends OpenStadComponent {
 
   canSubmit() {
     let requiredUserRole = this.config.requiredUserRole;
-    let userRole = this.state.user && this.state.user.role;
-    // todo: nieuwe rollen structuur
-    return  requiredUserRole == 'anonymous' && userRole  ||
-            requiredUserRole == 'member' && ( userRole == 'member' || userRole == 'admin' )  ||
-            requiredUserRole == 'admin' && userRole == 'admin';
+    let user = this.state.user;
+    return OpenStadComponentLibs.user.hasRole(user, requiredUserRole)
   }
 
   submitVote() {
@@ -296,7 +292,8 @@ export default class OpenStadComponentPoll extends OpenStadComponent {
         if (self.canSubmit()) {
           submitButtonHTML = (<button onClick={(e) => { if (!self.state.isBusy) self.submitVote(); }} className={`osc-button-blue${ !self.isValid() ? ' osc-disabled' : '' }`} >Stemmen</button>);
         } else {
-          submitButtonHTML = (<button onClick={() => { OpenStadComponentLibs.localStorage.set('osc-poll-login-pending', true); document.location.href = self.config.loginUrl; }} className="osc-button-blue osc-not-logged-in-button">Inloggen</button>);
+          let loginUrl = OpenStadComponentLibs.auth.getLoginUrl(self.config);
+          submitButtonHTML = (<button onClick={() => { OpenStadComponentLibs.localStorage.set('osc-poll-login-pending', true); document.location.href = loginUrl; }} className="osc-button-blue osc-not-logged-in-button">Inloggen</button>);
         }
 
         let showResultButtonHTML = null;

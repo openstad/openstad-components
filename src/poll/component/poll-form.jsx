@@ -236,10 +236,11 @@ export default class OpenStadComponentPollForm extends OpenStadComponent {
         </div>
       );
     } else {
+      let loginUrl = OpenStadComponentLibs.auth.getLoginUrl(self.config);
       submitButtonHTML = (
         <div className="osc-align-right-container">
           <button className="osc-button-blue" onClick={() => { if (self.config.onFinished) self.config.onFinished(); }}>Terug</button>
-          <button onClick={() => { document.location.href = self.config.loginUrl; }} className="osc-button-blue osc-not-logged-in-button osc-margin-left">Inloggen</button>
+          <button onClick={() => { document.location.href = loginUrl; }} className="osc-button-blue osc-not-logged-in-button osc-margin-left">Inloggen</button>
         </div>
       );
     }

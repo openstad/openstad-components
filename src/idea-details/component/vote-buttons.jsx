@@ -24,8 +24,6 @@ export default class VoteButton extends OpenStadComponent {
       },
 		});
 
-    this.config.loginUrl = this.config.loginUrl || '/oauth/login?returnTo=' + encodeURIComponent(document.location.href);
-
     this.state = {
       value: this.props.value,
       busy: false,
@@ -37,7 +35,7 @@ export default class VoteButton extends OpenStadComponent {
     // return from anonymous login
     let votePending = OpenStadComponentLibs.localStorage.get('osc-ideas-on-map-vote-pending');
     if (votePending) {
-			this.doVote();
+			this.doVote(null, votePending);
       OpenStadComponentLibs.localStorage.remove('osc-ideas-on-map-vote-pending');
 		}
   }
@@ -56,8 +54,8 @@ export default class VoteButton extends OpenStadComponent {
     let headers = OpenStadComponentLibs.api.getHeaders(self.config);
 
     if (!( self.config.user && self.config.user.role )) {
-      OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-vote-pending', true );
-      let loginUrl =  self.config.loginUrl;
+      OpenStadComponentLibs.localStorage.set('osc-ideas-on-map-vote-pending', opinion );
+      let loginUrl = OpenStadComponentLibs.auth.getLoginUrl(self.config);
       if (self.config.vote.requiredUserRole == 'anonymous') loginUrl += '&useOauth=anonymous';
       return document.location.href = loginUrl;
     }

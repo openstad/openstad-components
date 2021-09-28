@@ -39,9 +39,6 @@ export default class Preview extends OpenStadComponent {
       },
 		});
 
-		// config
-    this.config.loginUrl = this.config.loginUrl || '/oauth/login?returnTo=' + encodeURIComponent(document.location.href);
-
     // tmp voor oude data
     props.config.content = props.config.content || {};
     if (props.config.content.noSelectionHTML && !props.config.content.noSelectionLoggedInHTML) {
@@ -175,10 +172,11 @@ export default class Preview extends OpenStadComponent {
           <button className="osc-button osc-button-blue" onClick={(event) => self.dispatchNewIdeaClick(event)}>Nieuw punt toevoegen</button>
         );
       }
+      let loginUrl = OpenStadComponentLibs.auth.getLoginUrl(self.config);
       loginButton = (
-        <button onClick={() => { document.location.href = this.config.loginUrl }} className="osc-button-blue osc-not-logged-in-button">Inloggen</button>
+        <button onClick={() => { document.location.href = loginUrl }} className="osc-button-blue osc-not-logged-in-button">Inloggen</button>
       );
-      loginLink = `javascript: document.location.href = '${this.config.loginUrl}'`;
+      loginLink = `javascript: document.location.href = '${loginUrl}'`;
     }
 
     // new idea

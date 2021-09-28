@@ -22,8 +22,6 @@ export default class OpenStadComponentReactionForm extends OpenStadComponent {
       placeholder: '',
     });
 
-    this.config.loginUrl = this.config.loginUrl || '/oauth/login?returnTo=' + encodeURIComponent(document.location.href);
-    
     this.state = {
       description: this.config.description || '',
       isValid: false,
@@ -143,9 +141,10 @@ export default class OpenStadComponentReactionForm extends OpenStadComponent {
           <div onClick={() => self.config.showNotLoggedInPopup()} style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%'}}></div>
         </div>
       );
+      let loginUrl = OpenStadComponentLibs.auth.getLoginUrl(self.config);
       submitButtonHTML = (
         <div className="osc-align-right-container">
-          <button onClick={() => { OpenStadComponentLibs.localStorage.set('osc-login-pending-scroll-to-reactions', true); OpenStadComponentLibs.localStorage.set('osc-login-pending-show-details', self.config.ideaId); document.location.href = self.config.loginUrl; }} className="osc-button-blue osc-not-logged-in-button">Inloggen</button>
+          <button onClick={() => { OpenStadComponentLibs.localStorage.set('osc-login-pending-scroll-to-reactions', true); OpenStadComponentLibs.localStorage.set('osc-login-pending-show-details', self.config.ideaId); document.location.href = loginUrl; }} className="osc-button-blue osc-not-logged-in-button">Inloggen</button>
         </div>
       );
     }
