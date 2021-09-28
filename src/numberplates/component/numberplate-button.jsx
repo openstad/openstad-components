@@ -10,13 +10,13 @@ export default class OpenStadComponentNumberplateButton extends OpenStadComponen
     super(props, {
       number: 0,
       url: null,
-      caption: null,
+      label: null,
     });
 
     this.state = {
       number: this.config.number,
       url: this.config.url,
-      caption: this.config.caption,
+      label: this.config.label,
     };
 
   }
@@ -32,10 +32,10 @@ export default class OpenStadComponentNumberplateButton extends OpenStadComponen
     let number = parseInt(typeof self.props.number != 'undefined' ? self.props.number : self.state.number);
     let numberplatesHTML = (<OpenStadComponentNumberplates number={number} ref={(el) => { self.numberplates = el; }}/>);
 
-    let captionHTML = null;
-    if (self.config.caption) {
-      let caption = typeof self.props.caption != 'undefined' ? self.props.caption : self.state.caption;
-      captionHTML = <div className="osc-numberplate-button-caption"><div className="osc-elipsis">{self.config.caption}</div></div>
+    let labelHTML = null;
+    if (self.config.label) {
+      let label = typeof self.props.label != 'undefined' ? self.props.label : self.state.label;
+      labelHTML = <div className="osc-numberplate-button-label"><div className="osc-elipsis">{self.config.label}</div></div>
     }
 
     let url = typeof self.props.url != 'undefined' ? self.props.url : self.state.url;
@@ -43,7 +43,7 @@ export default class OpenStadComponentNumberplateButton extends OpenStadComponen
       return (
         <a href={url} id={self.divId} className={self.props.className || 'osc-numberplate-button'}>
           {numberplatesHTML}
-          {captionHTML}
+          {labelHTML}
         </a>
       );
     }
@@ -52,7 +52,7 @@ export default class OpenStadComponentNumberplateButton extends OpenStadComponen
     return (
       <div id={self.divId} onClick={onClick} className={self.props.className || 'osc-numberplate-button'}>
         {numberplatesHTML}
-        {captionHTML}
+        {labelHTML}
       </div>
     );
 

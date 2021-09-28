@@ -5,7 +5,7 @@ import OpenStadComponentLibs from '../../libs/index.jsx';
 import OpenStadComponentPoll from '../../poll/index.jsx';
 import OpenStadComponentReactions from '../../reactions/index.jsx';
 
-import VoteButton from './vote-button.jsx';
+import VoteButtons from './vote-buttons.jsx';
 import { IdeaImage as OpenStadComponentIdeaImage } from '../../image/index.jsx';
 
 'use strict';
@@ -257,7 +257,7 @@ export default class IdeasDetails extends OpenStadComponent {
       voteButtonsHTML = (
         <div className="osc-vote-buttons-container">
           <h3>Likes</h3>
-          <VoteButton config={{ caption: 'eens', opinion: 'yes', api: this.config.api, user: this.config.user, siteId: this.config.siteId }} idea={this.state.idea} name="likebutton" value={idea.yes}/>
+          <VoteButtons config={this.config} idea={this.state.idea} name="likebutton"/>
         </div>
       );
     }
