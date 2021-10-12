@@ -1,8 +1,7 @@
 const webpack = require("webpack");
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
- 
+const TerserPlugin = require("terser-webpack-plugin"); 
 module.exports = {
 
 	devtool: 'source-map',
@@ -48,22 +47,8 @@ module.exports = {
   ],
 
   optimization: {
-    minimizer: [
-      new UglifyJsPlugin({
-        test: /\.jsx?$/,
-        exclude: /\/core-js/,
-        minify(file, sourceMap) {
-          const extractedComments = [];
-          const { error, map, code, warnings } = require('uglify-js') // Or require('./path/to/uglify-module')
-                .minify(
-                  file,
-                  { /* Your options for minification */ },
-                );
-          return { error, map, code, warnings, extractedComments };
-        }
-        
-      })
-    ]
+    minimize: true,
+    minimizer: [new TerserPlugin()],
   },
   
 	module: {
