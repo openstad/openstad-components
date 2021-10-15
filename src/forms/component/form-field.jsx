@@ -11,6 +11,7 @@ import OpenStadComponentPostcode from './postcode.jsx';
 import OpenStadComponentSelect from './select.jsx';
 import OpenStadComponentText from './textinput.jsx';
 import OpenStadComponentTextArea from './textarea.jsx';
+import OpenStadComponentCheckboxes from './checkboxes.jsx';
 
 export default class OpenStadComponentFormField extends OpenStadComponent {
 
@@ -57,6 +58,27 @@ export default class OpenStadComponentFormField extends OpenStadComponent {
 			this.onChange(data);
 		}
 	}
+    
+    onMultipleChoiceChangeHandler(data) {
+      
+      let values = [];
+      
+      data.checked.forEach((val, index) => {
+        if (val === true) {
+          values.push(data.values[index].text);
+        }
+      });
+      
+      if (data.checkedOther === true) {
+        values.push(`Anders, namelijk: ${data.otherInputValue}`);
+      }
+      
+      let newState = {name: this.config.name, value: values};
+      
+      if (typeof this.onChange == 'function') {
+          this.onChange(newState);
+      }
+    }
 
 	render() {
 
@@ -103,8 +125,15 @@ export default class OpenStadComponentFormField extends OpenStadComponent {
         break;
 
       case 'select':
-      case 'multiple-choice':
         fieldHTML = <OpenStadComponentSelect config={self.config} value={ this.state.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
+        break;
+        
+      case 'multiple-choice':
+        const choices = self.config.choices.map((choice) => { choice.text = choice.title; return choice; });
+        const showOtherInputField = self.config.showOther || false;
+        const value = Array.isArray(this.state.value) ? this.state.value : (typeof this.state.value != 'undefined' ? [this.state.value] : []);
+        
+        fieldHTML = <OpenStadComponentCheckboxes config={{ showOtherInputField, choices }} value={ value } onChange={ newState => self.onMultipleChoiceChangeHandler(newState)} ref={el => (self.input = el)}/>
         break;
 
       case 'text':

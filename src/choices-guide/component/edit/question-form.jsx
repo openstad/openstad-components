@@ -205,7 +205,7 @@ export default class QuestionForm extends OpenStadComponent {
         </div>);
     }
 
-    if (self.props.currentTarget.type == 'enum-buttons' || self.props.currentTarget.type == 'enum-radio') {
+    if (self.props.currentTarget.type == 'enum-buttons' || self.props.currentTarget.type == 'enum-radio' || self.props.currentTarget.type == 'multiple-choice') {
 
       let dimensions = self.props.currentTarget.dimensions || "['x']";
       

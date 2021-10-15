@@ -32,6 +32,13 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
       this.liveUpdates();
     });
   }
+  
+  onMultipleChoiceChangeHandler(newState) {
+    this.setState(newState, () => {
+      this.liveUpdates();
+    });
+  }
+  
 
   isValid() {
 
@@ -50,7 +57,25 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
   getAnswer() {
 
     if (!this.state.isAnswered) return; // null
-
+    
+    let result;
+    
+    if (this.props.data.type === 'multiple-choice' && this.state.checked.length > 0) {
+      result = [];
+      
+      this.state.checked.forEach((val, index) => {
+        if (val === true) {
+          result.push(this.state.values[index].text);
+        }
+      });
+      
+      if (this.state.checkedOther === true) {
+        result.push(`Anders, namelijk: ${this.state.otherInputValue}`);
+      }
+      
+      return result;
+    }
+    
     let data = this.props.data || {};
     let values = data.values || {};
 
@@ -61,7 +86,6 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
     dimensions = dimensions || ['x'];
 
     // get a number between 0 and 100
-    let result;
     if (typeof this.state.value == 'number' || typeof this.state.value == 'string') {
       result = {};
       if ( dimensions.includes('x') ) result.x = this.state.value;
@@ -115,7 +139,7 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
 		// dispatch an event
 		var event = new window.CustomEvent('osc-show-light-box', { detail: { images, startIndex, aspectRatio: this.config.aspectRatio } });
 		document.dispatchEvent(event);
-    
+  
   }
 
   render() {
@@ -129,7 +153,7 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
     let isAnswered = self.state.isAnswered;
 
     let value = typeof data.value != 'undefined' ? data.value : 'not defined';
-    if ( typeof data.value == 'object' ) {
+    if ( typeof data.value == 'object' && !Array.isArray(data.value)) {
       let dimensions = data.dimensions;
       if ( dimensions == 'null' ) dimensions = null;
       if ( !dimensions || dimensions.includes('x') ) value = data.value.x;
@@ -137,7 +161,11 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
       if ( dimensions && dimensions.includes('z') ) value = data.value.z;
     }
     if (value === 'not defined') {
-      value = this.state.value;
+      if (data.type != 'multiple-choice') {
+        value = this.state.value;
+      } else {
+        value = [];
+      }
     } else {
       isAnswered = true;
     }
@@ -282,9 +310,9 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
               return (
                 <div key={`div-value-${key}`} className="osc-radio-container">
                   <div className={`osc-radio-input${checked ? ' osc-radio-input-checked' : '' }`}>
-                    <input name={`enum-radio-${data.id}`} type="radio" onChange={() => self.onChangeHandler(entry.value)} key={`button-value-${key}`}/>
+                    <input name={`enum-radio-${data.id}`} type="radio" onChange={() => self.onChangeHandler(entry.value)} id={`button-value-${key}`} key={`button-value-${key}`}/>
                   </div>
-                  <div className="osc-radio-text">{entry.text}</div>
+                  <div className="osc-radio-text"><label for={`button-value-${key}`}>{entry.text}</label></div>
                 </div>
               );
             })}
@@ -299,6 +327,41 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
               return <button onClick={() => self.onChangeHandler(entry.value)} key={`button-value-${i}`}>{entry.text}</button>;
             })}
           </div>;
+        break;
+        
+      case 'input':
+        
+        selectorHTML =
+          <div className="osc-question-selector">
+            <div className="osc-radio-container">
+                  <div className={`osc-text-input`}>
+                    <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input' }} value={value} onChange={ data => self.onChangeHandler(data.value, false) } ref={el => self.titleField = el}/>
+                  </div>
+                  <div className="osc-text-text">{data.values.text}</div>
+                </div>
+            
+            </div>;
+        break;
+        
+      case 'textarea':
+        selectorHTML =
+          <div className="osc-question-selector">
+            <div className="osc-radio-container">
+                  <div className={`osc-text-input`}>
+                    <OpenStadComponentForms.InputWithCounter config={{ inputType: 'textarea' }} value={value} onChange={ data => self.onChangeHandler(data.value, false) } ref={el => self.titleField = el}/>
+                  </div>
+                  <div className="osc-text-text">{data.values.text}</div>
+                </div>
+            
+            </div>;
+        break;
+        
+      case 'multiple-choice':
+        selectorHTML = (
+          <div className="osc-question-selector">
+            <OpenStadComponentForms.Checkboxes config={{ id: data.id, choices: data.values, showOtherInputField: true }} value={value} onChange={ newState => self.onMultipleChoiceChangeHandler(newState)} ref={el => self.titleField = el}/>
+          </div>
+        );
         break;
 
       default:

@@ -22,6 +22,7 @@ import Select from './component/select.jsx';
 import Text from './component/textinput.jsx';
 import Textarea from './component/textarea.jsx';
 import Slider from './component/slider.jsx';
+import Checkboxes from './component/checkboxes.jsx';
 export default {
   Form,
   FormField,
@@ -34,6 +35,7 @@ export default {
   Text,
   Textarea,
   Slider,
+  Checkboxes,
 }
 
 // render the base element

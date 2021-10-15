@@ -16,7 +16,7 @@
     .osc-accordeon {
       margin-bottom: 30px;
     }
-    
+
     .osc-slider {
       .osc-slider();
     }
@@ -44,7 +44,7 @@
     .osc-question-selector {
 
       overflow:hidden;
-      
+
       .osc-question-selector-slider {
         clear: both;
         width: 100%;
@@ -68,12 +68,12 @@
 
     }
 
-    .osc-radio-container {
+    .osc-radio-container, .osc-checkbox-container {
 
       margin-bottom: 10px;
       overflow: hidden;
 
-      input[type="radio"] {
+      input[type="radio"], input[type="checkbox"] {
         opacity: 0;
         width: 24px;
         height: 24px;
@@ -81,7 +81,7 @@
         padding: 0;
       }
 
-      .osc-radio-input {
+      .osc-radio-input, .osc-checkbox-input {
         position: relative;
         float: left;
         width: 24px;
@@ -91,8 +91,12 @@
         border-radius: 12px;
         background-color: white;
 
+        &.osc-checkbox-input {
+          border-radius: 0px;
+        }
 
-        &.osc-radio-input-checked {
+
+        &.osc-radio-input-checked, &.osc-checkbox-input-checked {
 
           &:after {
             position: absolute;
@@ -103,17 +107,25 @@
             border: solid 9px black;
             border-radius: 9px;
             content: '';
+            pointer-events: none;
           }
         }
 
+        &.osc-checkbox-input-checked:after {
+          border-radius: 0px;
+        }
       }
 
-      .osc-radio-text {
+      .osc-radio-text, .osc-checkbox-text {
         float: left;
         width: calc(100% - 37px);
         line-height: 1.38;
       }
 
+    }
+
+    .osc-other-textinput {
+      margin-left: 34px;
     }
 
     &.osc-question-a-to-b {
