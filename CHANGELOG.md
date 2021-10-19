@@ -1,5 +1,8 @@
 # Changelog
 
+## Unlreleased
+* Move css background images to files
+
 ## 0.33.0
 * Fix error when clicking on new idea button in mobile view
 * Make votebuttons in idea-details configurable
