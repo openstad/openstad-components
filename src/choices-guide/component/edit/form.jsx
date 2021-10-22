@@ -81,8 +81,19 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
     let self= this;
     let currentTarget = self.state.currentTarget;
     Object.keys(data).forEach((key) => {
-      changed = changed || self.state.changed || ( currentTarget[key] != data[key] && key != 'choicesGuideConfig' );
-      currentTarget[key] = data[key];
+      
+      // Exception for the `validation` object, combine it with the current state
+      if (typeof data[key] === 'object' && typeof currentTarget[key] === 'object') {
+        const newObject = currentTarget[key];
+        Object.assign(newObject, data[key]);
+        
+        // Check if the value changed, compare the JSON representation of the two objects
+        changed = changed || self.state.changed || JSON.stringify(newObject) != JSON.stringify(currentTarget[key]);
+        currentTarget[key] = newObject;
+      } else {
+        changed            = changed || self.state.changed || (currentTarget[key] != data[key] && key != 'choicesGuideConfig');
+        currentTarget[key] = data[key];
+      }
     });
     self.setState({ currentTarget, changed });
 
@@ -195,6 +206,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
         currentTarget.type = question.type;
         currentTarget.dimensions = question.dimensions;
         currentTarget.values = question.values;
+        currentTarget.validation = question.validation ? question.validation : {};
         currentTarget.seqnr = typeof question.seqnr != 'undefined' ? question.seqnr : ( questionGroup.questions && questionGroup.questions[questionGroup.questions.length - 1] && parseInt(questionGroup.questions[questionGroup.questions.length - 1].seqnr) + 10 || 10 );
         break;
 
@@ -214,14 +226,14 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
     let fields = self.formfields;
 
     Object.keys(self.state.currentTarget).forEach((field) => {
-      if (fields[field+'Field'] && fields[field+'Field'].validate && !fields[field+'Field'].validate({ showErrors })) { 
+      if (fields[field+'Field'] && fields[field+'Field'].validate && !fields[field+'Field'].validate({ showErrors })) {
         isValid = false;
         if (!firstInvalid) firstInvalid = field;
       }
     });
 
     if (scrollTo && firstInvalid && firstInvalid.instance && firstInvalid.instance.scrollIntoView) firstInvalid.instance.scrollIntoView({behavior: 'smooth'});
-    return isValid;    
+    return isValid;
 
 	}
 
@@ -309,6 +321,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
           break;
 
         case 'question':
+          
           targetId = self.state.currentTarget.questionId;
           url = `${self.config.api && self.config.api.url   }/api/site/${  self.config.siteId  }/choicesguide/${  self.state.choicesGuideId  }/questiongroup/${  self.state.currentTarget.questionGroupId  }/question`;
           body = {
@@ -322,6 +335,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
             dimensions: self.state.currentTarget.dimensions,
             values: self.state.currentTarget.values,
             seqnr: self.state.currentTarget.seqnr,
+            validation: self.state.currentTarget.validation
           };
           try {
             body.values = JSON.parse(body.values)
@@ -388,6 +402,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
   }
 
   apiError(error) {
+    const self = this;
     error.then(function(messages) {
       try {
         messages = JSON.parse(messages);

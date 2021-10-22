@@ -13,11 +13,21 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
     // defaults
 
     this.questionId = props.data.id;
-
+    
     this.state = {
       value: 50,
       isAnswered: false,
     };
+    
+    if (['input', 'textarea'].includes(props.data.type)) {
+      if (props.data.hasOwnProperty('value') && typeof props.data.value === 'object' && props.data.value.hasOwnProperty('x')) {
+        this.state.value = props.data.value.x;
+      } else {
+        this.state.value = '';
+      }
+    } else {
+      this.state.value = props.data.hasOwnProperty('value') ? props.data.value : [];
+    }
     
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.showLightbox = this.showLightbox.bind(this);
@@ -45,7 +55,26 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
 
     let data = this.props.data || {};
     let wasAlreadyAnswered = typeof data.value != 'undefined';
-
+    
+    if (data.validation && data.validation.required === 'true' && (!this.state.value || this.state.value.length <= 0)) {
+      if (['input', 'textarea'].includes(data.type)) {
+        this.setState({error: 'Dit veld is verplicht'});
+      } else {
+        this.setState({error: 'Je hebt nog geen keuze gemaakt'});
+      }
+      return false;
+    }
+    
+    if (data.validation && data.validation.minLength && String(this.state.value).length < data.validation.minLength) {
+      this.setState({error: `Voer minimaal ${data.validation.minLength} tekens in`});
+      return false;
+    }
+    
+    if (data.validation && data.validation.maxLength && String(this.state.value).length > data.validation.maxLength) {
+      this.setState({error: `Voer maximaal ${data.validation.maxLength} tekens in`});
+      return false;
+    }
+    
     let isAnswered = this.state.isAnswered || !!this.config.startWithAllQuestionsAnsweredAndConfirmed
     if (wasAlreadyAnswered || isAnswered) return true;
 
@@ -330,12 +359,11 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
         break;
         
       case 'input':
-        
         selectorHTML =
           <div className="osc-question-selector">
             <div className="osc-radio-container">
                   <div className={`osc-text-input`}>
-                    <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input' }} value={value} onChange={ data => self.onChangeHandler(data.value, false) } ref={el => self.titleField = el}/>
+                    <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', ...data.validation }} value={value} onChange={ data => self.onChangeHandler(data.value, false) } ref={el => self.titleField = el}/>
                   </div>
                   <div className="osc-text-text">{data.values.text}</div>
                 </div>
@@ -348,7 +376,7 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
           <div className="osc-question-selector">
             <div className="osc-radio-container">
                   <div className={`osc-text-input`}>
-                    <OpenStadComponentForms.InputWithCounter config={{ inputType: 'textarea' }} value={value} onChange={ data => self.onChangeHandler(data.value, false) } ref={el => self.titleField = el}/>
+                    <OpenStadComponentForms.InputWithCounter config={{ inputType: 'textarea', ...data.validation }} value={value} onChange={ data => self.onChangeHandler(data.value, false) } ref={el => self.titleField = el}/>
                   </div>
                   <div className="osc-text-text">{data.values.text}</div>
                 </div>

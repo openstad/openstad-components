@@ -45,14 +45,14 @@ export default class OpenStadComponentForm extends OpenStadComponent {
     let isValid = true;
     let firstInvalid = null
     self.fields.forEach((field) => {
-      if (!field.validate({ showErrors })) { 
+      if (!field.validate({ showErrors })) {
         isValid = false;
         if (!firstInvalid) firstInvalid = field;
       }
     });
 
     if (scrollTo && firstInvalid && firstInvalid.instance && firstInvalid.instance.scrollIntoView) firstInvalid.instance.scrollIntoView({behavior: 'smooth'});
-    return isValid;    
+    return isValid;
 
 	}
 

@@ -109,9 +109,19 @@ export default class QuestionForm extends OpenStadComponent {
         parsedData.values[data.valueIndex].text = data.valueText;
       }
     }
+    if (typeof data.validation != 'undefined') {
+      if (data.validation.hasOwnProperty('required')) {
+        parsedData = {validation: {required: data.validation.required === 'true' ? 'true' : 'false'}}
+      } else if (data.validation.hasOwnProperty('minLength')) {
+        parsedData = {validation: {minLength: data.validation.minLength}}
+      } else if (data.validation.hasOwnProperty('maxLength')) {
+        parsedData = {validation: {maxLength: data.validation.maxLength}}
+      }
+    }
+    
     parsedData = parsedData || data;
-    self.props.onChange(parsedData)    
-  } 
+    self.props.onChange(parsedData)
+  }
 
   setShowMoreInfoFields(value) {
     let self = this;
@@ -291,8 +301,26 @@ export default class QuestionForm extends OpenStadComponent {
         <OpenStadComponentForms.ImageUpload key="i1" config={{ as: 'json', imageserver: self.config.image.server }} value={self.props.currentTarget.images} onChange={ data => self.props.onChange({ images: data.value }) } ref={el => self.imagesField = el}/>
 
         <h3>Type vraag</h3>
-        <OpenStadComponentForms.Select config={{ choices: [{ value: "", description: "Maak een keuze" },/*{ value: "continuous", description: "continue" },*/{ value: "a-to-b", description: "van a naar b slider" },/*{ value: "enum-buttons", description: "multiple choice - buttons" }*/,{ value: "enum-radio", description: "radio buttons" }], required: true  }} value={ self.props.currentTarget.type } onChange={ data => self.handleFieldChange({ type: data.value }) } ref={el => self.typeField = el}/>
-
+        <OpenStadComponentForms.Select config={{ choices: [{ value: "", description: "Maak een keuze" },/*{ value: "continuous", description: "continue" },*/{ value: "a-to-b", description: "van a naar b slider" },/*{ value: "enum-buttons", description: "multiple choice - buttons" }*/,{ value: "enum-radio", description: "radio buttons" }, { value: "input", description: "eenvoudige tekstinput" }, { value: "textarea", description: "groot tekstveld" }, { value: "multiple-choice", description: "multiple choice" }], required: true  }} value={ self.props.currentTarget.type } onChange={ data => self.handleFieldChange({ type: data.value }) } ref={el => self.typeField = el}/>
+  
+        {
+          ['enum-radio', 'multiple-choice', 'input', 'textarea'].includes(self.props.currentTarget.type) &&
+          <div>
+            <h3>Verplicht veld?</h3>
+            <OpenStadComponentForms.Select config={{choices: [{value: "false", description: "Nee"}, {value: "true", description: "Ja"}]}} value={self.props.currentTarget.validation && self.props.currentTarget.validation.required} onChange={data => self.handleFieldChange({validation: {required: data.value}})} />
+          </div>
+        }
+        
+        {
+          ['input', 'textarea'].includes(self.props.currentTarget.type) &&
+          <div>
+            <h3>Minimale lengte</h3>
+            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'text', minLength: 1, maxLength: 255 }} value={self.props.currentTarget.validation && self.props.currentTarget.validation.minLength || 5} onChange={data => self.handleFieldChange({validation: {minLength: data.value}})} />
+            <h3>Maximale lengte</h3>
+            <OpenStadComponentForms.InputWithCounter config={{ inputType: 'text', minLength: 1, maxLength: 255 }} value={self.props.currentTarget.validation && self.props.currentTarget.validation.maxLength || 1024} onChange={data => self.handleFieldChange({validation: {maxLength: data.value}})} />
+          </div>
+        }
+        
         {valuesHTML}
         {dimensionsHTML}
         

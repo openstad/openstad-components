@@ -15,7 +15,8 @@ export default class FormfieldInputWithCounter extends OpenStadComponent {
 			inputType: 'input',
 			minLength: 5,
 			maxLength: 1024,
-      placeholder: '',
+			required: false,
+      		placeholder: '',
 		});
 
 		let self = this;
@@ -58,7 +59,7 @@ export default class FormfieldInputWithCounter extends OpenStadComponent {
 		this.setState({ showWarning: true })
 		return this.isValid();
 	}
-  
+ 
 	handleOnChange(data) {
     data = data || {};
 		this.setState(data, () => {
@@ -95,11 +96,12 @@ export default class FormfieldInputWithCounter extends OpenStadComponent {
 		let counter = null;
 		let warning = null;
 		if (self.state.focused) {
-			if (self.state.value.length < self.config.minLength) {
-				counter = (<div className="osc-form-counter osc-form-error">Nog minimaal <span className="">{self.config.minLength - self.state.value.length}</span> tekens</div>)
+			const currentValueLength = String(self.state.value).length;
+			if (currentValueLength < self.config.minLength) {
+				counter = (<div className="osc-form-counter osc-form-error">Nog minimaal <span className="">{self.config.minLength - currentValueLength}</span> tekens</div>)
 			} else {
-				let error = self.state.value.length > self.config.maxLength ? 'osc-form-error' : '';
-				counter = (<div className={'osc-form-counter ' + error}>Je hebt nog <span className="">{self.config.maxLength - self.state.value.length}</span> tekens over.</div>)
+				let error = currentValueLength > self.config.maxLength ? 'osc-form-error' : '';
+				counter = (<div className={'osc-form-counter ' + error}>Je hebt nog <span className="">{self.config.maxLength - currentValueLength}</span> tekens over.</div>)
 			}
 		}
 
@@ -110,7 +112,7 @@ export default class FormfieldInputWithCounter extends OpenStadComponent {
     let inputHTML = null;
 
     switch(self.config.inputType) {
-        
+      
       case 'htmlarea':
         inputHTML = (
           <HTMLArea
@@ -141,14 +143,14 @@ export default class FormfieldInputWithCounter extends OpenStadComponent {
         
       case 'textarea':
         inputHTML = (
-				  <textarea key={self.key} ref={el => (self.input = el)} value={this.state.value} disabled={this.props.disabled} placeholder={this.config.placeholder} onChange={e => self.handleOnChange({ value: self.input.value })} onKeyUp={e => self.onInputKeyUp()} onFocus={e => self.onInputFocus(e)} onBlur={e => self.onInputBlur(e)}></textarea>
+				  <textarea key={self.key} ref={el => (self.input = el)} value={this.state.value} disabled={this.props.disabled} placeholder={this.config.placeholder} required={this.config.required} onChange={e => self.handleOnChange({ value: self.input.value })} onKeyUp={e => self.onInputKeyUp()} onFocus={e => self.onInputFocus(e)} onBlur={e => self.onInputBlur(e)}></textarea>
         );
         break;
 
       case 'input':
       default:
         inputHTML = (
-				  <input key={self.key} ref={el => (self.input = el)} value={this.state.value} disabled={this.props.disabled} placeholder={this.config.placeholder} onChange={e => self.handleOnChange({ value: self.input.value })} onKeyUp={e => self.onInputKeyUp()} onFocus={e => self.onInputFocus(e)} onBlur={e => self.onInputBlur(e)}></input>
+				  <input key={self.key} ref={el => (self.input = el)} value={this.state.value} disabled={this.props.disabled} placeholder={this.config.placeholder} required={this.config.required} onChange={e => self.handleOnChange({ value: self.input.value })} onKeyUp={e => self.onInputKeyUp()} onFocus={e => self.onInputFocus(e)} onBlur={e => self.onInputBlur(e)}></input>
         );
 
     }

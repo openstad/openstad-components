@@ -80,6 +80,8 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
       scrollToLogin,
       questionGroupId: this.config.questionGroupId,
     };
+    
+    this.form = null;
 
   }
 
@@ -342,7 +344,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
     let previousNextButtonsHTML = null;
     if (self.config.submission.type == 'form') {
       formHTML = (
-        <OpenStadComponentForms.Form config={ self.config.submission.form } onChange={self.onFormChange} ref={function(el) { self.form = el; }}/>
+        <OpenStadComponentForms.Form config={ self.config.submission.form } onChange={self.onFormChange} ref={function(el) { if (el != null) { self.form = el;} }}/>
       );
 
       if (requireLogin) {

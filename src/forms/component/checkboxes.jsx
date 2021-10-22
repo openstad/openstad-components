@@ -92,6 +92,20 @@ export default class OpenStadComponentCheckboxes extends OpenStadComponentDefaul
         });
     }
     
+    validate({ showErrors }) {
+        let isValid = false;
+        if (this.config.validation && this.config.validation.required === 'true') {
+            isValid = this.state.checked.some((check) => !!check) || (this.state.checkedOther && this.state.otherInputValue.length > 0);
+        } else {
+            isValid = true;
+        }
+        
+        let error = '';
+        if (!isValid && showErrors) error = true;
+        this.setState({ isValid, error })
+		return isValid;
+	}
+    
     render() {
         const choices   = this.props.config.choices || [];
         const showOther = this.props.config.showOtherInputField;
@@ -116,7 +130,7 @@ export default class OpenStadComponentCheckboxes extends OpenStadComponentDefaul
                             />
                         </div>
                         <div className="osc-checkbox-text"><label
-                            for={`enum-checkbox-${id}-${key}`}>{this.otherText}</label>
+                            htmlFor={`enum-checkbox-${id}-${key}`}>{this.otherText}</label>
                         </div>
                     </div>
                     {checked && (
@@ -146,7 +160,7 @@ export default class OpenStadComponentCheckboxes extends OpenStadComponentDefaul
                                        key={`button-value-${id}-${key}`}
                                 />
                             </div>
-                            <div className="osc-checkbox-text"><label for={`enum-checkbox-${id}-${key}`}>{text}</label>
+                            <div className="osc-checkbox-text"><label htmlFor={`enum-checkbox-${id}-${key}`}>{text}</label>
                             </div>
                         </div>
                     )

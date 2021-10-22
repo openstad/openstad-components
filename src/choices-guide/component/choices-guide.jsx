@@ -80,8 +80,6 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
 
   fetchData() {
 
-    self = this;
-
     let self = this;
     fetchChoicesGuide({ config: self.config })
       .then((data) => {
@@ -254,7 +252,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
 
 		var event = new window.CustomEvent('osc-choices-click', { detail: {} });
 		document.dispatchEvent(event);
-    
+  
   }
 
   render() {

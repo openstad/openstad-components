@@ -133,7 +133,7 @@ export default class OpenStadComponentFormField extends OpenStadComponent {
         const showOtherInputField = self.config.showOther || false;
         const value = Array.isArray(this.state.value) ? this.state.value : (typeof this.state.value != 'undefined' ? [this.state.value] : []);
         
-        fieldHTML = <OpenStadComponentCheckboxes config={{ showOtherInputField, choices }} value={ value } onChange={ newState => self.onMultipleChoiceChangeHandler(newState)} ref={el => (self.input = el)}/>
+        fieldHTML = <OpenStadComponentCheckboxes config={{ showOtherInputField, choices, ...self.config }} value={ value } onChange={ newState => self.onMultipleChoiceChangeHandler(newState)} ref={el => (self.input = el)}/>
         break;
 
       case 'text':
