@@ -314,7 +314,7 @@ export default class QuestionForm extends OpenStadComponent {
         <OpenStadComponentForms.Select config={{ choices: [{ value: "", description: "Maak een keuze" },/*{ value: "continuous", description: "continue" },*/{ value: "a-to-b", description: "van a naar b slider" },/*{ value: "enum-buttons", description: "multiple choice - buttons" }*/,{ value: "enum-radio", description: "Enkele keuze vraag" }, { value: "input", description: "Eenvoudige tekstinput" }, { value: "textarea", description: "Groot tekstveld" }, { value: "multiple-choice", description: "Meerkeuze vraag" }], required: true  }} value={ self.props.currentTarget.type } onChange={ data => self.handleFieldChange({ type: data.value }) } ref={el => self.typeField = el}/>
   
         {
-          ['enum-radio', 'multiple-choice', 'input', 'textarea'].includes(self.props.currentTarget.type) &&
+          ['enum-radio', 'input', 'textarea'].includes(self.props.currentTarget.type) &&
           <div>
             <h3>Verplicht veld?</h3>
             <OpenStadComponentForms.Select config={{choices: [{value: "false", description: "Nee"}, {value: "true", description: "Ja"}]}} value={self.props.currentTarget.validation && self.props.currentTarget.validation.required} onChange={data => self.handleFieldChange({validation: {required: data.value}})} />
