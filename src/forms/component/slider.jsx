@@ -33,6 +33,10 @@ class Slider extends OpenStadComponent {
   }
 
   calcProgress(min, max, value) {
+    if (typeof value === 'undefined') {
+      return 0;
+    }
+    
     const range = max - min
     const progInRange = value - min
     return ((progInRange*2)/range)-1
