@@ -381,7 +381,7 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
           <div className="osc-question-selector">
             <div className="osc-radio-container">
                   <div className={`osc-text-input`}>
-                    <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', ...data.validation }} value={value} onChange={ data => self.onChangeHandler(data.value, false) } ref={el => self.titleField = el}/>
+                    <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', validation: data.validation, ...data.validation }} value={value} onChange={ data => self.onChangeHandler(data.value, false) } ref={el => self.titleField = el}/>
                   </div>
                   <div className="osc-text-text">{data.values.text}</div>
                 </div>
@@ -394,7 +394,7 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
           <div className="osc-question-selector">
             <div className="osc-radio-container">
                   <div className={`osc-text-input`}>
-                    <OpenStadComponentForms.InputWithCounter config={{ inputType: 'textarea', ...data.validation }} value={value} onChange={ data => self.onChangeHandler(data.value, false) } ref={el => self.titleField = el}/>
+                    <OpenStadComponentForms.InputWithCounter config={{ inputType: 'textarea', validation: data.validation, ...data.validation }} value={value} onChange={ data => self.onChangeHandler(data.value, false) } ref={el => self.titleField = el}/>
                   </div>
                   <div className="osc-text-text">{data.values.text}</div>
                 </div>
