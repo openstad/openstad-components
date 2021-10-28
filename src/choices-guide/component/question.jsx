@@ -44,6 +44,7 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
   }
   
   onMultipleChoiceChangeHandler(newState) {
+    newState.error = undefined;
     this.setState(newState, () => {
       this.liveUpdates();
     });
@@ -73,6 +74,23 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
     if (data.validation && data.validation.maxLength && String(this.state.value).length > data.validation.maxLength) {
       this.setState({error: `Voer maximaal ${data.validation.maxLength} tekens in`});
       return false;
+    }
+    
+    if (['multiple-choice'].includes(data.type)) {
+      let checked = this.state.checked.reduce((count, checked) => count += (checked ? 1 : 0));
+      if (this.state.checkedOther) {
+          checked++;
+      }
+      
+      if (data.validation && data.validation.minChoices > 0 && checked < data.validation.minChoices) {
+        this.setState({error: `Geef minimaal ${data.validation.minChoices} keuzes op`});
+        return false;
+      }
+      
+      if (data.validation && data.validation.maxChoices > 0 && checked > data.validation.maxChoices) {
+        this.setState({error: `Geef maximaal ${data.validation.maxChoices} keuzes op`});
+        return false;
+      }
     }
     
     let isAnswered = this.state.isAnswered || !!this.config.startWithAllQuestionsAnsweredAndConfirmed
@@ -387,7 +405,7 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
       case 'multiple-choice':
         selectorHTML = (
           <div className="osc-question-selector">
-            <OpenStadComponentForms.Checkboxes config={{ id: data.id, choices: data.values, showOtherInputField: true }} value={value} onChange={ newState => self.onMultipleChoiceChangeHandler(newState)} ref={el => self.titleField = el}/>
+            <OpenStadComponentForms.Checkboxes config={{ id: data.id, choices: data.values, showOtherInputField: data.extraConfig && data.extraConfig.showOther === 'true' ? true : false, validation: data.validation }} value={value} onChange={ newState => self.onMultipleChoiceChangeHandler(newState)} ref={el => self.titleField = el}/>
           </div>
         );
         break;

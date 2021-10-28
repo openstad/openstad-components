@@ -207,6 +207,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
         currentTarget.dimensions = question.dimensions;
         currentTarget.values = question.values;
         currentTarget.validation = question.validation ? question.validation : {};
+        currentTarget.extraConfig = question.extraConfig ? question.extraConfig : {};
         currentTarget.seqnr = typeof question.seqnr != 'undefined' ? question.seqnr : ( questionGroup.questions && questionGroup.questions[questionGroup.questions.length - 1] && parseInt(questionGroup.questions[questionGroup.questions.length - 1].seqnr) + 10 || 10 );
         break;
 
@@ -335,7 +336,8 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
             dimensions: self.state.currentTarget.dimensions,
             values: self.state.currentTarget.values,
             seqnr: self.state.currentTarget.seqnr,
-            validation: self.state.currentTarget.validation
+            validation: self.state.currentTarget.validation,
+            extraConfig: self.state.currentTarget.extraConfig
           };
           try {
             body.values = JSON.parse(body.values)

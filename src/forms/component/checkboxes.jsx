@@ -82,6 +82,7 @@ export default class OpenStadComponentCheckboxes extends OpenStadComponentDefaul
     
     handleOnChangeOtherCheckbox() {
         this.setState({checkedOther: !this.state.checkedOther}, () => {
+            this.validate({});
             this.triggerParentOnChange();
         });
     }
