@@ -123,7 +123,7 @@ export default class OpenStadComponentMap extends OpenStadComponent {
         break;
 			default:
 			case "nlmaps":
-        L.tileLayer('https://geodata.nationaalgeoregister.nl/tiles/service/wmts/brtachtergrondkaart/EPSG:3857/{z}/{x}/{y}.png', {
+        L.tileLayer('https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0/standaard/EPSG:3857/{z}/{x}/{y}.png', {
 	        minZoom: 6,
 	        maxZoom: 19,
 	        bounds: [[50.5, 3.25], [54, 7.6]],
