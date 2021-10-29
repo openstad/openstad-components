@@ -1,5 +1,5 @@
 import { FilePond, registerPlugin } from "react-filepond";
-// TODO: dit gaat mis omdat webpack nu geen css lust
+// TODO: dit gaat mis omdat webpack in die css iets invalids vindt
 // import "filepond/dist/filepond.min.css";
 import 'filepond-polyfill';
 import FilepondPluginImagePreview from 'filepond-plugin-image-preview';
