@@ -57,7 +57,7 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
     let data = this.props.data || {};
     let wasAlreadyAnswered = typeof data.value != 'undefined';
     
-    if (data.validation && data.validation.required === 'true' && (!this.state.value || this.state.value.length <= 0)) {
+    if (data.validation && data.validation.required === 'true' && (!this.state.value || this.state.value.length <= 0) && !['multiple-choice'].includes(data.type)) {
       if (['input', 'textarea'].includes(data.type)) {
         this.setState({error: 'Dit veld is verplicht'});
       } else {
@@ -91,10 +91,16 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
         this.setState({error: `Geef maximaal ${data.validation.maxChoices} keuzes op`});
         return false;
       }
+      
+      return true;
     }
     
     let isAnswered = this.state.isAnswered || !!this.config.startWithAllQuestionsAnsweredAndConfirmed
     if (wasAlreadyAnswered || isAnswered) return true;
+    
+    if (['input', 'textarea'].includes(data.type)) {
+      return true;
+    }
 
     this.setState({error: 'Je hebt nog geen keuze gemaakt'});
     return false;
