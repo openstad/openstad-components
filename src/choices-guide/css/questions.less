@@ -68,66 +68,6 @@
 
     }
 
-    .osc-radio-container, .osc-checkbox-container {
-
-      margin-bottom: 10px;
-      overflow: hidden;
-
-      input[type="radio"], input[type="checkbox"] {
-        opacity: 0;
-        width: 24px;
-        height: 24px;
-        margin: 0;
-        padding: 0;
-      }
-
-      .osc-radio-input, .osc-checkbox-input {
-        position: relative;
-        float: left;
-        width: 24px;
-        height: 24px;
-        margin-right: 12px;
-        border: solid 1px #767676;
-        border-radius: 12px;
-        background-color: white;
-
-        &.osc-checkbox-input {
-          border-radius: 0px;
-        }
-
-
-        &.osc-radio-input-checked, &.osc-checkbox-input-checked {
-
-          &:after {
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 0px;
-            height: 0px;
-            border: solid 9px black;
-            border-radius: 9px;
-            content: '';
-            pointer-events: none;
-          }
-        }
-
-        &.osc-checkbox-input-checked:after {
-          border-radius: 0px;
-        }
-      }
-
-      .osc-radio-text, .osc-checkbox-text {
-        float: left;
-        width: calc(100% - 37px);
-        line-height: 1.38;
-      }
-
-    }
-
-    .osc-other-textinput {
-      margin-left: 34px;
-    }
-
     &.osc-question-a-to-b {
 
       .osc-question-description {
@@ -211,4 +151,63 @@
 
 
   }
+}
+
+.osc-radio-container, .osc-checkbox-container {
+  margin-bottom: 10px;
+  overflow: hidden;
+
+  input[type="radio"], input[type="checkbox"] {
+    opacity: 0;
+    width: 24px;
+    height: 24px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .osc-radio-input, .osc-checkbox-input {
+    position: relative;
+    float: left;
+    width: 24px;
+    height: 24px;
+    margin-right: 12px;
+    border: solid 1px #767676;
+    border-radius: 12px;
+    background-color: white;
+
+    &.osc-checkbox-input {
+      border-radius: 0px;
+    }
+
+
+    &.osc-radio-input-checked, &.osc-checkbox-input-checked {
+
+      &:after {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 0px;
+        height: 0px;
+        border: solid 9px black;
+        border-radius: 9px;
+        content: '';
+        pointer-events: none;
+      }
+    }
+
+    &.osc-checkbox-input-checked:after {
+      border-radius: 0px;
+    }
+  }
+
+  .osc-radio-text, .osc-checkbox-text {
+    float: left;
+    width: calc(100% - 37px);
+    line-height: 1.38;
+  }
+
+}
+
+.osc-other-textinput {
+  margin-left: 34px;
 }
