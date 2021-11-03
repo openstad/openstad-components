@@ -12,6 +12,7 @@ module.exports = {
     "all": './src/index.jsx',
     "base-map": './src/base-map/index.jsx',
     "choices-guide": './src/choices-guide/index.jsx',
+    "forms": './src/forms/index.jsx',
     "idea-details": './src/idea-details/index.jsx',
     "ideas-overview": './src/ideas-overview/index.jsx',
     "idea-image": './src/image/index.jsx',
