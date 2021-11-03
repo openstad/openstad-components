@@ -347,6 +347,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
           throw response.text();
         })
         .then(function(json) {
+          self.setState({ busy: false, changed: false })
           if ( self.state.currentTarget.what == 'choices-guide' ) {
             self.onFinished()
           } else {
@@ -364,7 +365,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
 
     self.setState({ submitError: null })
     
-    if (!confirm("Je gaat " + what + " " + title + " verwijderen. Weet je het zeker?")) return;
+    if (!confirm("U gaat " + what + " " + title + " verwijderen. Weet u het zeker?")) return;
 
     let url = self.createApiUrl({ what, questionGroupId, choiceId, questionId });
     let headers = OpenStadComponentLibs.api.getHeaders(self.config);

@@ -4,19 +4,14 @@
     <title>Ideas on map</title>
     <link rel="shortcut icon" href="/favicon.ico"/>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
-    <link rel="stylesheet" type="text/css" href="/css/all.css"/>
 
     <!-- load react -->
     <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
 
     <!-- load openstad component -->
-    <!--
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/openstad-components@latest/dist/css/ideas-on-map.css"/>
     <script src="https://cdn.jsdelivr.net/npm/openstad-components@latest/dist/ideas-on-map.js"></script>
-    -->
-    <link rel="stylesheet" type="text/css" href="/components/dist/css/ideas-on-map.css"/>
-    <script src="/components/dist/ideas-on-map.js"></script>
 
     <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
     <script>
@@ -26,7 +21,7 @@
        var config = {
 
          divId: "ideas-on-map",
-         siteId: 276,
+         siteId: 1,
 
          // simple display of the map, to be used in other pages
          // display: {
@@ -88,8 +83,6 @@
            filterOptions: [{ value: '', label: 'Alle buurten' }, { value: 'Centrum West', label: 'Centrum West' }, { value: 'Centrum Oost', label: 'Centrum Oost' }],
            defaultValue: '',
          }],
-
-
 
          idea: {
 
@@ -168,18 +161,15 @@
            closedText: 'Niels is gek',
          },
 
-         // likes - doet nog niets
          vote: {
            isViewable: true,
            isActive: true,
+           requiredUserRole: "anonymous",
+           voteType: "likes",
            voteValues: [
              {
                label: "voor",
                value: "yes"
-             },
-             {
-               label: "tegen",
-               value: "no"
              }
            ]
          },

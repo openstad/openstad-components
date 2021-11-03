@@ -1,8 +1,7 @@
 const webpack = require("webpack");
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
- 
+const TerserPlugin = require("terser-webpack-plugin"); 
 module.exports = {
 
 	devtool: 'source-map',
@@ -19,8 +18,9 @@ module.exports = {
     "ideas-on-map": './src/ideas-on-map/index.jsx',
     "lightbox": './src/lightbox/index.jsx',
     "modal-popup": './src/modal-popup/index.jsx',
-    "previous-next-button-block": './src/previous-next-button-block/index.jsx',
+    "numberplates": './src/numberplates/index.jsx',
     "poll": './src/poll/index.jsx',
+    "previous-next-button-block": './src/previous-next-button-block/index.jsx',
     "reactions": './src/reactions/index.jsx',
   },
 
@@ -47,22 +47,8 @@ module.exports = {
   ],
 
   optimization: {
-    minimizer: [
-      new UglifyJsPlugin({
-        test: /\.jsx?$/,
-        exclude: /\/core-js/,
-        minify(file, sourceMap) {
-          const extractedComments = [];
-          const { error, map, code, warnings } = require('uglify-js') // Or require('./path/to/uglify-module')
-                .minify(
-                  file,
-                  { /* Your options for minification */ },
-                );
-          return { error, map, code, warnings, extractedComments };
-        }
-        
-      })
-    ]
+    minimize: true,
+    minimizer: [new TerserPlugin()],
   },
   
 	module: {

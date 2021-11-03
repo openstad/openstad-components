@@ -39,9 +39,6 @@ export default class Preview extends OpenStadComponent {
       },
 		});
 
-		// config
-    this.config.loginUrl = this.config.loginUrl || '/oauth/login?returnTo=' + encodeURIComponent(document.location.href);
-
     // tmp voor oude data
     props.config.content = props.config.content || {};
     if (props.config.content.noSelectionHTML && !props.config.content.noSelectionLoggedInHTML) {
@@ -87,11 +84,16 @@ export default class Preview extends OpenStadComponent {
 		document.dispatchEvent(event);
   }
 
+  openPreviewWindow() {
+    var event = new window.CustomEvent('osc-click-mobile-switcher');
+    document.dispatchEvent(event);
+  }
+
   dispatchSelectedIdeaClick(e, idea) {
 		var event = new window.CustomEvent('osc-selected-idea-click', { detail: { idea } });
 		document.dispatchEvent(event);
   }
-  
+
   dispatchClosePreview(e, what) {
     e.stopPropagation();
     let event;
@@ -99,7 +101,7 @@ export default class Preview extends OpenStadComponent {
     if (what == 'location') event = new window.CustomEvent('osc-set-selected-location', { detail: null });
 		document.dispatchEvent(event);
   }
-  
+
   render() {
 
     let self = this;
@@ -113,7 +115,7 @@ export default class Preview extends OpenStadComponent {
       if (this.config.api.isUserLoggedIn) {
         if (this.config.idea.canAddNewIdeas) {
           addButton = (
-            <button className="osc-button osc-button-blue" onClick={(event) => { this.onClickMobileSwitcher(event); this.onNewIdeaClick(event)} } ref={el => (self.newIdeaButton = el)}>Nieuw punt toevoegen</button>
+            <button className="osc-button osc-button-blue" onClick={(event) => { self.openPreviewWindow(); self.dispatchNewIdeaClick(event); }} ref={el => (self.newIdeaButton = el)}>Nieuw punt toevoegen</button>
           );
         }
       } else {
@@ -128,7 +130,7 @@ export default class Preview extends OpenStadComponent {
       let address = this.state.address || this.props.selectedLocation.address || '[adres wordt gezocht...]';
       contentHTML = contentHTML.replace(/\{address\}/g, address || '');
       contentHTML = contentHTML.replace(/\{loginLink\}/g, loginLink);
-      
+
       contentHTML = OpenStadComponentLibs.reactTemplate({ html: contentHTML, addButton, loginButton })
 
       return (
@@ -136,7 +138,7 @@ export default class Preview extends OpenStadComponent {
 					{contentHTML}
 				</div>
 			);
-      
+
     }
 
     // other
@@ -170,10 +172,11 @@ export default class Preview extends OpenStadComponent {
           <button className="osc-button osc-button-blue" onClick={(event) => self.dispatchNewIdeaClick(event)}>Nieuw punt toevoegen</button>
         );
       }
+      let loginUrl = OpenStadComponentLibs.auth.getLoginUrl(self.config);
       loginButton = (
-        <button onClick={() => { document.location.href = this.config.loginUrl }} className="osc-button-blue osc-not-logged-in-button">Inloggen</button>
+        <button onClick={() => { document.location.href = loginUrl }} className="osc-button-blue osc-not-logged-in-button">Inloggen</button>
       );
-      loginLink = `javascript: document.location.href = '${this.config.loginUrl}'`;
+      loginLink = `javascript: document.location.href = '${loginUrl}'`;
     }
 
     // new idea
@@ -267,7 +270,7 @@ export default class Preview extends OpenStadComponent {
     if (!selectedLocationHTML && !selectedIdeaHTML && !defaultBlockHTML) {
       return null;
     }
-    
+
     // TODO: kan de key weg uit IdeasList
     return (
 			<div className="osc-selection-block">

@@ -5,7 +5,7 @@ import OpenStadComponentLibs from '../../libs/index.jsx';
 import OpenStadComponentPoll from '../../poll/index.jsx';
 import OpenStadComponentReactions from '../../reactions/index.jsx';
 
-import VoteButton from './vote-button.jsx';
+import VoteButtons from './vote-buttons.jsx';
 import { IdeaImage as OpenStadComponentIdeaImage } from '../../image/index.jsx';
 
 'use strict';
@@ -255,9 +255,9 @@ export default class IdeasDetails extends OpenStadComponent {
     let voteButtonsHTML = null;
     if (self.config.idea.showVoteButtons) {
       voteButtonsHTML = (
-        <div className="osc-details-vote-buttons-container">
+        <div className="osc-vote-buttons-container">
           <h3>Likes</h3>
-          <VoteButton config={{ text: 'eens', opinion: 'yes', api: this.config.api, user: this.config.user, siteId: this.config.siteId }} idea={this.state.idea} name="likebutton" value={idea.yes}/>
+          <VoteButtons config={this.config} idea={this.state.idea} name="likebutton"/>
         </div>
       );
     }
@@ -267,7 +267,7 @@ export default class IdeasDetails extends OpenStadComponent {
       editButtonsHTML = (
         <div className="osc-editbuttons-container">
           <button className="osc-idea-details-editbutton osc-edit" onClick={(event) => self.dispatchEditIdeaButtonClick(event)}>Bewerk idee</button>
-          <button className="osc-idea-details-editbutton osc-delete" onClick={(event) => { if ( confirm('Weet je het zeker') ) self.deleteIdea(event) }}>Verwijder idee</button>
+          <button className="osc-idea-details-editbutton osc-delete" onClick={(event) => { if ( confirm('Weet u het zeker') ) self.deleteIdea(event) }}>Verwijder idee</button>
         </div>
       );
 
@@ -300,10 +300,11 @@ export default class IdeasDetails extends OpenStadComponent {
       let config = {...self.config}
       config.argument.isActive = this.config.argument.isActive && !this.config.argument.ignoreReactionsForIdeaIds.match(new RegExp(`(?:^|\\D)${idea.id}(?:\\D|$)`));
       config.argument.isClosed = this.config.argument.isClosed || this.config.argument.closeReactionsForIdeaIds.match(new RegExp(`(?:^|\\D)${idea.id}(?:\\D|$)`));
+      let loginUrl = OpenStadComponentLibs.auth.getLoginUrl(self.config);
       reactionsHTML = (
         <div>
 			    <div id="reactions" className="osc-reactions-header"><h3>{self.config.argument.title || 'Reacties'}</h3></div>
-          <OpenStadComponentReactions config={{ ...self.config.argument, title: undefined, api: self.config.api, user: self.config.user, siteId: self.config.siteId, ideaId: idea.id, loginUrl: self.config.loginUrl, }}/>
+          <OpenStadComponentReactions config={{ ...self.config.argument, title: undefined, api: self.config.api, user: self.config.user, siteId: self.config.siteId, ideaId: idea.id, loginUrl: loginUrl, }}/>
         </div>
       );
     }

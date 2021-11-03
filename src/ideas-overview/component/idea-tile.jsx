@@ -107,6 +107,7 @@ export default class IdeasOverview extends OpenStadComponent {
     let statsHTML = null;
     if (self.config.display.showStats) {
       let stats = [];
+
       if ( this.config.idea.showVoteButtons && this.config.vote.isViewable == true && this.config.vote.voteValues.find(val => val.value === 'yes' ) ) {
         stats.push(
           <div className="osc-yes-votes">

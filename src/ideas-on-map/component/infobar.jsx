@@ -34,8 +34,6 @@ export default class InfoBar extends OpenStadComponent {
       types: [],
 		});
 
-		// config
-    this.config.loginUrl = this.config.loginUrl || '/oauth/login?returnTo=' + encodeURIComponent(document.location.href);
     // tmp voor oude data
     if (props.config.content.noSelectionHTML && !props.config.content.noSelectionLoggedInHTML) {
       this.config.content.noSelectionLoggedInHTML = props.config.content.noSelectionHTML
