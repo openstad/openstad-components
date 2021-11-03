@@ -82,19 +82,33 @@ module.exports = {
         ],
       },
 
-      // deze kwam ik ergens tegen maar heb ik nog niet geprobeerd
-			// {
-			//   test: /\.css/,
-			//   use: [
-			//   	{
-			//   		loader: MiniCssExtractPlugin.loader,
-			//   		options: {
-			//   			hmr: process.env.NODE_ENV === 'development',
-			//   		},
-			//   	},
-			//   	'css-loader',
-			//   ],
-			// },
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader, 
+            options: {
+              publicPath: '../'
+            }
+          },
+          {
+            loader: "css-loader"
+          }
+        ]
+      },
+
+      {
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "images/[name].[ext]",
+              publicPath: '../'
+            },
+          },
+        ],
+      },
       
 		],
 	},

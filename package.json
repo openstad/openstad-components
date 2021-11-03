@@ -37,6 +37,7 @@
     "es6-promise-promise": "^1.0.0",
     "exports-loader": "^0.7.0",
     "extract-text-webpack-plugin": "^3.0.2",
+    "file-loader": "^6.2.0",
     "filepond-plugin-file-poster": "^2.4.1",
     "filepond-plugin-file-validate-size": "^2.2.2",
     "filepond-plugin-file-validate-type": "^1.2.5",
