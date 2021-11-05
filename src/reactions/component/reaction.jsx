@@ -19,7 +19,7 @@ export default class OpenStadComponentReaction extends OpenStadComponent {
         headers: null,
       },
       requiredUserRole: 'member',
-      userNameFields: ['firstName', 'lastName'],
+      userNameFields: ['displayName'],
     });
 
     this.state = {

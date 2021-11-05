@@ -295,7 +295,7 @@ export default class IdeasForm extends OpenStadComponent {
 					  <h2>
               Naam
 					  </h2>
-            {self.state.formfields.user && self.state.formfields.user.fullName}
+            {self.state.formfields.user && self.state.formfields.user.displayName}
           </div>
 
           <div className="osc-form-group">
