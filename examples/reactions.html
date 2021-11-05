@@ -32,13 +32,14 @@
          emptyListText: 'Nog geen argumenten',
          isReplyingEnabled: true,
          isVotingEnabled: true,
-         userNameFields: { or: ['nickName', ['firstName', 'lastName'] ] }, // nickName || firstName + lastName
+         // userNameFields: { or: ['nickName', ['firstName', 'lastName'] ] }, // nickName || firstName + lastName
+         userNameFields: ['displayName'],
 
          descriptionMinLength: 3,
          descriptionMaxLength: 50,
 
          user: {
-           fullName: "USER FULL NAME",
+           displayName: "USER DISPLAY NAME",
            role: "USER ROLE"
          },
          
