@@ -53,7 +53,6 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
       let choiceAnswer = choiceAnswers[id] || {};
       // TODO: this.config.startWithAllQuestionsAnswered hoort in question, niet hier
       let userAnswer = userAnswers[id] || ( this.config.startWithAllQuestionsAnswered ? { x: 50, y: 50, z: 50 } : {} );
-      console.log(userAnswer);
 
       let result = results[id] = {};
 
@@ -82,8 +81,6 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
     Object.keys(scores).forEach((dimension) => {
       scores[dimension] = scores[dimension].score.length ? scores[dimension].score.reduce(function (accumulator, currentValue){return accumulator + currentValue;}) / scores[dimension].noOfAnswers : undefined;
     });
-
-    console.log('scores', scores);
 
     self.setState({score: scores});
     return scores;
