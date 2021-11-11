@@ -48,7 +48,7 @@ export default class OpenStadComponentChoices extends OpenStadComponent {
     self.choiceElements.forEach((choiceElement) => {
       scores[choiceElement.props.data.id] = choiceElement.calculateScore(answers);
     });
-
+ 
     // for plane: calculate position
     let planePos = { x: 50, y: 50 };
     if (self.config.type) {

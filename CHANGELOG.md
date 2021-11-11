@@ -2,6 +2,7 @@
 
 ## 0.34.0
 * Move css background images to files
+* Fix choicesguide storage of scores
 
 ## 0.33.0
 * Fix error when clicking on new idea button in mobile view
