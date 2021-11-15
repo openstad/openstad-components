@@ -84,28 +84,28 @@ export default class IdeasList extends OpenStadComponent {
 
     let self = this;
 
-    self.ideaTileMouseOverListener = function(event) {
-      self.onTileMouseOver(event.detail);
+    self.ideaTileMouseEnterListener = function(event) {
+      self.onTileMouseEnter(event.detail);
     };
-    document.addEventListener('osc-idea-tile-mouse-over', self.ideaTileMouseOverListener)
+    document.addEventListener('osc-idea-tile-mouse-enter', self.ideaTileMouseEnterListener)
 
-    self.ideaTileMouseOutListener = function(event) {
-      self.onTileMouseOut(event.detail);
+    self.ideaTileMouseLeaveListener = function(event) {
+      self.onTileMouseLeave(event.detail);
     };
-    document.addEventListener('osc-idea-tile-mouse-out', self.ideaTileMouseOutListener)
+    document.addEventListener('osc-idea-tile-mouse-leave', self.ideaTileMouseLeaveListener)
 
 	}
 
   componentWillUnmount() {
-    document.removeEventListener('osc-idea-tile-mouse-over', this.ideaTileMouseOverListener)
-    document.removeEventListener('osc-idea-tile-mouse-out', this.ideaTileMouseOutListener)
+    document.removeEventListener('osc-idea-tile-mouse-enter', this.ideaTileMouseEnterListener)
+    document.removeEventListener('osc-idea-tile-mouse-leave', this.ideaTileMouseLeaveListener)
   }
 
-  onTileMouseOver({ idea }) {
+  onTileMouseEnter({ idea }) {
     this.setState({ highLightIdeaId: idea.id })
   }
 
-  onTileMouseOut({ idea }) {
+  onTileMouseLeave({ idea }) {
     this.setState({ highLightIdeaId: null })
   }
   

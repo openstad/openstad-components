@@ -172,11 +172,11 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 		document.addEventListener('osc-idea-tile-click', function(event) {
       self.onIdeaClick(event.detail.idea);
     });
-		document.addEventListener('osc-idea-tile-mouse-over', function(event) {
-      self.onTileMouseOver(event.detail.idea);
+		document.addEventListener('osc-idea-tile-mouse-enter', function(event) {
+      self.onTileMouseEnter(event.detail.idea);
     });
-		document.addEventListener('osc-idea-tile-mouse-out', function(event) {
-      self.onTileMouseOut(event.detail.idea);
+		document.addEventListener('osc-idea-tile-mouse-leave', function(event) {
+      self.onTileMouseLeave(event.detail.idea);
     });
 
     // details changes
@@ -756,12 +756,13 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 		this.onChangeMapBoundaries(); // todo: rename
   }
   
-  onTileMouseOver(idea) {
+  onTileMouseEnter(idea) {
     this.map.fadeMarkers({ exception: idea })
     this.map.updateFading();
   }
 
-  onTileMouseOut(idea) {
+  onTileMouseLeave(idea) {
+    
     this.map.unfadeAllMarkers()
     if (this.state.selectedIdea) {
       this.map.fadeMarkers({exception: this.state.selectedIdea});

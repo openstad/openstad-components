@@ -66,15 +66,15 @@ export default class IdeasOverview extends OpenStadComponent {
 		document.dispatchEvent(newEvent);
   }
 
-  dispatchIdeaTileMouseOver(event, idea) {
+  dispatchIdeaTileMouseEnter(event, idea) {
     event.stopPropagation();
-		let newEvent = new window.CustomEvent('osc-idea-tile-mouse-over', { detail: { idea } } );
+		let newEvent = new window.CustomEvent('osc-idea-tile-mouse-enter', { detail: { idea } } );
 		document.dispatchEvent(newEvent);
   }
 
-  dispatchIdeaTileMouseOut(event, idea) {
+  dispatchIdeaTileMouseLeave(event, idea) {
     event.stopPropagation();
-		let newEvent = new window.CustomEvent('osc-idea-tile-mouse-out', { detail: { idea } } );
+		let newEvent = new window.CustomEvent('osc-idea-tile-mouse-leave', { detail: { idea } } );
 		document.dispatchEvent(newEvent);
   }
 
@@ -173,7 +173,7 @@ export default class IdeasOverview extends OpenStadComponent {
 
     // now render
     return (
-			<div id={self.divId} className={`osc-idea-tile osc-displaytype-${self.config.display.type} osc-column osc-${self.config.display.columns}-columns ${self.props.className || ''}`} onClick={event => self.dispatchIdeaTileClick(event, idea)} onMouseOver={event => self.dispatchIdeaTileMouseOver(event, idea)} onMouseOut={event => self.dispatchIdeaTileMouseOut(event, idea)}>
+			<div id={self.divId} className={`osc-idea-tile osc-displaytype-${self.config.display.type} osc-column osc-${self.config.display.columns}-columns ${self.props.className || ''}`} onClick={event => self.dispatchIdeaTileClick(event, idea)} onMouseEnter={event => self.dispatchIdeaTileMouseEnter(event, idea)} onMouseLeave={event => self.dispatchIdeaTileMouseLeave(event, idea)}>
         <div className="osc-idea-image-container">
           <OpenStadComponentIdeaImage config={this.config} idea={idea} key={'image-' + idea.id}/>
         </div>
