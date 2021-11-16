@@ -7,6 +7,8 @@ import ReactDOM from 'react-dom';
 
 // import css to make sure it is generated in the result
 import './css/default.less';
+import 'leaflet/dist/leaflet.css';
+import 'react-leaflet-markercluster/dist/styles.min.css';
 
 // the module
 import OpenStadComponentBaseMap from './component/base-map.jsx';
