@@ -307,7 +307,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     let self= this;
     self.setCurrentEditIdea(null);
     self.setSelectedLocation(null);
-    let status = idea ? 'idea-selected' : self.state.status;
+    let status = idea ? ( self.state.status ==  'idea-details' ? 'idea-details' : 'idea-selected' ) : self.state.status; // TODO: en nu leesbaar
     self.setState({ selectedIdea: idea, status }, () => {
       if (idea) {
         self.map.fadeMarkers({exception: idea});
