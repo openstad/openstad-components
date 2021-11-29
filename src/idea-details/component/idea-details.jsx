@@ -37,6 +37,7 @@ export default class IdeasDetails extends OpenStadComponent {
       poll: {
         canAddPolls: false,
       },
+      vote: {},
       labels: {},
       types: null,
       typeField: 'typeId',
@@ -253,7 +254,7 @@ export default class IdeasDetails extends OpenStadComponent {
     }
 
     let voteButtonsHTML = null;
-    if (self.config.idea.showVoteButtons) {
+    if (self.config.idea.showVoteButtons && ( typeof self.config.vote.voteValues == 'undefined' || self.config.vote.voteValues.length > 0 )) {
       voteButtonsHTML = (
         <div className="osc-vote-buttons-container">
           <h3>Likes</h3>
