@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.36.0
+* Remove header above like buttons if there are no like buttons
+* Better switching between ideas when clicking on map markers
+* Use mouseEnter/Leave instead of mouseOver/Out in tiles
+
 ## 0.34.0
 * Move css background images to files
 * Fix choicesguide storage of scores
