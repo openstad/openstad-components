@@ -101,6 +101,10 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
     if (['input', 'textarea'].includes(data.type)) {
       return true;
     }
+    
+    if (data.type === 'enum-radio' && data.values.length === 0) {
+      return true;
+    }
 
     this.setState({error: 'Je hebt nog geen keuze gemaakt'});
     return false;
@@ -348,7 +352,7 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
       case 'enum-radio':
         selectorHTML = (
           <div className="osc-question-selector">
-            { data.values && data.values.map((entry, i) => {
+            { data.values && Array.isArray(data.values) && data.values.map((entry, i) => {
               let key = parseInt(1000000 * Math.random());
               let checked = false;
               if (typeof data.value == 'object') {

@@ -46,7 +46,9 @@ export default class OpenStadComponentChoices extends OpenStadComponent {
 
     let scores = {};
     self.choiceElements.forEach((choiceElement) => {
-      scores[choiceElement.config.divId] = choiceElement.calculateScore(answers);
+      if (choiceElement !== null) {
+        scores[choiceElement.config.divId] = choiceElement.calculateScore(answers);
+      }
     });
 
     // for plane: calculate position
@@ -65,7 +67,7 @@ export default class OpenStadComponentChoices extends OpenStadComponent {
               planePos[dimension] += parseInt(entry[dimension]) || 0;
               lengths[dimension]++
             }
-          });        
+          });
         });
         planePos.x = lengths.x ? parseInt(planePos.x / lengths.x) : undefined;
         planePos.y = lengths.y ? parseInt(planePos.y / lengths.y) : undefined;
