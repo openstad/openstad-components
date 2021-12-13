@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Button</title>
+    <link rel="shortcut icon" href="/favicon.ico"/>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/css/all.css"/>
+
+    <!-- load react -->
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- load openstad component -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/openstad-components@latest/dist/css/button.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/openstad-components@latest/dist/button.js"></script>
+
+    <script>
+	   window.addEventListener('load', function(e) {
+
+       let config0 = {
+         divId: "knop0",
+         number: 123,
+       };
+
+       let element0 = document.querySelector('#openstad-component-button-0');
+       OpenStadComponents['button'].Button.renderElement(element0, config0);
+
+       let config1 = {
+         divId: "knop1",
+         url: "http://niels.nlsvgtr.nl",
+         label: "Klik mij",
+       };
+
+       let element1 = document.querySelector('#openstad-component-button-1');
+       OpenStadComponents['button'].Button.renderElement(element1, config1);
+
+       let config2 = {
+         divId: "knop2",
+         icon: {
+           url: "https://cdn.jsdelivr.net/npm/openstad-components@latest/dist/images/thumbs-up-white.svg",
+           width: '27px',
+           height: '24px',
+           top: '8px',
+           left: '6px',
+         },
+         label: "Klik mij ook maar als alleen als je dat wilt",
+       };
+
+       let element2 = document.querySelector('#openstad-component-button-2');
+       OpenStadComponents['button'].Button.renderElement(element2, config2);
+
+       let config3 = {
+         divId: "knop3",
+         icon: {
+           url: "https://cdn.jsdelivr.net/npm/openstad-components@latest/dist/images/thumbs-up-white.svg",
+           width: '27px',
+           height: '24px',
+           top: '8px',
+           left: '6px',
+         },
+         number: 123,
+         url: "http://niels.nlsvgtr.nl",
+         label: "Klik mij",
+       };
+
+       let element3 = document.querySelector('#openstad-component-button-3');
+       OpenStadComponents['button'].Button.renderElement(element3, config3);
+
+       let config4 = {
+         divId: "knop4",
+         number: 123,
+         url: "http://niels.nlsvgtr.nl",
+         label: "Klik mij",
+       };
+
+       let element4 = document.querySelector('#openstad-component-button-4');
+       OpenStadComponents['button'].Button.renderElement(element4, config4);
+
+       let config5 = {
+         number: 2341,
+         url: "http://niels.nlsvgtr.nl",
+         label: "Klik mij ook maar als alleen als je dat wilt",
+       };
+
+       let element5 = document.querySelector('#openstad-component-button-5');
+       OpenStadComponents['button'].Button.renderElement(element5, config5);
+
+       let config6 = {
+         number: 34512,
+         label: "Klik mij niet",
+       };
+
+       let element6 = document.querySelector('#openstad-component-button-6');
+       OpenStadComponents['button'].Button.renderElement(element6, config6);
+
+       let config7 = {
+         number: 3456712,
+         label: "Klik mij ook niet",
+       };
+
+       let element7 = document.querySelector('#openstad-component-button-7');
+       OpenStadComponents['button'].Button.renderElement(element7, config7);
+
+       window.knop0.updateNumber(21);
+       window.knop4.updateNumber(456);
+
+     });
+	  </script>
+    <style>
+     body, html {
+       position: relative;
+       width: 100%;
+       height: 100%;
+       background-color: pink;
+     }
+     h1 {
+       margin: 10px;
+       padding: 0;
+     }
+     .container {
+       display: block;
+       position: relative;
+       width: 700px;
+       margin: 0 auto;
+       padding: 10px;
+       top: 0px;
+       bottom: 0px;
+       background-color: white;
+     }
+     #openstad-component-button-0 .osc-numberplates {
+       display: inline-block;
+     }
+     .openstad-component-button {
+       margin-top: 10px;
+       width: 250px;
+     }
+    </style>
+  </head>
+  <body>
+	  <h1>OpenStad Numberplates</h1>
+    <div class="container osc-component">
+		  <div id="openstad-component-button-0" class="openstad-component-button"></div>
+		  <div id="openstad-component-button-1" class="openstad-component-button"></div>
+		  <div id="openstad-component-button-2" class="openstad-component-button"></div>
+		  <div id="openstad-component-button-3" class="openstad-component-button"></div>
+		  <div id="openstad-component-button-4" class="openstad-component-button"></div>
+		  <div id="openstad-component-button-5" class="openstad-component-button"></div>
+		  <div id="openstad-component-button-6" class="openstad-component-button"></div>
+		  <div id="openstad-component-button-7" class="openstad-component-button"></div>
+    </div>
+  </body>
+</html>
