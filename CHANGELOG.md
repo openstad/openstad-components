@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.37.0
+* Add a button component
+
 ## 0.36.0
 * Remove header above like buttons if there are no like buttons
 * Better switching between ideas when clicking on map markers
