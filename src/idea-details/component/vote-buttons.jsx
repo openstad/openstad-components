@@ -2,7 +2,7 @@
 
 import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
-import OpenStadComponentNumberplateButton from '../../numberplates/component/numberplate-button.jsx';
+import OpenStadComponentNumberplateButton from '../../button/component/button.jsx';
 
 'use strict';
 
