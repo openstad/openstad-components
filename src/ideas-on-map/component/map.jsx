@@ -138,7 +138,6 @@ export default class Map extends OpenStadComponentBaseMap {
 
   // fix for https://github.com/Leaflet/Leaflet.markercluster/issues/177
   updateFading() {
-    console.log('UPDATE FADE');
     let self = this;
     self.markers.forEach((marker) => {
       let visibleParent = self.markerClusterGroup && self.markerClusterGroup.getVisibleParent(marker);

@@ -31,11 +31,11 @@ export default class OpenStadComponentButton extends OpenStadComponent {
 
     let self = this;
 
-    let className = `${self.props.className} osc-button`;
+    let className = `${self.props.className} osc-button-component`;
 
     let number = parseInt(typeof self.props.number != 'undefined' ? self.props.number : self.state.number);
     let numberplatesHTML = null;
-    if (number) {
+    if (number || number == 0) {
       className += ' osc-numberplate-button'
       numberplatesHTML = (<OpenStadComponentNumberplates number={number} ref={(el) => { self.numberplates = el; }}/>);
     }
