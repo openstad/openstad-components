@@ -120,6 +120,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
     if ( self.choicesElement ) {
 
       let choiceElement = self.choicesElement.getPreferedChoice({scores, planePos});
+
       if ( choiceElement ) {
         choicesTitle = self.config.choices.title.preference.replace('\{preferredChoice\}', choiceElement && choiceElement.getTitle(self.state.scores[choiceElement.config.divId]) || choicesTitle);
       } else {
@@ -226,20 +227,24 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
             }
           })
           .catch(function(error) {
-            error.then(function(messages) {
-              try {
-                messages = JSON.parse(messages)
-              } catch (err) {}
-              let message = ( Array.isArray(messages) && messages[0] && messages[0].message || messages[0] ) || ( messages.message || messages );
-              self.setState({
-                submissionError: {
-                  message: message.toString(),
-                  type: message == 'U heeft uw mening al ingestuurd' ? 'alreadySubmitted' : 'unknown'
-                }
-              }, () => {
-                return console.log(messages);
+            if (error.then) {
+              error.then(function(messages) {
+                try {
+                  messages = JSON.parse(messages)
+                } catch (err) {}
+                let message = ( Array.isArray(messages) && messages[0] && messages[0].message || messages[0] ) || ( messages.message || messages );
+                self.setState({
+                  submissionError: {
+                    message: message.toString(),
+                    type: message == 'U heeft uw mening al ingestuurd' ? 'alreadySubmitted' : 'unknown'
+                  }
+                }, () => {
+                  return console.log(messages);
+                });
               });
-            });
+            } else {
+              return console.log(error);
+            }
           });
       });
     });
