@@ -278,7 +278,9 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
 
   }
   
-  logout({ afterUrl = self.config.afterUrl }) {
+  logout({ afterUrl }) {
+
+    let self = this;
     let logoutUrl = self.config.logoutUrl || '/oauth/logout';
     
     fetch(logoutUrl, {
