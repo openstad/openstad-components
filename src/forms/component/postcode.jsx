@@ -7,13 +7,16 @@ export default class OpenStadComponentPostcode extends OpenStadComponentDefaultI
 	validate({ showErrors }) {
 		let isValid = true;
     let error = '';
-    if (!this.state.value || !this.state.value.match(/^\s*\d{4}\s*[a-zA-Z][a-zA-Z]\s*$/)) {
-      isValid = false;
-      if (showErrors) error = 'Dit is geen postcode';
-    }
-    if (this.config.required && !this.state.value) {
-      isValid = false;
-      if (showErrors) error = 'Je hebt nog niets ingevuld';
+    if (this.state.value) {
+      if (!this.state.value.match(/^\s*\d{4}\s*[a-zA-Z][a-zA-Z]\s*$/)) {
+        isValid = false;
+        if (showErrors) error = 'Dit is geen postcode';
+      }
+    } else {
+      if (this.config.required) {
+        isValid = false;
+        if (showErrors) error = 'Je hebt nog niets ingevuld';
+      }
     }
     this.setState({ isValid, error })
 
