@@ -202,7 +202,7 @@ export default class OpenStadComponentReaction extends OpenStadComponent {
       );
     }
 
-    let descriptionHTML = (<div className="osc-reaction-description">{data.description}</div>);
+    let descriptionHTML = (<div className="osc-reaction-description" dangerouslySetInnerHTML={{__html: data.description }}></div>);
     if (self.state.editMode) {
       descriptionHTML = (
         <div className="osc-reaction-description">
