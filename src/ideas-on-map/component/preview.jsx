@@ -182,7 +182,7 @@ export default class Preview extends OpenStadComponent {
     // new idea
     if (self.props.selectedLocation) {
       let contentHTML = null;
-      if (self.props.selectedLocation.isPointInPolygon) {
+      if (self.props.selectedLocation.isPointInArea) {
         if (self.config.api.isUserLoggedIn) {
           contentHTML = self.config.content.selectionActiveLoggedInHTML
         } else {

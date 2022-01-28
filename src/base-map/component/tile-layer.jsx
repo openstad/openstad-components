@@ -41,7 +41,7 @@ export default class OpenStadComponentMapTileLayer extends OpenStadComponent {
         return (
           <TileLayer
             url={this.props.mapTiles && this.props.mapTiles.url || 'https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0/standaard/EPSG:3857/{z}/{x}/{y}.png'}
-	          minZoom={ typeof this.props.minZoom != 'undefined' ? this.props.minZoom : 11 }
+	          minZoom={ typeof this.props.minZoom != 'undefined' ? this.props.minZoom : 0 }
 	          maxZoom={ typeof this.props.maxZoom != 'undefined' ? this.props.maxZoom : 19 }
             subdomains={this.props.mapTiles && this.props.mapTiles.subdomains || ''}
             attribution={this.props.mapTiles && this.props.mapTiles.attribution}

@@ -18,6 +18,7 @@ import ideasSort from './lib/ideas-sort.js';
 import localStorage from './lib/local-storage.js';
 import sessionStorage from './lib/session-storage.js';
 import reactTemplate from './lib/react-template.js';
+import { addToClassname, removeFromClassName } from './lib/class-name.js';
 
 let OpenStadComponentLibs = {
   api,
@@ -27,6 +28,19 @@ let OpenStadComponentLibs = {
   localStorage,
   sessionStorage,
   reactTemplate,
+  addToClassname,
+  removeFromClassName,
 }
+
 export default OpenStadComponentLibs;
+
+export {
+  ideasSort,
+  localStorage,
+  sessionStorage,
+  reactTemplate,
+  addToClassname,
+  removeFromClassName,
+};
+
 

@@ -103,10 +103,17 @@ export default class OpenStadComponentMap extends OpenStadComponent {
     let {markers} = this.state;
 
     markerData.iconCreateFunction = this.config.iconCreateFunction;
-    if (!markerData.icon) {
+    if (!markerData.icon && this.config.categorize) {
       let category = markerData.data && eval(`markerData.data.${this.config.categorize.categorizeByField}`);
       let icon = ( this.config.categorize.categories[ category ] && this.config.categorize.categories[ category ].icon );
       if (icon) markerData.icon = icon;
+    }
+    if (!markerData.icon && this.config.defaultIcon) {
+      markerData.icon = this.config.defaultIcon;
+    }
+    if (markerData.icon) {
+      if (!markerData.iconSize && markerData.icon.width && markerData.icon.height) markerData.icon.iconSize = [markerData.icon.width, markerData.icon.height]
+      if (!markerData.iconAnchor && markerData.icon.anchor) markerData.icon.iconAnchor = markerData.icon.anchor
     }
 
     markerData.onClick = markerData.onClick ? [ markerData.onClick, this.onMarkerClick ] : [ this.onMarkerClick ];
