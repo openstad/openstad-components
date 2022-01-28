@@ -2,11 +2,10 @@ const webpack = require('webpack');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin'); 
+
 module.exports = {
 
-	devtool: 'source-map',
-	// mode: 'production',
-	mode: 'development',
+	mode: 'production',
 
 	entry: {
     'all': './src/index.jsx',
@@ -38,7 +37,11 @@ module.exports = {
     'react-dom': 'ReactDOM',
 	},
 
+  devtool: false,
   plugins: [
+    new webpack.SourceMapDevToolPlugin({
+       filename: '[file].map',
+    }),
     new MiniCssExtractPlugin({
       filename: 'css/[name].css',
       ignoreOrder: false,
@@ -111,7 +114,7 @@ module.exports = {
         ]
       },
 
-      {
+      { // other images
         test: /\.(png|jpe?g|gif|svg)$/i,
         use: [
           {
