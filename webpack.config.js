@@ -26,6 +26,7 @@ module.exports = {
   },
 
 	output: {
+    devtoolNamespace: 'openstadcomponents',
 		path: __dirname + '/dist',
 		filename: '[name].js',
     library: ['OpenStadComponents', '[name]'],
