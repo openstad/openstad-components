@@ -2,6 +2,11 @@
 
 ## 0.37.0
 * Add a button component
+* Fix: allow html special chars in argument
+* Fix sourcemaps
+* Fix postcode validation
+* Fix choices-guide.getPreferedChoice
+* Fix in choices-guide logout function
 
 ## 0.36.0
 * Remove header above like buttons if there are no like buttons
