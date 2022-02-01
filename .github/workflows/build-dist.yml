@@ -21,6 +21,9 @@ jobs:
       - name: Get branch name
         id: branch-name
         uses: tj-actions/branch-names@v5
+
+      # build dist
+      - run: npm run build
           
       # set version number
       - run: npm run set-publish-version
