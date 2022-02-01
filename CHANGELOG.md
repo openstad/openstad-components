@@ -7,6 +7,7 @@
 * Fix postcode validation
 * Fix choices-guide.getPreferedChoice
 * Fix in choices-guide logout function
+* Move build from travis to github actions
 
 ## 0.36.0
 * Remove header above like buttons if there are no like buttons

@@ -10,7 +10,7 @@ async function updateVersionNumber() {
     packageJSON = packageJSON.toString();
 
     // get current branch
-    let branch = process.env.TRAVIS_BRANCH;
+    let branch = process.env.GITHUB_BRANCH_NAME;
     if (!branch) throw new Error('Current branch not found');
     if (branch == 'master') return;
     let tag = '';
