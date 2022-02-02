@@ -83,7 +83,11 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
       }
       
       if (data.validation && data.validation.minChoices > 0 && checked < data.validation.minChoices) {
-        this.setState({error: `Geef minimaal ${data.validation.minChoices} keuzes op`});
+        if (data.validation.minChoices == 1) {
+          this.setState({error: 'Je hebt nog geen keuze gemaakt'});
+        } else {
+          this.setState({error: `Geef minimaal ${data.validation.minChoices} keuzes op`});
+        }
         return false;
       }
       

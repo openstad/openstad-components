@@ -18,7 +18,7 @@ export default class OpenStadComponentChoices extends OpenStadComponent {
     this.choiceElements = [];
 
     this.state = {
-      title: 'Je hebt nog geen keuze gemaakt',
+      title: 'Hoe belangrijk vind jij de ambities?',
       scores: props.scores,
       planePos: { x: 50, y: 50 },
     };

@@ -26,9 +26,9 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
       },
       choices: {
         title: {
-          noPreferenceYet: 'Je hebt nog geen keuze gemaakt',
-          preference: '<b>Jouw voorkeur:</b>{preferredChoice}',
-          inBetween: 'Je staat precies tussen meerdere voorkeuren in'
+          noPreferenceYet: 'Hoe belangrijk vind jij de ambities?',
+          preference: '<b>Jouw ambitie:</b>{preferredChoice}',
+          inBetween: 'Je staat precies tussen meerdere ambities in'
         },
         withPercentage: false,
         minLabel: null,
