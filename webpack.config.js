@@ -1,7 +1,7 @@
-const webpack = require("webpack");
+const webpack = require('webpack');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const TerserPlugin = require("terser-webpack-plugin"); 
+const TerserPlugin = require('terser-webpack-plugin'); 
 module.exports = {
 
 	devtool: 'source-map',
@@ -9,20 +9,20 @@ module.exports = {
 	mode: 'development',
 
 	entry: {
-    "all": './src/index.jsx',
-    "base-map": './src/base-map/index.jsx',
-    "button": './src/button/index.jsx',
-    "choices-guide": './src/choices-guide/index.jsx',
-    "forms": './src/forms/index.jsx',
-    "idea-details": './src/idea-details/index.jsx',
-    "ideas-overview": './src/ideas-overview/index.jsx',
-    "idea-image": './src/image/index.jsx',
-    "ideas-on-map": './src/ideas-on-map/index.jsx',
-    "lightbox": './src/lightbox/index.jsx',
-    "modal-popup": './src/modal-popup/index.jsx',
-    "poll": './src/poll/index.jsx',
-    "previous-next-button-block": './src/previous-next-button-block/index.jsx',
-    "reactions": './src/reactions/index.jsx',
+    'all': './src/index.jsx',
+    'base-map': './src/base-map/index.jsx',
+    'button': './src/button/index.jsx',
+    'choices-guide': './src/choices-guide/index.jsx',
+    'forms': './src/forms/index.jsx',
+    'idea-details': './src/idea-details/index.jsx',
+    'ideas-overview': './src/ideas-overview/index.jsx',
+    'idea-image': './src/image/index.jsx',
+    'ideas-on-map': './src/ideas-on-map/index.jsx',
+    'lightbox': './src/lightbox/index.jsx',
+    'modal-popup': './src/modal-popup/index.jsx',
+    'poll': './src/poll/index.jsx',
+    'previous-next-button-block': './src/previous-next-button-block/index.jsx',
+    'reactions': './src/reactions/index.jsx',
   },
 
 	output: {
@@ -58,14 +58,14 @@ module.exports = {
 
 			{
 				test: /\.json$/,
-				loader: "json-loader"
+				loader: 'json-loader'
 			},
 
 			{
         test: /\.jsx?$/,
         exclude: /node_modules(?!\/openstad-component)/,
         use: {
-          loader: "babel-loader"
+          loader: 'babel-loader'
         }
 			},
 
@@ -92,9 +92,22 @@ module.exports = {
               publicPath: '../'
             }
           },
+          'css-loader',
           {
-            loader: "css-loader"
-          }
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: {
+                plugins: [
+                  [
+                    'postcss-preset-env',
+                    {
+                      // Options
+                    },
+                  ],
+                ],
+              },
+            },
+          },
         ]
       },
 
@@ -102,9 +115,9 @@ module.exports = {
         test: /\.(png|jpe?g|gif|svg)$/i,
         use: [
           {
-            loader: "file-loader",
+            loader: 'file-loader',
             options: {
-              name: "images/[name].[ext]",
+              name: 'images/[name].[ext]',
               publicPath: '../'
             },
           },
