@@ -634,23 +634,15 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   }
 
 	onClusterClick(event) {
-
 		if ( this.state.infobarOnMobileIsOpen == true && isMobile ) {
       this.closeInfobarOnMobile()
 			return;
 		}
-
-    // TODO:ik vind dit rare functionaliteit en heb het er daarom uit gehaald. Ik laat het nog even staan voor het geval dat er toch weer om gevraagd wordt.
-    // this.setState({ status: 'default' });
-    // this.setCurrentEditIdea(null);
-    // this.setSelectedIdea(null);
-
   }
 
   onChangeMapBoundaries() {
     let self = this;
     if (!self.map) return;
-    self.map.updateFading();
     switch (self.state.status) {
 
       // case 'idea-details':

@@ -17,9 +17,8 @@ export default class Map extends OpenStadComponentBaseMap {
     });
 
     // tmp fallback
-    this.config.polygon = this.config.polygon;
     this.config.autoZoomAndCenter = this.config.autoZoomAndCenter || 'polygon'
-    
+
     this.ideas = [];
 
     this.state = merge.recursive(this.state, {
@@ -34,11 +33,6 @@ export default class Map extends OpenStadComponentBaseMap {
 
     let self = this;
 
-    self.mapClusterAnimationEndListener = function(event) {
-      self.onMapClusterAnimationEnd(event.detail);
-    }
-		document.addEventListener('osc-map-cluster-animation-end', self.mapClusterAnimationEndListener);
-
     self.ideasFilterOnchangeListener = function(event) {
       self.onChangeFilter(event.detail)
     }      
@@ -52,7 +46,6 @@ export default class Map extends OpenStadComponentBaseMap {
 	}
 
   componentWillUnmount() {
-		document.removeEventListener('osc-map-cluster-animation-end', this.mapClusterAnimationEndListener);
     document.removeEventListener('osc-ideas-filter-onchange', this.ideasFilterOnchangeListener)
     document.removeEventListener('osc-ideas-filter-reset-all', this.ideasFilterResetAllListener)
   }
@@ -125,18 +118,6 @@ export default class Map extends OpenStadComponentBaseMap {
       }
       self.updateMarker(marker, { isFaded })
     });
-  }
-
-  // fix for https://github.com/Leaflet/Leaflet.markercluster/issues/177
-  updateFading() {
-    // let self = this;
-    // self.getMarkers().forEach((marker) => {
-    //   let visibleParent = self.markerClusterGroup && self.markerClusterGroup.getVisibleParent(marker);
-    //   if (visibleParent && marker.visible) {
-    //     let ignore = visibleParent && visibleParent.getAllChildMarkers && visibleParent.getAllChildMarkers().find( m => m.data && m.isFaded === false );
-    //     visibleParent.setOpacity(!ignore && marker.isFaded ? 0.3 : 1);
-    //   }
-    // });
   }
 
   unfadeAllMarkers() {

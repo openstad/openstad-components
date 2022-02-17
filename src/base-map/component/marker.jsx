@@ -27,7 +27,14 @@ export default class OpenStadComponentMapMarker extends React.Component {
 			}
 		}
     if (icon) {
-      addToClassname(icon, 'osc-map-marker')
+      try {
+        icon = JSON.parse(icon);
+      } catch(err) {}
+
+      if (!icon.iconSize && icon.width && icon.height) icon.iconSize = [icon.width, icon.height]
+      if (!icon.iconAnchor && icon.anchor) icon.iconAnchor = icon.anchor
+
+      addToClassname(icon, 'osc-map-marker', { before: true })
       markerprops.isFaded ? addToClassname(icon, 'osc-map-marker-faded') : removeFromClassName(icon, 'osc-map-marker-faded');
       if (icon.iconUrl) markerprops.icon = new L.Icon(icon);
       if (icon.html) markerprops.icon = new L.divIcon(icon);

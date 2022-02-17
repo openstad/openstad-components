@@ -66,6 +66,7 @@ export default class OpenStadComponentMap extends OpenStadComponent {
 		}
 
     // initial markers
+
     if (self.config.markers && self.config.markers.length) {
       this.addMarkers(self.config.markers)
     }
@@ -102,7 +103,7 @@ export default class OpenStadComponentMap extends OpenStadComponent {
 
     let {markers} = this.state;
 
-    markerData.iconCreateFunction = this.config.iconCreateFunction;
+    markerData.iconCreateFunction = markerData.iconCreateFunction || this.config.iconCreateFunction;
     if (!markerData.icon && this.config.categorize) {
       let category = markerData.data && eval(`markerData.data.${this.config.categorize.categorizeByField}`);
       let icon = ( this.config.categorize.categories[ category ] && this.config.categorize.categories[ category ].icon );
@@ -110,10 +111,6 @@ export default class OpenStadComponentMap extends OpenStadComponent {
     }
     if (!markerData.icon && this.config.defaultIcon) {
       markerData.icon = this.config.defaultIcon;
-    }
-    if (markerData.icon) {
-      if (!markerData.iconSize && markerData.icon.width && markerData.icon.height) markerData.icon.iconSize = [markerData.icon.width, markerData.icon.height]
-      if (!markerData.iconAnchor && markerData.icon.anchor) markerData.icon.iconAnchor = markerData.icon.anchor
     }
 
     markerData.onClick = markerData.onClick ? [ markerData.onClick, this.onMarkerClick ] : [ this.onMarkerClick ];
@@ -288,7 +285,6 @@ export default class OpenStadComponentMap extends OpenStadComponent {
   }
 
 	onMarkerClick(event) {
-    console.log(1, event);
 		let customEvent = new CustomEvent('osc-map-marker-click', { detail: event });
 		document.dispatchEvent(customEvent);
   }

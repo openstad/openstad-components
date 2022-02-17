@@ -3,7 +3,6 @@ export default function amapsCreateClusterIcon(cluster, markers) {
   let self = this;
   
   let clusterMarkers = cluster.getAllChildMarkers();
-  // het probleem lig hier: deze data is niet geupdate, en dus kun je niet zien of isfaded is gezet
 
   let colors = {}
   let total = clusterMarkers.length;
