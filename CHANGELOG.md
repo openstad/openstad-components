@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.40.0
+Update version number
+
 ## 0.37.1
 * Move build from travis to github actions
 
