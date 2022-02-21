@@ -96,7 +96,10 @@ export default class OpenStadComponentChoices extends OpenStadComponent {
       default:
         let sorted = Object.keys(scores).sort( (a,b) => scores[b].x - scores[a].x );
         let first = sorted[0];
-        return self.choiceElements.find( elem => elem && elem.config.divId == first );
+        let second = sorted[1];
+        if ((first && scores[first].x) != (second && scores[second].x)) {
+          return self.choiceElements.find( elem => elem && elem.props && elem.props.data && elem.props.data.id == first );
+        }
     }
 
 

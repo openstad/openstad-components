@@ -2,7 +2,7 @@
 
 import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
-import OpenStadComponentNumberplateButton from '../../numberplates/component/numberplate-button.jsx';
+import OpenStadComponentNumberplateButton from '../../button/component/button.jsx';
 
 'use strict';
 
@@ -107,10 +107,10 @@ export default class VoteButton extends OpenStadComponent {
     if (!this.config.vote.isActive) className += ' osc-inactive';
 
     return this.config.vote.voteValues.map(voteValue => {
-      let value = this.props.idea[voteValue.value] || 0;
+      let value = typeof this.props.idea[voteValue.value] != 'undefined' ? this.props.idea[voteValue.value] : 0;
       let buttonClassName = 'osc-vote-button-' + voteValue.value + ' ' + className;
       if (this.state.busy == voteValue.value) buttonClassName += ' osc-busy';
-      if (voteValue.value == ( this.props.idea && this.props.idea.userVote && this.props.idea.userVote.opinion )) buttonClassName += ' osc-user-has-voted osc-user-has-voted';
+      if (voteValue.value == ( this.props.idea && this.props.idea.userVote && this.props.idea.userVote.opinion )) buttonClassName += ' osc-user-has-voted';
       return <OpenStadComponentNumberplateButton config={{ label: voteValue.label }} number={value} className={buttonClassName} onClick={(e) => self.doVote(e, voteValue.value)} key={`like-button-${voteValue.value}`}/>
     })
 
