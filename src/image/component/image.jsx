@@ -29,8 +29,8 @@ export default class OpenStadComponentImage extends OpenStadComponent {
   }
 
   componentDidMount () {
-    let elem = document.querySelector(`#${this.divId}`).parentNode;
-    this.setState({width: elem.offsetWidth})
+    let elem = document.querySelector(`#${this.divId}`) && document.querySelector(`#${this.divId}`).parentNode;
+    if (elem) this.setState({width: elem.offsetWidth})
   }
 
   setCurrentImageIndex (which) {

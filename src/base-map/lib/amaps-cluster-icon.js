@@ -10,7 +10,7 @@ export default function amapsCreateClusterIcon(cluster, markers) {
   clusterMarkers.forEach((clusterMarker) => {
     // find this marker in the actual markers list because the clusterMarker is not updated
     let marker = markers.find(marker => marker.lat == clusterMarker.options.lat && marker.lng == clusterMarker.options.lng);
-    if (!marker) return console.log('Marker not found:', clusterMarker)
+    if (!marker) return // console.log('Marker not found:', clusterMarker)
     let category = marker && marker.data && eval(`marker.data.${self.config.categorize.categorizeByField}`);
     let color = ( self.config.categorize.categories[ category ] && self.config.categorize.categories[ category ].color ) || '#164995';
     if ( !colors[color] ) colors[color] = 0;

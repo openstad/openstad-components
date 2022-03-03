@@ -592,7 +592,6 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
             this.updateLocationAddress(location)
           });
         }
-        this.map.updateFading();
         document.querySelector('#osc-ideas-on-map-info').scrollTo(0,0)
     }
 
@@ -759,7 +758,6 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   
   onTileMouseEnter(idea) {
     this.map.fadeMarkers({ exception: idea })
-    this.map.updateFading();
   }
 
   onTileMouseLeave(idea) {
@@ -771,7 +769,6 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     if (this.map.selectedLocation) {
       this.map.fadeMarkers({});
     }
-    this.map.updateFading();
   }
 
   onClickBackToOverview(idea) {
