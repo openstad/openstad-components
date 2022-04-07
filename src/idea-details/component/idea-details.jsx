@@ -119,6 +119,15 @@ export default class IdeasDetails extends OpenStadComponent {
     e.stopPropagation();
     this.showPollForm();
   }
+
+  scrollToReactions() {
+    let elem = document.querySelector('#reactions');
+    console.log('xxx');
+    if (elem) {
+    console.log('aaa');
+      elem.scrollIntoView();
+    }
+  }
   
   onReactionStored(data, isNew) {
     if (isNew) this.state.idea.argCount++;
@@ -290,7 +299,7 @@ export default class IdeasDetails extends OpenStadComponent {
       reactionsCountHTML = (
         <div>
           <h3>Reacties</h3>
-          <a href="#reactions" className="osc-no-of-reactions">{idea.argCount || 0} reacties</a>
+          <a onClick={self.scrollToReactions} className="osc-no-of-reactions">{idea.argCount || 0} reacties</a>
         </div>
       );
     }
