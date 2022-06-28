@@ -1,10 +1,11 @@
 'use strict';
 
+import React from 'react';
 import merge from 'merge';
 
 import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentHidden from './hidden.jsx';
-import OpenStadComponentImageUpload from './image-upload.jsx';
+const OpenStadComponentImageUpload = React.lazy(() => import('./image-upload.jsx'));
 import OpenStadComponentInputWithCounter from './input-with-counter.jsx';
 import OpenStadComponentRadios from './radios.jsx';
 import OpenStadComponentPostcode from './postcode.jsx';
