@@ -1,6 +1,6 @@
 'use strict';
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import merge from 'merge';
 
 import OpenStadComponent from '../../component/index.jsx';
@@ -87,7 +87,11 @@ export default class OpenStadComponentFormField extends OpenStadComponent {
         break;
 
       case 'image-upload':
-        fieldHTML = <OpenStadComponentImageUpload config={self.config} value={ this.state.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
+        fieldHTML =
+          <Suspense fallback={<div>Loading...</div>}>
+            <OpenStadComponentImageUpload config={self.config} value={ this.state.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
+          </Suspense>
+
         break;
 
       case 'input-with-counter':
