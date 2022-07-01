@@ -42,25 +42,32 @@ export default class OpenStadComponentMapMarker extends React.Component {
 
     // events
     let eventHandlers = {};
-    let onClick = markerprops.onClick || [];
-    if (!Array.isArray(onClick)) onClick = [onClick];
-		if (this.props.href) {
-		  onClick.push(function() {
-		    document.location.href = markerprops.href;
-		  });
-		}
-    if (onClick.length) {
-      eventHandlers.click = event => {
-        onClick.map(func => {
-			    if (typeof func == 'string') onClick = eval(func);
-          func(event);
-        })
-      }
-		}
+    for (let eventname of ['click', 'mouseDown', 'mouseUp', 'dragStart', 'dragEnd']) {
+      let EventName = 'on' + eventname.charAt(0).toUpperCase() + eventname.slice(1);;
+      eventname = eventname.toLowerCase();
+      let onEvent = markerprops[EventName] || [];
+      if (!Array.isArray(onEvent)) onEvent = [onEvent];
+		  if (EventName == 'onClick' && this.props.href) {
+		    onEvent.push(function() {
+		      document.location.href = markerprops.href;
+		    });
+		  }
+      if (onEvent.length) {
+        eventHandlers[eventname] = e => {
+          onEvent.map(func => {
+			      if (typeof func == 'string') return eval(func)(e);
+            return func(e);
+          })
+        }
+		  }
+    }
 
+    let draggable = eventHandlers['dragstart'] || eventHandlers['dragend'];
+    
     return this.props.visible ? (
-      <Marker position={position} {...markerprops} eventHandlers={{ ...eventHandlers }}/>
+      <Marker position={position} {...markerprops} eventHandlers={{ ...eventHandlers }} draggable={!!draggable}/>
     ) : null;
+
   }
   
 }
