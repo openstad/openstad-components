@@ -125,7 +125,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     }, false );
 
     // when the map is ready
-		document.addEventListener('osc-map-is-ready', function(e) {
+		window.addEventListener('osc-map-is-ready', function(e) {
 
       // fetch the data
       self.fetchData({});
