@@ -2,12 +2,16 @@
 
 import merge from 'merge';
 import OpenStadComponent from '../../component/index.jsx';
-import { MapContainer, MapConsumer } from 'react-leaflet';
+import { MapContainer, MapConsumer, LayerGroup } from 'react-leaflet';
 import TileLayer from './tile-layer.jsx';
 import Marker from './marker.jsx';
 import MarkerClusterGroup from './marker-cluster-group.jsx';
 import { OpenStadComponentMapArea as Area, createCutoutPolygon } from './area.jsx';
 import { searchAddressByLatLng, suggestAddresses, LookupLatLngByAddressId } from '../lib/search.js';
+
+import '../css/default.less';
+import 'leaflet/dist/leaflet.css';
+import 'react-leaflet-markercluster/dist/styles.min.css';
 
 // TODO: wat doet updatemarker?
 
@@ -15,8 +19,7 @@ export default class OpenStadComponentMap extends OpenStadComponent {
 
   constructor(props, defaultConfig) {
 
-    super(props, defaultConfig, {
-			style: 'standaard',
+    super(props, {
 			search: false,
 			center: {
 				lat: 52.37104644463586,
@@ -31,7 +34,7 @@ export default class OpenStadComponentMap extends OpenStadComponent {
       clustering: {
         isActive: true,
       },
-		});
+		}, defaultConfig);
 
 		let self = this;
     self.config.target = self.divId;
@@ -50,6 +53,8 @@ export default class OpenStadComponentMap extends OpenStadComponent {
     self.suggestAddresses = suggestAddresses.bind(self);
     self.LookupLatLngByAddressId = LookupLatLngByAddressId.bind(self);
 
+    self.onMapClick = self.onMapClick.bind(self)
+
     self.state = {
 		  markers: [],
     }
@@ -58,7 +63,7 @@ export default class OpenStadComponentMap extends OpenStadComponent {
 
 	async componentDidMount() {
 
-    var self = this;
+    let self = this;
 
     // area
     if (self.config.area) {
@@ -73,7 +78,8 @@ export default class OpenStadComponentMap extends OpenStadComponent {
 
 	  // zoom and center
 	  if (self.config.autoZoomAndCenter) {
-		  var centerOn = ( self.config.autoZoomAndCenter == 'area' && self.config.area ) || ( self.state.markers && self.state.markers.length && self.state.markers ) || self.config.area;
+		  let centerOn = ( self.config.autoZoomAndCenter == 'area' && self.config.area ) || ( self.state.markers && self.state.markers.length && self.state.markers ) || self.config.area;
+      console.log('centerOn', centerOn);
 		  if (self.editorMarker) {
 			  if (self.editorMarker.position) {
 				  centerOn = [self.editorMarker];
@@ -86,14 +92,15 @@ export default class OpenStadComponentMap extends OpenStadComponent {
 		  }
 	  }
 
+    // console.log('BASE-MAP DID MOUNT');
 		self.mapIsReady = true;
-		var event = new CustomEvent('osc-map-is-ready', { detail: { id: self.divId } });
-		document.dispatchEvent(event);
+		let event = new CustomEvent('osc-map-is-ready', { detail: { id: self.divId } });
+		window.dispatchEvent(event);
 
 	}
 
 	addMarkers(markersData) {
-		var self = this;
+		let self = this;
     markersData.forEach(markerData => {
       self.addMarker(markerData)
     });
@@ -185,14 +192,14 @@ export default class OpenStadComponentMap extends OpenStadComponent {
 
   setBoundsAndCenter( points ) {
 
-	  var self = this;
+	  let self = this;
 
-    if (!Array.isArray(points)) {
-      self.map.panTo(new L.LatLng(self.config.center.latitude, self.config.center.longitude));
+    if (!Array.isArray(points) || points.length == 0) {
+      self.map.panTo(new L.LatLng(self.config.center.lat, self.config.center.lng));
       return;
     }
 
-	  var poly = [];
+	  let poly = [];
 	  points.forEach(function(point) {
 		  if (point._latlng) {
 			  point = point._latlng;
@@ -205,17 +212,17 @@ export default class OpenStadComponentMap extends OpenStadComponent {
     if (poly.length == 1) {
       self.map.panTo(new L.LatLng(poly[0].lat, poly[0].lng));
     } else {
-	    var bounds = L.latLngBounds(poly);
+	    let bounds = L.latLngBounds(poly);
 	    self.map.fitBounds(bounds);
     }
 
-	  // var zoom = parseInt(self.map.getZoom())
+	  // let zoom = parseInt(self.map.getZoom())
 	  // self.map.setZoom(zoom - 1)
 
   }
 
   showMarkers(markers) {
-	  var self = this;
+	  let self = this;
     markers.forEach((marker) => {
       self.showMarker(marker);
     });
@@ -234,7 +241,7 @@ export default class OpenStadComponentMap extends OpenStadComponent {
   }
 
   hideMarkers(markers) {
-	  var self = this;
+	  let self = this;
     markers.forEach((marker) => {
       self.hideMarker(marker);
     });
@@ -253,13 +260,13 @@ export default class OpenStadComponentMap extends OpenStadComponent {
   }
 
   setFilter(filterFuntion) {
-	  var self = this;
+	  let self = this;
 	  self.filterFunction = filterFuntion;
 	  self.applyFilter();
   }
 
   applyFilter() {
-	  var self = this;
+	  let self = this;
 	  if (self.filterFunction) {
 		  self.markers.forEach(function(marker) {
 			  if ( self.filterFunction(marker) ) {
@@ -276,10 +283,15 @@ export default class OpenStadComponentMap extends OpenStadComponent {
   }
 
   isPointInArea(point) {
-    if (this.area) return this.area.isPointInArea(point);
+    if (this.area) {
+      return this.area.isPointInArea(point);
+    } else {
+      return true;
+    }
   }
 
 	onMapClick(event) {
+    event.isPointInArea = this.isPointInArea(event.latlng);
 		let customEvent = new CustomEvent('osc-map-click', { detail: event });
 		document.dispatchEvent(customEvent);
   }
@@ -302,6 +314,7 @@ export default class OpenStadComponentMap extends OpenStadComponent {
     }
 
     let clusterMarkers = [];
+    let layers = self.props.layers || [];
 
     return (
       <MapContainer id={self.divId} className={self.props.className || 'osc-map'} center={[self.config.center.lat, self.config.center.lng]} zoom={self.config.zoom} scrollWheelZoom={self.config.scrollWheelZoom}>
@@ -331,6 +344,12 @@ export default class OpenStadComponentMap extends OpenStadComponent {
           } else {
             return (<Marker {...data} key={`marker-${i}`}/>);
           }
+        })}
+
+        {layers.map((layer, i) => {
+          return (
+            <LayerGroup className={`layergroup-${i}`} key={`layergroup-${i}`}>{layer}</LayerGroup>
+          );
         })}
 
         <MarkerClusterGroup config={{ ...self.config.clustering, categorize: self.config.categorize }} markers={clusterMarkers}/>

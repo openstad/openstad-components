@@ -23,6 +23,8 @@ export default class OpenStadComponentMapMarker extends React.Component {
 			let iconCreateFunction = this.props.iconCreateFunction;
 			if (iconCreateFunction && typeof iconCreateFunction == 'string') {
 				iconCreateFunction = eval(iconCreateFunction);
+			}
+			if (iconCreateFunction && typeof iconCreateFunction == 'function') {
 				icon = iconCreateFunction();
 			}
 		}
