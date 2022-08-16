@@ -79,6 +79,7 @@ export default class OpenStadComponentMap extends OpenStadComponent {
 	  // zoom and center
 	  if (self.config.autoZoomAndCenter) {
 		  let centerOn = ( self.config.autoZoomAndCenter == 'area' && self.config.area ) || ( self.state.markers && self.state.markers.length && self.state.markers ) || self.config.area;
+
 		  if (self.editorMarker) {
 			  if (self.editorMarker.position) {
 				  centerOn = [self.editorMarker];
