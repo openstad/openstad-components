@@ -122,9 +122,7 @@ export default class IdeasDetails extends OpenStadComponent {
 
   scrollToReactions() {
     let elem = document.querySelector('#reactions');
-    console.log('xxx');
     if (elem) {
-    console.log('aaa');
       elem.scrollIntoView();
     }
   }
