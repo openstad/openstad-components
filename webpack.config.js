@@ -14,6 +14,7 @@ module.exports = {
     'button': './src/button/index.jsx',
     'choices-guide': './src/choices-guide/index.jsx',
     'forms': './src/forms/index.jsx',
+    'forms-image-upload': './src/forms/image-upload.jsx',
     'idea-details': './src/idea-details/index.jsx',
     'ideas-overview': './src/ideas-overview/index.jsx',
     'idea-image': './src/image/index.jsx',
