@@ -1,12 +1,14 @@
 'use strict';
 
 import merge from 'merge';
+import React, { Suspense } from 'react';
 import { isMobile } from 'react-device-detect';
 
 import Filterbar from './filterbar.jsx';
 import InfoBar from './infobar.jsx';
 import Preview from './preview.jsx';
-import Map from './map.jsx';
+
+const Map = React.lazy(() => import('./map.jsx'));
 
 import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
@@ -884,7 +886,9 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         {filterHTML}
         {infoHTML}
         <div className={`osc-ideas-on-map-map osc-ideas-on-map-map-${this.config.display.type}`}>
-			    <Map id={this.divId + '-map'} config={mapConfig} ref={el => (this.map = el)}/>
+          <Suspense fallback={<div>Loading...</div>}>
+			      <Map id={this.divId + '-map'} config={mapConfig} ref={el => (this.map = el)}/>
+          </Suspense>
         </div>
         {simpleHTML}
         {mobilePopupHTML}
