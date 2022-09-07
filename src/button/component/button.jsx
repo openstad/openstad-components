@@ -53,7 +53,7 @@ export default class OpenStadComponentButton extends OpenStadComponent {
       labelHTML = <div className="osc-button-label"><div className="osc-elipsis">{self.config.label}</div></div>
     }
 
-    let onClick = typeof self.props.onClick != 'undefined' ? self.props.onClick : self.state.onClick || null;
+    let onClick = typeof self.props.onClick != 'undefined' ? self.props.onClick : null;
     let url = typeof self.props.url != 'undefined' ? self.props.url : self.state.url;
     if (url) {
       onClick = `document.location.href="${url}"`;
