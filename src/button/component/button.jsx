@@ -31,7 +31,7 @@ export default class OpenStadComponentButton extends OpenStadComponent {
 
     let self = this;
 
-    let className = `${self.props.className} osc-button-component`;
+    let className = `osc-button-component ${self.props.className}`;
 
     let number = parseInt(typeof self.props.number != 'undefined' ? self.props.number : self.state.number);
     let numberplatesHTML = null;
@@ -43,9 +43,6 @@ export default class OpenStadComponentButton extends OpenStadComponent {
     let iconHTML = null;
     if (self.config.icon) {
       let icon = typeof self.props.icon != 'undefined' ? self.props.icon : self.state.icon;
-
-      console.log(icon);
-
       className += ' osc-icon-button'
       iconHTML = <div className="osc-icon"><img src={icon.url} style={{ width: icon.width, height: icon.height, marginTop: icon.top, marginLeft: icon.left }}/></div>
     }
@@ -56,20 +53,17 @@ export default class OpenStadComponentButton extends OpenStadComponent {
       labelHTML = <div className="osc-button-label"><div className="osc-elipsis">{self.config.label}</div></div>
     }
 
+    let onClick = typeof self.props.onClick != 'undefined' ? self.props.onClick : null;
     let url = typeof self.props.url != 'undefined' ? self.props.url : self.state.url;
     if (url) {
-      return (
-        <a href={url} id={self.divId} className={className}>
-          {numberplatesHTML}
-          {iconHTML}
-          {labelHTML}
-        </a>
-      );
+      onClick = `document.location.href="${url}"`;
     }
+    if (onClick) className += ' osc-button-clickable'
 
-    let onClick = typeof self.props.onClick != 'undefined' ? self.props.onClick : self.state.onClick || null;
+    if (self.props.disabled) className += ' osc-disabled';
+
     return (
-      <div id={self.divId} onClick={onClick} className={className}>
+      <div id={self.divId} onClick={onClick} className={className} role="link" tabindex="0">
         {numberplatesHTML}
         {iconHTML}
         {labelHTML}
