@@ -63,7 +63,7 @@ export default class OpenStadComponentButton extends OpenStadComponent {
     if (self.props.disabled) className += ' osc-disabled';
 
     return (
-      <div id={self.divId} onClick={onClick} className={className}>
+      <div id={self.divId} onClick={onClick} className={className} role="link" tabindex="0">
         {numberplatesHTML}
         {iconHTML}
         {labelHTML}
