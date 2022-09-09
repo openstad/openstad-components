@@ -66,12 +66,9 @@ export default class OpenStadComponentMap extends OpenStadComponent {
     let self = this;
 
     // area
-    if (self.config.area) {
-			await self.setArea(self.config.area);
-		}
+    await self.setArea(self.config.area);
 
     // initial markers
-
     if (self.config.markers && self.config.markers.length) {
       this.addMarkers(self.config.markers)
     }
@@ -182,8 +179,10 @@ export default class OpenStadComponentMap extends OpenStadComponent {
   }
 
   setArea(area) {
-	  let polygon = createCutoutPolygon(area);
-    this.setState({ area: polygon })
+    if (area) {
+      let polygon = createCutoutPolygon(area);
+      this.setState({ area: polygon })
+    }
   }
 
   unsetArea(area) {
