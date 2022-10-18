@@ -17,7 +17,10 @@ export default class Map extends OpenStadComponentBaseMap {
     });
 
     // tmp fallback
-    this.config.autoZoomAndCenter = this.config.autoZoomAndCenter || 'polygon'
+    this.config.autoZoomAndCenter = this.config.autoZoomAndCenter || 'area';
+
+    // backwards compatibility
+    if ( this.config.autoZoomAndCenter == 'polygon' )this.config.autoZoomAndCenter = 'area';
 
     this.ideas = [];
 
@@ -83,7 +86,7 @@ export default class Map extends OpenStadComponentBaseMap {
   }
 
   setBoundsAndCenter(points) {
-    super.setBoundsAndCenter(points || ( this.config.autoZoomAndCenter == 'polygon' && this.config.polygon ) || this.getMarkers());
+    super.setBoundsAndCenter(points || ( this.config.autoZoomAndCenter == 'area' && this.config.area ) || this.getMarkers());
   }
 
   showMarkers({ keepCenter=false }) {

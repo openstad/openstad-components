@@ -55,6 +55,7 @@ export default class OpenStadComponentMapTileLayer extends OpenStadComponent {
 	          minZoom={ typeof this.props.minZoom != 'undefined' ? this.props.minZoom : 6 }
 	          maxZoom={ typeof this.props.maxZoom != 'undefined' ? this.props.maxZoom : 19 }
 	          bounds={[[50.5, 3.25], [54, 7.6]]}
+            subdomains=''
 	          attribution="Kaartgegevens &copy; <a href='kadaster.nl'>Kadaster</a"
           />)
 		}
