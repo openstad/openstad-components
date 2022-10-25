@@ -2,168 +2,86 @@
 
 import merge from 'merge';
 import OpenStadComponent from '../../component/index.jsx';
-import amapsCreateClusterIcon from '../lib/amaps-cluster-icon.js';
+import { MapContainer, MapConsumer, LayerGroup } from 'react-leaflet';
+import TileLayer from './tile-layer.jsx';
+import Marker from './marker.jsx';
+import MarkerClusterGroup from './marker-cluster-group.jsx';
+import { OpenStadComponentMapArea as Area, createCutoutPolygon } from './area.jsx';
 import { searchAddressByLatLng, suggestAddresses, LookupLatLngByAddressId } from '../lib/search.js';
+
+import '../css/default.less';
+import 'leaflet/dist/leaflet.css';
+import 'react-leaflet-markercluster/dist/styles.min.css';
+
+// TODO: wat doet updatemarker?
 
 export default class OpenStadComponentMap extends OpenStadComponent {
 
   constructor(props, defaultConfig) {
 
-    super(props, defaultConfig, {
-			style: 'standaard',
-			marker: false,
+    super(props, {
 			search: false,
 			center: {
 				lat: 52.37104644463586,
 				lng: 4.900402911007405,
 			},
 			zoom: 14,
-      // todo: minzoom/maxzoom
-			zoomposition     : 'bottomleft',
-			disableDefaultUI : true,
-			polygon : null,
+			zoomposition: 'bottomleft',
+			disableDefaultUI: true,
+			area: null,
 			autoZoomAndCenter: false,
-		});
+      scrollWheelZoom: true,
+      clustering: {
+        isActive: true,
+      },
+		}, defaultConfig);
 
-		var self = this;
+		let self = this;
     self.config.target = self.divId;
 
-    // backwards compatibility
+    // polygon is the old name for area
+    if (self.config.polygon || self.config.autoZoomAndCenter == 'polygon') console.log("DEPRECATED: use 'area' instead of 'polygon'");
+    if (self.config.polygon && !self.config.area) self.config.area = self.config.polygon;
+    if (self.config.autoZoomAndCenter == 'polygon') self.config.autoZoomAndCenter = 'area';
+
+    // more backwards compatibility
     self.config.center.lat = props.config && props.config.center && props.config.center.latitude || self.config.center.lat;
     self.config.center.lng = props.config && props.config.center && props.config.center.longitude || self.config.center.lng;
-    
-		// external css and script files
-		self._loadedFiles = 0;
-		self.files = [
-			{ type: 'css', href: "https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" },
-			{ type: 'script', src: "https://unpkg.com/leaflet@1.0.3/dist/leaflet.js" },
-		];
-		self.files.push({ type: 'css', href: "https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"  });
-		self.files.push({ type: 'script', src: "https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js" });
 
     // search functions
     self.searchAddressByLatLng = searchAddressByLatLng.bind(self);
     self.suggestAddresses = suggestAddresses.bind(self);
     self.LookupLatLngByAddressId = LookupLatLngByAddressId.bind(self);
 
-		self.markers = self.config.markers || [];
-		
+    self.onMapClick = self.onMapClick.bind(self)
+
+    self.state = {
+		  markers: [],
+    }
+
   }
 
-	componentDidMount(prevProps, prevState) {
-    var self = this;
-    self.loadNextFile(function() {
-      // initSingleClick();
-			// loading script files is ready; create the map
-			self.createMap();
-			// dispatch an event
-			self.mapIsReady = true;
-			var event = new CustomEvent('osc-map-is-ready', { detail: { id: self.divId } });
-			document.dispatchEvent(event);
-    });
-	}
+	async componentDidMount() {
 
-  loadNextFile(next) {
-    var self = this;
-    var file = self.files[self._loadedFiles];
-    if (file) {
-			let element;
-			if (file.type === 'script') {
-				element = document.createElement('script');
-				element.src = file.src;
-				element.async = true;
-			}
-			if (file.type === 'css') {
-				element = document.createElement('link');
-				element.href = file.href;
-				element.rel = 'stylesheet';
-			}
-			if (element) {
-				element.onload = function() {
-          self.loadNextFile(next);
-				}
-				this.instance.appendChild(element);
-			}
+    let self = this;
+
+    // area
+    await self.setArea(self.config.area);
+
+    // initial markers
+    if (self.config.markers && self.config.markers.length) {
+      this.addMarkers(self.config.markers)
     }
-		if (self._loadedFiles == self.files.length) {
-      next()
-    }
-		self._loadedFiles++;
-  }
 
-	createMap() {
-
-		var self = this;
-
-		// init map
-
-    self.map = L.map(self.config.target, {
-      ...self.config,
-    })
-
-    switch(self.config.variant) {
-			case "n9r":
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-	        maxZoom: 19,
-          subdomains: 'abcd',
-        }).addTo(self.map);
-        break;
-			case "amaps":
-				L.tileLayer('https://t{s}.data.amsterdam.nl/topo_wm/{z}/{x}/{y}.png', {
-					subdomains: '1234',
-	        minZoom: 11,
-	        maxZoom: 21,
-				}).addTo(self.map);
-				break;
-			case "custom":
-        L.tileLayer(self.config.mapTilesUrl, {
-	        maxZoom: 19,
-          subdomains: self.config.mapTilesSubdomains,
-        }).addTo(self.map);
-        break;
-			default:
-			case "nlmaps":
-        L.tileLayer('https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0/standaard/EPSG:3857/{z}/{x}/{y}.png', {
-	        minZoom: 6,
-	        maxZoom: 19,
-	        bounds: [[50.5, 3.25], [54, 7.6]],
-	        attribution: 'Kaartgegevens &copy; <a href="kadaster.nl">Kadaster</a>'
-        }).addTo(self.map);
-		}
-
-		// clustering
-		if (self.config.clustering && self.config.clustering.isActive && L.markerClusterGroup) {
-			let iconCreateFunction = self.config.clustering.iconCreateFunction || amapsCreateClusterIcon.bind(self) // ( self.config.variant == 'amaps' ? amapsCreateClusterIcon.bind(self) : self.createClusterIcon );
-			if (iconCreateFunction && typeof iconCreateFunction == 'string') iconCreateFunction = eval(iconCreateFunction);
-			self.markerClusterGroup = L.markerClusterGroup({iconCreateFunction, showCoverageOnHover: self.config.clustering.showCoverageOnHover, maxClusterRadius: self.config.clustering.maxClusterRadius || 80});
-			self.markerClusterGroup.on('clusterclick', self.onClusterClick);
-			self.markerClusterGroup.on('animationend', self.onClusterAnimationEnd);
-			self.map.addLayer(self.markerClusterGroup);
-		}
-		
-		// on map click
-		self.map.on('click', self.onMapClick);
-
-		// add polygon
-		if (self.config.polygon) {
-			self.createCutoutPolygon( self.config.polygon );
-		}
-
-		// add markers
-		if (self.markers.length) {
-			self.markers.forEach(function(marker) {
-				self.addMarker( marker )
-			})
-		}
-
-	  // set bounds and center
+	  // zoom and center
 	  if (self.config.autoZoomAndCenter) {
-		  var centerOn = ( self.config.autoZoomAndCenter == 'polygon' && self.config.polygon ) || ( self.markers && self.markers.length && self.markers ) || self.config.polygon;
+		  let centerOn = ( self.config.autoZoomAndCenter == 'area' && self.config.area ) || ( self.state.markers && self.state.markers.length && self.state.markers ) || self.config.area;
+
 		  if (self.editorMarker) {
 			  if (self.editorMarker.position) {
 				  centerOn = [self.editorMarker];
 			  } else {
-				  centerOn = self.config.polygon;
+				  centerOn = self.config.area;
 			  }
 		  }
 		  if (centerOn) {
@@ -171,156 +89,116 @@ export default class OpenStadComponentMap extends OpenStadComponent {
 		  }
 	  }
 
+    // console.log('BASE-MAP DID MOUNT');
+		self.mapIsReady = true;
+		let event = new CustomEvent('osc-map-is-ready', { detail: { id: self.divId } });
+		window.dispatchEvent(event);
+
 	}
 
-	addMarkers(markerData) {
-		var self = this;
-    markerData.forEach((marker) => {
-      self.addMarker(marker)
+	addMarkers(markersData) {
+		let self = this;
+    markersData.forEach(markerData => {
+      self.addMarker(markerData)
     });
   }
 
 	addMarker(markerData) {
 
-		var self = this;
+    let {markers} = this.state;
 
-		let icon = markerData.icon;
-		if (!icon) {
-			let iconCreateFunction = self.config.iconCreateFunction;
-			if (iconCreateFunction && typeof iconCreateFunction == 'string') {
-				iconCreateFunction = eval(iconCreateFunction);
-				icon = iconCreateFunction();
-			}
+    markerData.iconCreateFunction = markerData.iconCreateFunction || this.config.iconCreateFunction;
+    if (!markerData.icon && this.config.categorize) {
+      let category = markerData.data && eval(`markerData.data.${this.config.categorize.categorizeByField}`);
+      let icon = ( this.config.categorize.categories[ category ] && this.config.categorize.categories[ category ].icon );
+      if (icon) markerData.icon = icon;
+    }
+    if (!markerData.icon && this.config.defaultIcon) {
+      markerData.icon = this.config.defaultIcon;
+    }
+
+    markerData.onClick = markerData.onClick ? [ markerData.onClick, this.onMarkerClick ] : [ this.onMarkerClick ];
+    markerData.visible = true;
+
+		if (this.config.clustering && this.config.clustering.isActive && !markerData.doNotCluster) {
+      markerData.isClustered = true;
 		}
 
-		var marker;
-		if (icon) {
-			marker = L.marker([markerData.lat, markerData.lng], { icon });
-		} else {
-			marker = L.marker([markerData.lat, markerData.lng]);
-		}
-
-    marker.visible = true;
-		marker.data = markerData.data;
-		marker.doNotCluster = markerData.doNotCluster;
-
-		if (markerData.href) {
-			markerData.onClick = function() {
-				document.location.href = markerData.href;
-			}
-		}
-		let onClick = self.onMarkerClick;
-		if (onClick) {
-			if (typeof onClick == 'string') onClick = eval(onClick);
-			// marker.on('singleclick', onClick);
-			marker.on('click', onClick);
-		}
-
-		if (self.markerClusterGroup && !markerData.doNotCluster) {
-			self.markerClusterGroup.addLayer(marker);
-		} else {
-			self.map.addLayer(marker);
-		}
-
-		self.markers.push(marker);
-
-		return marker;
+    markers.push(markerData);
+    this.setState({markers});
+    return markerData;
 
 	}
 
 	removeMarker(marker) {
+
     if (!marker) return;
-    let index = this.markers.indexOf(marker);
+    let {markers} = this.state;
+
+    let index = markers.indexOf(marker);
     if (index > -1) {
-      this.markers.splice(index, 1)
-		  this.map.removeLayer(marker);
-			this.markerClusterGroup.removeLayer(marker);
+      markers.splice(index, 1)
     }
+
+    this.setState({markers});
+
   }
 
 	updateMarker(marker, newData) {
-    if (newData.location) {
-      var newLatLng = new L.LatLng(newData.location.lat, newData.location.lng);
-      marker.setLatLng(newLatLng); 
+
+    if (!marker) return;
+    let {markers} = this.state;
+
+    let index = markers.indexOf(marker);
+
+    if ( index != -1 ) {
+
+      let lat = newData.lat || marker.lat;
+      let lng = newData.lng || marker.lng;
+      if (lat && lng) {
+        markers[index].lat = lat
+        markers[index].lng = lng
+      }
+
+      if (typeof newData.isFaded != 'undefined') {
+        markers[index].isFaded = newData.isFaded
+      }
+
+      this.setState({markers});
+
+    }
+
+  }
+
+  getMarkers() {
+    return this.state.markers;
+  }
+
+  setMarkers(markers) {
+    return this.setState({markers});
+  }
+
+  async setArea(area) {
+    if (area) {
+      let polygon = createCutoutPolygon(area);
+      await this.setState({ area: polygon })
     }
   }
 
-	createClusterIcon(cluster) {
-		var count = cluster.getChildCount();
-		return L.divIcon({ html: count, className: 'osc-map-icon-cluster', iconSize: L.point(20, 20), iconAnchor: [20, 10] });
-	}
-
-	createCutoutPolygon(polygon) {
-
-		var self = this;
-
-		// polygon must defined from the south west corner to work with the outer box
-		var bounds = L.polygon(polygon).getBounds();
-		var center = bounds.getCenter();
-
-		var smallest = 0; var index = 0;
-
-		polygon.forEach(function( point, i ) {
-			var y = Math.sin(point.lng-center.lng) * Math.cos(point.lat);
-			var x = Math.cos(center.lat)*Math.sin(point.lat) - Math.sin(center.lat)*Math.cos(point.lat)*Math.cos(point.lng-center.lng);
-			var bearing = Math.atan2(y, x) * 180 / Math.PI;
-			if (45 - bearing < smallest) {
-				smallest = 45 - bearing;
-				index = i;
-			}
-		});
-
-		var a = polygon.slice(0, index);
-		var b = polygon.slice(index, polygon.length);
-		polygon = b.concat(a);
-
-		// outer box
-		// TODO: should be calculated dynamically from the center point
-		var delta1 = 0.01;
-		var delta2 = 5;
-		var outerBox = [
-			{lat: -90 + delta2, lng:  -180 + delta1 },
-			{lat: -90 + delta2, lng:     0          },
-			{lat: -90 + delta2, lng:   180 - delta1 },
-			{lat:   0,          lng:   180 - delta1 },
-			{lat:  90 - delta2, lng:   180 - delta1 },
-			{lat:  90 - delta2, lng:     0          },
-			{lat:  90 - delta2, lng:  -180 + delta1 },
-			{lat:  90 - delta2, lng:  -180 + delta1 },
-			{lat:   0,          lng:  -180 + delta1 },
-		];
-
-		// polygon style
-		let polygonStyle = merge({
-			"color": "#d00",
-			"fillColor": "#000",
-			"fillOpacity": 0.15
-		}, self.config.polygonStyle);
-
-		let result = L.polygon([outerBox, polygon], polygonStyle);
-    self.map.addLayer(result);
-
-    return result;
-
-	}
-
-  removePolygon(polygon) {
-	  var self = this;
-    if (polygon) {
-      self.map.removeLayer(polygon);
-    }
+  async unsetArea(area) {
+    await this.setState({ area: null });
   }
 
   setBoundsAndCenter( points ) {
 
-	  var self = this;
+	  let self = this;
 
-    if (!Array.isArray(points)) {
-      self.map.panTo(new L.LatLng(self.config.center.latitude, self.config.center.longitude));
+    if (!Array.isArray(points) || points.length == 0) {
+      self.map.panTo(new L.LatLng(self.config.center.lat, self.config.center.lng));
       return;
     }
 
-	  var poly = [];
+	  let poly = [];
 	  points.forEach(function(point) {
 		  if (point._latlng) {
 			  point = point._latlng;
@@ -333,57 +211,61 @@ export default class OpenStadComponentMap extends OpenStadComponent {
     if (poly.length == 1) {
       self.map.panTo(new L.LatLng(poly[0].lat, poly[0].lng));
     } else {
-	    var bounds = L.latLngBounds(poly);
+	    let bounds = L.latLngBounds(poly);
 	    self.map.fitBounds(bounds);
     }
 
-	  // var zoom = parseInt(self.map.getZoom())
+	  // let zoom = parseInt(self.map.getZoom())
 	  // self.map.setZoom(zoom - 1)
 
   }
 
   showMarkers(markers) {
-	  var self = this;
+	  let self = this;
     markers.forEach((marker) => {
       self.showMarker(marker);
     });
   }
   
   showMarker(marker) {
-	  var self = this;
-    marker.visible = true;
-	  if (self.markerClusterGroup && !marker.doNotCluster) {
-		  self.markerClusterGroup.addLayer(marker);
-	  } else {
-		  marker.addTo(self.map)
-	  }
+    if (!marker) return;
+    let {markers} = this.state;
+
+    let index = markers.indexOf(marker);
+    if (index > -1) {
+      markers[index].visible = true;
+    }
+
+    this.setState({markers});
   }
 
   hideMarkers(markers) {
-	  var self = this;
+	  let self = this;
     markers.forEach((marker) => {
       self.hideMarker(marker);
     });
   }
   
   hideMarker(marker) {
-	  var self = this;
-    marker.visible = false;
-	  if (self.markerClusterGroup && !marker.doNotCluster) {
-		  self.markerClusterGroup.removeLayer(marker);
-	  } else {
-		  marker.remove(self.map)
-	  }
+    if (!marker) return;
+    let {markers} = this.state;
+
+    let index = markers.indexOf(marker);
+    if (index > -1) {
+      markers[index].visible = false;
+    }
+
+    this.setState({markers});
   }
 
   setFilter(filterFuntion) {
-	  var self = this;
+	  let self = this;
 	  self.filterFunction = filterFuntion;
 	  self.applyFilter();
   }
 
   applyFilter() {
-	  var self = this;
+	  let self = this;
 	  if (self.filterFunction) {
 		  self.markers.forEach(function(marker) {
 			  if ( self.filterFunction(marker) ) {
@@ -399,55 +281,81 @@ export default class OpenStadComponentMap extends OpenStadComponent {
 	  }
   }
 
-  isPointInPolygon(point, polygon) {
-
-    if (!point) return false;
-    if (!polygon) return true;
-
-	  // taken from http://pietschsoft.com/post/2008/07/02/Virtual-Earth-Polygon-Search-Is-Point-Within-Polygon
-
-    var x = point.lat, y = point.lng;
-
-    var inside = false;
-    for (var i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
-        var xi = polygon[i].lat, yi = polygon[i].lng;
-        var xj = polygon[j].lat, yj = polygon[j].lng;
-
-        var intersect = ((yi > y) != (yj > y))
-            && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
-        if (intersect) inside = !inside;
+  isPointInArea(point) {
+    if (this.area) {
+      return this.area.isPointInArea(point);
+    } else {
+      return true;
     }
-
-    return inside; 
-
   }
 
-	onMapClick(detail) {
-		var event = new CustomEvent('osc-map-click', { detail });
-		document.dispatchEvent(event);
+	onMapClick(event) {
+    event.isPointInArea = this.isPointInArea(event.latlng);
+		let customEvent = new CustomEvent('osc-map-click', { detail: event });
+		document.dispatchEvent(customEvent);
   }
 
-	onMarkerClick(detail) {
-		var event = new CustomEvent('osc-map-marker-click', { detail });
-		document.dispatchEvent(event);
+	onMarkerClick(event) {
+		let customEvent = new CustomEvent('osc-map-marker-click', { detail: event });
+		document.dispatchEvent(customEvent);
   }
 
-	onClusterClick(detail) {
-		var event = new CustomEvent('osc-map-cluster-click', { detail });
-		document.dispatchEvent(event);
-  }
-
-	onClusterAnimationEnd(detail) {
-		var event = new CustomEvent('osc-map-cluster-animation-end', { detail });
-		document.dispatchEvent(event);
+  onMapClusterAnimationEnd(event) {
   }
 
 	render() {
 
+    let self = this;
+
+    let areaHTML = null;
+    if (self.state.area) {
+      areaHTML = (<Area config={self.config} area={self.state.area} ref={el => (self.area = el)}/>);
+    }
+
+    let clusterMarkers = [];
+    let layers = self.props.layers || [];
+
     return (
-			<div id={this.divId} className={this.props.className || 'osc-map'} ref={el => (this.instance = el)}>
-				<div id={this.divId + '-map'}></div>
-			</div>
+      <MapContainer id={self.divId} className={self.props.className || 'osc-map'} center={[self.config.center.lat, self.config.center.lng]} zoom={self.config.zoom} scrollWheelZoom={self.config.scrollWheelZoom}>
+
+        <MapConsumer>
+          { map => {
+            if (self.map) return null;
+            self.map = map;
+            map.on('click', event => {
+              let onClick = self.config.onClick || [];
+              if (!Array.isArray(onClick)) onClick = [onClick];
+              onClick.push(self.onMapClick);
+              onClick.map(func => {
+			          if (typeof func == 'string') onClick = eval(func);
+                func(event);
+              })
+            })
+            return null;
+          }}
+        </MapConsumer>
+
+        <TileLayer variant={self.config.variant} minZoom={self.config.minZoom} maxZoom={self.config.maxZoom} mapTiles={self.config.mapTiles}/>
+
+        {self.state.markers.map((data, i) => {
+          if (data.isClustered) {
+            clusterMarkers.push(data);
+          } else {
+            return (<Marker {...data} key={`marker-${i}`}/>);
+          }
+        })}
+
+        {layers.map((layer, i) => {
+          return (
+            <LayerGroup className={`layergroup-${i}`} key={`layergroup-${i}`}>{layer}</LayerGroup>
+          );
+        })}
+
+        <MarkerClusterGroup config={{ ...self.config.clustering, categorize: self.config.categorize }} markers={clusterMarkers}/>
+
+        {areaHTML}
+
+      </MapContainer>
     );
 
   }

@@ -1,6 +1,6 @@
 {
   "name": "openstad-components",
-  "version": "0.37.1",
+  "version": "0.40.1",
   "description": "Components for the OpenStad Ecosystem",
   "main": "index.js",
   "scripts": {
@@ -46,6 +46,7 @@
     "mini-css-extract-plugin": "^0.10.0",
     "postcss": "^8.4.6",
     "postcss-loader": "^6.2.1",
+    "postcss-preset-env": "^7.3.1",
     "react": "^16.11.0",
     "react-device-detect": "^1.15.0",
     "react-dom": "^16.11.0",
@@ -60,9 +61,12 @@
     "@babel/runtime": "^7.15.3",
     "@fingerprintjs/fingerprintjs": "^3.0.5",
     "filepond": "^4.20.1",
+    "leaflet": "^1.7.1",
     "merge": "^2.1.1",
     "react-app-polyfill": "^1.0.6",
     "react-filepond": "^7.1.0",
+    "react-leaflet": "^3.2.5",
+    "react-leaflet-markercluster": "^3.0.0-rc1",
     "save": "^2.4.0"
   }
 }

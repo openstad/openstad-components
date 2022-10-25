@@ -1,12 +1,14 @@
 'use strict';
 
 import merge from 'merge';
+import React, { Suspense } from 'react';
 import { isMobile } from 'react-device-detect';
 
 import Filterbar from './filterbar.jsx';
 import InfoBar from './infobar.jsx';
 import Preview from './preview.jsx';
-import Map from './map.jsx';
+
+const Map = React.lazy(() => import('./map.jsx'));
 
 import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
@@ -61,6 +63,12 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       self.config.types.forEach((entry) => {
         if (entry.value && !entry.name) {
           entry.name = entry.value;
+        }
+        if (entry.name && !entry.id) {
+          entry.id = entry.name;
+        }
+        if (entry.backgroundColor && !entry.color) {
+          entry.color = entry.backgroundColor;
         }
         if (entry.mapicon && typeof entry.mapicon == 'string') {
           try {
@@ -119,7 +127,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     }, false );
 
     // when the map is ready
-		document.addEventListener('osc-map-is-ready', function(e) {
+		window.addEventListener('osc-map-is-ready', function(e) {
 
       // fetch the data
       self.fetchData({});
@@ -214,11 +222,12 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     let headers = OpenStadComponentLibs.api.getHeaders(self.config);
 
     // remove existing
-    while(self.map.markers.length > 0) {
-      let marker = self.map.markers[0];
+    let markers = self.map.getMarkers();
+    while(markers.length > 0) {
+      let marker = markers[0];
       self.map.removeMarker(marker)
     }
-    self.map.markers = [];
+    self.map.setMarkers([]);
 
     fetch(url, {
       headers,
@@ -235,7 +244,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
           OpenStadComponentLibs.localStorage.remove('osc-login-pending-show-details');
         }
         showIdeaSelected = showIdeaSelected || ( window.location.hash.match(/^#S(\d+)/) && window.location.hash.match(/^#S(\d+)/)[1] );
-        let ideas = json.filter( idea => idea.location )
+        let ideas = json && json.filter( idea => idea.location )
         self.updateListedIdeas({ ideas, sortOrder: self.config.sort.defaultValue });
 
         ideas.map( idea => {
@@ -333,7 +342,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     self.map && self.map.setSelectedLocation(location)
 
     if (location) {
-      location.isPointInPolygon = self.map.isPointInPolygon(location, self.config.map.polygon )
+      location.isPointInArea = self.map.isPointInArea(location, self.config.map.polygon )
 
       self.map.fadeMarkers({});
       let id = self.state.selectedIdea && self.state.selectedIdea.id;
@@ -468,7 +477,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     } else {
       let location = self.state.currentEditIdea && self.state.currentEditIdea.location || self.state.selectedLocation;
       if (location) {
-        location.isPointInPolygon = this.map.isPointInPolygon(location, this.config.map.polygon )
+        location.isPointInArea = this.map.isPointInArea(location, this.config.map.polygon )
         self.setState({ status: 'location-selected' }, () => {
           self.map.showMarkers({})
         });
@@ -568,8 +577,8 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         break;
 
       case 'idea-form':
-        let isPointInPolygon = this.map.isPointInPolygon( event.latlng, this.config.map.polygon );
-        if (isPointInPolygon) this.setSelectedLocation(event.latlng)
+        let isPointInArea = this.map.isPointInArea( event.latlng, this.config.map.polygon );
+        if (isPointInArea) this.setSelectedLocation(event.latlng)
         break;
 
       default:
@@ -585,7 +594,6 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
             this.updateLocationAddress(location)
           });
         }
-        this.map.updateFading();
         document.querySelector('#osc-ideas-on-map-info').scrollTo(0,0)
     }
 
@@ -601,8 +609,8 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 		switch (this.state.status) {
 
       case 'idea-details':
-        this.onUpdateSelectedIdea(event.target.data);
-        document.location.href = "#D" + event.target.data.id;
+        this.onUpdateSelectedIdea(event.target.options.data);
+        document.location.href = "#D" + event.target.options.data.id;
         document.querySelector('#osc-ideas-on-map-info') && document.querySelector('#osc-ideas-on-map-info').scrollTo(0,0)
         break;
 
@@ -616,9 +624,9 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
           this.setCurrentEditIdea(null);
           this.onUpdateSelectedIdea(null);
         } else {
-          this.onUpdateSelectedIdea(event.target.data);
+          this.onUpdateSelectedIdea(event.target.options.data);
           if ( this.config.onMarkerClickAction == 'showIdeaDetails' ) {
-            document.location.href = "#D" + event.target.data.id;
+            document.location.href = "#D" + event.target.options.data.id;
           }
         }
         document.querySelector('#osc-ideas-on-map-info') && document.querySelector('#osc-ideas-on-map-info').scrollTo(0,0)
@@ -627,21 +635,15 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   }
 
 	onClusterClick(event) {
-
 		if ( this.state.infobarOnMobileIsOpen == true && isMobile ) {
       this.closeInfobarOnMobile()
 			return;
 		}
-
-    this.setState({ status: 'default' });
-    this.setCurrentEditIdea(null);
-    this.setSelectedIdea(null);
   }
 
   onChangeMapBoundaries() {
     let self = this;
     if (!self.map) return;
-    self.map.updateFading();
     switch (self.state.status) {
 
       // case 'idea-details':
@@ -758,7 +760,6 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   
   onTileMouseEnter(idea) {
     this.map.fadeMarkers({ exception: idea })
-    this.map.updateFading();
   }
 
   onTileMouseLeave(idea) {
@@ -770,7 +771,6 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     if (this.map.selectedLocation) {
       this.map.fadeMarkers({});
     }
-    this.map.updateFading();
   }
 
   onClickBackToOverview(idea) {
@@ -818,8 +818,8 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       case 'idea-selected':
         if (this.state.status == 'location-selected') {
           let location = this.state.selectedLocation || this.state.currentEditIdea && this.state.currentEditIdea.location || {};
-          location.isPointInPolygon = this.map.isPointInPolygon(location, this.config.map.polygon )
-          if (location.isPointInPolygon) {
+          location.isPointInArea = this.map.isPointInArea(location, this.config.map.polygon )
+          if (location.isPointInArea) {
             mobilePopupHTML = (
               <Preview config={{ ...this.config, display: { type: 'mobilePreview' } }} selectedLocation={location} />
 						);
@@ -868,12 +868,27 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       if (this.config.display.height) divStyle.height = this.config.display.height;
     }
 
+    let mapConfig = {
+      ...this.config.map,
+      zoomControl: this.config.display.type == 'simple' ? false : true,
+      categorize: {
+        categorizeByField: this.config.typeField,
+        categories: {},
+      },
+    }
+    this.config.types.forEach(type => {
+      mapConfig.categorize.categories[type.id] = { color: type.color, icon: type.mapicon };
+    });
+    mapConfig.defaultIcon = mapConfig.defaultIcon || { html: `<svg viewBox="0 0 26 26"><circle cx="13" cy="13" r="13" fill="#164995"/></svg>`, width: 26, height: 26, anchor: [13, 13] };
+   
     return (
 			<div id={this.divId} className={`osc-ideas-on-map osc-ideas-on-map-${this.state.status} osc-mobile-${this.state.infobarOnMobileIsOpen ? 'opened' : 'closed'}`} style={divStyle} ref={el => (this.instance = el)}>
         {filterHTML}
         {infoHTML}
         <div className={`osc-ideas-on-map-map osc-ideas-on-map-map-${this.config.display.type}`}>
-			    <Map id={this.divId + '-map'} config={{ ...this.config.map, types: this.config.types, typeField: this.config.typeField, zoomControl: this.config.display.type == 'simple' ? false : true }} ref={el => (this.map = el)}/>
+          <Suspense fallback={<div>Loading...</div>}>
+			      <Map id={this.divId + '-map'} config={mapConfig} ref={el => (this.map = el)}/>
+          </Suspense>
         </div>
         {simpleHTML}
         {mobilePopupHTML}

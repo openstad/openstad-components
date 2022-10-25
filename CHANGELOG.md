@@ -1,5 +1,8 @@
 # Changelog
 
+## UNREALESED
+* Migrate base-map to react-leaflet
+
 ## 0.37.1
 * Move build from travis to github actions
 
