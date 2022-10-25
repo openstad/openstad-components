@@ -178,15 +178,15 @@ export default class OpenStadComponentMap extends OpenStadComponent {
     return this.setState({markers});
   }
 
-  setArea(area) {
+  async setArea(area) {
     if (area) {
       let polygon = createCutoutPolygon(area);
-      this.setState({ area: polygon })
+      await this.setState({ area: polygon })
     }
   }
 
-  unsetArea(area) {
-    this.setState({ area: null });
+  async unsetArea(area) {
+    await this.setState({ area: null });
   }
 
   setBoundsAndCenter( points ) {
