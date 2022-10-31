@@ -267,7 +267,7 @@ export default class OpenStadComponentMap extends OpenStadComponent {
   applyFilter() {
 	  let self = this;
 	  if (self.filterFunction) {
-		  self.markers.forEach(function(marker) {
+		  self.state.markers.forEach(function(marker) {
 			  if ( self.filterFunction(marker) ) {
 				  self.showMarker(marker);
 			  } else {
@@ -275,7 +275,7 @@ export default class OpenStadComponentMap extends OpenStadComponent {
 			  }
 		  });
 	  } else {
-		  self.markers.forEach(function(marker) {
+		  self.state.markers.forEach(function(marker) {
 			  self.showMarker(marker);
 		  });
 	  }
