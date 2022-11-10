@@ -91,7 +91,6 @@ export default class OpenStadComponentFormField extends OpenStadComponent {
           <Suspense fallback={<div>Loading...</div>}>
             <OpenStadComponentImageUpload config={self.config} value={ this.state.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
           </Suspense>
-
         break;
 
       case 'input-with-counter':
