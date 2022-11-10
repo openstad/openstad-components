@@ -1,9 +1,12 @@
 'use strict';
 
 import merge from 'merge';
+import { Suspense } from 'react';
 
 import OpenStadComponent from '../../../component/index.jsx';
 import OpenStadComponentForms from '../../../forms/index.jsx';
+
+const OpenStadComponentImageUpload = React.lazy(() => import('../../../forms/component/image-upload.jsx'));
 
 export default class ChoiceForm extends OpenStadComponent {
 
@@ -102,7 +105,9 @@ export default class ChoiceForm extends OpenStadComponent {
       imageHTML = (
         <div>
           <h3>Afbeelding</h3>
-          <OpenStadComponentForms.ImageUpload key="i1" config={{ as: 'json', imageserver: self.config.image.server }} value={self.props.currentTarget.images} onChange={ data => self.props.onChange({ images: data.value }) } ref={el => self.imagesField = el}/>
+          <Suspense fallback={<div>Loading...</div>}>
+            <OpenStadComponentImageUpload config={self.config} value={self.props.currentTarget.images} onChange={ data => self.props.onChange({ images: data.value }) } ref={el => self.imagesField = el}/>
+          </Suspense>
         </div>);
     }
     
