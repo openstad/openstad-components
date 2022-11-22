@@ -1,7 +1,9 @@
 # Changelog
 
-## UNREALESED
+## 1.0.0
 * Migrate base-map to react-leaflet
+* Cleanup buttons
+* Add code splitting
 
 ## 0.37.1
 * Move build from travis to github actions
