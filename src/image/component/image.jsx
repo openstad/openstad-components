@@ -29,8 +29,8 @@ export default class OpenStadComponentImage extends OpenStadComponent {
   }
 
   componentDidMount () {
-    let elem = document.querySelector(`#${this.divId}`).parentNode;
-    this.setState({width: elem.offsetWidth})
+    let elem = this.mainElement && this.mainElement.parentNode;
+    if (elem) this.setState({width: elem.offsetWidth})
   }
 
   setCurrentImageIndex (which) {
@@ -68,7 +68,7 @@ export default class OpenStadComponentImage extends OpenStadComponent {
   }
 
   getWidthHeight() {
-    let parentNode = document.querySelector(`#${this.divId}`) && document.querySelector(`#${this.divId}`).parentNode
+    let parentNode = this.mainElement && this.mainElement.parentNode
     let width = this.props.width || this.state.width || ( parentNode && parentNode.offsetWidth );
     let height = this.props.height || width * ( 1 / this.getAspectRatioFactor() ) || undefined;
     return [ width, height ]
@@ -89,7 +89,7 @@ export default class OpenStadComponentImage extends OpenStadComponent {
       // multiple
       let src = self.getImageSrc(image);
       return (
-        <div id={self.divId} className={`osc-multiple-images ${self.props.className || ''}`}>
+        <div id={self.divId} className={`osc-multiple-images ${self.props.className || ''}`}  ref={ el => this.mainElement = el}>
         
           <div className="osc-image-spacer" style={{ width, height }}>
             <div className="osc-image" style={src ? { backgroundImage: `url(${src})` } : {}} key={'image-' + self.divId}></div>
@@ -119,7 +119,7 @@ export default class OpenStadComponentImage extends OpenStadComponent {
       // singular
       let src = self.getImageSrc(image);
       return (
-        <div id={self.divId} className={`osc-image-spacer ${self.props.className || ''}`} style={{ width, height }}>
+        <div id={self.divId} className={`osc-image-spacer ${self.props.className || ''}`} style={{ width, height }} ref={ el => this.mainElement = el}>
           <div className="osc-image" style={src ? { backgroundImage: `url(${src})` } : {}} onClick={this.props.onClick} key={'image-' + self.divId}></div>
         </div>
       );

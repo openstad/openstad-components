@@ -7,12 +7,6 @@ module.exports = function (api) {
 	];
 
   const plugins = [
- 		[
-			"react-css-modules",
-			{
-				"generateScopedName": "[name]__[local]___[hash:base64:5]",
-			}
-		],
     [
       "@babel/plugin-transform-runtime",
       {
@@ -22,7 +16,6 @@ module.exports = function (api) {
         "regenerator": true,
       }
     ],
-		"transform-postcss",
 	];
 
   return {

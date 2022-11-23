@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.0
+* Migrate base-map to react-leaflet
+* Cleanup buttons
+* Add code splitting
+
 ## v0.40.0
 Update version number
 

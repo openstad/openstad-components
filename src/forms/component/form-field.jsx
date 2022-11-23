@@ -1,10 +1,11 @@
 'use strict';
 
+import React, { Suspense } from 'react';
 import merge from 'merge';
 
 import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentHidden from './hidden.jsx';
-import OpenStadComponentImageUpload from './image-upload.jsx';
+const OpenStadComponentImageUpload = React.lazy(() => import('./image-upload.jsx'));
 import OpenStadComponentInputWithCounter from './input-with-counter.jsx';
 import OpenStadComponentRadios from './radios.jsx';
 import OpenStadComponentPostcode from './postcode.jsx';
@@ -86,7 +87,10 @@ export default class OpenStadComponentFormField extends OpenStadComponent {
         break;
 
       case 'image-upload':
-        fieldHTML = <OpenStadComponentImageUpload config={self.config} value={ this.state.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
+        fieldHTML =
+          <Suspense fallback={<div>Loading...</div>}>
+            <OpenStadComponentImageUpload config={self.config} value={ this.state.value } onChange={self.handleOnChange} ref={el => (self.input = el)}/>
+          </Suspense>
         break;
 
       case 'input-with-counter':

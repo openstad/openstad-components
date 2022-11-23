@@ -5,9 +5,6 @@ import 'whatwg-fetch';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-// import css to make sure it is generated in the result
-import './css/default.less';
-
 // the module
 import OpenStadComponentBaseMap from './component/base-map.jsx';
 

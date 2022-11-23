@@ -12,7 +12,7 @@
 
     width: 50px;
     height: 43px;
-    padding: 3px 7px 0 10px;
+    padding: 2px 7px 1px 10px;
 
     font-size: 18px;
     font-weight: 800;
@@ -63,4 +63,15 @@
     }
   }
 
+  &.osc-button-clickable {
+    cursor: pointer;
+
+    &:hover {
+      .osc-button-label {
+        background-color: @amsterdam-navyblue-hover;
+      }
+    }
+
+  }
+  
 }

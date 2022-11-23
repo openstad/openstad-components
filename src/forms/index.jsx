@@ -14,7 +14,6 @@ import './css/default.less';
 import Form from './component/form.jsx';
 import FormField from './component/form-field.jsx';
 import Hidden from './component/hidden.jsx';
-import ImageUpload from './component/image-upload.jsx';
 import InputWithCounter from './component/input-with-counter.jsx';
 import Postcode from './component/postcode.jsx';
 import Radios from './component/radios.jsx';
@@ -26,7 +25,6 @@ export default {
   Form,
   FormField,
   Hidden,
-  ImageUpload,
   InputWithCounter,
   Postcode,
   Radios,
