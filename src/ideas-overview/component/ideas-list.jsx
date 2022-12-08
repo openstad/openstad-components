@@ -2,7 +2,9 @@
 
 import OpenStadComponent from '../../component/index.jsx';
 import OpenStadComponentLibs from '../../libs/index.jsx';
+import { GridderJS } from "./gridder-js";
 import IdeaTile from './idea-tile.jsx';
+import IdeaTileExpandedContent from './idea-tile-expanded-content.jsx';
 
 // TODO:
 // display-type
@@ -44,7 +46,7 @@ export default class IdeasList extends OpenStadComponent {
           onMouseOverTileFadeOthers: false,
         };
         break;
-      case 'grid':
+      case 'expanding-grid':
         defaultConfig.display = {
           title: 'Inzendingen',
           columns: 3,
@@ -76,6 +78,7 @@ export default class IdeasList extends OpenStadComponent {
 
     this.state = {
       highLightIdeaId: null,
+      ideas: props.ideas,
     };
         
   }
@@ -96,6 +99,23 @@ export default class IdeasList extends OpenStadComponent {
 
 	}
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+
+    let self = this;
+
+    if (self.config.display.type == 'expanding-grid') {
+
+      if (!self.state.expandingGrid) {
+        let expandingGrid = new GridderJS('.osc-tile-list', { columns: self.config.display.columns, gap: 15, resize: false, gridClass: 'osc-gridder-list', itemClass: 'osc-idea-tile', nextText: '', prevText: '', closeText: '' });
+        self.setState({ expandingGrid });
+      } else {
+        self.state.expandingGrid.reinit();
+      }
+
+    }
+
+  }
+
   componentWillUnmount() {
     document.removeEventListener('osc-idea-tile-mouse-enter', this.ideaTileMouseEnterListener)
     document.removeEventListener('osc-idea-tile-mouse-leave', this.ideaTileMouseLeaveListener)
@@ -113,15 +133,47 @@ export default class IdeasList extends OpenStadComponent {
 
     let self = this;
     let ideas = self.props.ideas || [];
-    
+
+    let tilesHTML = null;
+    switch (self.config.display && self.config.display.type) {
+
+      case 'expanding-grid':
+        tilesHTML = (
+          <>
+          <div className={`osc-gridder-list osc-gridder-list-${self.config.display.columns}-columns`}>
+              { ideas.map((idea, i) => {
+                return (
+                  <IdeaTile data-target={`osc-content-${idea.id}`} config={self.config} idea={idea} className={`${this.config.display.onMouseOverTileFadeOthers && self.state.highLightIdeaId && self.state.highLightIdeaId != idea.id ? ' osc-opacity-65' : ''}`} key={`osc-idea-tile-${idea.id}`}/>
+                );
+              })}
+            </div>
+            { ideas.map((idea, i) => {
+              return (
+                <IdeaTileExpandedContent config={self.config} idea={idea} key={`osc-idea-content-${idea.id}`}/>
+              );
+            })}
+          </>
+        );
+        break;
+
+      case 'list':
+      default:
+        tilesHTML = (
+          <>
+            { ideas.map((idea, i) => {
+              return (
+                <IdeaTile config={self.config} idea={idea} className={`${this.config.display.onMouseOverTileFadeOthers && self.state.highLightIdeaId && self.state.highLightIdeaId != idea.id ? ' osc-opacity-65' : ''}`} key={`osc-idea-tile-${idea.id}`}/>
+              );
+            })}
+          </>
+        );
+
+    }
+
     return (
-      <div className={`osc-tile-list-container osc-columns-container ${self.props.className || ''}`}>
-        <div className="osc-tile-list osc-columns">
-          { ideas.map((idea, i) => {
-            return (
-              <IdeaTile config={self.config} idea={idea} className={`${this.config.display.onMouseOverTileFadeOthers && self.state.highLightIdeaId && self.state.highLightIdeaId != idea.id ? ' osc-opacity-65' : ''}`} key={`osc-idea-tile-${idea.id}`}/>
-            );
-          })}
+      <div className={`osc-tile-list-container osc-tile-list-container-as-${self.config.display.type} ${self.props.className || ''}`}>
+        <div className={`osc-tile-list`}>
+          {tilesHTML}
         </div>
       </div>
     );

@@ -1,20 +1,154 @@
 .osc-tile-list-container {
+
+  width: 100%;
+  padding: 0;
+  margin: 0;
   
-  .osc-columns-container();
-
-  overflow-x: hidden;
-
-  @media @phone {
-    width: 94%;
-    margin: 0 3%;
+  .osc-tile-list {
+    width: 100%;
+    @media @phone {
+      width: 94%;
+      margin: 0 3%;
+    }    
   }
 
-  .osc-tile-list {
-    width: calc( 100% + @margin );
+  &.osc-tile-list-container-as-list {
+
+    .osc-tile-list {
+      @media @phone {
+        width: 100%;
+        margin: 0;
+      }    
+    }
+
+    .osc-idea-tile {
+      background-color: white;
+      margin-bottom: 0;
+      border-bottom: 1px solid #e6e6e6;
+    }
+
+  }
+
+  &.osc-tile-list-container-as-grid {
+
+    .osc-tile-list {
+
+      width: calc( 100% + @margin );
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: flex-start;
+      align-content: flex-start;
+
+      @media @phone {
+        width: 100%;
+        margin: 0;
+      }
+
+    }
+
+    .osc-idea-tile {
+
+      margin-right: @margin;
+      @media @phone {
+        width: 100%;
+        margin: 0 3% @margin 3%;
+      }
+
+      &.osc-idea-tile-2-columns {
+        width: calc(( 100% - ( 2 * @margin ) ) / 2);
+        @media @phone {
+          width: 100%;
+        }
+      }
+
+      &.osc-idea-tile-3-columns {
+        width: calc(( 100% - ( 3 * @margin ) ) / 3);
+        @media @phone {
+          width: 100%;
+        }
+      }
+
+      &.osc-idea-tile-4-columns {
+        width: calc(( 100% - ( 4 * @margin ) ) / 4);
+        @media @phone {
+          width: 100%;
+        }
+      }
+
+      &.osc-idea-tile-5-columns {
+        width: calc(( 100% - ( 5 * @margin ) ) / 5);
+        @media @phone {
+          width: 100%;
+        }
+      }
+
+      &.osc-idea-tile-6-columns {
+        width: calc(( 100% - ( 6 * @margin ) ) / 6);
+        @media @phone {
+          width: 100%;
+        }
+      }
+
+    }
+
+  }
+
+  &.osc-tile-list-container-as-expanding-grid {
+
     display: flex;
-    flex-flow: row wrap;
-    justify-content: flex-start;
-    align-content: flex-start;
+
+    .osc-gridder-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-flow: row dense;
+      gap: 15px;
+      grid-template-rows: min-content;
+      width: 100%;
+
+      &.osc-gridder-list-1-columns {
+        grid-template-columns: repeat(1, 1fr);
+        @media @phone {
+          grid-template-columns: repeat(1, 1fr);
+        }
+      }
+
+      &.osc-gridder-list-2-columns {
+        grid-template-columns: repeat(2, 1fr);
+        @media @phone {
+          grid-template-columns: repeat(1, 1fr);
+        }
+      }
+
+      &.osc-gridder-list-3-columns {
+        grid-template-columns: repeat(3, 1fr);
+        @media @phone {
+          grid-template-columns: repeat(1, 1fr);
+        }
+      }
+
+      &.osc-gridder-list-4-columns {
+        grid-template-columns: repeat(4, 1fr);
+        @media @phone {
+          grid-template-columns: repeat(1, 1fr);
+        }
+      }
+
+      &.osc-gridder-list-5-columns {
+        grid-template-columns: repeat(5, 1fr);
+        @media @phone {
+          grid-template-columns: repeat(1, 1fr);
+        }
+      }
+
+      &.osc-gridder-list-6-columns {
+        grid-template-columns: repeat(6, 1fr);
+        @media @phone {
+          grid-template-columns: repeat(1, 1fr);
+        }
+      }
+      
+    }
+
   }
 
 }

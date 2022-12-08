@@ -3,15 +3,19 @@
 @import './ideas-filter.less';
 @import './ideas-search.less';
 @import './ideas-sort.less';
-
 @import './ideas-list.less';
 @import './idea-tile.less';
+@import './idea-tile-expanded-content.less';
 
-@import './displaytype-list.less';
-@import './displaytype-tiles.less';
-@import './displaytype-gridder.less';
+@margin: 15px;
 
-@margin: 20px;
+@phone: ~'only screen and (max-width: 880px)';
+@tablet: ~'only screen and (min-width: 880px) and (max-width: 1200px)';
+@phone-or-tablet: ~'only screen and (max-width: 1200px)';
+
+* {
+  box-sizing: border-box;
+}
 
 .osc-ideas-overview {
 
@@ -22,7 +26,6 @@
       width: 94%;
       margin-left: 3%;
       margin-right: 3%;
-      
     }
   }
 
@@ -32,6 +35,10 @@
 
   .osc-margin-right {
     .osc-margin-right();
+  }
+
+  .osc-clickable {
+    .osc-clickable();
   }
 
 }
