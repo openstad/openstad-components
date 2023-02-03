@@ -47,7 +47,7 @@ export default class ChoicesGuideForm extends OpenStadComponent {
 
     let moreConfigHTML = null;
 
-    if (config.isActive == "true") {
+    if (!!config.isActive != false && config.isActive != "false" && config.isActive != "0") {
 
       let requiredUserRoleConfigHTML = null;  
       if (config.submissionType == "form") {

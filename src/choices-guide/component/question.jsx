@@ -228,7 +228,7 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
         }
         let questionImageAHTML = null;
         let questionImageBHTML = null;
-        if (questionImageA && questionImageB) {
+        if (questionImageA && questionImageA.length && questionImageB && questionImageB.length) {
           questionImageAHTML = (
             <div className="osc-question-description-image-container osc-question-description-image-container-a">
               <div className="osc-question-description-label osc-question-description-label-a">{labelA}</div>
