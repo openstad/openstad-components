@@ -12,7 +12,7 @@ import { IdeaImage as OpenStadComponentIdeaImage } from '../../image/index.jsx';
 
 // todo: een error op fetch wordt niet goed afgevangen
 
-export default class IdeasDetails extends OpenStadComponent {
+export default class IdeaDetails extends OpenStadComponent {
 
   constructor(props) {
 
@@ -52,7 +52,7 @@ export default class IdeasDetails extends OpenStadComponent {
         
   }
 
-	componentDidMount(prevProps, prevState) {
+	componentDidMount() {
 
     let self = this;
     
@@ -91,6 +91,17 @@ export default class IdeasDetails extends OpenStadComponent {
 		document.removeEventListener('osc-reaction-deleted', this.reactionDeletedListener);
 		document.removeEventListener('osc-new-poll-stored', this.pollCreatedListener);
 		document.removeEventListener('osc-poll-deleted', this.pollDeletedListener);
+  }
+
+	componentDidUpdate(prevProps, prevState) {
+    let self = this;
+    let previousIdeaId = prevProps.idea && prevProps.idea.id;
+    let newIdeaId = self.props.idea && self.props.idea.id;
+    if (newIdeaId && previousIdeaId !== newIdeaId) {
+      self.setState({ ideaId: newIdeaId }, () => {
+        self.fetchData();
+      })
+    }
   }
 
   dispatchEditIdeaButtonClick(e) {
