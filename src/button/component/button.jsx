@@ -56,14 +56,14 @@ export default class OpenStadComponentButton extends OpenStadComponent {
     let onClick = typeof self.props.onClick != 'undefined' ? self.props.onClick : null;
     let url = typeof self.props.url != 'undefined' ? self.props.url : self.state.url;
     if (url) {
-      onClick = `document.location.href="${url}"`;
+      onClick = () => document.location.href=url;
     }
     if (onClick) className += ' osc-button-clickable'
 
     if (self.props.disabled) className += ' osc-disabled';
 
     return (
-      <div id={self.divId} onClick={onClick} className={className} role="link" tabindex="0">
+      <div id={self.divId} onClick={onClick} className={className} role="link" tabIndex="0">
         {numberplatesHTML}
         {iconHTML}
         {labelHTML}

@@ -63,14 +63,11 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
       allValues = resultdata.result.answers;
       allScores = resultdata.result.scores;
     }
+
+    this.config.initFormValues = allFormvalues;
     
     if (this.config.submission.type == 'form') {
-      this.onFormChange = this.onFormChange.bind(this);
-      let formvalues = allFormvalues || {};
-      this.config.submission.form.fields.forEach(field => {
-        let name = field.name || field.title.toLowerCase();
-        if (typeof allFormvalues[name] != 'undefined') { field.value = allFormvalues[name]; }
-      });
+      this.initForm();
     }
 
     this.state = {
@@ -97,6 +94,9 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
         self.setState({ ...data, questionGroupId }, () => {
           // override config settings
           self.config.submission.type = data.choicesGuideConfig.submissionType || self.config.submission.type;
+          if (self.config.submission.type == 'form') {
+            this.initForm();
+          }
           self.startGuide();
         });
       })
@@ -107,6 +107,16 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
 
   }
 
+  initForm() {
+    let initFormvalues = this.config.initFormValues || {};
+    this.onFormChange = this.onFormChange.bind(this);
+    let formvalues = initFormvalues || {};
+    this.config.submission.form.fields.forEach(field => {
+      let name = field.name || field.title.toLowerCase();
+      if (typeof initFormvalues[name] != 'undefined') { field.value = initFormvalues[name]; }
+    });
+  }
+  
   startGuide() {
 
     let self = this;
@@ -266,17 +276,26 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
         scores: this.state.scores,
       }
     };
+    try {
+      data = JSON.stringify(data);
+    } catch (err) {}
 
     let match = url.match(/returnTo=([^\?\&]+)/);
     if (match) {
       let returnTo = decodeURIComponent(match[1]);
       returnTo += returnTo.match(/\?/) ? '&' : '?';
-      returnTo += 'resultdata=' + window.btoa( JSON.stringify(data).replace(/=+$/, '') );
+      returnTo += 'resultdata=' + window.btoa( data.replace(/=+$/, '') );
       returnTo = encodeURIComponent(returnTo);
       url = url.replace(/returnTo=[^\?\&]+/, 'returnTo=' + returnTo)
+    } else if (url.match(/\{returnTo\}/)) {
+      let returnTo = window.location.href;
+      returnTo += returnTo.match(/\?/) ? '&' : '?';
+      returnTo += 'resultdata=' + window.btoa( data.replace(/=+$/, '') );
+      returnTo = encodeURIComponent(returnTo);
+      url = url.replace(/\{returnTo\}/, 'returnTo=' + returnTo)
     } else {
       url += url.match(/\?/) ? '&' : '?';
-      url += 'resultdata=' + window.btoa( JSON.stringify(data) ).replace(/=+$/, '');
+      url += 'resultdata=' + window.btoa( data ).replace(/=+$/, '');
     }
 
     document.location.href = url;
