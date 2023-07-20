@@ -13,11 +13,21 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
     // defaults
 
     this.questionId = props.data.id;
-
+    
     this.state = {
       value: 50,
       isAnswered: false,
     };
+    
+    if (['input', 'textarea'].includes(props.data.type)) {
+      if (props.data.hasOwnProperty('value') && typeof props.data.value === 'object' && props.data.value.hasOwnProperty('x')) {
+        this.state.value = props.data.value.x;
+      } else {
+        this.state.value = '';
+      }
+    } else {
+      this.state.value = props.data.hasOwnProperty('value') ? props.data.value : [];
+    }
     
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.showLightbox = this.showLightbox.bind(this);
@@ -32,15 +42,73 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
       this.liveUpdates();
     });
   }
+  
+  onMultipleChoiceChangeHandler(newState) {
+    newState.error = undefined;
+    this.setState(newState, () => {
+      this.liveUpdates();
+    });
+  }
+  
 
   isValid() {
 
 
     let data = this.props.data || {};
     let wasAlreadyAnswered = typeof data.value != 'undefined';
-
+    
+    if (data.validation && data.validation.required === 'true' && (!this.state.value || this.state.value.length <= 0) && !['multiple-choice'].includes(data.type)) {
+      if (['input', 'textarea'].includes(data.type)) {
+        this.setState({error: 'Dit veld is verplicht'});
+      } else {
+        this.setState({error: 'Je hebt nog geen keuze gemaakt'});
+      }
+      return false;
+    }
+    
+    if (data.validation && data.validation.minLength && String(this.state.value).length < data.validation.minLength) {
+      this.setState({error: `Voer minimaal ${data.validation.minLength} tekens in`});
+      return false;
+    }
+    
+    if (data.validation && data.validation.maxLength && String(this.state.value).length > data.validation.maxLength) {
+      this.setState({error: `Voer maximaal ${data.validation.maxLength} tekens in`});
+      return false;
+    }
+    
+    if (['multiple-choice'].includes(data.type)) {
+      let checked = this.state.checked.reduce((count, checked) => count += (checked ? 1 : 0));
+      if (this.state.checkedOther) {
+          checked++;
+      }
+      
+      if (data.validation && data.validation.minChoices > 0 && checked < data.validation.minChoices) {
+        if (data.validation.minChoices == 1) {
+          this.setState({error: 'Je hebt nog geen keuze gemaakt'});
+        } else {
+          this.setState({error: `Geef minimaal ${data.validation.minChoices} keuzes op`});
+        }
+        return false;
+      }
+      
+      if (data.validation && data.validation.maxChoices > 0 && checked > data.validation.maxChoices) {
+        this.setState({error: `Geef maximaal ${data.validation.maxChoices} keuzes op`});
+        return false;
+      }
+      
+      return true;
+    }
+    
     let isAnswered = this.state.isAnswered || !!this.config.startWithAllQuestionsAnsweredAndConfirmed
     if (wasAlreadyAnswered || isAnswered) return true;
+    
+    if (['input', 'textarea'].includes(data.type)) {
+      return true;
+    }
+    
+    if (data.type === 'enum-radio' && data.values.length === 0) {
+      return true;
+    }
 
     this.setState({error: 'Je hebt nog geen keuze gemaakt'});
     return false;
@@ -50,7 +118,25 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
   getAnswer() {
 
     if (!this.state.isAnswered) return; // null
-
+    
+    let result;
+    
+    if (this.props.data.type === 'multiple-choice' && this.state.checked.length > 0) {
+      result = [];
+      
+      this.state.checked.forEach((val, index) => {
+        if (val === true) {
+          result.push(this.state.values[index].text);
+        }
+      });
+      
+      if (this.state.checkedOther === true) {
+        result.push(`Anders, namelijk: ${this.state.otherInputValue}`);
+      }
+      
+      return result;
+    }
+    
     let data = this.props.data || {};
     let values = data.values || {};
 
@@ -61,7 +147,6 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
     dimensions = dimensions || ['x'];
 
     // get a number between 0 and 100
-    let result;
     if (typeof this.state.value == 'number' || typeof this.state.value == 'string') {
       result = {};
       if ( dimensions.includes('x') ) result.x = this.state.value;
@@ -83,6 +168,36 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
 		document.dispatchEvent(event);
   }
 
+  onKeyDownHandler (e) {
+    var current = e.target;
+    
+    // If tab is pressed
+    if (e.keyCode == 9) {
+      e.preventDefault();
+      // Find next radio / input and focus it (if possible)
+      var inputs = document.querySelectorAll('#choices-guide input, #choices-guide textarea');
+      var index = Array.prototype.indexOf.call(inputs, current);
+      
+      if (e.shiftKey) {
+        // Find previous radio / input
+        if (index > 0) {
+          inputs[index - 1].focus();
+        } else {
+          // If there is no previous radio / input, focus the last one
+          inputs[inputs.length - 1].focus();
+        }
+      } else {
+        // Find next radio / input
+        if (index < inputs.length - 1) {
+          inputs[index + 1].focus();
+        } else {
+          // If there is no next radio / input, focus the first one
+          inputs[0].focus();
+        }
+      }
+    }
+  }
+  
   toggleMoreInfo(id) {
     let elem = document.querySelector(`#${id}`);
     if (elem) {
@@ -115,7 +230,7 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
 		// dispatch an event
 		var event = new window.CustomEvent('osc-show-light-box', { detail: { images, startIndex, aspectRatio: this.config.aspectRatio } });
 		document.dispatchEvent(event);
-    
+  
   }
 
   render() {
@@ -129,7 +244,7 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
     let isAnswered = self.state.isAnswered;
 
     let value = typeof data.value != 'undefined' ? data.value : 'not defined';
-    if ( typeof data.value == 'object' ) {
+    if ( typeof data.value == 'object' && !Array.isArray(data.value)) {
       let dimensions = data.dimensions;
       if ( dimensions == 'null' ) dimensions = null;
       if ( !dimensions || dimensions.includes('x') ) value = data.value.x;
@@ -137,7 +252,11 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
       if ( dimensions && dimensions.includes('z') ) value = data.value.z;
     }
     if (value === 'not defined') {
-      value = this.state.value;
+      if (data.type != 'multiple-choice') {
+        value = this.state.value;
+      } else {
+        value = [];
+      }
     } else {
       isAnswered = true;
     }
@@ -267,7 +386,7 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
       case 'enum-radio':
         selectorHTML = (
           <div className="osc-question-selector">
-            { data.values && data.values.map((entry, i) => {
+            { data.values && Array.isArray(data.values) && data.values.map((entry, i) => {
               let key = parseInt(1000000 * Math.random());
               let checked = false;
               if (typeof data.value == 'object') {
@@ -282,9 +401,9 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
               return (
                 <div key={`div-value-${key}`} className="osc-radio-container">
                   <div className={`osc-radio-input${checked ? ' osc-radio-input-checked' : '' }`}>
-                    <input name={`enum-radio-${data.id}`} type="radio" onChange={() => self.onChangeHandler(entry.value)} key={`button-value-${key}`}/>
+                    <input name={`enum-radio-${data.id}`} type="radio" onChange={() => self.onChangeHandler(entry.value)} id={`button-value-${key}`} key={`button-value-${key}`} onKeyDown={(e) => self.onKeyDownHandler(e)}/>
                   </div>
-                  <div className="osc-radio-text">{entry.text}</div>
+                  <div className="osc-radio-text"><label for={`button-value-${key}`}>{entry.text}</label></div>
                 </div>
               );
             })}
@@ -299,6 +418,40 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
               return <button onClick={() => self.onChangeHandler(entry.value)} key={`button-value-${i}`}>{entry.text}</button>;
             })}
           </div>;
+        break;
+        
+      case 'input':
+        selectorHTML =
+          <div className="osc-question-selector">
+            <div className="osc-radio-container">
+                  <div className={`osc-text-input`}>
+                    <OpenStadComponentForms.InputWithCounter config={{ inputType: 'input', validation: data.validation, ...data.validation }} value={value} onChange={ data => self.onChangeHandler(data.value, false) } ref={el => self.titleField = el}/>
+                  </div>
+                  <div className="osc-text-text">{data.values.text}</div>
+                </div>
+            
+            </div>;
+        break;
+        
+      case 'textarea':
+        selectorHTML =
+          <div className="osc-question-selector">
+            <div className="osc-radio-container">
+                  <div className={`osc-text-input`}>
+                    <OpenStadComponentForms.InputWithCounter config={{ inputType: 'textarea', validation: data.validation, ...data.validation }} value={value} onChange={ data => self.onChangeHandler(data.value, false) } ref={el => self.titleField = el}/>
+                  </div>
+                  <div className="osc-text-text">{data.values.text}</div>
+                </div>
+            
+            </div>;
+        break;
+        
+      case 'multiple-choice':
+        selectorHTML = (
+          <div className="osc-question-selector">
+            <OpenStadComponentForms.Checkboxes config={{ id: data.id, choices: data.values, showOtherInputField: data.extraConfig && data.extraConfig.showOther === 'true' ? true : false, validation: data.validation }} value={value} onChange={ newState => self.onMultipleChoiceChangeHandler(newState)} ref={el => self.titleField = el}/>
+          </div>
+        );
         break;
 
       default:

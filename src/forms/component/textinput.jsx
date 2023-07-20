@@ -5,17 +5,18 @@ import OpenStadComponentDefaultInput from './default-input.jsx';
 export default class OpenStadComponentText extends OpenStadComponentDefaultInput {
 
 	render() {
-
-		let self = this;
-
+    
     let errorHTML = null;
-    if (self.state.error) {
+    if (this.state.error) {
       errorHTML = (<div className="osc-form-error osc-form-field-error">Je hebt nog niets ingevuld</div>)
     }
     
+    const className = this.props.className ? "osc-textinput " + this.props.className : "osc-textinput";
+    const autoFocus = this.props.autoFocus ? true : false;
+    
     return (
-			<div className="osc-textinput">
-			  <input type="text" value={this.state.value} disabled={this.props.disabled} placeholder={this.config.placeholder} onChange={e => self.handleOnChange({ value: self.input.value })} ref={el => (self.input = el)}/>
+			<div className={className}>
+			  <input type="text" value={this.state.value} autoFocus={autoFocus} disabled={this.props.disabled} placeholder={this.config.placeholder} required={this.props.required} onChange={e => this.handleOnChange({ value: this.input.value })} ref={el => (this.input = el)}/>
         {errorHTML}
 		  </div>
     );

@@ -18,7 +18,7 @@ export default class OpenStadComponentChoices extends OpenStadComponent {
     this.choiceElements = [];
 
     this.state = {
-      title: 'Je hebt nog geen keuze gemaakt',
+      title: 'Hoe belangrijk vind jij de ambities?',
       scores: props.scores,
       planePos: { x: 50, y: 50 },
     };
@@ -46,7 +46,12 @@ export default class OpenStadComponentChoices extends OpenStadComponent {
 
     let scores = {};
     self.choiceElements.forEach((choiceElement) => {
-      scores[choiceElement.props.data.id] = choiceElement.calculateScore(answers);
+
+      if(choiceElement?.props?.data.id) {
+        scores[choiceElement.props.data.id] = choiceElement.calculateScore(answers);
+      } else if(choiceElement?.config.divId) {
+        scores[choiceElement.config.divId] = choiceElement.calculateScore(answers);
+      }
     });
  
     // for plane: calculate position
@@ -65,7 +70,7 @@ export default class OpenStadComponentChoices extends OpenStadComponent {
               planePos[dimension] += parseInt(entry[dimension]) || 0;
               lengths[dimension]++
             }
-          });        
+          });
         });
         planePos.x = lengths.x ? parseInt(planePos.x / lengths.x) : undefined;
         planePos.y = lengths.y ? parseInt(planePos.y / lengths.y) : undefined;
