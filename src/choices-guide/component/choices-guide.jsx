@@ -253,7 +253,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
 
 		var event = new window.CustomEvent('osc-choices-click', { detail: {} });
 		document.dispatchEvent(event);
-    
+  
   }
 
   render() {

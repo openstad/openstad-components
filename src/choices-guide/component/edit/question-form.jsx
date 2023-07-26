@@ -113,8 +113,8 @@ export default class QuestionForm extends OpenStadComponent {
       }
     }
     parsedData = parsedData || data;
-    self.props.onChange(parsedData)    
-  } 
+    self.props.onChange(parsedData)
+  }
 
   setShowMoreInfoFields(value) {
     let self = this;
@@ -299,7 +299,7 @@ export default class QuestionForm extends OpenStadComponent {
         </Suspense>
 
         <h3>Type vraag</h3>
-        <OpenStadComponentForms.Select config={{ choices: [{ value: "", description: "Maak een keuze" },/*{ value: "continuous", description: "continue" },*/{ value: "a-to-b", description: "van a naar b slider" },/*{ value: "enum-buttons", description: "multiple choice - buttons" }*/,{ value: "enum-radio", description: "radio buttons" }], required: true  }} value={ self.props.currentTarget.type } onChange={ data => self.handleFieldChange({ type: data.value }) } ref={el => self.typeField = el}/>
+        <OpenStadComponentForms.Select config={{ choices: [{ value: "", description: "Maak een keuze" },/*{ value: "continuous", description: "continue" },*/{ value: "a-to-b", description: "van a naar b slider" },/*{ value: "enum-buttons", description: "multiple choice - buttons" }*/,{ value: "enum-radio", description: "radio buttons" },{ value: "input", description: "text input" }, { value: "textarea", description: "textarea" }], required: true  }} value={ self.props.currentTarget.type } onChange={ data => self.handleFieldChange({ type: data.value }) } ref={el => self.typeField = el}/>
 
         {valuesHTML}
         {dimensionsHTML}
