@@ -14,9 +14,9 @@ export default class ChoiceForm extends OpenStadComponent {
 
     // mutiple questionGroups is not quite ready and is therefore turned of in the interface
     let newGroupButtonHTML = null;
-    if ( !self.props.questionGroups || self.props.questionGroups.length < 1 ) {
+    //if ( !self.props.questionGroups || self.props.questionGroups.length < 1 ) {
       newGroupButtonHTML = <a href="#" onClick={event => self.props.setCurrentForm({ what: 'question-group' })}>Nieuwe vraaggroep</a>
-    }
+    //}
 
     return (
           <div className="osc-overview">
