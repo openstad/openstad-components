@@ -10,7 +10,7 @@ import { IdeaImage as OpenStadComponentIdeaImage } from '../../image/index.jsx';
 // TODO: vote progress bar
 // TODO: ellipsis op theme and area moet op beide apart
 
-export default class IdeasOverview extends OpenStadComponent {
+export default class IdeaTile extends OpenStadComponent {
 
   constructor(props) {
 
@@ -24,17 +24,8 @@ export default class IdeasOverview extends OpenStadComponent {
       },
 
       display: {
-        type: 'tiles',
-        columns: 4,
-        showStatusLabel: false,
-        showTheme: false,
-        showArea: false,
-        showVoteProgressbar: false,
-        showStats: false,
-        showTypeIcon: false,
-        onMouseOverTileFadeOthers: false,
       },
-      
+
       image: {},
 
       argument: {
@@ -46,7 +37,7 @@ export default class IdeasOverview extends OpenStadComponent {
         isViewable: true,
         voteValues: [ { value: "yes" }, { value: "no" } ],
       },
-      
+
       types: [],
       typeField: 'typeId',
 
@@ -57,7 +48,7 @@ export default class IdeasOverview extends OpenStadComponent {
     this.state = {
       idea: this.props.idea || {},
     };
-        
+
   }
 
   dispatchIdeaTileClick(event, idea) {
@@ -130,7 +121,7 @@ export default class IdeasOverview extends OpenStadComponent {
       statsHTML = (
         <div className="osc-idea-stats-container">
           { stats.map((statHTML, i) => {
-            return <div className="osc-stat" key={`osc-stat-${idea.id}-${i}`}>{statHTML}</div>
+            return <div className="osc-idea-stat" key={`osc-stat-${idea.id}-${i}`}>{statHTML}</div>
           })}
         </div>
       )
@@ -173,27 +164,23 @@ export default class IdeasOverview extends OpenStadComponent {
 
     // now render
     return (
-			<div id={self.divId} className={`osc-idea-tile osc-displaytype-${self.config.display.type} osc-column osc-${self.config.display.columns}-columns ${self.props.className || ''}`} onClick={event => self.dispatchIdeaTileClick(event, idea)} onMouseEnter={event => self.dispatchIdeaTileMouseEnter(event, idea)} onMouseLeave={event => self.dispatchIdeaTileMouseLeave(event, idea)}>
+			<div id={self.divId} className={`osc-idea-tile osc-idea-tile-${self.config.display.columns}-columns ${self.props.className || ''} osc-clickable`} onClick={event => self.dispatchIdeaTileClick(event, idea)} onMouseEnter={event => self.dispatchIdeaTileMouseEnter(event, idea)} onMouseLeave={event => self.dispatchIdeaTileMouseLeave(event, idea)} data-target={self.props['data-target']}>
         <div className="osc-idea-image-container">
           <OpenStadComponentIdeaImage config={this.config} idea={idea} key={'image-' + idea.id}/>
         </div>
         <div className="osc-idea-tile-content">
-          {statusLabelHTML}
-          <h4 className="osc-title">{ eval(`idea.${self.config.idea.titleField}`) }</h4>
-          {themeAndAreaHTML}
-          <div className="osc-summary">
-            { eval(`idea.${self.config.idea.summaryField}`) }
+          <div className="osc-idea-tile-content-text">
+            {statusLabelHTML}
+            <h4 className="osc-title">{ eval(`idea.${self.config.idea.titleField}`) }</h4>
+            {themeAndAreaHTML}
+            <div className="osc-summary">
+              { eval(`idea.${self.config.idea.summaryField}`) }
+            </div>
           </div>
-          {voteProgressHTML}
-          {statsHTML}
-        </div>
-        <div className="osc-idea-tile-content-alt">
-          <div className="osc-idea-image-container">
-            <OpenStadComponentIdeaImage config={this.config} idea={idea} key={'image-' + idea.id}/>
+          <div className="osc-idea-tile-content-extra">
+            {voteProgressHTML}
+            {statsHTML}
           </div>
-          <h4 className="osc-title">{ eval(`idea.${self.config.idea.titleField}`) }</h4>
-          { eval(`idea.${self.config.idea.summaryField}`) }
-          {statsHTML}
         </div>
         {typeIconHTML}
       </div>

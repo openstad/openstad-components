@@ -5,20 +5,28 @@
   position: relative;
   width: 100%;
   margin-bottom: @margin;
-  margin-right: @margin;
+  background-color: #f6f7f7;
 
   .osc-idea-image-container {
+    margin: 0;
     background-color: white;
   }
 
-  .osc-idea-tile-content,
-  .osc-idea-tile-content-alt {
+  .osc-idea-tile-content {
 
     position: relative;
-    margin-top: 12px;
-    padding: 10px;
-    background-color: #f6f7f7;
 
+    display: grid;
+    grid-template-rows: 1fr min-content;
+    grid-auto-flow: row;
+    gap: 0;
+    
+    padding: 10px;
+
+    @media @phone {
+      padding: 3%;;
+    }
+    
     .osc-theme-and-area {
       width: 100%;
       margin: 0 0 12px 0;
@@ -28,7 +36,6 @@
       color: #999;
       text-overflow: ellipsis;
       white-space: nowrap;
-      overflow: hidden;
 
       .osc-divider {
         display: inline-block;
@@ -56,7 +63,6 @@
     }
 
     .osc-summary {
-      overflow: hidden;
       line-height: 1.2em;
       margin: 0 0 11px 0;
       padding: 0;
@@ -122,15 +128,32 @@
 
       font-size: 15px;
 
+      .osc-idea-stat > div {
+        display: inline-block;
+        position: relative;
+        padding-left: 30px;
+        line-height: 30px;
+      }
+
       .osc-idea-stat {
         width: calc(( 100% - ( 2 * @margin ) ) / 3);
+        text-align: center;
+
+        &:last-child {
+          text-align: right;
+          & > div {
+          }
+        }
+
+        &:first-child {
+          text-align: left;
+          & > div {
+          }
+        }
+        
       }
 
       .osc-yes-votes {
-        position: relative;
-        width: 40px;
-        padding-left: 30px;
-        line-height: 30px;
         &:after {
           position: absolute;
           top: 0;
@@ -143,10 +166,6 @@
       }
 
       .osc-no-votes {
-        position: relative;
-        width: 40px;
-        padding-left: 30px;
-        line-height: 30px;
         &:after {
           position: absolute;
           top: 7px;
@@ -159,10 +178,6 @@
       }
 
       .osc-reactions {
-        position: relative;
-        width: 40px;
-        padding-left: 30px;
-        line-height: 30px;
         &:after {
           position: absolute;
           top: 0;
@@ -187,3 +202,99 @@
   }
 
 }
+
+&.osc-tile-list-container-as-list {
+
+  .osc-idea-tile {
+
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    padding-top: 15px;
+    padding-bottom: 15px;
+
+    .osc-idea-image-container {
+      width: 35%;
+    }
+
+    .osc-idea-tile-content {
+      width: 65%;
+    }
+
+    @media @phone {
+
+      display: block;
+      padding-top: 5px;
+      padding-bottom: 5px;
+
+      .osc-idea-image-container {
+        float: right;
+        margin: 10px 3% 10px 10px;
+      }
+
+      .osc-idea-tile-content {
+      display: block;
+        width: 100%;
+      }
+    }
+
+  }
+
+}
+
+&.osc-tile-list-container-as-grid {
+
+  .osc-idea-tile {
+
+    display: flex;
+    flex-direction: column;
+
+    box-shadow: 0 12px 24px 0 rgba(42,18,18,0.09);
+    margin-right: @margin;
+
+    .osc-idea-image-container {
+      flex-grow: 1;
+    }
+
+    .osc-idea-tile-content {
+      position: relative;
+      flex-grow: 20;
+      padding: 10px;
+    }
+  
+    @media @phone {
+      
+      .osc-idea-image-container {
+        margin: 0;
+      }
+
+      .osc-idea-tile-content {
+      }
+
+    }
+
+  }
+  
+}
+
+&.osc-tile-list-container-as-expanding-grid {
+
+  .osc-idea-tile {
+
+    display: flex;
+    flex-direction: column;
+
+    box-shadow: 0 12px 24px 0 rgba(42,18,18,0.09);
+
+    .osc-idea-image-container {
+      flex-grow: 1;
+    }
+
+    .osc-idea-tile-content {
+      flex-grow: 20;
+    }
+
+  }
+  
+}
+
