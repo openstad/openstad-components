@@ -1,7 +1,7 @@
 export const searchAddressByLatLng = function({ latlng, addresssesMunicipality, next }) {
   
 	let self = this;
-  let locatieApiUrl = 'https://geodata.nationaalgeoregister.nl/locatieserver/v3/free?lat=[[lat]]5&lon=[[lng]]&fq=type:adres&rows=1';
+  let locatieApiUrl = 'https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?lat=[[lat]]5&lon=[[lng]]&fq=type:adres&rows=1';
   if (addresssesMunicipality) {
     locatieApiUrl += `&fq=gemeentenaam:${addresssesMunicipality}`;
   }
@@ -42,10 +42,11 @@ export const searchAddressByLatLng = function({ latlng, addresssesMunicipality, 
 }
 
 export const suggestAddresses = function({ searchValue, addresssesMunicipality, next }) {
+  let url = `https://api.pdok.nl/bzk/locatieserver/search/v3_1/suggest?rows=5&fq=gemeentenaam:${addresssesMunicipality}&fq=*:*&q=${searchValue}`;
 
-  fetch(`https://geodata.nationaalgeoregister.nl/locatieserver/v3/suggest?rows=5&fq=gemeentenaam:${addresssesMunicipality}&fq=*:*&q=${searchValue}`, {
+  fetch(url, {
     headers: {
-      'Content-Type': 'application/json',
+      // 'Content-Type': 'application/json',
     },
   })
 		.then((response) => {
@@ -70,12 +71,7 @@ export const suggestAddresses = function({ searchValue, addresssesMunicipality, 
 }
 
 export const LookupLatLngByAddressId = function({ id, addresssesMunicipality, next }) {
-
-  fetch(`https://geodata.nationaalgeoregister.nl/locatieserver/v3/lookup?fq=gemeentenaam:${addresssesMunicipality}&&id=${id}`, {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
+  fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/lookup?fq=gemeentenaam:${addresssesMunicipality}&&id=${id}`)
 		.then((response) => {
 			return response.json();
 		})
