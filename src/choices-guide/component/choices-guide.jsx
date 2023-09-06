@@ -26,9 +26,9 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
       },
       choices: {
         title: {
-          noPreferenceYet: 'Je hebt nog geen keuze gemaakt',
-          preference: '<b>Jouw voorkeur:</b>{preferredChoice}',
-          inBetween: 'Je staat precies tussen meerdere voorkeuren in'
+          noPreferenceYet: 'Hoe belangrijk vind jij de ambities?',
+          preference: '<b>Jouw ambitie:</b>{preferredChoice}',
+          inBetween: 'Je staat precies tussen meerdere ambities in'
         },
         withPercentage: false,
         minLabel: null,
@@ -79,8 +79,6 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
   }
 
   fetchData() {
-
-    self = this;
 
     let self = this;
     fetchChoicesGuide({ config: self.config })
@@ -253,7 +251,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
 
 		var event = new window.CustomEvent('osc-choices-click', { detail: {} });
 		document.dispatchEvent(event);
-    
+  
   }
 
   render() {
